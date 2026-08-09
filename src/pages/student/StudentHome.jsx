@@ -188,9 +188,15 @@ const savedStudySecondsRef =
 const pendingSecondsRef =
   useRef(0);
 const sessionSecondsRef = useRef(0);
-const sessionStartRef = useRef(Date.now());
-const dirtyRef =
-  useRef(false);
+const sessionStartRef = useRef(
+  Number(
+    localStorage.getItem("study_session_start")
+  ) || Date.now()
+);
+
+const lastTickRef = useRef(Date.now());
+
+const dirtyRef = useRef(false);
 
   const profileIdRef =
     useRef(profileId);
@@ -461,16 +467,12 @@ const latestStudySeconds =
 
       savedStudySecondsRef.current =
   latestStudySeconds;
-if (
-  localStudySeconds >
-  supabaseStudySeconds
-) {
-  pendingSecondsRef.current =
-    localStudySeconds -
-    supabaseStudySeconds;
-}
 pendingSecondsRef.current =
-  0;
+  Math.max(
+    0,
+    localStudySeconds -
+      supabaseStudySeconds
+  );
 
       dirtyRef.current =
         false;
@@ -702,7 +704,9 @@ const saveProgress = async () => {
 };
 
 /* =======================================================
-12. TIMER HỌC - KHÔNG RESET KHI CHUYỂN TRANG / F5
+12. TIMER HỌC
+- Chuyển trang vẫn tính thời gian
+- Quay lại trang chủ sẽ cộng thời gian đã trôi qua
 ======================================================= */
 
 useEffect(() => {
@@ -710,10 +714,10 @@ useEffect(() => {
     return;
   }
 
-  console.log("▶️ Bắt đầu timer học");
+  console.log("▶️ Bắt đầu theo dõi thời gian học");
 
   // ==========================================
-  // KHÔI PHỤC PHIÊN HỌC
+  // KHÔI PHỤC THỜI GIAN PHIÊN
   // ==========================================
 
   const savedSessionSeconds =
@@ -726,165 +730,76 @@ useEffect(() => {
   sessionSecondsRef.current =
     savedSessionSeconds;
 
-  // Phần đã lưu trong Supabase
-  const savedSeconds =
-    Number(
-      savedStudySecondsRef.current
-    ) || 0;
+  // ==========================================
+  // KHÔI PHỤC THỜI ĐIỂM BẮT ĐẦU PHIÊN
+  // ==========================================
 
-  // Phần chưa đủ phút
-  const pendingSeconds =
-    Math.max(
-      0,
-      savedSessionSeconds - savedSeconds
+  let sessionStart =
+    Number(
+      localStorage.getItem(
+        "study_session_start"
+      )
     );
 
-  pendingSecondsRef.current =
-    pendingSeconds;
+  if (!sessionStart) {
+    sessionStart = Date.now();
 
-  studySecondsRef.current =
-    savedSessionSeconds;
-
-  setTotalStudySeconds(
-    savedSessionSeconds
-  );
-
-  // ==========================================
-  // XÓA TIMER CŨ NẾU CÓ
-  // ==========================================
-
-  if (timerRef.current) {
-    clearInterval(
-      timerRef.current
+    localStorage.setItem(
+      "study_session_start",
+      String(sessionStart)
     );
   }
 
+  sessionStartRef.current =
+    sessionStart;
+
   // ==========================================
-  // BẮT ĐẦU TIMER
+  // THỜI ĐIỂM TICK CUỐI
   // ==========================================
 
-  timerRef.current =
-    setInterval(() => {
+  lastTickRef.current =
+    Date.now();
 
-      // Mỗi giây
-      pendingSecondsRef.current += 1;
+  // ==========================================
+  // TÍNH THỜI GIAN ĐÃ TRÔI QUA
+  // ==========================================
 
-      sessionSecondsRef.current =
-        savedStudySecondsRef.current +
-        pendingSecondsRef.current;
+  const calculateElapsedTime = () => {
+    const now = Date.now();
 
-      studySecondsRef.current =
-        sessionSecondsRef.current;
-
-      // ========================================
-      // LƯU PHIÊN VÀO LOCALSTORAGE
-      // ========================================
-
-      localStorage.setItem(
-        "study_session_seconds",
-        String(
-          sessionSecondsRef.current
+    const elapsedSeconds =
+      Math.max(
+        0,
+        Math.floor(
+          (now -
+            lastTickRef.current) /
+            1000
         )
       );
 
-      localStorage.setItem(
-        "study_session_start",
-        String(
-          sessionStartRef.current
-        )
-      );
-
-      // ========================================
-      // HIỂN THỊ
-      // ========================================
-
-      setTotalStudySeconds(
-        sessionSecondsRef.current
-      );
-
-      // ========================================
-      // ĐỦ 1 PHÚT
-      // ========================================
-
-      if (
-        pendingSecondsRef.current >= 60
-      ) {
-
-        const earnedMinutes =
-          Math.floor(
-            pendingSecondsRef.current / 60
-          );
-
-        const earnedSeconds =
-          earnedMinutes * 60;
-
-        // Cộng thời gian đã xác nhận
-        savedStudySecondsRef.current +=
-          earnedSeconds;
-
-        // Giữ lại giây lẻ
-        pendingSecondsRef.current -=
-          earnedSeconds;
-
-        // ======================================
-        // CỘNG EXP
-        // ======================================
-
-        const earnedExp =
-          earnedMinutes *
-          EXP_PER_MINUTE;
-
-        console.log(
-          "⏱️ ĐỦ PHÚT:",
-          {
-            minutes: earnedMinutes,
-            earnedExp,
-          }
-        );
-
-        addExp(earnedExp);
-
-        // ======================================
-        // CẬP NHẬT HIỂN THỊ
-        // ======================================
-
-        sessionSecondsRef.current =
-          savedStudySecondsRef.current +
-          pendingSecondsRef.current;
-
-        studySecondsRef.current =
-          sessionSecondsRef.current;
-
-        setTotalStudySeconds(
-          sessionSecondsRef.current
-        );
-
-        // ======================================
-        // LƯU SUPABASE
-        // ======================================
-
-        saveProgress();
-      }
-
-    }, 1000);
-
-  // ==========================================
-  // CLEANUP KHI CHUYỂN COMPONENT
-  // ==========================================
-
-  return () => {
-
-    if (timerRef.current) {
-
-      clearInterval(
-        timerRef.current
-      );
-
-      timerRef.current = null;
+    if (elapsedSeconds <= 0) {
+      return;
     }
 
-    // QUAN TRỌNG:
-    // Không reset localStorage ở đây.
+    lastTickRef.current = now;
+
+    // ========================================
+    // CỘNG THỜI GIAN
+    // ========================================
+
+    pendingSecondsRef.current +=
+      elapsedSeconds;
+
+    sessionSecondsRef.current =
+      savedStudySecondsRef.current +
+      pendingSecondsRef.current;
+
+    studySecondsRef.current =
+      sessionSecondsRef.current;
+
+    // ========================================
+    // LƯU LOCALSTORAGE
+    // ========================================
 
     localStorage.setItem(
       "study_session_seconds",
@@ -893,15 +808,149 @@ useEffect(() => {
       )
     );
 
+    localStorage.setItem(
+      "study_session_start",
+      String(
+        sessionStartRef.current
+      )
+    );
+
+    // ========================================
+    // HIỂN THỊ
+    // ========================================
+
+    setTotalStudySeconds(
+      sessionSecondsRef.current
+    );
+
+    // ========================================
+    // ĐỦ 1 PHÚT
+    // ========================================
+
+    if (
+      pendingSecondsRef.current >= 60
+    ) {
+
+      const earnedMinutes =
+        Math.floor(
+          pendingSecondsRef.current /
+            60
+        );
+
+      const earnedSeconds =
+        earnedMinutes * 60;
+
+      // ======================================
+      // XÁC NHẬN THỜI GIAN
+      // ======================================
+
+      savedStudySecondsRef.current +=
+        earnedSeconds;
+
+      // ======================================
+      // GIỮ LẠI GIÂY LẺ
+      // ======================================
+
+      pendingSecondsRef.current -=
+        earnedSeconds;
+
+      // ======================================
+      // CỘNG EXP
+      // ======================================
+
+      const earnedExp =
+        earnedMinutes *
+        EXP_PER_MINUTE;
+
+      console.log(
+        "⏱️ ĐỦ PHÚT:",
+        {
+          minutes:
+            earnedMinutes,
+
+          earnedExp,
+
+          totalSeconds:
+            sessionSecondsRef.current,
+        }
+      );
+
+      addExp(
+        earnedExp
+      );
+
+      // ======================================
+      // CẬP NHẬT HIỂN THỊ
+      // ======================================
+
+      sessionSecondsRef.current =
+        savedStudySecondsRef.current +
+        pendingSecondsRef.current;
+
+      studySecondsRef.current =
+        sessionSecondsRef.current;
+
+      setTotalStudySeconds(
+        sessionSecondsRef.current
+      );
+
+      // ======================================
+      // LƯU SUPABASE
+      // ======================================
+
+      saveProgress();
+    }
+  };
+
+  // ==========================================
+  // CHẠY MỖI GIÂY
+  // ==========================================
+
+  timerRef.current =
+    setInterval(
+      calculateElapsedTime,
+      1000
+    );
+
+  // ==========================================
+  // CLEANUP
+  // ==========================================
+
+  return () => {
+
+    if (
+      timerRef.current
+    ) {
+      clearInterval(
+        timerRef.current
+      );
+
+      timerRef.current =
+        null;
+    }
+
+    // Lưu phiên hiện tại
+    localStorage.setItem(
+      "study_session_seconds",
+      String(
+        sessionSecondsRef.current
+      )
+    );
+
+    localStorage.setItem(
+      "study_session_start",
+      String(
+        sessionStartRef.current
+      )
+    );
+
     console.log(
-      "⏹️ Dừng timer nhưng GIỮ phiên học:",
+      "⏹️ Rời StudentHome - GIỮ phiên:",
       sessionSecondsRef.current
     );
   };
 
 }, [profileId]);
-
-
 /* =======================================================
 14. LƯU KHI RỜI TAB / F5
 ======================================================= */
