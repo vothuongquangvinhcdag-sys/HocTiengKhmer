@@ -3,16 +3,14 @@ import { supabase } from "../../../supabase";
 import "./vocabulary.css";
 
 /* =========================================================
-   CẤU HÌNH TIMER
+CẤU HÌNH TIMER
 ========================================================= */
 
 const EXP_PER_MINUTE = 10;
 const SECONDS_PER_MINUTE = 60;
 
-const TIMER_STORAGE_PREFIX = "vocabulary_study_";
-
 /* =========================================================
-   DỮ LIỆU CHỦ ĐỀ
+DỮ LIỆU CHỦ ĐỀ
 ========================================================= */
 
 const vocabularyCategories = [
@@ -55,12 +53,12 @@ const vocabularyCategories = [
 ];
 
 /* =========================================================
-   TỪ VỰNG
+TỪ VỰNG
 ========================================================= */
 
 const vocabularyData = {
   /* =======================================================
-     1. SỐ ĐẾM
+  1. SỐ ĐẾM
   ======================================================= */
 
   numbers: [
@@ -268,7 +266,7 @@ const vocabularyData = {
   ],
 
   /* =======================================================
-     2. CHÀO HỎI
+  2. CHÀO HỎI
   ======================================================= */
 
   greetings: [
@@ -365,7 +363,7 @@ const vocabularyData = {
   ],
 
   /* =======================================================
-     3. GIA ĐÌNH
+  3. GIA ĐÌNH
   ======================================================= */
 
   family: [
@@ -474,7 +472,7 @@ const vocabularyData = {
   ],
 
   /* =======================================================
-     4. NGHỀ NGHIỆP
+  4. NGHỀ NGHIỆP
   ======================================================= */
 
   jobs: [
@@ -571,7 +569,7 @@ const vocabularyData = {
   ],
 
   /* =======================================================
-     5. CON VẬT
+  5. CON VẬT
   ======================================================= */
 
   animals: [
@@ -668,7 +666,7 @@ const vocabularyData = {
   ],
 
   /* =======================================================
-     6. ĐỒ VẬT
+  6. ĐỒ VẬT
   ======================================================= */
 
   objects: [
@@ -766,7 +764,7 @@ const vocabularyData = {
 };
 
 /* =========================================================
-   FORMAT THỜI GIAN
+FORMAT THỜI GIAN
 ========================================================= */
 
 const formatStudyTime = (totalSeconds) => {
@@ -775,13 +773,16 @@ const formatStudyTime = (totalSeconds) => {
     Math.floor(Number(totalSeconds) || 0)
   );
 
-  const hours = Math.floor(safeSeconds / 3600);
+  const hours = Math.floor(
+    safeSeconds / 3600
+  );
 
   const minutes = Math.floor(
     (safeSeconds % 3600) / 60
   );
 
-  const seconds = safeSeconds % 60;
+  const seconds =
+    safeSeconds % 60;
 
   return (
     `${String(hours).padStart(2, "0")}:` +
@@ -791,7 +792,7 @@ const formatStudyTime = (totalSeconds) => {
 };
 
 /* =========================================================
-   COMPONENT
+COMPONENT
 ========================================================= */
 
 function Vocabulary({
@@ -808,7 +809,7 @@ function Vocabulary({
     useState(null);
 
   /* =======================================================
-     USER ID
+  USER ID
   ======================================================= */
 
   const userId =
@@ -817,7 +818,14 @@ function Vocabulary({
     null;
 
   /* =======================================================
-     TIMER
+  TIMER
+
+  GIỐNG CƠ CHẾ ALPHABET:
+
+  - Tổng thời gian lấy từ Supabase.
+  - Giây đang học chỉ tồn tại khi đang ở Vocabulary.
+  - Thoát trang → reset giây lẻ.
+  - Không dùng localStorage.
   ======================================================= */
 
   const [totalStudySeconds, setTotalStudySeconds] =
@@ -846,7 +854,7 @@ function Vocabulary({
     useRef(false);
 
   /* =======================================================
-     ĐỒNG BỘ REF
+  ĐỒNG BỘ REF
   ======================================================= */
 
   useEffect(() => {
@@ -860,7 +868,13 @@ function Vocabulary({
   }, [remainderSeconds]);
 
   /* =======================================================
-     LOAD THỜI GIAN
+  LOAD TỔNG THỜI GIAN TỪ SUPABASE
+
+  Khi mở Vocabulary:
+
+  1. Lấy total_study_seconds
+  2. Không lấy giây lẻ cũ
+  3. Bắt đầu phần giây từ 0
   ======================================================= */
 
   useEffect(() => {
@@ -878,16 +892,14 @@ function Vocabulary({
 
     const loadStudyTime = async () => {
       try {
-        /* -----------------------------------------------
-           LẤY TOTAL TỪ SUPABASE
-        ------------------------------------------------ */
-
         const {
           data,
           error,
         } = await supabase
           .from("profiles")
-          .select("total_study_seconds")
+          .select(
+            "total_study_seconds"
+          )
           .eq("id", userId)
           .maybeSingle();
 
@@ -915,42 +927,18 @@ function Vocabulary({
           );
         }
 
-        /* -----------------------------------------------
-           LẤY GIÂY LẺ TỪ LOCAL STORAGE
-        ------------------------------------------------ */
+        /*
+          Không khôi phục remainder.
 
-        const storageKey =
-          `${TIMER_STORAGE_PREFIX}${userId}`;
-
-        let savedRemainder = 0;
-
-        try {
-          savedRemainder =
-            Math.max(
-              0,
-              Math.min(
-                SECONDS_PER_MINUTE - 1,
-                Number(
-                  localStorage.getItem(
-                    storageKey
-                  )
-                ) || 0
-              )
-            );
-        } catch (error) {
-          console.warn(
-            "⚠️ Không đọc được timer:",
-            error
-          );
-        }
+          Mỗi lần mở Vocabulary:
+          phần giây bắt đầu từ 00.
+        */
 
         if (!cancelled) {
           remainderSecondsRef.current =
-            savedRemainder;
+            0;
 
-          setRemainderSeconds(
-            savedRemainder
-          );
+          setRemainderSeconds(0);
         }
       } catch (error) {
         console.error(
@@ -968,38 +956,10 @@ function Vocabulary({
   }, [userId]);
 
   /* =======================================================
-     LƯU GIÂY LẺ
-  ======================================================= */
+  CỘNG 1 PHÚT
 
-  const saveRemainder = (seconds) => {
-    if (!userId) {
-      return;
-    }
-
-    const safeSeconds =
-      Math.max(
-        0,
-        Math.min(
-          SECONDS_PER_MINUTE - 1,
-          Number(seconds) || 0
-        )
-      );
-
-    try {
-      localStorage.setItem(
-        `${TIMER_STORAGE_PREFIX}${userId}`,
-        String(safeSeconds)
-      );
-    } catch (error) {
-      console.warn(
-        "⚠️ Không thể lưu timer tạm:",
-        error
-      );
-    }
-  };
-
-  /* =======================================================
-     CỘNG 1 PHÚT
+  +60 total_study_seconds
+  +10 EXP
   ======================================================= */
 
   const saveOneMinute = async () => {
@@ -1098,12 +1058,16 @@ function Vocabulary({
         newStudySeconds
       );
 
+      /*
+        Đã hoàn thành 1 phút.
+
+        Reset phần giây về 0.
+      */
+
       remainderSecondsRef.current =
         0;
 
       setRemainderSeconds(0);
-
-      saveRemainder(0);
 
       console.log(
         `✅ VOCABULARY +${EXP_PER_MINUTE} EXP`
@@ -1138,7 +1102,25 @@ function Vocabulary({
   };
 
   /* =======================================================
-     TIMER CHỈ CHẠY Ở VOCABULARY
+  TIMER CHỈ CHẠY Ở VOCABULARY
+
+  Ví dụ:
+
+  Vào:
+  00:20:00
+
+  Sau 30 giây:
+  00:20:30
+
+  Thoát:
+  00:20:00
+
+  Vào lại:
+  00:20:00
+
+  Sau đủ 60 giây:
+  00:21:00
+  +10 EXP
   ======================================================= */
 
   useEffect(() => {
@@ -1157,6 +1139,16 @@ function Vocabulary({
     console.log(
       "🟢 VOCABULARY: bắt đầu tính thời gian."
     );
+
+    /*
+      Mỗi lần bắt đầu vào Vocabulary,
+      phần giây luôn bắt đầu từ 0.
+    */
+
+    remainderSecondsRef.current =
+      0;
+
+    setRemainderSeconds(0);
 
     timerRef.current =
       setInterval(() => {
@@ -1190,13 +1182,14 @@ function Vocabulary({
             next
           );
 
-          saveRemainder(next);
-
           return;
         }
 
         /* ---------------------------------------------
            ĐỦ 60 GIÂY
+
+           +60 giây vào Supabase
+           +10 EXP
         --------------------------------------------- */
 
         saveOneMinute();
@@ -1208,16 +1201,30 @@ function Vocabulary({
           timerRef.current
         );
 
-        timerRef.current = null;
+        timerRef.current =
+          null;
       }
 
       /*
-        Lưu phần giây lẻ khi rời Vocabulary.
+        QUAN TRỌNG:
+
+        Không lưu phần giây lẻ.
+
+        Ví dụ:
+        00:25:37
+
+        Thoát Vocabulary
+        ↓
+        37 giây bị reset.
+
+        Lần sau:
+        00:25:00
       */
 
-      saveRemainder(
-        remainderSecondsRef.current
-      );
+      remainderSecondsRef.current =
+        0;
+
+      setRemainderSeconds(0);
 
       console.log(
         "⏹️ VOCABULARY: dừng bộ đếm."
@@ -1226,7 +1233,7 @@ function Vocabulary({
   }, [userId]);
 
   /* =======================================================
-     HIỂN THỊ THỜI GIAN
+  HIỂN THỊ THỜI GIAN
   ======================================================= */
 
   const displayedTotalSeconds =
@@ -1239,7 +1246,7 @@ function Vocabulary({
     );
 
   /* =======================================================
-     ĐIỀU HƯỚNG
+  ĐIỀU HƯỚNG
   ======================================================= */
 
   const goToStudent = () => {
@@ -1255,7 +1262,7 @@ function Vocabulary({
   };
 
   /* =======================================================
-     CHỌN CHỦ ĐỀ
+  CHỌN CHỦ ĐỀ
   ======================================================= */
 
   const openCategory = (category) => {
@@ -1269,7 +1276,7 @@ function Vocabulary({
   };
 
   /* =======================================================
-     PHÁT ÂM
+  PHÁT ÂM
   ======================================================= */
 
   const speakWord = (word) => {
@@ -1299,12 +1306,11 @@ function Vocabulary({
   };
 
   /* =======================================================
-     RENDER
+  RENDER
   ======================================================= */
 
   return (
-    <div className="vocabulary-page">
-
+    <div>
       {/* =================================================
           BỘ ĐẾM DUY NHẤT CỦA VOCABULARY
       ================================================= */}
@@ -1340,9 +1346,7 @@ function Vocabulary({
       ================================================= */}
 
       <header className="vocabulary-header">
-
         <div className="vocabulary-header-main">
-
           <div className="vocabulary-header-icon">
             📚
           </div>
@@ -1358,14 +1362,14 @@ function Vocabulary({
           <p>
             Học từ vựng Khmer theo chủ đề
           </p>
-
         </div>
 
         <div className="vocabulary-stats">
-
           <div className="vocabulary-stat">
             <strong>
-              {Object.keys(vocabularyData).length}
+              {Object.keys(
+                vocabularyData
+              ).length}
             </strong>
 
             <span>
@@ -1375,21 +1379,24 @@ function Vocabulary({
 
           <div className="vocabulary-stat">
             <strong>
-              {Object.values(vocabularyData)
-                .reduce(
-                  (total, items) =>
-                    total + items.length,
-                  0
-                )}
+              {Object.values(
+                vocabularyData
+              ).reduce(
+                (
+                  total,
+                  items
+                ) =>
+                  total +
+                  items.length,
+                0
+              )}
             </strong>
 
             <span>
               Từ vựng
             </span>
           </div>
-
         </div>
-
       </header>
 
       {/* =================================================
@@ -1397,16 +1404,13 @@ function Vocabulary({
       ================================================= */}
 
       <main className="vocabulary-container">
-
         {/* =================================================
             DANH SÁCH CHỦ ĐỀ
         ================================================= */}
 
         {!selectedCategory && (
           <section>
-
             <div className="vocabulary-section-title">
-
               <h2>
                 📖 Chọn chủ đề học
               </h2>
@@ -1415,11 +1419,9 @@ function Vocabulary({
                 Chọn một chủ đề để bắt đầu
                 học từ vựng.
               </p>
-
             </div>
 
             <div className="vocabulary-category-grid">
-
               {vocabularyCategories.map(
                 (category) => (
                   <button
@@ -1432,7 +1434,6 @@ function Vocabulary({
                       )
                     }
                   >
-
                     <div className="vocabulary-category-icon">
                       {category.icon}
                     </div>
@@ -1451,13 +1452,10 @@ function Vocabulary({
                       ]?.length || 0}{" "}
                       mục
                     </span>
-
                   </button>
                 )
               )}
-
             </div>
-
           </section>
         )}
 
@@ -1467,7 +1465,6 @@ function Vocabulary({
 
         {selectedCategory && (
           <section className="vocabulary-list-section">
-
             <button
               type="button"
               className="vocabulary-category-back"
@@ -1479,7 +1476,6 @@ function Vocabulary({
             </button>
 
             <div className="vocabulary-topic-header">
-
               <div className="vocabulary-topic-icon">
                 {selectedCategory.icon}
               </div>
@@ -1490,18 +1486,21 @@ function Vocabulary({
                 </h2>
 
                 <p>
-                  {selectedCategory.description}
+                  {
+                    selectedCategory.description
+                  }
                 </p>
               </div>
-
             </div>
 
             <div className="vocabulary-word-grid">
-
               {vocabularyData[
                 selectedCategory.id
               ].map(
-                (word, index) => (
+                (
+                  word,
+                  index
+                ) => (
                   <button
                     type="button"
                     key={`${selectedCategory.id}-${index}`}
@@ -1512,7 +1511,6 @@ function Vocabulary({
                       )
                     }
                   >
-
                     <div className="vocabulary-word-image">
                       {word.image}
                     </div>
@@ -1532,16 +1530,12 @@ function Vocabulary({
                     <div className="vocabulary-word-vietnamese">
                       {word.vietnamese}
                     </div>
-
                   </button>
                 )
               )}
-
             </div>
-
           </section>
         )}
-
       </main>
 
       {/* =================================================
@@ -1555,14 +1549,12 @@ function Vocabulary({
             setSelectedWord(null)
           }
         >
-
           <div
             className="vocabulary-modal"
             onClick={(event) =>
               event.stopPropagation()
             }
           >
-
             <button
               type="button"
               className="vocabulary-modal-close"
@@ -1600,9 +1592,7 @@ function Vocabulary({
             >
               🔊 Nghe phát âm
             </button>
-
           </div>
-
         </div>
       )}
 
@@ -1611,7 +1601,6 @@ function Vocabulary({
       ================================================= */}
 
       <footer className="vocabulary-footer">
-
         <span>
           📚 Học tiếng Khmer
         </span>
@@ -1623,9 +1612,7 @@ function Vocabulary({
         <span>
           +10 EXP mỗi phút học
         </span>
-
       </footer>
-
     </div>
   );
 }
