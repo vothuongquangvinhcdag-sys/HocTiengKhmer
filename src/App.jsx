@@ -7,7 +7,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 
 import StudentHome from "./pages/student/StudentHome";
 import Alphabet from "./pages/student/alphabet/Alphabet";
-import Vocabulary from "./pages/student/vocabulary/Vocabulary";
+import Vocabulary from "./pages/student/vocabulary/vocabulary";
 /* =========================================================
    CẤU HÌNH LEVEL
 ========================================================= */
