@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../../../supabase";
-import "./Vocabulary.css";
+import "./vocabulary.css";
 
 /* =========================================================
    CẤU HÌNH TIMER
