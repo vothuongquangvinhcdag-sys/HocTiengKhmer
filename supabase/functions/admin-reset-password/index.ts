@@ -4,24 +4,20 @@ const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
-  "Access-Control-Allow-Methods":
-    "POST, OPTIONS",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
 function json(
   data: Record<string, unknown>,
   status = 200
 ) {
-  return new Response(
-    JSON.stringify(data),
-    {
-      status,
-      headers: {
-        ...corsHeaders,
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json",
+    },
+  });
 }
 
 Deno.serve(async (req: Request) => {
@@ -72,8 +68,7 @@ Deno.serve(async (req: Request) => {
     if (!token) {
       return json(
         {
-          error:
-            "Phiên đăng nhập không hợp lệ.",
+          error: "Phiên đăng nhập không hợp lệ.",
         },
         401
       );
@@ -105,8 +100,7 @@ Deno.serve(async (req: Request) => {
 
       return json(
         {
-          error:
-            "Thiếu cấu hình Supabase.",
+          error: "Thiếu cấu hình Supabase.",
         },
         500
       );
@@ -132,9 +126,8 @@ Deno.serve(async (req: Request) => {
     const {
       data: userData,
       error: userError,
-    } = await userClient.auth.getUser(
-      token
-    );
+    } =
+      await userClient.auth.getUser(token);
 
     if (
       userError ||
@@ -169,11 +162,12 @@ Deno.serve(async (req: Request) => {
     const {
       data: adminProfile,
       error: adminProfileError,
-    } = await adminClient
-      .from("profiles")
-      .select("id, role")
-      .eq("id", adminId)
-      .maybeSingle();
+    } =
+      await adminClient
+        .from("profiles")
+        .select("id, role")
+        .eq("id", adminId)
+        .maybeSingle();
 
     if (
       adminProfileError ||
@@ -255,13 +249,14 @@ Deno.serve(async (req: Request) => {
     const {
       data: targetUser,
       error: targetUserError,
-    } = await adminClient
-      .from("profiles")
-      .select(
-        "id, username, account, email, role"
-      )
-      .eq("id", userId)
-      .maybeSingle();
+    } =
+      await adminClient
+        .from("profiles")
+        .select(
+          "id, username, account, email, role"
+        )
+        .eq("id", userId)
+        .maybeSingle();
 
     if (
       targetUserError ||

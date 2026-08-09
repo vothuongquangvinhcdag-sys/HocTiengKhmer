@@ -53,21 +53,14 @@ function AdminHome({
   ======================================================= */
 
   const [passwordModal, setPasswordModal] = useState(false);
-  const [selectedStudent, setSelectedStudent] =
-    useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
   const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [resetLoading, setResetLoading] =
-    useState(false);
-
-  const [resetError, setResetError] =
-    useState("");
-
-  const [resetSuccess, setResetSuccess] =
-    useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState("");
+  const [resetSuccess, setResetSuccess] = useState("");
 
   /* =======================================================
      TẢI DANH SÁCH PROFILE
@@ -197,9 +190,7 @@ function AdminHome({
      FORMAT THỜI GIAN
   ======================================================= */
 
-  const formatStudyTime = (
-    seconds
-  ) => {
+  const formatStudyTime = (seconds) => {
     const safeSeconds = Math.max(
       0,
       Number(seconds) || 0
@@ -231,9 +222,7 @@ function AdminHome({
      MỞ POPUP ĐỔI MẬT KHẨU
   ======================================================= */
 
-  const openPasswordModal = (
-    student
-  ) => {
+  const openPasswordModal = (student) => {
     setSelectedStudent(student);
 
     setNewPassword("");
@@ -268,137 +257,122 @@ function AdminHome({
      RESET MẬT KHẨU
   ======================================================= */
 
-  const handleResetPassword =
-    async (event) => {
-      event.preventDefault();
+  const handleResetPassword = async (event) => {
+    event.preventDefault();
 
-      setResetError("");
-      setResetSuccess("");
+    setResetError("");
+    setResetSuccess("");
 
-      /* -----------------------------
-         KIỂM TRA
-      ----------------------------- */
+    if (!selectedStudent) {
+      setResetError(
+        "Chưa chọn học sinh."
+      );
+      return;
+    }
 
-      if (!selectedStudent) {
-        setResetError(
-          "Chưa chọn học sinh."
-        );
-        return;
-      }
+    if (!newPassword) {
+      setResetError(
+        "Vui lòng nhập mật khẩu mới."
+      );
+      return;
+    }
 
-      if (!newPassword) {
-        setResetError(
-          "Vui lòng nhập mật khẩu mới."
-        );
-        return;
-      }
+    if (newPassword.length < 6) {
+      setResetError(
+        "Mật khẩu phải có ít nhất 6 ký tự."
+      );
+      return;
+    }
 
-      if (newPassword.length < 6) {
-        setResetError(
-          "Mật khẩu phải có ít nhất 6 ký tự."
-        );
-        return;
-      }
+    if (
+      newPassword !==
+      confirmPassword
+    ) {
+      setResetError(
+        "Mật khẩu xác nhận không khớp."
+      );
+      return;
+    }
 
-      if (
-        newPassword !==
-        confirmPassword
-      ) {
-        setResetError(
-          "Mật khẩu xác nhận không khớp."
-        );
-        return;
-      }
+    setResetLoading(true);
 
-      /* -----------------------------
-         GỌI EDGE FUNCTION
-      ----------------------------- */
-
-      setResetLoading(true);
-
-      try {
-        const {
-          data,
-          error: functionError,
-        } =
-          await supabase.functions.invoke(
-            "admin-reset-password",
-            {
-              body: {
-                userId:
-                  selectedStudent.id,
-                newPassword:
-                  newPassword,
-              },
-            }
-          );
-
-        if (functionError) {
-          console.error(
-            "Admin reset password error:",
-            functionError
-          );
-
-          let message =
-            "Không thể đổi mật khẩu.";
-
-          /*
-           * Supabase FunctionsError thường
-           * không đưa trực tiếp JSON error ra.
-           * Thử lấy response nếu có.
-           */
-
-          try {
-            if (
-              functionError.context &&
-              typeof functionError.context
-                .json === "function"
-            ) {
-              const responseData =
-                await functionError.context.json();
-
-              if (
-                responseData?.error
-              ) {
-                message =
-                  responseData.error;
-              }
-            }
-          } catch {
-            // Bỏ qua lỗi đọc response
+    try {
+      const {
+        data,
+        error: functionError,
+      } =
+        await supabase.functions.invoke(
+          "admin-reset-password",
+          {
+            body: {
+              userId:
+                selectedStudent.id,
+              newPassword:
+                newPassword,
+            },
           }
-
-          throw new Error(message);
-        }
-
-        if (!data?.success) {
-          throw new Error(
-            data?.error ||
-              "Không thể đổi mật khẩu."
-          );
-        }
-
-        setResetSuccess(
-          "Đã đổi mật khẩu thành công."
         );
 
-        setNewPassword("");
-        setConfirmPassword("");
-      } catch (error) {
+      if (functionError) {
         console.error(
-          "Reset password:",
-          error
+          "Admin reset password error:",
+          functionError
         );
 
-        setResetError(
-          error instanceof Error
-            ? error.message
-            : "Có lỗi xảy ra khi đổi mật khẩu."
-        );
-      } finally {
-        setResetLoading(false);
+        let message =
+          "Không thể đổi mật khẩu.";
+
+        try {
+          if (
+            functionError.context &&
+            typeof functionError.context
+              .json === "function"
+          ) {
+            const responseData =
+              await functionError.context.json();
+
+            if (
+              responseData?.error
+            ) {
+              message =
+                responseData.error;
+            }
+          }
+        } catch {
+          // Bỏ qua lỗi đọc response
+        }
+
+        throw new Error(message);
       }
-    };
+
+      if (!data?.success) {
+        throw new Error(
+          data?.error ||
+            "Không thể đổi mật khẩu."
+        );
+      }
+
+      setResetSuccess(
+        "Đã đổi mật khẩu thành công."
+      );
+
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error(
+        "Reset password:",
+        error
+      );
+
+      setResetError(
+        error instanceof Error
+          ? error.message
+          : "Có lỗi xảy ra khi đổi mật khẩu."
+      );
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   /* =======================================================
      KIỂM TRA ADMIN
@@ -492,7 +466,7 @@ function AdminHome({
       }}
     >
       {/* =================================================
-          HEADER ĐEN
+          HEADER
       ================================================= */}
 
       <header
@@ -575,7 +549,9 @@ function AdminHome({
             </div>
           </div>
 
-          {/* NÚT */}
+          {/* =================================================
+              NÚT HEADER
+          ================================================= */}
 
           <div
             style={{
@@ -584,17 +560,33 @@ function AdminHome({
               flexWrap: "wrap",
             }}
           >
+            {/* TRANG CHỦ - ĐÃ LÀM SÁNG HƠN */}
+
             <button
               type="button"
               onClick={() =>
                 navigate("/student")
               }
               style={
-                buttonHeaderStyle
+                buttonHomeStyle
               }
+              onMouseEnter={(event) => {
+                Object.assign(
+                  event.currentTarget.style,
+                  buttonHomeHoverStyle
+                );
+              }}
+              onMouseLeave={(event) => {
+                Object.assign(
+                  event.currentTarget.style,
+                  buttonHomeStyle
+                );
+              }}
             >
               🏠 Trang chủ
             </button>
+
+            {/* LÀM MỚI */}
 
             <button
               type="button"
@@ -607,6 +599,8 @@ function AdminHome({
             >
               🔄 Làm mới
             </button>
+
+            {/* ĐĂNG XUẤT */}
 
             <button
               type="button"
@@ -622,7 +616,7 @@ function AdminHome({
       </header>
 
       {/* =================================================
-          CONTENT SÁNG
+          CONTENT
       ================================================= */}
 
       <main
@@ -1062,8 +1056,6 @@ function AdminHome({
                               "1px solid #e5e7eb",
                           }}
                         >
-                          {/* STT */}
-
                           <td
                             style={
                               tdStyle
@@ -1080,8 +1072,6 @@ function AdminHome({
                               {index + 1}
                             </span>
                           </td>
-
-                          {/* HỌC SINH */}
 
                           <td
                             style={
@@ -1102,8 +1092,6 @@ function AdminHome({
                             </strong>
                           </td>
 
-                          {/* ACCOUNT */}
-
                           <td
                             style={{
                               ...tdStyle,
@@ -1115,8 +1103,6 @@ function AdminHome({
                               student.account
                             }
                           </td>
-
-                          {/* EMAIL */}
 
                           <td
                             style={{
@@ -1130,8 +1116,6 @@ function AdminHome({
                               "—"
                             }
                           </td>
-
-                          {/* LEVEL */}
 
                           <td
                             style={{
@@ -1167,8 +1151,6 @@ function AdminHome({
                             </span>
                           </td>
 
-                          {/* EXP */}
-
                           <td
                             style={{
                               ...tdStyle,
@@ -1191,8 +1173,6 @@ function AdminHome({
                             )}
                           </td>
 
-                          {/* THỜI GIAN */}
-
                           <td
                             style={{
                               ...tdStyle,
@@ -1209,8 +1189,6 @@ function AdminHome({
                               student.total_study_seconds
                             )}
                           </td>
-
-                          {/* THAO TÁC */}
 
                           <td
                             style={{
@@ -1850,20 +1828,37 @@ const inputStyle = {
    BUTTON STYLE
 ========================================================= */
 
-const buttonHeaderStyle = {
+/* NÚT TRANG CHỦ - SÁNG HƠN */
+
+const buttonHomeStyle = {
   padding: "15px 23px",
   border:
-    "1px solid #4b5563",
+    "1px solid rgba(255,255,255,0.28)",
   borderRadius: "12px",
   background:
-    "rgba(255,255,255,0.08)",
+    "linear-gradient(135deg, #3b82f6, #2563eb)",
   color: "#ffffff",
-  fontWeight: "800",
+  fontWeight: "900",
   fontSize: "15px",
   cursor: "pointer",
   fontFamily: "inherit",
   minHeight: "50px",
+  boxShadow:
+    "0 6px 18px rgba(37,99,235,0.35)",
+  transition:
+    "all 0.2s ease",
 };
+
+const buttonHomeHoverStyle = {
+  background:
+    "linear-gradient(135deg, #60a5fa, #3b82f6)",
+  transform:
+    "translateY(-2px)",
+  boxShadow:
+    "0 9px 24px rgba(37,99,235,0.48)",
+};
+
+/* LÀM MỚI */
 
 const buttonRefreshStyle = {
   padding: "15px 23px",
@@ -1881,6 +1876,8 @@ const buttonRefreshStyle = {
     "0 5px 15px rgba(0,0,0,0.18)",
 };
 
+/* ĐĂNG XUẤT */
+
 const buttonLogoutStyle = {
   padding: "15px 23px",
   border: "none",
@@ -1897,9 +1894,12 @@ const buttonLogoutStyle = {
     "0 5px 15px rgba(127,29,29,0.25)",
 };
 
+/* ĐỔI MẬT KHẨU */
+
 const buttonPasswordStyle = {
   padding: "9px 13px",
-  border: "1px solid #bfdbfe",
+  border:
+    "1px solid #bfdbfe",
   borderRadius: "9px",
   background: "#eff6ff",
   color: "#1d4ed8",
@@ -1909,6 +1909,8 @@ const buttonPasswordStyle = {
   fontFamily: "inherit",
   whiteSpace: "nowrap",
 };
+
+/* NÚT VỀ TRANG HỌC */
 
 const buttonPrimaryStyle = {
   padding: "13px 22px",
@@ -1924,4 +1926,3 @@ const buttonPrimaryStyle = {
 };
 
 export default AdminHome;
-
