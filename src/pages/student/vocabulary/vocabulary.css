@@ -1,0 +1,1048 @@
+/* =========================================================
+   VOCABULARY - GIAO DIỆN MỚI
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+.vocabulary-page {
+  min-height: 100vh;
+  padding: 25px;
+  background:
+    radial-gradient(circle at 0% 0%, #dbeafe 0%, transparent 28%),
+    radial-gradient(circle at 100% 0%, #fce7f3 0%, transparent 28%),
+    radial-gradient(circle at 50% 100%, #dcfce7 0%, transparent 30%),
+    #f8fafc;
+  color: #172033;
+}
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+.vocabulary-timer {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 9999;
+
+  min-width: 175px;
+  padding: 12px 18px;
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.15);
+
+  backdrop-filter: blur(12px);
+}
+
+.vocabulary-timer-label {
+  color: #16a34a;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.vocabulary-timer-time {
+  margin-top: 2px;
+
+  color: #0f172a;
+
+  font-size: 27px;
+  line-height: 1.1;
+  font-weight: 900;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.vocabulary-timer-exp {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   NÚT QUAY LẠI
+   ========================================================= */
+
+.vocabulary-back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-bottom: 18px;
+
+  border: none;
+  border-radius: 14px;
+
+  padding: 11px 18px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(79, 70, 229, 0.25);
+
+  transition: 0.25s ease;
+}
+
+.vocabulary-back-button:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 28px rgba(79, 70, 229, 0.35);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.vocabulary-header {
+  position: relative;
+  overflow: hidden;
+
+  max-width: 1200px;
+  margin: 0 auto 28px;
+
+  padding: 38px 35px;
+
+  border-radius: 30px;
+
+  color: white;
+
+  background:
+    radial-gradient(
+      circle at 15% 15%,
+      rgba(255, 255, 255, 0.25),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 90% 85%,
+      rgba(255, 255, 255, 0.18),
+      transparent 25%
+    ),
+    linear-gradient(
+      135deg,
+      #7c3aed 0%,
+      #2563eb 45%,
+      #0891b2 100%
+    );
+
+  box-shadow:
+    0 20px 45px rgba(37, 99, 235, 0.28);
+}
+
+.vocabulary-header::before {
+  content: "";
+
+  position: absolute;
+
+  width: 260px;
+  height: 260px;
+
+  right: -100px;
+  top: -140px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.vocabulary-header::after {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  left: -80px;
+  bottom: -100px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.vocabulary-header-main {
+  position: relative;
+  z-index: 2;
+
+  text-align: center;
+}
+
+.vocabulary-header-icon {
+  font-size: 52px;
+
+  filter:
+    drop-shadow(
+      0 5px 8px rgba(0, 0, 0, 0.15)
+    );
+}
+
+.vocabulary-header-khmer {
+  margin-top: 4px;
+
+  font-size: 30px;
+  line-height: 1.3;
+  font-weight: 900;
+}
+
+.vocabulary-header h1 {
+  margin: 8px 0 5px;
+
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 950;
+
+  letter-spacing: 0.5px;
+}
+
+.vocabulary-header p {
+  margin: 0;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  opacity: 0.9;
+}
+
+/* =========================================================
+   THỐNG KÊ
+   ========================================================= */
+
+.vocabulary-stats {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  justify-content: center;
+
+  gap: 16px;
+
+  margin-top: 28px;
+}
+
+.vocabulary-stat {
+  min-width: 175px;
+
+  padding: 17px 25px;
+
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 20px;
+
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.15);
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  backdrop-filter: blur(10px);
+}
+
+.vocabulary-stat strong {
+  display: block;
+
+  color: white;
+
+  font-size: 34px;
+  line-height: 1;
+
+  font-weight: 950;
+}
+
+.vocabulary-stat span {
+  display: block;
+
+  margin-top: 7px;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.vocabulary-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+
+.vocabulary-section-title {
+  position: relative;
+
+  margin-bottom: 20px;
+  padding: 23px 25px;
+
+  border-radius: 22px;
+
+  background: white;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.07);
+}
+
+.vocabulary-section-title::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 15px;
+  bottom: 15px;
+
+  width: 5px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      #7c3aed,
+      #2563eb
+    );
+}
+
+.vocabulary-section-title h2 {
+  margin: 0;
+
+  color: #312e81;
+
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.vocabulary-section-title p {
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   CATEGORY GRID
+   ========================================================= */
+
+.vocabulary-category-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 20px;
+}
+
+/* =========================================================
+   CATEGORY CARD
+   ========================================================= */
+
+.vocabulary-category-card {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 235px;
+
+  border: 2px solid transparent;
+  border-radius: 25px;
+
+  padding: 25px;
+
+  text-align: left;
+
+  background: white;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 25px rgba(15, 23, 42, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.vocabulary-category-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #7c3aed,
+      #2563eb,
+      #06b6d4
+    );
+}
+
+.vocabulary-category-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  right: -55px;
+  bottom: -55px;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ede9fe,
+      #dbeafe
+    );
+
+  transition: 0.35s ease;
+}
+
+.vocabulary-category-card:hover {
+  transform: translateY(-8px);
+
+  border-color: #a78bfa;
+
+  box-shadow:
+    0 18px 40px rgba(79, 70, 229, 0.18);
+}
+
+.vocabulary-category-card:hover::after {
+  transform: scale(1.5);
+}
+
+.vocabulary-category-icon {
+  position: relative;
+  z-index: 2;
+
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 21px;
+
+  font-size: 38px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #ede9fe
+    );
+
+  box-shadow:
+    0 8px 18px rgba(79, 70, 229, 0.12);
+}
+
+.vocabulary-category-card h3 {
+  position: relative;
+  z-index: 2;
+
+  margin: 18px 0 7px;
+
+  color: #312e81;
+
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.vocabulary-category-card p {
+  position: relative;
+  z-index: 2;
+
+  min-height: 42px;
+
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.vocabulary-category-card span {
+  position: relative;
+  z-index: 3;
+
+  display: inline-flex;
+
+  margin-top: 17px;
+
+  padding: 7px 13px;
+
+  border-radius: 999px;
+
+  color: #4338ca;
+
+  background: #eef2ff;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+/* =========================================================
+   QUAY LẠI CHỦ ĐỀ
+   ========================================================= */
+
+.vocabulary-category-back {
+  margin-bottom: 18px;
+
+  border: none;
+  border-radius: 13px;
+
+  padding: 10px 16px;
+
+  color: #4338ca;
+
+  background: #eef2ff;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.vocabulary-category-back:hover {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4f46e5,
+      #7c3aed
+    );
+
+  transform: translateX(-4px);
+}
+
+/* =========================================================
+   TOPIC HEADER
+   ========================================================= */
+
+.vocabulary-topic-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 22px;
+
+  padding: 23px;
+
+  border-radius: 23px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #2563eb 55%,
+      #0891b2
+    );
+
+  box-shadow:
+    0 12px 30px rgba(37, 99, 235, 0.22);
+}
+
+.vocabulary-topic-icon {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 20px;
+
+  font-size: 39px;
+
+  background: rgba(255, 255, 255, 0.18);
+
+  backdrop-filter: blur(8px);
+}
+
+.vocabulary-topic-header h2 {
+  margin: 0;
+
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.vocabulary-topic-header p {
+  margin: 5px 0 0;
+
+  font-size: 14px;
+
+  opacity: 0.9;
+}
+
+/* =========================================================
+   WORD GRID
+   ========================================================= */
+
+.vocabulary-word-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 17px;
+}
+
+/* =========================================================
+   WORD CARD
+   ========================================================= */
+
+.vocabulary-word-card {
+  position: relative;
+  overflow: hidden;
+
+  min-height: 225px;
+
+  border: 2px solid transparent;
+  border-radius: 22px;
+
+  padding: 22px 17px;
+
+  text-align: center;
+
+  background: white;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 7px 20px rgba(15, 23, 42, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.vocabulary-word-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #06b6d4,
+      #2563eb,
+      #7c3aed
+    );
+}
+
+.vocabulary-word-card:hover {
+  transform: translateY(-7px);
+
+  border-color: #60a5fa;
+
+  box-shadow:
+    0 17px 35px rgba(37, 99, 235, 0.17);
+}
+
+.vocabulary-word-image {
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  font-size: 44px;
+
+  line-height: 1;
+}
+
+.vocabulary-word-number {
+  position: absolute;
+
+  top: 12px;
+  left: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 25px;
+  height: 25px;
+
+  padding: 0 6px;
+
+  border-radius: 999px;
+
+  color: #475569;
+
+  background: #f1f5f9;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.vocabulary-word-khmer {
+  margin-top: 8px;
+
+  color: #312e81;
+
+  font-size: 29px;
+  line-height: 1.3;
+
+  font-weight: 950;
+}
+
+.vocabulary-word-roman {
+  margin-top: 7px;
+
+  color: #7c3aed;
+
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.vocabulary-word-vietnamese {
+  margin-top: 8px;
+
+  color: #475569;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.vocabulary-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background:
+    rgba(15, 23, 42, 0.72);
+
+  backdrop-filter: blur(8px);
+}
+
+.vocabulary-modal {
+  position: relative;
+
+  width: min(450px, 100%);
+
+  padding: 38px 30px;
+
+  border-radius: 30px;
+
+  text-align: center;
+
+  background: white;
+
+  box-shadow:
+    0 35px 90px rgba(0, 0, 0, 0.35);
+
+  animation:
+    vocabularyModalIn 0.22s ease;
+}
+
+@keyframes vocabularyModalIn {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+.vocabulary-modal-close {
+  position: absolute;
+
+  top: 14px;
+  right: 15px;
+
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 50%;
+
+  color: #475569;
+
+  background: #f1f5f9;
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.vocabulary-modal-close:hover {
+  color: white;
+
+  background: #ef4444;
+
+  transform: rotate(90deg);
+}
+
+.vocabulary-modal-image {
+  font-size: 68px;
+}
+
+.vocabulary-modal-khmer {
+  margin-top: 12px;
+
+  color: #312e81;
+
+  font-size: 50px;
+  line-height: 1.3;
+
+  font-weight: 950;
+}
+
+.vocabulary-modal-roman {
+  margin-top: 7px;
+
+  color: #7c3aed;
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.vocabulary-modal-vietnamese {
+  margin-top: 8px;
+
+  color: #475569;
+
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.vocabulary-speak-button {
+  margin-top: 25px;
+
+  border: none;
+  border-radius: 15px;
+
+  padding: 13px 23px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  font-size: 14px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 20px rgba(79, 70, 229, 0.25);
+
+  transition: 0.2s;
+}
+
+.vocabulary-speak-button:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 13px 27px rgba(79, 70, 229, 0.35);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.vocabulary-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  margin-top: 35px;
+  padding: 20px;
+
+  color: #64748b;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 950px) {
+  .vocabulary-category-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .vocabulary-word-grid {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .vocabulary-page {
+    padding: 15px;
+  }
+
+  .vocabulary-timer {
+    position: relative;
+
+    top: auto;
+    right: auto;
+
+    width: 100%;
+
+    margin-bottom: 15px;
+  }
+
+  .vocabulary-header {
+    padding: 30px 18px;
+    border-radius: 24px;
+  }
+
+  .vocabulary-header-icon {
+    font-size: 44px;
+  }
+
+  .vocabulary-header-khmer {
+    font-size: 25px;
+  }
+
+  .vocabulary-header h1 {
+    font-size: 24px;
+  }
+
+  .vocabulary-stats {
+    gap: 10px;
+  }
+
+  .vocabulary-stat {
+    min-width: 0;
+    flex: 1;
+    padding: 14px 10px;
+  }
+
+  .vocabulary-stat strong {
+    font-size: 28px;
+  }
+
+  .vocabulary-category-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vocabulary-word-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .vocabulary-word-card {
+    min-height: 215px;
+    padding: 20px 10px;
+  }
+
+  .vocabulary-word-khmer {
+    font-size: 25px;
+  }
+
+  .vocabulary-topic-header {
+    align-items: flex-start;
+    padding: 18px;
+  }
+
+  .vocabulary-topic-icon {
+    width: 58px;
+    height: 58px;
+    font-size: 31px;
+  }
+
+  .vocabulary-topic-header h2 {
+    font-size: 23px;
+  }
+
+  .vocabulary-modal {
+    padding: 30px 20px;
+  }
+
+  .vocabulary-modal-khmer {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 400px) {
+  .vocabulary-word-grid {
+    grid-template-columns: 1fr;
+  }
+}

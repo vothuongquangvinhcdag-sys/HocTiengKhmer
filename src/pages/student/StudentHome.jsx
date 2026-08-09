@@ -301,9 +301,7 @@ function StudentHome({
         break;
 
       case "vocabulary":
-        alert(
-          "📚 Phần Từ vựng đang được phát triển."
-        );
+        navigate("/vocabulary");
         break;
 
       case "games":
