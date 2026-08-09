@@ -187,7 +187,8 @@ const savedStudySecondsRef =
 // Số giây đang học nhưng chưa đủ 1 phút.
 const pendingSecondsRef =
   useRef(0);
-
+const sessionSecondsRef = useRef(0);
+const sessionStartRef = useRef(Date.now());
 const dirtyRef =
   useRef(false);
 
@@ -417,13 +418,34 @@ const dirtyRef =
           latestExp
         );
 
-      const latestStudySeconds =
-        Math.max(
-          0,
-          Number(
-            data.total_study_seconds ?? 0
-          )
-        );
+   const supabaseStudySeconds =
+  Math.max(
+    0,
+    Number(
+      data.total_study_seconds ?? 0
+    )
+  );
+
+// ==========================================
+// KHÔI PHỤC PHIÊN HỌC TỪ LOCALSTORAGE
+// ==========================================
+
+const localStudySeconds =
+  Math.max(
+    0,
+    Number(
+      localStorage.getItem(
+        "study_session_seconds"
+      )
+    ) || 0
+  );
+
+// Lấy số lớn hơn để không bị reset
+const latestStudySeconds =
+  Math.max(
+    supabaseStudySeconds,
+    localStudySeconds
+  );
 
       totalExpRef.current =
         latestExp;
@@ -439,7 +461,14 @@ const dirtyRef =
 
       savedStudySecondsRef.current =
   latestStudySeconds;
-
+if (
+  localStudySeconds >
+  supabaseStudySeconds
+) {
+  pendingSecondsRef.current =
+    localStudySeconds -
+    supabaseStudySeconds;
+}
 pendingSecondsRef.current =
   0;
 
@@ -673,16 +702,56 @@ const saveProgress = async () => {
 };
 
 /* =======================================================
-12. TIMER HỌC
+12. TIMER HỌC - KHÔNG RESET KHI CHUYỂN TRANG / F5
 ======================================================= */
+
 useEffect(() => {
   if (!profileId) {
     return;
   }
 
-  console.log(
-    "▶️ Bắt đầu timer học"
+  console.log("▶️ Bắt đầu timer học");
+
+  // ==========================================
+  // KHÔI PHỤC PHIÊN HỌC
+  // ==========================================
+
+  const savedSessionSeconds =
+    Number(
+      localStorage.getItem(
+        "study_session_seconds"
+      )
+    ) || 0;
+
+  sessionSecondsRef.current =
+    savedSessionSeconds;
+
+  // Phần đã lưu trong Supabase
+  const savedSeconds =
+    Number(
+      savedStudySecondsRef.current
+    ) || 0;
+
+  // Phần chưa đủ phút
+  const pendingSeconds =
+    Math.max(
+      0,
+      savedSessionSeconds - savedSeconds
+    );
+
+  pendingSecondsRef.current =
+    pendingSeconds;
+
+  studySecondsRef.current =
+    savedSessionSeconds;
+
+  setTotalStudySeconds(
+    savedSessionSeconds
   );
+
+  // ==========================================
+  // XÓA TIMER CŨ NẾU CÓ
+  // ==========================================
 
   if (timerRef.current) {
     clearInterval(
@@ -690,36 +759,52 @@ useEffect(() => {
     );
   }
 
+  // ==========================================
+  // BẮT ĐẦU TIMER
+  // ==========================================
+
   timerRef.current =
     setInterval(() => {
 
-      /*
-       * ==========================================
-       * MỖI GIÂY HỌC
-       * ==========================================
-       */
-
+      // Mỗi giây
       pendingSecondsRef.current += 1;
 
-      /*
-       * Hiển thị thời gian thực trên màn hình.
-       *
-       * savedStudySeconds
-       * + số giây chưa đủ phút
-       */
-      const displaySeconds =
+      sessionSecondsRef.current =
         savedStudySecondsRef.current +
         pendingSecondsRef.current;
 
-      setTotalStudySeconds(
-        displaySeconds
+      studySecondsRef.current =
+        sessionSecondsRef.current;
+
+      // ========================================
+      // LƯU PHIÊN VÀO LOCALSTORAGE
+      // ========================================
+
+      localStorage.setItem(
+        "study_session_seconds",
+        String(
+          sessionSecondsRef.current
+        )
       );
 
-      /*
-       * ==========================================
-       * ĐỦ 60 GIÂY
-       * ==========================================
-       */
+      localStorage.setItem(
+        "study_session_start",
+        String(
+          sessionStartRef.current
+        )
+      );
+
+      // ========================================
+      // HIỂN THỊ
+      // ========================================
+
+      setTotalStudySeconds(
+        sessionSecondsRef.current
+      );
+
+      // ========================================
+      // ĐỦ 1 PHÚT
+      // ========================================
 
       if (
         pendingSecondsRef.current >= 60
@@ -730,32 +815,20 @@ useEffect(() => {
             pendingSecondsRef.current / 60
           );
 
-        /*
-         * Chuyển phút hoàn chỉnh
-         * thành thời gian đã xác nhận.
-         */
         const earnedSeconds =
           earnedMinutes * 60;
 
+        // Cộng thời gian đã xác nhận
         savedStudySecondsRef.current +=
           earnedSeconds;
 
-        /*
-         * Giữ lại phần giây lẻ.
-         *
-         * Ví dụ:
-         * 125 giây
-         * → +120 giây
-         * → còn 5 giây
-         */
+        // Giữ lại giây lẻ
         pendingSecondsRef.current -=
           earnedSeconds;
 
-        /*
-         * ======================================
-         * EXP
-         * ======================================
-         */
+        // ======================================
+        // CỘNG EXP
+        // ======================================
 
         const earnedExp =
           earnedMinutes *
@@ -764,88 +837,120 @@ useEffect(() => {
         console.log(
           "⏱️ ĐỦ PHÚT:",
           {
-            minutes:
-              earnedMinutes,
-
-            savedSeconds:
-              savedStudySecondsRef.current,
-
-            pendingSeconds:
-              pendingSecondsRef.current,
-
+            minutes: earnedMinutes,
             earnedExp,
           }
         );
 
-        /*
-         * Mỗi phút hoàn chỉnh = 10 EXP
-         */
         addExp(earnedExp);
 
-        /*
-         * Hiển thị lại thời gian
-         */
-        setTotalStudySeconds(
+        // ======================================
+        // CẬP NHẬT HIỂN THỊ
+        // ======================================
+
+        sessionSecondsRef.current =
           savedStudySecondsRef.current +
-          pendingSecondsRef.current
+          pendingSecondsRef.current;
+
+        studySecondsRef.current =
+          sessionSecondsRef.current;
+
+        setTotalStudySeconds(
+          sessionSecondsRef.current
         );
 
-        /*
-         * ======================================
-         * LƯU NGAY KHI ĐỦ PHÚT
-         * ======================================
-         */
+        // ======================================
+        // LƯU SUPABASE
+        // ======================================
 
         saveProgress();
       }
 
     }, 1000);
 
+  // ==========================================
+  // CLEANUP KHI CHUYỂN COMPONENT
+  // ==========================================
+
   return () => {
 
     if (timerRef.current) {
+
       clearInterval(
         timerRef.current
       );
 
-      timerRef.current =
-        null;
+      timerRef.current = null;
     }
 
+    // QUAN TRỌNG:
+    // Không reset localStorage ở đây.
+
+    localStorage.setItem(
+      "study_session_seconds",
+      String(
+        sessionSecondsRef.current
+      )
+    );
+
     console.log(
-      "⏹️ Dừng timer học"
+      "⏹️ Dừng timer nhưng GIỮ phiên học:",
+      sessionSecondsRef.current
     );
   };
 
 }, [profileId]);
 
-  /* =======================================================
-     14. LƯU KHI RỜI TAB
-  ======================================================= */
 
-  useEffect(() => {
+/* =======================================================
+14. LƯU KHI RỜI TAB / F5
+======================================================= */
+
+useEffect(() => {
+
   if (!profileId) {
     return;
   }
 
+  const saveCurrentSession = () => {
+
+    const currentSeconds =
+      Math.max(
+        0,
+        Number(
+          sessionSecondsRef.current
+        ) || 0
+      );
+
+    // Lưu phiên hiện tại
+    localStorage.setItem(
+      "study_session_seconds",
+      String(currentSeconds)
+    );
+
+    localStorage.setItem(
+      "study_session_start",
+      String(
+        sessionStartRef.current
+      )
+    );
+
+    // Lưu phần đã đủ phút vào Supabase
+    saveProgress();
+  };
+
   const handleVisibility = () => {
+
     if (
       document.visibilityState ===
       "hidden"
     ) {
-      /*
-       * Chỉ lưu dữ liệu đã đủ phút.
-       *
-       * Ví dụ:
-       * 2:59 → savedStudySeconds = 120
-       * → Supabase vẫn lưu 120 giây.
-       */
-      saveProgress();
+      saveCurrentSession();
     }
   };
 
   const handlePageHide = () => {
-    saveProgress();
+    saveCurrentSession();
   };
 
   document.addEventListener(
@@ -859,6 +964,7 @@ useEffect(() => {
   );
 
   return () => {
+
     document.removeEventListener(
       "visibilitychange",
       handleVisibility
@@ -872,11 +978,13 @@ useEffect(() => {
 
 }, [profileId]);
 
-  /* =======================================================
-     15. CLEANUP
-  ======================================================= */
 
-  useEffect(() => {
+/* =======================================================
+15. CLEANUP
+======================================================= */
+
+useEffect(() => {
+
   return () => {
 
     if (
@@ -899,8 +1007,8 @@ useEffect(() => {
     }
 
   };
-}, []);
 
+}, []);
   /* =======================================================
      16. EXP HIỆN TẠI
   ======================================================= */

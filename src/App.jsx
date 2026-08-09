@@ -20,7 +20,7 @@ function App() {
   const [session, setSession] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  // ==========================================
   // ==========================================
   // THEO DÕI BACK / FORWARD
   // ==========================================
@@ -128,10 +128,17 @@ function App() {
       return;
     }
 
-    setSession(null);
-    setProfile(null);
+    // XÓA PHIÊN HỌC KHI ĐĂNG XUẤT
+localStorage.removeItem("study_session_seconds");
+localStorage.removeItem("study_session_start");
 
-    navigate("/");
+setStudySeconds(0);
+setStudyStartTime(Date.now());
+
+setSession(null);
+setProfile(null);
+
+navigate("/");
   };
 
   // ==========================================
