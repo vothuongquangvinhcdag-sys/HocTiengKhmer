@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import StudentHome from "./pages/student/StudentHome";
 import Alphabet from "./pages/student/alphabet/Alphabet";
 import Vocabulary from "./pages/student/vocabulary/vocabulary";
+import AdminHome from "./pages/admin/AdminHome";
 /* =========================================================
    CẤU HÌNH LEVEL
 ========================================================= */
@@ -73,16 +74,10 @@ function App() {
       setPath(window.location.pathname);
     };
 
-    window.addEventListener(
-      "popstate",
-      handlePopState
-    );
+    window.addEventListener("popstate", handlePopState);
 
     return () => {
-      window.removeEventListener(
-        "popstate",
-        handlePopState
-      );
+      window.removeEventListener("popstate", handlePopState);
     };
   }, []);
 
@@ -96,6 +91,9 @@ function App() {
 
   /* =======================================================
      LOAD PROFILE
+     
+     QUAN TRỌNG:
+     Đã thêm role.
   ======================================================= */
 
   const loadProfile = async (userId) => {
@@ -110,7 +108,7 @@ function App() {
     } = await supabase
       .from("profiles")
       .select(
-        "id, username, account, exp, level, total_study_seconds"
+        "id, username, account, email, role, exp, level, total_study_seconds"
       )
       .eq("id", userId)
       .single();
@@ -121,10 +119,12 @@ function App() {
         error
       );
 
+      setProfile(null);
       return null;
     }
 
     if (!data) {
+      setProfile(null);
       return null;
     }
 
@@ -133,28 +133,24 @@ function App() {
       Number(data.exp ?? 0)
     );
 
-    const safeLevel =
-      getLevelFromExp(safeExp);
+    const safeLevel = getLevelFromExp(
+      safeExp
+    );
 
-    const safeStudySeconds =
-      Math.max(
-        0,
-        Number(
-          data.total_study_seconds ?? 0
-        )
-      );
+    const safeStudySeconds = Math.max(
+      0,
+      Number(data.total_study_seconds ?? 0)
+    );
 
     const normalizedProfile = {
       ...data,
+      role: data.role || "student",
       exp: safeExp,
       level: safeLevel,
-      total_study_seconds:
-        safeStudySeconds,
+      total_study_seconds: safeStudySeconds,
     };
 
-    setProfile(
-      normalizedProfile
-    );
+    setProfile(normalizedProfile);
 
     return normalizedProfile;
   };
@@ -170,8 +166,7 @@ function App() {
       const {
         data,
         error,
-      } =
-        await supabase.auth.getSession();
+      } = await supabase.auth.getSession();
 
       if (error) {
         console.error(
@@ -187,26 +182,55 @@ function App() {
       const currentSession =
         data?.session || null;
 
-      setSession(
-        currentSession
-      );
+      setSession(currentSession);
 
-      if (
-        currentSession?.user?.id
-      ) {
-        await loadProfile(
-          currentSession.user.id
-        );
+      if (currentSession?.user?.id) {
+        const loadedProfile =
+          await loadProfile(
+            currentSession.user.id
+          );
+
+        if (!mounted) {
+          return;
+        }
+
+        /* =================================================
+           NẾU ĐÃ ĐĂNG NHẬP
+           TỰ ĐỘNG ĐƯA ĐẾN TRANG ĐÚNG ROLE
+        ================================================= */
+
+        if (
+          loadedProfile &&
+          (
+            window.location.pathname === "/" ||
+            window.location.pathname === "/login" ||
+            window.location.pathname === "/register"
+          )
+        ) {
+          const target =
+            loadedProfile.role === "admin"
+              ? "/admin"
+              : "/student";
+
+          window.history.replaceState(
+            {},
+            "",
+            target
+          );
+
+          setPath(target);
+        }
       }
+
+      /* ===================================================
+         CHƯA ĐĂNG NHẬP
+      =================================================== */
 
       if (
         !currentSession &&
-        window.location.pathname !==
-          "/login" &&
-        window.location.pathname !==
-          "/register" &&
-        window.location.pathname !==
-          "/forgot-password"
+        window.location.pathname !== "/login" &&
+        window.location.pathname !== "/register" &&
+        window.location.pathname !== "/forgot-password"
       ) {
         window.history.replaceState(
           {},
@@ -228,57 +252,60 @@ function App() {
 
     const {
       data: authListener,
-    } =
-      supabase.auth.onAuthStateChange(
-        async (
-          event,
-          newSession
-        ) => {
-          if (!mounted) {
-            return;
-          }
+    } = supabase.auth.onAuthStateChange(
+      async (
+        event,
+        newSession
+      ) => {
+        if (!mounted) {
+          return;
+        }
 
-          setSession(
-            newSession || null
-          );
+        setSession(
+          newSession || null
+        );
 
-          if (
-            newSession?.user?.id
-          ) {
+        if (newSession?.user?.id) {
+          const loadedProfile =
             await loadProfile(
               newSession.user.id
             );
 
-            if (
-              event ===
-                "SIGNED_IN" ||
-              event ===
-                "INITIAL_SESSION"
-            ) {
-              if (
-                window.location.pathname ===
-                  "/" ||
-                window.location.pathname ===
-                  "/login" ||
-                window.location.pathname ===
-                  "/register"
-              ) {
-                window.history.replaceState(
-                  {},
-                  "",
-                  "/student"
-                );
-
-                setPath(
-                  "/student"
-                );
-              }
-            }
-          } else {
-            setProfile(null);
+          if (!mounted) {
+            return;
           }
+
+          if (
+            loadedProfile &&
+            (
+              event === "SIGNED_IN" ||
+              event === "INITIAL_SESSION"
+            )
+          ) {
+            if (
+              window.location.pathname === "/" ||
+              window.location.pathname === "/login" ||
+              window.location.pathname === "/register"
+            ) {
+              const target =
+                loadedProfile.role === "admin"
+                  ? "/admin"
+                  : "/student";
+
+              window.history.replaceState(
+                {},
+                "",
+                target
+              );
+
+              setPath(target);
+            }
+          }
+        } else {
+          setProfile(null);
         }
-      );
+      }
+    );
 
     return () => {
       mounted = false;
@@ -290,7 +317,7 @@ function App() {
   /* =======================================================
      REFRESH PROFILE
 
-     Alphabet gọi hàm này sau khi lưu Supabase.
+     Alphabet / Vocabulary gọi hàm này sau khi lưu Supabase.
   ======================================================= */
 
   const refreshProfile = async () => {
@@ -308,48 +335,45 @@ function App() {
 
      Không có timer ở đây.
 
-     Chỉ xóa phần thời gian lẻ đang lưu tạm
-     của Alphabet.
+     Chỉ xóa timer tạm của Alphabet khi logout.
   ======================================================= */
 
-  const handleLogout =
-    async () => {
-      if (session?.user?.id) {
-        try {
-          localStorage.removeItem(
-            `alphabet_study_${session.user.id}`
-          );
-        } catch (error) {
-          console.warn(
-            "Không thể xóa dữ liệu timer tạm:",
-            error
-          );
-        }
-      }
-
-      const {
-        error,
-      } =
-        await supabase.auth.signOut();
-
-      if (error) {
-        console.error(
-          "❌ Lỗi đăng xuất:",
+  const handleLogout = async () => {
+    if (session?.user?.id) {
+      try {
+        localStorage.removeItem(
+          `alphabet_study_${session.user.id}`
+        );
+      } catch (error) {
+        console.warn(
+          "Không thể xóa dữ liệu timer tạm:",
           error
         );
       }
+    }
 
-      setProfile(null);
-      setSession(null);
+    const {
+      error,
+    } = await supabase.auth.signOut();
 
-      window.history.replaceState(
-        {},
-        "",
-        "/login"
+    if (error) {
+      console.error(
+        "❌ Lỗi đăng xuất:",
+        error
       );
+    }
 
-      setPath("/login");
-    };
+    setProfile(null);
+    setSession(null);
+
+    window.history.replaceState(
+      {},
+      "",
+      "/login"
+    );
+
+    setPath("/login");
+  };
 
   /* =======================================================
      LOADING
@@ -363,10 +387,8 @@ function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily:
-            "Arial, sans-serif",
-          background:
-            "#fffbeb",
+          fontFamily: "Arial, sans-serif",
+          background: "#fffbeb",
           color: "#92400e",
           fontSize: "18px",
           fontWeight: "700",
@@ -390,10 +412,7 @@ function App() {
       );
     }
 
-    if (
-      path ===
-      "/forgot-password"
-    ) {
+    if (path === "/forgot-password") {
       return (
         <ForgotPassword
           navigate={navigate}
@@ -420,11 +439,9 @@ function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background:
-            "#fffbeb",
+          background: "#fffbeb",
           color: "#92400e",
-          fontFamily:
-            "Arial, sans-serif",
+          fontFamily: "Arial, sans-serif",
           fontWeight: "700",
         }}
       >
@@ -434,15 +451,37 @@ function App() {
   }
 
   /* =======================================================
+   ADMIN
+======================================================= */
+
+if (profile.role === "admin") {
+  if (path === "/admin") {
+    return (
+      <AdminHome
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={handleLogout}
+      />
+    );
+  }
+
+  window.history.replaceState(
+    {},
+    "",
+    "/admin"
+  );
+
+  setPath("/admin");
+
+  return null;
+}
+
+  /* =======================================================
      STUDENT HOME
 
      QUAN TRỌNG:
      Không có timer ở đây.
-
-     StudentHome chỉ:
-     - Hiển thị EXP
-     - Hiển thị Level
-     - Hiển thị tổng thời gian
   ======================================================= */
 
   if (
@@ -452,8 +491,12 @@ function App() {
     return (
       <StudentHome
         profile={profile}
+        session={session}
         navigate={navigate}
         onLogout={handleLogout}
+        onProgressUpdated={
+          refreshProfile
+        }
       />
     );
   }
@@ -461,7 +504,7 @@ function App() {
   /* =======================================================
      ALPHABET
 
-     ĐÂY LÀ TRANG DUY NHẤT CÓ TIMER.
+     ĐÂY LÀ TRANG CÓ TIMER
   ======================================================= */
 
   if (path === "/alphabet") {
@@ -477,19 +520,38 @@ function App() {
       />
     );
   }
-if (path === "/vocabulary") {
-  return (
-    <Vocabulary
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onLogout={handleLogout}
-      onProgressUpdated={
-        refreshProfile
-      }
-    />
-  );
-}
+
+  /* =======================================================
+     VOCABULARY
+  ======================================================= */
+
+  if (path === "/vocabulary") {
+    return (
+      <Vocabulary
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={handleLogout}
+        onProgressUpdated={
+          refreshProfile
+        }
+      />
+    );
+  }
+
+  /* =======================================================
+     STUDENT KHÔNG ĐƯỢC VÀO ADMIN
+  ======================================================= */
+
+  if (
+    path === "/admin" &&
+    profile.role !== "admin"
+  ) {
+    navigate("/student");
+
+    return null;
+  }
+
   /* =======================================================
      TRANG CHƯA LÀM
   ======================================================= */
@@ -499,10 +561,8 @@ if (path === "/vocabulary") {
       style={{
         minHeight: "100vh",
         padding: "40px",
-        fontFamily:
-          "Arial, sans-serif",
-        background:
-          "#fffbeb",
+        fontFamily: "Arial, sans-serif",
+        background: "#fffbeb",
       }}
     >
       <h2>
@@ -519,9 +579,7 @@ if (path === "/vocabulary") {
       <button
         type="button"
         onClick={() =>
-          navigate(
-            "/student"
-          )
+          navigate("/student")
         }
       >
         ← Về trang học
