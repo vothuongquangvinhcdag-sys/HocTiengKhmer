@@ -1,24 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-import { supabase } from "../../supabase";
+import { useEffect, useState } from "react";
 
 /* =========================================================
-   CẤU HÌNH HỆ THỐNG EXP
+   CẤU HÌNH LEVEL
 ========================================================= */
 
 const MAX_LEVEL = 10;
-const EXP_PER_MINUTE = 10;
 
 const LEVEL_EXP = {
-  1: 100,
-  2: 200,
-  3: 400,
-  4: 800,
-  5: 1600,
-  6: 3200,
-  7: 6400,
-  8: 12800,
-  9: 25600,
-  10: Infinity,
+  1: 0,
+  2: 100,
+  3: 200,
+  4: 400,
+  5: 800,
+  6: 1600,
+  7: 3200,
+  8: 6400,
+  9: 12800,
+  10: 25600,
 };
 
 /* =========================================================
@@ -28,80 +26,109 @@ const LEVEL_EXP = {
 function getLevelFromExp(exp) {
   const safeExp = Math.max(0, Number(exp) || 0);
 
-  if (safeExp < LEVEL_EXP[1]) return 1;
-  if (safeExp < LEVEL_EXP[2]) return 2;
-  if (safeExp < LEVEL_EXP[3]) return 3;
-  if (safeExp < LEVEL_EXP[4]) return 4;
-  if (safeExp < LEVEL_EXP[5]) return 5;
-  if (safeExp < LEVEL_EXP[6]) return 6;
-  if (safeExp < LEVEL_EXP[7]) return 7;
-  if (safeExp < LEVEL_EXP[8]) return 8;
-  if (safeExp < LEVEL_EXP[9]) return 9;
+  if (safeExp < 100) return 1;
+  if (safeExp < 200) return 2;
+  if (safeExp < 400) return 3;
+  if (safeExp < 800) return 4;
+  if (safeExp < 1600) return 5;
+  if (safeExp < 3200) return 6;
+  if (safeExp < 6400) return 7;
+  if (safeExp < 12800) return 8;
+  if (safeExp < 25600) return 9;
 
   return 10;
 }
 
 /* =========================================================
-   THÔNG TIN TIẾN ĐỘ LEVEL
+   TÍNH TIẾN ĐỘ LEVEL
 ========================================================= */
 
-function getLevelProgress(exp, level) {
+function getLevelProgress(exp) {
   const safeExp = Math.max(0, Number(exp) || 0);
 
-  const currentLevel = Math.max(
-    1,
-    Math.min(MAX_LEVEL, Number(level) || 1)
-  );
+  const currentLevel = getLevelFromExp(safeExp);
 
   if (currentLevel >= MAX_LEVEL) {
     return {
       currentExp: safeExp,
-      requiredExp: safeExp,
-      previousExp: LEVEL_EXP[9],
+      requiredExp: 0,
       remainingExp: 0,
       percent: 100,
       isMaxLevel: true,
     };
   }
 
-  const previousExp =
-    currentLevel === 1
-      ? 0
-      : LEVEL_EXP[currentLevel - 1];
+  const previousExp = LEVEL_EXP[currentLevel];
+  const nextLevel = currentLevel + 1;
 
   const requiredExp =
-    LEVEL_EXP[currentLevel];
+    LEVEL_EXP[nextLevel] - previousExp;
 
   const currentExp =
     Math.max(0, safeExp - previousExp);
 
-  const levelRange =
-    requiredExp - previousExp;
+  const remainingExp =
+    Math.max(0, requiredExp - currentExp);
 
   const percent =
-    levelRange > 0
+    requiredExp > 0
       ? Math.min(
           100,
           Math.round(
-            (currentExp / levelRange) * 100
+            (currentExp / requiredExp) * 100
           )
         )
       : 100;
 
-  const remainingExp =
-    Math.max(
-      0,
-      requiredExp - safeExp
-    );
-
   return {
     currentExp,
     requiredExp,
-    previousExp,
     remainingExp,
     percent,
     isMaxLevel: false,
   };
+}
+
+/* =========================================================
+   FORMAT THỜI GIAN
+========================================================= */
+
+function formatTime(seconds) {
+  const safeSeconds = Math.max(
+    0,
+    Number(seconds) || 0
+  );
+
+  const hours = Math.floor(
+    safeSeconds / 3600
+  );
+
+  const minutes = Math.floor(
+    (safeSeconds % 3600) / 60
+  );
+
+  const secs = safeSeconds % 60;
+
+  if (hours > 0) {
+    return `${String(hours).padStart(
+      2,
+      "0"
+    )}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(secs).padStart(
+      2,
+      "0"
+    )}`;
+  }
+
+  return `${String(minutes).padStart(
+    2,
+    "0"
+  )}:${String(secs).padStart(
+    2,
+    "0"
+  )}`;
 }
 
 /* =========================================================
@@ -110,11 +137,20 @@ function getLevelProgress(exp, level) {
 
 function StudentHome({
   profile,
+  navigate,
   onLogout,
-  onNavigate,
+
+  /*
+    App.jsx có thể truyền dữ liệu timer toàn hệ thống
+    xuống đây.
+
+    Nếu chưa truyền thì lấy từ profile.
+  */
+  totalExp: totalExpFromApp,
+  totalStudySeconds: totalStudySecondsFromApp,
 }) {
   /* =======================================================
-     1. THÔNG TIN NGƯỜI DÙNG
+     THÔNG TIN USER
   ======================================================= */
 
   const username =
@@ -122,100 +158,83 @@ function StudentHome({
     profile?.account ||
     "Học sinh";
 
-  const profileId =
-    profile?.id || null;
+  const profileExp = Math.max(
+    0,
+    Number(profile?.exp ?? 0)
+  );
 
-  const initialExp =
-    Math.max(
-      0,
-      Number(profile?.exp ?? 0)
-    );
+  const profileStudySeconds = Math.max(
+    0,
+    Number(
+      profile?.total_study_seconds ?? 0
+    )
+  );
 
-  const initialLevel =
-    getLevelFromExp(initialExp);
+  /*
+    Ưu tiên dữ liệu do App quản lý.
+    Nếu App chưa truyền thì dùng profile.
+  */
 
-  const initialStudySeconds =
-    Math.max(
-      0,
-      Number(
-        profile?.total_study_seconds ?? 0
-      )
-    );
+  const totalExp =
+    totalExpFromApp !== undefined
+      ? Math.max(
+          0,
+          Number(totalExpFromApp) || 0
+        )
+      : profileExp;
+
+  const totalStudySeconds =
+    totalStudySecondsFromApp !== undefined
+      ? Math.max(
+          0,
+          Number(
+            totalStudySecondsFromApp
+          ) || 0
+        )
+      : profileStudySeconds;
+
+  const level =
+    getLevelFromExp(totalExp);
 
   /* =======================================================
-     2. STATE
+     LEVEL UP
   ======================================================= */
-
-  const [activeMenu, setActiveMenu] =
-    useState("home");
-
-  const [totalExp, setTotalExp] =
-    useState(initialExp);
-
-  const [level, setLevel] =
-    useState(initialLevel);
-
-  const [totalStudySeconds, setTotalStudySeconds] =
-    useState(initialStudySeconds);
 
   const [showLevelUp, setShowLevelUp] =
     useState(false);
 
   const [levelUpNumber, setLevelUpNumber] =
-    useState(initialLevel);
+    useState(level);
+
+  /*
+    Chỉ hiển thị Level Up nếu App truyền
+    levelUpNumber mới.
+  */
+
+  useEffect(() => {
+    if (
+      level > levelUpNumber &&
+      level <= MAX_LEVEL
+    ) {
+      setLevelUpNumber(level);
+      setShowLevelUp(true);
+
+      const timer = setTimeout(() => {
+        setShowLevelUp(false);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [level, levelUpNumber]);
 
   /* =======================================================
-     3. REFS
+     MENU
   ======================================================= */
 
-  const totalExpRef =
-    useRef(initialExp);
-
-  const levelRef =
-    useRef(initialLevel);
-
-  const studySecondsRef =
-    useRef(initialStudySeconds);
-
-  const savingRef = useRef(false);
-
-// Số giây đã được xác nhận và lưu vào hệ thống.
-// Luôn là bội số của 60.
-const savedStudySecondsRef =
-  useRef(initialStudySeconds);
-
-// Số giây đang học nhưng chưa đủ 1 phút.
-const pendingSecondsRef =
-  useRef(0);
-const sessionSecondsRef = useRef(0);
-const sessionStartRef = useRef(
-  Number(
-    localStorage.getItem("study_session_start")
-  ) || Date.now()
-);
-
-const lastTickRef = useRef(Date.now());
-
-const dirtyRef = useRef(false);
-
-  const profileIdRef =
-    useRef(profileId);
-
-  const timerRef =
-    useRef(null);
-
-  const autoSaveTimerRef =
-    useRef(null);
-
-  const levelUpTimeoutRef =
-    useRef(null);
-
-  const learningSectionRef =
-    useRef(null);
-
-  /* =======================================================
-     4. MENU
-  ======================================================= */
+  const [activeMenu, setActiveMenu] =
+    useState("home");
 
   const menuItems = [
     {
@@ -266,63 +285,85 @@ const dirtyRef = useRef(false);
   ];
 
   /* =======================================================
-     5. ĐIỀU HƯỚNG
+     ĐIỀU HƯỚNG
   ======================================================= */
 
- const handleMenu = (id) => {
-  setActiveMenu(id);
+  const handleMenu = (id) => {
+    setActiveMenu(id);
 
-  switch (id) {
-    case "home":
-      onNavigate("/student");
-      break;
+    switch (id) {
+      case "home":
+        navigate("/student");
+        break;
 
-    case "alphabet":
-      onNavigate("/alphabet");
-      break;
+      case "alphabet":
+        navigate("/alphabet");
+        break;
 
-    case "vocabulary":
-      console.log("Từ vựng - đang phát triển");
-      break;
+      case "vocabulary":
+        alert(
+          "📚 Phần Từ vựng đang được phát triển."
+        );
+        break;
 
-    case "games":
-      console.log("Trò chơi - đang phát triển");
-      break;
+      case "games":
+        alert(
+          "🎮 Phần Trò chơi đang được phát triển."
+        );
+        break;
 
-    case "listening":
-      console.log("Luyện nghe - đang phát triển");
-      break;
+      case "listening":
+        alert(
+          "🎧 Phần Luyện nghe đang được phát triển."
+        );
+        break;
 
-    case "speaking":
-      console.log("Luyện nói - đang phát triển");
-      break;
+      case "speaking":
+        alert(
+          "🎤 Phần Luyện nói đang được phát triển."
+        );
+        break;
 
-    case "reading":
-      console.log("Luyện đọc - đang phát triển");
-      break;
+      case "reading":
+        alert(
+          "📖 Phần Luyện đọc đang được phát triển."
+        );
+        break;
 
-    case "writing":
-      console.log("Luyện viết - đang phát triển");
-      break;
+      case "writing":
+        alert(
+          "✍️ Phần Luyện viết đang được phát triển."
+        );
+        break;
 
-    case "progress":
-      console.log("Tiến độ - đang phát triển");
-      break;
+      case "progress":
+        alert(
+          "📊 Phần Tiến độ học tập đang được phát triển."
+        );
+        break;
 
-    default:
-      console.warn("Menu không xác định:", id);
-  }
-};
+      default:
+        console.warn(
+          "Menu không xác định:",
+          id
+        );
+    }
+  };
 
   /* =======================================================
-     6. BẮT ĐẦU HỌC
+     BẮT ĐẦU HỌC
   ======================================================= */
 
   const handleStartLearning = () => {
     setActiveMenu("home");
 
-    if (learningSectionRef.current) {
-      learningSectionRef.current.scrollIntoView({
+    const target =
+      document.querySelector(
+        ".learning-section-target"
+      );
+
+    if (target) {
+      target.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
@@ -330,743 +371,11 @@ const dirtyRef = useRef(false);
   };
 
   /* =======================================================
-     7. FORMAT TIME
-  ======================================================= */
-
-  const formatTime = (seconds) => {
-    const safeSeconds =
-      Math.max(
-        0,
-        Number(seconds) || 0
-      );
-
-    const hours =
-      Math.floor(
-        safeSeconds / 3600
-      );
-
-    const minutes =
-      Math.floor(
-        (safeSeconds % 3600) / 60
-      );
-
-    const secs =
-      safeSeconds % 60;
-
-    if (hours > 0) {
-      return `${String(hours).padStart(
-        2,
-        "0"
-      )}:${String(minutes).padStart(
-        2,
-        "0"
-      )}:${String(secs).padStart(
-        2,
-        "0"
-      )}`;
-    }
-
-    return `${String(minutes).padStart(
-      2,
-      "0"
-    )}:${String(secs).padStart(
-      2,
-      "0"
-    )}`;
-  };
-
-  /* =======================================================
-     8. LẤY PROFILE MỚI NHẤT
-  ======================================================= */
-
-  useEffect(() => {
-    if (!profileId) {
-      return;
-    }
-
-    let cancelled = false;
-
-    const loadProfile = async () => {
-      const {
-        data,
-        error,
-      } = await supabase
-        .from("profiles")
-        .select(
-          "id, username, account, exp, level, total_study_seconds"
-        )
-        .eq("id", profileId)
-        .single();
-
-      if (error) {
-        console.error(
-          "Không thể tải profile:",
-          error
-        );
-        return;
-      }
-
-      if (
-        cancelled ||
-        !data
-      ) {
-        return;
-      }
-
-      const latestExp =
-        Math.max(
-          0,
-          Number(data.exp ?? 0)
-        );
-
-      const latestLevel =
-        getLevelFromExp(
-          latestExp
-        );
-
-   const supabaseStudySeconds =
-  Math.max(
-    0,
-    Number(
-      data.total_study_seconds ?? 0
-    )
-  );
-
-// ==========================================
-// KHÔI PHỤC PHIÊN HỌC TỪ LOCALSTORAGE
-// ==========================================
-
-const localStudySeconds =
-  Math.max(
-    0,
-    Number(
-      localStorage.getItem(
-        "study_session_seconds"
-      )
-    ) || 0
-  );
-
-// Lấy số lớn hơn để không bị reset
-const latestStudySeconds =
-  Math.max(
-    supabaseStudySeconds,
-    localStudySeconds
-  );
-
-      totalExpRef.current =
-        latestExp;
-
-      levelRef.current =
-        latestLevel;
-
-      studySecondsRef.current =
-        latestStudySeconds;
-
-      profileIdRef.current =
-        data.id;
-
-      savedStudySecondsRef.current =
-  latestStudySeconds;
-pendingSecondsRef.current =
-  Math.max(
-    0,
-    localStudySeconds -
-      supabaseStudySeconds
-  );
-
-      dirtyRef.current =
-        false;
-
-      setTotalExp(
-        latestExp
-      );
-
-      setLevel(
-        latestLevel
-      );
-
-      setTotalStudySeconds(
-        latestStudySeconds
-      );
-
-      setLevelUpNumber(
-        latestLevel
-      );
-
-      console.log(
-        "Đã tải dữ liệu Supabase:",
-        {
-          ...data,
-          calculatedLevel:
-            latestLevel,
-        }
-      );
-    };
-
-    loadProfile();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [profileId]);
-
-  /* =======================================================
-     9. LEVEL UP
-  ======================================================= */
-
-  const triggerLevelUp = (
-    newLevel
-  ) => {
-    if (
-      newLevel > MAX_LEVEL
-    ) {
-      return;
-    }
-
-    setLevelUpNumber(
-      newLevel
-    );
-
-    setShowLevelUp(
-      true
-    );
-
-    if (
-      levelUpTimeoutRef.current
-    ) {
-      clearTimeout(
-        levelUpTimeoutRef.current
-      );
-    }
-
-    levelUpTimeoutRef.current =
-      setTimeout(() => {
-        setShowLevelUp(
-          false
-        );
-      }, 5000);
-  };
-
-  /* =======================================================
-10. CỘNG EXP
-======================================================= */
-
-const addExp = (amount) => {
-  const safeAmount =
-    Math.max(0, Number(amount) || 0);
-
-  if (safeAmount <= 0) {
-    return;
-  }
-
-  const oldExp =
-    Number(totalExpRef.current) || 0;
-
-  const newExp =
-    oldExp + safeAmount;
-
-  const oldLevel =
-    getLevelFromExp(oldExp);
-
-  const newLevel =
-    getLevelFromExp(newExp);
-
-  totalExpRef.current =
-    newExp;
-
-  levelRef.current =
-    newLevel;
-
-  dirtyRef.current =
-    true;
-
-  setTotalExp(newExp);
-  setLevel(newLevel);
-
-  console.log(
-    `⭐ +${safeAmount} EXP | ${oldExp} → ${newExp}`
-  );
-
-  if (newLevel > oldLevel) {
-    triggerLevelUp(newLevel);
-  }
-};
-
-
-/* =======================================================
-11. LƯU SUPABASE
-======================================================= */
-
-const saveProgress = async () => {
-  const currentProfileId =
-    profileIdRef.current;
-
-  if (!currentProfileId) {
-    return false;
-  }
-
-  if (savingRef.current) {
-    return false;
-  }
-
-  if (!dirtyRef.current) {
-    return true;
-  }
-
-  savingRef.current = true;
-
-  const expToSave =
-    Math.max(
-      0,
-      Number(totalExpRef.current) || 0
-    );
-
-  const levelToSave =
-    getLevelFromExp(expToSave);
-
-  // CHỈ lưu thời gian đã đủ phút.
-  const studySecondsToSave =
-    Math.max(
-      0,
-      Number(savedStudySecondsRef.current) || 0
-    );
-
-  try {
-    const {
-      data,
-      error,
-    } = await supabase
-      .from("profiles")
-      .update({
-        exp: expToSave,
-        level: levelToSave,
-        total_study_seconds:
-          studySecondsToSave,
-        updated_at:
-          new Date().toISOString(),
-      })
-      .eq(
-        "id",
-        currentProfileId
-      )
-      .select(
-        "id, username, exp, level, total_study_seconds"
-      )
-      .single();
-
-    if (error) {
-      console.error(
-        "❌ Lỗi lưu tiến độ:",
-        error
-      );
-
-      return false;
-    }
-
-    /*
-     * Chỉ đánh dấu đã lưu nếu dữ liệu
-     * hiện tại vẫn đúng với dữ liệu vừa lưu.
-     */
-    if (
-      totalExpRef.current ===
-        expToSave &&
-      savedStudySecondsRef.current ===
-        studySecondsToSave
-    ) {
-      dirtyRef.current = false;
-    }
-
-    console.log(
-      "💾 ĐÃ LƯU:",
-      {
-        exp: expToSave,
-        level: levelToSave,
-        total_study_seconds:
-          studySecondsToSave,
-        pendingSeconds:
-          pendingSecondsRef.current,
-      }
-    );
-
-    return true;
-
-  } catch (error) {
-    console.error(
-      "❌ saveProgress:",
-      error
-    );
-
-    return false;
-
-  } finally {
-    savingRef.current = false;
-  }
-};
-
-/* =======================================================
-12. TIMER HỌC
-- Chuyển trang vẫn tính thời gian
-- Quay lại trang chủ sẽ cộng thời gian đã trôi qua
-======================================================= */
-
-useEffect(() => {
-  if (!profileId) {
-    return;
-  }
-
-  console.log("▶️ Bắt đầu theo dõi thời gian học");
-
-  // ==========================================
-  // KHÔI PHỤC THỜI GIAN PHIÊN
-  // ==========================================
-
-  const savedSessionSeconds =
-    Number(
-      localStorage.getItem(
-        "study_session_seconds"
-      )
-    ) || 0;
-
-  sessionSecondsRef.current =
-    savedSessionSeconds;
-
-  // ==========================================
-  // KHÔI PHỤC THỜI ĐIỂM BẮT ĐẦU PHIÊN
-  // ==========================================
-
-  let sessionStart =
-    Number(
-      localStorage.getItem(
-        "study_session_start"
-      )
-    );
-
-  if (!sessionStart) {
-    sessionStart = Date.now();
-
-    localStorage.setItem(
-      "study_session_start",
-      String(sessionStart)
-    );
-  }
-
-  sessionStartRef.current =
-    sessionStart;
-
-  // ==========================================
-  // THỜI ĐIỂM TICK CUỐI
-  // ==========================================
-
-  lastTickRef.current =
-    Date.now();
-
-  // ==========================================
-  // TÍNH THỜI GIAN ĐÃ TRÔI QUA
-  // ==========================================
-
-  const calculateElapsedTime = () => {
-    const now = Date.now();
-
-    const elapsedSeconds =
-      Math.max(
-        0,
-        Math.floor(
-          (now -
-            lastTickRef.current) /
-            1000
-        )
-      );
-
-    if (elapsedSeconds <= 0) {
-      return;
-    }
-
-    lastTickRef.current = now;
-
-    // ========================================
-    // CỘNG THỜI GIAN
-    // ========================================
-
-    pendingSecondsRef.current +=
-      elapsedSeconds;
-
-    sessionSecondsRef.current =
-      savedStudySecondsRef.current +
-      pendingSecondsRef.current;
-
-    studySecondsRef.current =
-      sessionSecondsRef.current;
-
-    // ========================================
-    // LƯU LOCALSTORAGE
-    // ========================================
-
-    localStorage.setItem(
-      "study_session_seconds",
-      String(
-        sessionSecondsRef.current
-      )
-    );
-
-    localStorage.setItem(
-      "study_session_start",
-      String(
-        sessionStartRef.current
-      )
-    );
-
-    // ========================================
-    // HIỂN THỊ
-    // ========================================
-
-    setTotalStudySeconds(
-      sessionSecondsRef.current
-    );
-
-    // ========================================
-    // ĐỦ 1 PHÚT
-    // ========================================
-
-    if (
-      pendingSecondsRef.current >= 60
-    ) {
-
-      const earnedMinutes =
-        Math.floor(
-          pendingSecondsRef.current /
-            60
-        );
-
-      const earnedSeconds =
-        earnedMinutes * 60;
-
-      // ======================================
-      // XÁC NHẬN THỜI GIAN
-      // ======================================
-
-      savedStudySecondsRef.current +=
-        earnedSeconds;
-
-      // ======================================
-      // GIỮ LẠI GIÂY LẺ
-      // ======================================
-
-      pendingSecondsRef.current -=
-        earnedSeconds;
-
-      // ======================================
-      // CỘNG EXP
-      // ======================================
-
-      const earnedExp =
-        earnedMinutes *
-        EXP_PER_MINUTE;
-
-      console.log(
-        "⏱️ ĐỦ PHÚT:",
-        {
-          minutes:
-            earnedMinutes,
-
-          earnedExp,
-
-          totalSeconds:
-            sessionSecondsRef.current,
-        }
-      );
-
-      addExp(
-        earnedExp
-      );
-
-      // ======================================
-      // CẬP NHẬT HIỂN THỊ
-      // ======================================
-
-      sessionSecondsRef.current =
-        savedStudySecondsRef.current +
-        pendingSecondsRef.current;
-
-      studySecondsRef.current =
-        sessionSecondsRef.current;
-
-      setTotalStudySeconds(
-        sessionSecondsRef.current
-      );
-
-      // ======================================
-      // LƯU SUPABASE
-      // ======================================
-
-      saveProgress();
-    }
-  };
-
-  // ==========================================
-  // CHẠY MỖI GIÂY
-  // ==========================================
-
-  timerRef.current =
-    setInterval(
-      calculateElapsedTime,
-      1000
-    );
-
-  // ==========================================
-  // CLEANUP
-  // ==========================================
-
-  return () => {
-
-    if (
-      timerRef.current
-    ) {
-      clearInterval(
-        timerRef.current
-      );
-
-      timerRef.current =
-        null;
-    }
-
-    // Lưu phiên hiện tại
-    localStorage.setItem(
-      "study_session_seconds",
-      String(
-        sessionSecondsRef.current
-      )
-    );
-
-    localStorage.setItem(
-      "study_session_start",
-      String(
-        sessionStartRef.current
-      )
-    );
-
-    console.log(
-      "⏹️ Rời StudentHome - GIỮ phiên:",
-      sessionSecondsRef.current
-    );
-  };
-
-}, [profileId]);
-/* =======================================================
-14. LƯU KHI RỜI TAB / F5
-======================================================= */
-
-useEffect(() => {
-
-  if (!profileId) {
-    return;
-  }
-
-  const saveCurrentSession = () => {
-
-    const currentSeconds =
-      Math.max(
-        0,
-        Number(
-          sessionSecondsRef.current
-        ) || 0
-      );
-
-    // Lưu phiên hiện tại
-    localStorage.setItem(
-      "study_session_seconds",
-      String(currentSeconds)
-    );
-
-    localStorage.setItem(
-      "study_session_start",
-      String(
-        sessionStartRef.current
-      )
-    );
-
-    // Lưu phần đã đủ phút vào Supabase
-    saveProgress();
-  };
-
-  const handleVisibility = () => {
-
-    if (
-      document.visibilityState ===
-      "hidden"
-    ) {
-      saveCurrentSession();
-    }
-  };
-
-  const handlePageHide = () => {
-    saveCurrentSession();
-  };
-
-  document.addEventListener(
-    "visibilitychange",
-    handleVisibility
-  );
-
-  window.addEventListener(
-    "pagehide",
-    handlePageHide
-  );
-
-  return () => {
-
-    document.removeEventListener(
-      "visibilitychange",
-      handleVisibility
-    );
-
-    window.removeEventListener(
-      "pagehide",
-      handlePageHide
-    );
-  };
-
-}, [profileId]);
-
-
-/* =======================================================
-15. CLEANUP
-======================================================= */
-
-useEffect(() => {
-
-  return () => {
-
-    if (
-      levelUpTimeoutRef.current
-    ) {
-      clearTimeout(
-        levelUpTimeoutRef.current
-      );
-    }
-
-    if (
-      timerRef.current
-    ) {
-      clearInterval(
-        timerRef.current
-      );
-
-      timerRef.current =
-        null;
-    }
-
-  };
-
-}, []);
-  /* =======================================================
-     16. EXP HIỆN TẠI
+     EXP INFO
   ======================================================= */
 
   const expInfo =
-    getLevelProgress(
-      totalExp,
-      level
-    );
+    getLevelProgress(totalExp);
 
   const currentLevelExp =
     expInfo.currentExp;
@@ -1084,7 +393,7 @@ useEffect(() => {
     expInfo.isMaxLevel;
 
   /* =======================================================
-     17. RENDER
+     RENDER
   ======================================================= */
 
   return (
@@ -1143,11 +452,14 @@ useEffect(() => {
 
       <div className="student-app">
 
-        {/* SIDEBAR */}
+        {/* =================================================
+            SIDEBAR
+        ================================================= */}
 
         <aside className="student-sidebar">
 
           <div className="student-logo">
+
             <div className="student-logo-symbol">
               ក
             </div>
@@ -1161,11 +473,13 @@ useEffect(() => {
                 រៀនភាសាខ្មែរ
               </div>
             </div>
+
           </div>
 
           {/* PROFILE */}
 
           <div className="student-profile">
+
             <div className="student-avatar">
               {username
                 .charAt(0)
@@ -1173,6 +487,7 @@ useEffect(() => {
             </div>
 
             <div className="student-profile-info">
+
               <strong>
                 {username}
               </strong>
@@ -1180,7 +495,9 @@ useEffect(() => {
               <span>
                 Level {level}
               </span>
+
             </div>
+
           </div>
 
           {/* MENU */}
@@ -1197,8 +514,7 @@ useEffect(() => {
                   key={item.id}
                   type="button"
                   className={
-                    activeMenu ===
-                    item.id
+                    activeMenu === item.id
                       ? "student-menu-item active"
                       : "student-menu-item"
                   }
@@ -1208,6 +524,7 @@ useEffect(() => {
                     )
                   }
                 >
+
                   <span className="student-menu-icon">
                     {item.icon}
                   </span>
@@ -1215,6 +532,7 @@ useEffect(() => {
                   <span>
                     {item.label}
                   </span>
+
                 </button>
               )
             )}
@@ -1229,11 +547,12 @@ useEffect(() => {
               type="button"
               className="student-menu-item"
               onClick={() =>
-                onNavigate(
+                navigate(
                   "/student/profile"
                 )
               }
             >
+
               <span className="student-menu-icon">
                 👤
               </span>
@@ -1241,6 +560,7 @@ useEffect(() => {
               <span>
                 Tài khoản
               </span>
+
             </button>
 
             <button
@@ -1248,6 +568,7 @@ useEffect(() => {
               className="student-menu-item logout"
               onClick={onLogout}
             >
+
               <span className="student-menu-icon">
                 🚪
               </span>
@@ -1255,13 +576,16 @@ useEffect(() => {
               <span>
                 Đăng xuất
               </span>
+
             </button>
 
           </div>
 
         </aside>
 
-        {/* MAIN */}
+        {/* =================================================
+            MAIN
+        ================================================= */}
 
         <main className="student-main">
 
@@ -1474,7 +798,15 @@ useEffect(() => {
 
           </section>
 
-          {/* THỜI GIAN HỌC */}
+          {/* =================================================
+              THỜI GIAN HỌC
+
+              QUAN TRỌNG:
+              StudentHome KHÔNG chạy timer.
+
+              Dữ liệu này chỉ được hiển thị.
+              Timer phải nằm ở App.jsx.
+          ================================================= */}
 
           <section className="online-learning-card">
 
@@ -1504,8 +836,11 @@ useEffect(() => {
             </div>
 
             <div className="online-learning-status">
+
               <span className="online-dot" />
+
               Đang học
+
             </div>
 
           </section>
@@ -1513,7 +848,6 @@ useEffect(() => {
           {/* NỘI DUNG HỌC */}
 
           <section
-            ref={learningSectionRef}
             className="student-section learning-section-target"
           >
 
@@ -1535,64 +869,76 @@ useEffect(() => {
 
             <div className="student-learning-grid">
 
-             {/* BẢNG CHỮ CÁI */}
+              {/* BẢNG CHỮ CÁI */}
 
-<button
-  type="button"
-  className="learning-card"
-  onClick={() => handleMenu("alphabet")}
->
-  <div className="learning-card-icon">
-    ក
-  </div>
+              <button
+                type="button"
+                className="learning-card"
+                onClick={() =>
+                  handleMenu(
+                    "alphabet"
+                  )
+                }
+              >
 
-  <div>
-    <h3>
-      Bảng chữ cái
-    </h3>
+                <div className="learning-card-icon">
+                  ក
+                </div>
 
-    <p>
-      Làm quen với 33 phụ âm,
-      24 nguyên âm và cách phát âm
-      tiếng Khmer.
-    </p>
-  </div>
+                <div>
 
-  <span className="learning-arrow">
-    →
-  </span>
-</button>
+                  <h3>
+                    Bảng chữ cái
+                  </h3>
 
+                  <p>
+                    Làm quen với 33 phụ âm,
+                    24 nguyên âm và cách phát âm
+                    tiếng Khmer.
+                  </p>
 
-{/* TỪ VỰNG */}
+                </div>
 
-<button
-  type="button"
-  className="learning-card"
-  onClick={() => handleMenu("vocabulary")}
->
-  <div className="learning-card-icon">
-    📚
-  </div>
+                <span className="learning-arrow">
+                  →
+                </span>
 
-  <div>
-    <h3>
-      Từ vựng
-    </h3>
+              </button>
 
-    <p>
-      Học các từ Khmer theo
-      chủ đề.
-    </p>
-  </div>
+              {/* TỪ VỰNG */}
 
-  <span className="learning-arrow">
-    →
-  </span>
-</button>
+              <button
+                type="button"
+                className="learning-card"
+                onClick={() =>
+                  handleMenu(
+                    "vocabulary"
+                  )
+                }
+              >
 
+                <div className="learning-card-icon">
+                  📚
+                </div>
 
-{/* TRÒ CHƠI */}
+                <div>
+
+                  <h3>
+                    Từ vựng
+                  </h3>
+
+                  <p>
+                    Học các từ Khmer theo
+                    chủ đề.
+                  </p>
+
+                </div>
+
+                <span className="learning-arrow">
+                  →
+                </span>
+
+              </button>
 
               {/* TRÒ CHƠI */}
 
@@ -1600,7 +946,9 @@ useEffect(() => {
                 type="button"
                 className="learning-card"
                 onClick={() =>
-                  handleMenu("games")
+                  handleMenu(
+                    "games"
+                  )
                 }
               >
 
@@ -1633,7 +981,9 @@ useEffect(() => {
                 type="button"
                 className="learning-card"
                 onClick={() =>
-                  handleMenu("listening")
+                  handleMenu(
+                    "listening"
+                  )
                 }
               >
 
@@ -1730,1611 +1080,1618 @@ useEffect(() => {
       </div>
 
       {/* =================================================
-          CSS PHẦN 2 ĐẶT Ở ĐÂY
+          CSS
       ================================================= */}
 
       <style>{`
 
-        /* =========================================================
-   STUDENT HOME - TONE VÀNG CHỦ ĐẠO
-   ========================================================= */
+        * {
+          box-sizing: border-box;
+        }
+
+        .student-app {
+          min-height: 100vh;
+          display: flex;
+          background: #fffbeb;
+          color: #1f2937;
+          font-family:
+            Inter,
+            "Segoe UI",
+            Arial,
+            sans-serif;
+        }
+
+        /* =================================================
+           SIDEBAR
+        ================================================= */
+
+        .student-sidebar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          bottom: 0;
+
+          width: 250px;
+
+          display: flex;
+          flex-direction: column;
+
+          padding: 22px 16px;
+
+          background:
+            linear-gradient(
+              180deg,
+              #ffffff 0%,
+              #fffdf5 100%
+            );
+
+          border-right:
+            1px solid #fde68a;
+
+          z-index: 100;
+        }
+
+        .student-logo {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          padding:
+            4px 8px 22px;
+
+          border-bottom:
+            1px solid #fef3c7;
+        }
+
+        .student-logo-symbol {
+          width: 46px;
+          height: 46px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          border-radius: 14px;
+
+          background:
+            linear-gradient(
+              135deg,
+              #d97706,
+              #f59e0b,
+              #fbbf24
+            );
+
+          color: white;
+
+          font-size: 25px;
+          font-weight: 700;
+
+          box-shadow:
+            0 8px 18px
+            rgba(
+              245,
+              158,
+              11,
+              0.28
+            );
+        }
+
+        .student-logo-title {
+          font-size: 14px;
+          font-weight: 800;
+          color: #b45309;
+        }
 
-* {
-  box-sizing: border-box;
-}
+        .student-logo-khmer {
+          margin-top: 3px;
+          font-size: 13px;
+          color: #92400e;
+        }
 
-.student-app {
-  min-height: 100vh;
-  display: flex;
-  background: #fffbeb;
-  color: #1f2937;
-  font-family: Inter, "Segoe UI", Arial, sans-serif;
-}
+        /* =================================================
+           PROFILE
+        ================================================= */
 
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
+        .student-profile {
+          display: flex;
+          align-items: center;
+          gap: 12px;
 
-.student-sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 250px;
+          margin: 20px 4px;
 
-  display: flex;
-  flex-direction: column;
+          padding: 12px;
 
-  padding: 22px 16px;
+          border-radius: 15px;
 
-  background: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #fffdf5 100%
-  );
+          background: #fffbeb;
+          border: 1px solid #fde68a;
+        }
 
-  border-right: 1px solid #fde68a;
+        .student-avatar {
+          width: 44px;
+          height: 44px;
 
-  z-index: 100;
-}
+          flex-shrink: 0;
 
-.student-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-  padding: 4px 8px 22px;
+          border-radius: 50%;
 
-  border-bottom: 1px solid #fef3c7;
-}
+          background:
+            linear-gradient(
+              135deg,
+              #d97706,
+              #f59e0b,
+              #fbbf24
+            );
 
-.student-logo-symbol {
-  width: 46px;
-  height: 46px;
+          color: white;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          font-size: 18px;
+          font-weight: 800;
+        }
 
-  border-radius: 14px;
+        .student-profile-info {
+          min-width: 0;
 
-  background: linear-gradient(
-    135deg,
-    #d97706,
-    #f59e0b,
-    #fbbf24
-  );
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
 
-  color: white;
+        .student-profile-info strong {
+          overflow: hidden;
 
-  font-size: 25px;
-  font-weight: 700;
+          font-size: 14px;
 
-  box-shadow:
-    0 8px 18px rgba(245, 158, 11, 0.28);
-}
+          color: #1e293b;
 
-.student-logo-title {
-  font-size: 14px;
-  font-weight: 800;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
 
-  color: #b45309;
+        .student-profile-info span {
+          font-size: 12px;
+          font-weight: 700;
 
-  letter-spacing: 0.3px;
-}
+          color: #d97706;
+        }
 
-.student-logo-khmer {
-  margin-top: 3px;
+        /* =================================================
+           MENU
+        ================================================= */
 
-  font-size: 13px;
-  color: #92400e;
-}
+        .student-menu {
+          flex: 1;
+          overflow-y: auto;
+          padding-right: 3px;
+        }
 
-/* =========================================================
-   PROFILE
-   ========================================================= */
+        .student-menu-title {
+          margin:
+            6px 10px 9px;
 
-.student-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+          font-size: 11px;
+          font-weight: 800;
 
-  margin: 20px 4px;
+          color: #a16207;
 
-  padding: 12px;
+          letter-spacing: 1px;
+        }
 
-  border-radius: 15px;
+        .student-menu-item {
+          width: 100%;
 
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-}
+          display: flex;
+          align-items: center;
 
-.student-avatar {
-  width: 44px;
-  height: 44px;
+          gap: 12px;
 
-  flex-shrink: 0;
+          margin-bottom: 5px;
+          padding: 11px 12px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          border: 0;
+          border-radius: 12px;
 
-  border-radius: 50%;
+          background: transparent;
 
-  background: linear-gradient(
-    135deg,
-    #d97706,
-    #f59e0b,
-    #fbbf24
-  );
+          color: #57534e;
 
-  color: white;
+          font-size: 14px;
+          font-weight: 600;
 
-  font-size: 18px;
-  font-weight: 800;
-}
+          text-align: left;
 
-.student-profile-info {
-  min-width: 0;
+          cursor: pointer;
 
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+          transition:
+            background 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+        }
 
-.student-profile-info strong {
-  overflow: hidden;
+        .student-menu-item:hover {
+          background: #fffbeb;
+          color: #b45309;
 
-  font-size: 14px;
+          transform:
+            translateX(2px);
+        }
 
-  color: #1e293b;
+        .student-menu-item.active {
+          background:
+            linear-gradient(
+              90deg,
+              #fef3c7,
+              #fffbeb
+            );
 
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+          color: #b45309;
 
-.student-profile-info span {
-  font-size: 12px;
-  font-weight: 700;
+          font-weight: 800;
 
-  color: #d97706;
-}
+          box-shadow:
+            inset 3px 0 0 #f59e0b;
+        }
 
-/* =========================================================
-   MENU
-   ========================================================= */
+        .student-menu-icon {
+          width: 24px;
 
-.student-menu {
-  flex: 1;
+          display: inline-flex;
+          justify-content: center;
 
-  overflow-y: auto;
+          font-size: 18px;
+        }
 
-  padding-right: 3px;
-}
+        .student-sidebar-bottom {
+          padding-top: 12px;
 
-.student-menu-title {
-  margin: 6px 10px 9px;
+          border-top:
+            1px solid #fef3c7;
+        }
 
-  font-size: 11px;
-  font-weight: 800;
+        .student-menu-item.logout {
+          color: #dc2626;
+        }
 
-  color: #a16207;
+        .student-menu-item.logout:hover {
+          background: #fef2f2;
+          color: #b91c1c;
+        }
 
-  letter-spacing: 1px;
-}
+        /* =================================================
+           MAIN
+        ================================================= */
 
-.student-menu-item {
-  width: 100%;
+        .student-main {
+          width:
+            calc(100% - 250px);
 
-  display: flex;
-  align-items: center;
+          min-height: 100vh;
 
-  gap: 12px;
+          margin-left: 250px;
 
-  margin-bottom: 5px;
-  padding: 11px 12px;
+          padding:
+            30px 38px 60px;
 
-  border: 0;
-  border-radius: 12px;
+          overflow-x: hidden;
+        }
 
-  background: transparent;
+        /* =================================================
+           HEADER
+        ================================================= */
 
-  color: #57534e;
+        .student-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
-  font-size: 14px;
-  font-weight: 600;
+          gap: 20px;
 
-  text-align: left;
+          margin-bottom: 24px;
+        }
 
-  cursor: pointer;
+        .student-header h1 {
+          margin: 0;
 
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
+          font-size: 29px;
+          line-height: 1.25;
 
-.student-menu-item:hover {
-  background: #fffbeb;
-  color: #b45309;
+          color: #451a03;
+        }
 
-  transform: translateX(2px);
-}
+        .student-header-khmer {
+          margin:
+            5px 0 0;
 
-.student-menu-item.active {
-  background: linear-gradient(
-    90deg,
-    #fef3c7,
-    #fffbeb
-  );
+          font-size: 18px;
+          font-weight: 700;
 
-  color: #b45309;
+          color: #d97706;
+        }
 
-  font-weight: 800;
+        .student-header p {
+          margin:
+            8px 0 0;
 
-  box-shadow:
-    inset 3px 0 0 #f59e0b;
-}
+          font-size: 14px;
 
-.student-menu-icon {
-  width: 24px;
+          color: #78716c;
+        }
 
-  display: inline-flex;
-  justify-content: center;
+        .student-header-khmer-sub {
+          margin-top: 4px !important;
 
-  font-size: 18px;
-}
+          font-size: 13px !important;
 
-.student-sidebar-bottom {
-  padding-top: 12px;
+          color: #a8a29e !important;
+        }
 
-  border-top: 1px solid #fef3c7;
-}
+        .student-header-user {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
 
-.student-menu-item.logout {
-  color: #dc2626;
-}
+        .student-header-avatar {
+          width: 54px;
+          height: 54px;
 
-.student-menu-item.logout:hover {
-  background: #fef2f2;
-  color: #b91c1c;
-}
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-/* =========================================================
-   MAIN
-   ========================================================= */
+          border-radius: 50%;
 
-.student-main {
-  width: calc(100% - 250px);
+          background:
+            linear-gradient(
+              135deg,
+              #d97706,
+              #f59e0b,
+              #fbbf24
+            );
 
-  min-height: 100vh;
+          color: white;
 
-  margin-left: 250px;
+          font-size: 21px;
+          font-weight: 800;
 
-  padding: 30px 38px 60px;
+          box-shadow:
+            0 8px 20px
+            rgba(
+              245,
+              158,
+              11,
+              0.28
+            );
+        }
 
-  overflow-x: hidden;
-}
+        /* =================================================
+           WELCOME
+        ================================================= */
 
-/* =========================================================
-   HEADER
-   ========================================================= */
+        .student-welcome {
+          position: relative;
 
-.student-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+          min-height: 210px;
 
-  gap: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
-  margin-bottom: 24px;
-}
+          overflow: hidden;
 
-.student-header h1 {
-  margin: 0;
+          margin-bottom: 24px;
+          padding: 32px 40px;
 
-  font-size: 29px;
-  line-height: 1.25;
+          border-radius: 24px;
 
-  color: #451a03;
-}
+          background:
+            linear-gradient(
+              135deg,
+              #b45309 0%,
+              #d97706 35%,
+              #f59e0b 70%,
+              #fbbf24 100%
+            );
 
-.student-header-khmer {
-  margin: 5px 0 0;
+          color: white;
 
-  font-size: 18px;
-  font-weight: 700;
+          box-shadow:
+            0 15px 35px
+            rgba(
+              217,
+              119,
+              6,
+              0.22
+            );
+        }
 
-  color: #d97706;
-}
+        .student-welcome::before {
+          content: "";
 
-.student-header p {
-  margin: 8px 0 0;
+          position: absolute;
 
-  font-size: 14px;
+          width: 260px;
+          height: 260px;
 
-  color: #78716c;
-}
+          right: 90px;
+          top: -130px;
 
-.student-header-khmer-sub {
-  margin-top: 4px !important;
+          border-radius: 50%;
 
-  font-size: 13px !important;
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              0.11
+            );
+        }
 
-  color: #a8a29e !important;
-}
+        .student-welcome::after {
+          content: "";
 
-.student-header-user {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+          position: absolute;
 
-.student-header-avatar {
-  width: 54px;
-  height: 54px;
+          width: 180px;
+          height: 180px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          right: -50px;
+          bottom: -90px;
 
-  border-radius: 50%;
+          border-radius: 50%;
 
-  background: linear-gradient(
-    135deg,
-    #d97706,
-    #f59e0b,
-    #fbbf24
-  );
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              0.11
+            );
+        }
 
-  color: white;
+        .student-welcome-content {
+          position: relative;
+          z-index: 2;
 
-  font-size: 21px;
-  font-weight: 800;
+          max-width: 650px;
+        }
 
-  box-shadow:
-    0 8px 20px rgba(245, 158, 11, 0.28);
-}
+        .student-welcome-khmer {
+          margin-bottom: 5px;
 
-/* =========================================================
-   WELCOME
-   ========================================================= */
+          font-size: 17px;
+          font-weight: 700;
 
-.student-welcome {
-  position: relative;
+          opacity: 0.92;
+        }
 
-  min-height: 210px;
+        .student-welcome h2 {
+          margin: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+          font-size: 28px;
+          line-height: 1.25;
+        }
 
-  overflow: hidden;
+        .student-welcome p {
+          max-width: 580px;
 
-  margin-bottom: 24px;
-  padding: 32px 40px;
+          margin:
+            12px 0 20px;
 
-  border-radius: 24px;
+          font-size: 14px;
+          line-height: 1.7;
 
-  background: linear-gradient(
-    135deg,
-    #b45309 0%,
-    #d97706 35%,
-    #f59e0b 70%,
-    #fbbf24 100%
-  );
+          color:
+            rgba(
+              255,
+              255,
+              255,
+              0.9
+            );
+        }
 
-  color: white;
+        .student-primary-button {
+          border: 0;
+          border-radius: 11px;
 
-  box-shadow:
-    0 15px 35px rgba(217, 119, 6, 0.22);
-}
+          padding:
+            11px 18px;
 
-.student-welcome::before {
-  content: "";
+          background: white;
 
-  position: absolute;
+          color: #b45309;
 
-  width: 260px;
-  height: 260px;
+          font-size: 14px;
+          font-weight: 800;
 
-  right: 90px;
-  top: -130px;
+          cursor: pointer;
 
-  border-radius: 50%;
+          box-shadow:
+            0 7px 18px
+            rgba(
+              0,
+              0,
+              0,
+              0.12
+            );
 
-  background: rgba(
-    255,
-    255,
-    255,
-    0.11
-  );
-}
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+        }
 
-.student-welcome::after {
-  content: "";
+        .student-primary-button:hover {
+          transform:
+            translateY(-2px);
 
-  position: absolute;
+          box-shadow:
+            0 10px 22px
+            rgba(
+              0,
+              0,
+              0,
+              0.17
+            );
+        }
 
-  width: 180px;
-  height: 180px;
+        .student-welcome-symbol {
+          position: relative;
+          z-index: 2;
 
-  right: -50px;
-  bottom: -90px;
+          margin-right: 40px;
 
-  border-radius: 50%;
+          font-size: 130px;
+          font-weight: 800;
 
-  background: rgba(
-    255,
-    255,
-    255,
-    0.11
-  );
-}
+          line-height: 1;
 
-.student-welcome-content {
-  position: relative;
-  z-index: 2;
+          color:
+            rgba(
+              255,
+              255,
+              255,
+              0.17
+            );
 
-  max-width: 650px;
-}
+          user-select: none;
+        }
 
-.student-welcome-khmer {
-  margin-bottom: 5px;
+        /* =================================================
+           STATISTICS
+        ================================================= */
 
-  font-size: 17px;
-  font-weight: 700;
+        .student-stat-grid {
+          display: grid;
 
-  opacity: 0.92;
-}
+          grid-template-columns:
+            repeat(
+              4,
+              minmax(0, 1fr)
+            );
 
-.student-welcome h2 {
-  margin: 0;
+          gap: 16px;
 
-  font-size: 28px;
-  line-height: 1.25;
-}
+          margin-bottom: 20px;
+        }
 
-.student-welcome p {
-  max-width: 580px;
+        .student-stat-card {
+          min-height: 92px;
 
-  margin: 12px 0 20px;
+          display: flex;
+          align-items: center;
 
-  font-size: 14px;
-  line-height: 1.7;
+          gap: 13px;
 
-  color: rgba(
-    255,
-    255,
-    255,
-    0.9
-  );
-}
+          padding: 17px;
 
-.student-primary-button {
-  border: 0;
-  border-radius: 11px;
+          border:
+            1px solid #fde68a;
 
-  padding: 11px 18px;
+          border-radius: 17px;
 
-  background: white;
+          background: white;
 
-  color: #b45309;
+          box-shadow:
+            0 5px 16px
+            rgba(
+              120,
+              53,
+              15,
+              0.05
+            );
+        }
 
-  font-size: 14px;
-  font-weight: 800;
+        .student-stat-icon {
+          width: 45px;
+          height: 45px;
 
-  cursor: pointer;
+          flex-shrink: 0;
 
-  box-shadow:
-    0 7px 18px rgba(
-      0,
-      0,
-      0,
-      0.12
-    );
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
+          border-radius: 13px;
 
-.student-primary-button:hover {
-  transform: translateY(-2px);
+          background: #fffbeb;
 
-  box-shadow:
-    0 10px 22px rgba(
-      0,
-      0,
-      0,
-      0.17
-    );
-}
+          color: #d97706;
 
-.student-welcome-symbol {
-  position: relative;
-  z-index: 2;
+          font-size: 21px;
+        }
 
-  margin-right: 40px;
+        .student-stat-card
+          > div:last-child {
+          min-width: 0;
+        }
 
-  font-size: 130px;
-  font-weight: 800;
+        .student-stat-card span {
+          display: block;
 
-  line-height: 1;
+          margin-bottom: 4px;
 
-  color: rgba(
-    255,
-    255,
-    255,
-    0.17
-  );
+          font-size: 12px;
 
-  user-select: none;
-}
+          color: #78716c;
+        }
 
-/* =========================================================
-   STATISTICS
-   ========================================================= */
+        .student-stat-card strong {
+          display: block;
 
-.student-stat-grid {
-  display: grid;
+          font-size: 17px;
 
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+          color: #451a03;
+        }
 
-  gap: 16px;
+        /* =================================================
+           EXP
+        ================================================= */
 
-  margin-bottom: 20px;
-}
+        .exp-stat-card {
+          align-items: flex-start;
+        }
 
-.student-stat-card {
-  min-height: 92px;
+        .exp-icon {
+          background: #fef3c7;
+          color: #d97706;
+        }
 
-  display: flex;
-  align-items: center;
+        .exp-stat-content {
+          width: 100%;
+        }
 
-  gap: 13px;
+        .exp-stat-header,
+        .exp-stat-footer {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
-  padding: 17px;
+          gap: 8px;
+        }
 
-  border: 1px solid #fde68a;
-  border-radius: 17px;
+        .exp-stat-header strong {
+          font-size: 13px;
+          color: #d97706;
+        }
 
-  background: white;
+        .exp-progress-track {
+          width: 100%;
+          height: 8px;
 
-  box-shadow:
-    0 5px 16px rgba(
-      120,
-      53,
-      15,
-      0.05
-    );
-}
+          margin: 8px 0;
 
-.student-stat-icon {
-  width: 45px;
-  height: 45px;
+          overflow: hidden;
 
-  flex-shrink: 0;
+          border-radius: 999px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          background: #fef3c7;
+        }
 
-  border-radius: 13px;
+        .exp-progress-fill {
+          position: relative;
 
-  background: #fffbeb;
+          height: 100%;
 
-  color: #d97706;
+          border-radius: inherit;
 
-  font-size: 21px;
-}
+          background:
+            linear-gradient(
+              90deg,
+              #d97706,
+              #f59e0b,
+              #fbbf24
+            );
 
-.student-stat-card > div:last-child {
-  min-width: 0;
-}
+          transition:
+            width 0.5s ease;
+        }
 
-.student-stat-card span {
-  display: block;
+        .exp-progress-shine {
+          position: absolute;
 
-  margin-bottom: 4px;
+          top: 0;
+          left: 0;
 
-  font-size: 12px;
-  color: #78716c;
-}
+          width: 35%;
+          height: 100%;
 
-.student-stat-card strong {
-  display: block;
+          background:
+            linear-gradient(
+              90deg,
+              transparent,
+              rgba(
+                255,
+                255,
+                255,
+                0.55
+              ),
+              transparent
+            );
 
-  font-size: 17px;
-  color: #451a03;
-}
+          animation:
+            expShine 2.5s infinite;
+        }
 
-/* =========================================================
-   EXP
-   ========================================================= */
+        @keyframes expShine {
+          0% {
+            transform:
+              translateX(-120%);
+          }
 
-.exp-stat-card {
-  align-items: flex-start;
-}
+          100% {
+            transform:
+              translateX(350%);
+          }
+        }
 
-.exp-icon {
-  background: #fef3c7;
-  color: #d97706;
-}
+        .exp-stat-footer span {
+          margin: 0;
 
-.exp-stat-content {
-  width: 100%;
-}
+          font-size: 10px;
 
-.exp-stat-header,
-.exp-stat-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+          color: #a8a29e;
+        }
 
-  gap: 8px;
-}
+        /* =================================================
+           THỜI GIAN HỌC
+        ================================================= */
 
-.exp-stat-header strong {
-  font-size: 13px;
+        .online-learning-card {
+          display: flex;
+          align-items: center;
 
-  color: #d97706;
-}
+          gap: 17px;
 
-.exp-progress-track {
-  width: 100%;
-  height: 8px;
+          margin-bottom: 25px;
+          padding: 19px 22px;
 
-  margin: 8px 0;
+          border:
+            1px solid #fde68a;
 
-  overflow: hidden;
+          border-radius: 18px;
 
-  border-radius: 999px;
+          background:
+            linear-gradient(
+              90deg,
+              #fffbeb,
+              #ffffff
+            );
 
-  background: #fef3c7;
-}
+          box-shadow:
+            0 5px 18px
+            rgba(
+              245,
+              158,
+              11,
+              0.08
+            );
+        }
 
-.exp-progress-fill {
-  position: relative;
+        .online-learning-icon {
+          width: 52px;
+          height: 52px;
 
-  height: 100%;
+          flex-shrink: 0;
 
-  border-radius: inherit;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-  background: linear-gradient(
-    90deg,
-    #d97706,
-    #f59e0b,
-    #fbbf24
-  );
+          border-radius: 15px;
 
-  transition:
-    width 0.5s ease;
-}
+          background: #fef3c7;
 
-.exp-progress-shine {
-  position: absolute;
+          font-size: 25px;
+        }
 
-  top: 0;
-  left: 0;
+        .online-learning-content {
+          flex: 1;
+        }
 
-  width: 35%;
-  height: 100%;
+        .online-learning-title {
+          font-size: 12px;
+          font-weight: 700;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(
-      255,
-      255,
-      255,
-      0.55
-    ),
-    transparent
-  );
+          color: #78716c;
+        }
 
-  animation:
-    expShine 2.5s infinite;
-}
+        .online-learning-time {
+          margin-top: 3px;
 
-@keyframes expShine {
-  0% {
-    transform: translateX(-120%);
-  }
+          font-size: 25px;
+          font-weight: 800;
 
-  100% {
-    transform: translateX(350%);
-  }
-}
+          color: #92400e;
 
-.exp-stat-footer span {
-  margin: 0;
+          font-variant-numeric:
+            tabular-nums;
+        }
 
-  font-size: 10px;
-  color: #a8a29e;
-}
+        .online-learning-note {
+          margin-top: 3px;
 
-/* =========================================================
-   THỜI GIAN HỌC
-   ========================================================= */
+          font-size: 11px;
 
-.online-learning-card {
-  display: flex;
-  align-items: center;
+          color: #a8a29e;
+        }
 
-  gap: 17px;
+        .online-learning-note strong {
+          margin-left: 5px;
 
-  margin-bottom: 25px;
-  padding: 19px 22px;
+          color: #d97706;
+        }
 
-  border: 1px solid #fde68a;
-  border-radius: 18px;
+        .online-learning-status {
+          display: flex;
+          align-items: center;
 
-  background: linear-gradient(
-    90deg,
-    #fffbeb,
-    #ffffff
-  );
+          gap: 7px;
 
-  box-shadow:
-    0 5px 18px rgba(
-      245,
-      158,
-      11,
-      0.08
-    );
-}
+          padding:
+            7px 11px;
 
-.online-learning-icon {
-  width: 52px;
-  height: 52px;
+          border-radius: 999px;
 
-  flex-shrink: 0;
+          background: #fffbeb;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          color: #b45309;
 
-  border-radius: 15px;
+          border:
+            1px solid #fde68a;
 
-  background: #fef3c7;
+          font-size: 12px;
+          font-weight: 700;
+        }
 
-  font-size: 25px;
-}
+        .online-dot {
+          width: 10px;
+          height: 10px;
 
-.online-learning-content {
-  flex: 1;
-}
+          border-radius: 50%;
 
-.online-learning-title {
-  font-size: 12px;
-  font-weight: 700;
+          background: #16a34a;
 
-  color: #78716c;
-}
+          box-shadow:
+            0 0 0 4px
+            rgba(
+              22,
+              163,
+              74,
+              0.12
+            );
+        }
 
-.online-learning-time {
-  margin-top: 3px;
+        /* =================================================
+           SECTION
+        ================================================= */
 
-  font-size: 25px;
-  font-weight: 800;
+        .student-section {
+          margin-top: 25px;
+        }
 
-  color: #92400e;
+        .learning-section-target {
+          scroll-margin-top: 25px;
+        }
 
-  font-variant-numeric: tabular-nums;
-}
+        .student-section-heading {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
-.online-learning-note {
-  margin-top: 3px;
+          margin-bottom: 14px;
+        }
 
-  font-size: 11px;
+        .student-section-heading h2 {
+          margin: 0;
 
-  color: #a8a29e;
-}
+          font-size: 20px;
 
-.online-learning-note strong {
-  margin-left: 5px;
+          color: #451a03;
+        }
 
-  color: #d97706;
-}
+        .student-section-heading p {
+          margin:
+            5px 0 0;
 
-.online-learning-status {
-  display: flex;
-  align-items: center;
+          font-size: 13px;
 
-  gap: 7px;
+          color: #78716c;
+        }
 
-  padding: 7px 11px;
+        /* =================================================
+           LEARNING CARDS
+        ================================================= */
 
-  border-radius: 999px;
+        .student-learning-grid {
+          display: grid;
 
-  background: #fffbeb;
+          grid-template-columns:
+            repeat(
+              2,
+              minmax(0, 1fr)
+            );
 
-  color: #b45309;
+          gap: 15px;
+        }
 
-  border: 1px solid #fde68a;
+        .learning-card {
+          position: relative;
 
-  font-size: 12px;
-  font-weight: 700;
-}
+          display: grid;
 
-.online-dot {
-  width: 10px;
-  height: 10px;
+          grid-template-columns:
+            52px 1fr auto;
 
-  border-radius: 50%;
+          align-items: center;
 
-  background: #0dcc1a;
+          gap: 14px;
 
-  box-shadow:
-    0 0 0 4px
-    rgba(
-      245,
-      158,
-      11,
-      0.13
-    );
-}
+          width: 100%;
 
-/* =========================================================
-   SECTION
-   ========================================================= */
+          min-height: 118px;
 
-.student-section {
-  margin-top: 25px;
-}
+          padding: 18px;
 
-.learning-section-target {
-  scroll-margin-top: 25px;
-}
+          border:
+            1px solid #fde68a;
 
-.student-section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+          border-radius: 18px;
 
-  margin-bottom: 14px;
-}
+          background: white;
 
-.student-section-heading h2 {
-  margin: 0;
+          text-align: left;
 
-  font-size: 20px;
+          cursor: pointer;
 
-  color: #451a03;
-}
+          box-shadow:
+            0 5px 16px
+            rgba(
+              120,
+              53,
+              15,
+              0.05
+            );
 
-.student-section-heading p {
-  margin: 5px 0 0;
+          transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
+        }
 
-  font-size: 13px;
+        .learning-card:hover {
+          transform:
+            translateY(-3px);
 
-  color: #78716c;
-}
+          border-color:
+            #fbbf24;
 
-/* =========================================================
-   LEARNING CARDS
-   ========================================================= */
+          box-shadow:
+            0 12px 25px
+            rgba(
+              217,
+              119,
+              6,
+              0.13
+            );
+        }
 
-.student-learning-grid {
-  display: grid;
+        .learning-card-icon {
+          width: 52px;
+          height: 52px;
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-  gap: 15px;
-}
+          border-radius: 15px;
 
-.learning-card {
-  position: relative;
+          background: #fffbeb;
 
-  display: grid;
+          color: #d97706;
 
-  grid-template-columns:
-    52px 1fr auto;
+          font-size: 25px;
+          font-weight: 800;
+        }
 
-  align-items: center;
+        .learning-card h3 {
+          margin:
+            0 0 5px;
 
-  gap: 14px;
+          font-size: 16px;
 
-  width: 100%;
+          color: #451a03;
+        }
 
-  min-height: 118px;
+        .learning-card p {
+          margin: 0;
 
-  padding: 18px;
+          font-size: 12px;
+          line-height: 1.5;
 
-  border: 1px solid #fde68a;
-  border-radius: 18px;
+          color: #78716c;
+        }
 
-  background: white;
+        .learning-arrow {
+          font-size: 23px;
 
-  text-align: left;
+          color: #d6d3d1;
 
-  cursor: pointer;
+          transition:
+            transform 0.2s ease,
+            color 0.2s ease;
+        }
 
-  box-shadow:
-    0 5px 16px rgba(
-      120,
-      53,
-      15,
-      0.05
-    );
+        .learning-card:hover
+          .learning-arrow {
+          color: #d97706;
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
-}
+          transform:
+            translateX(4px);
+        }
 
-.learning-card:hover {
-  transform: translateY(-3px);
+        /* =================================================
+           DAILY GOAL
+        ================================================= */
 
-  border-color: #fbbf24;
+        .daily-goal-card {
+          padding: 21px;
 
-  box-shadow:
-    0 12px 25px rgba(
-      217,
-      119,
-      6,
-      0.13
-    );
-}
+          border:
+            1px solid #fde68a;
 
-.learning-card-icon {
-  width: 52px;
-  height: 52px;
+          border-radius: 18px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          background: white;
 
-  border-radius: 15px;
+          box-shadow:
+            0 5px 16px
+            rgba(
+              120,
+              53,
+              15,
+              0.05
+            );
+        }
 
-  background: #fffbeb;
+        .daily-goal-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
 
-  color: #d97706;
+          gap: 15px;
+        }
 
-  font-size: 25px;
-  font-weight: 800;
-}
+        .daily-goal-top strong {
+          font-size: 14px;
 
-.learning-card h3 {
-  margin: 0 0 5px;
+          color: #451a03;
+        }
 
-  font-size: 16px;
+        .daily-goal-top p {
+          margin:
+            5px 0 0;
 
-  color: #451a03;
-}
+          font-size: 12px;
 
-.learning-card p {
-  margin: 0;
+          color: #78716c;
+        }
 
-  font-size: 12px;
-  line-height: 1.5;
+        .daily-goal-percent {
+          font-size: 22px;
+          font-weight: 800;
 
-  color: #78716c;
-}
+          color: #d97706;
+        }
 
-.learning-arrow {
-  font-size: 23px;
+        .progress-track {
+          width: 100%;
+          height: 10px;
 
-  color: #d6d3d1;
+          margin-top: 15px;
 
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease;
-}
+          overflow: hidden;
 
-.learning-card:hover .learning-arrow {
-  color: #d97706;
+          border-radius: 999px;
 
-  transform: translateX(4px);
-}
+          background: #fef3c7;
+        }
 
-/* =========================================================
-   DAILY GOAL
-   ========================================================= */
+        .progress-fill {
+          height: 100%;
 
-.daily-goal-card {
-  padding: 21px;
+          border-radius: inherit;
 
-  border: 1px solid #fde68a;
-  border-radius: 18px;
+          background:
+            linear-gradient(
+              90deg,
+              #d97706,
+              #f59e0b,
+              #fbbf24
+            );
+        }
 
-  background: white;
+        .daily-goal-bottom {
+          margin-top: 10px;
 
-  box-shadow:
-    0 5px 16px rgba(
-      120,
-      53,
-      15,
-      0.05
-    );
-}
+          font-size: 12px;
 
-.daily-goal-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+          color: #a8a29e;
+        }
 
-  gap: 15px;
-}
+        /* =================================================
+           LEVEL UP
+        ================================================= */
 
-.daily-goal-top strong {
-  font-size: 14px;
+        .level-up-overlay {
+          position: fixed;
 
-  color: #451a03;
-}
+          inset: 0;
 
-.daily-goal-top p {
-  margin: 5px 0 0;
+          z-index: 9999;
 
-  font-size: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-  color: #78716c;
-}
+          padding: 20px;
 
-.daily-goal-percent {
-  font-size: 22px;
-  font-weight: 800;
+          background:
+            rgba(
+              69,
+              26,
+              3,
+              0.68
+            );
 
-  color: #d97706;
-}
+          backdrop-filter:
+            blur(7px);
+        }
 
-.progress-track {
-  width: 100%;
-  height: 10px;
+        .level-up-confetti {
+          position: absolute;
 
-  margin-top: 15px;
+          top: 16%;
 
-  overflow: hidden;
+          width: 100%;
 
-  border-radius: 999px;
+          text-align: center;
 
-  background: #fef3c7;
-}
+          font-size: 30px;
 
-.progress-fill {
-  height: 100%;
+          letter-spacing: 14px;
+        }
 
-  border-radius: inherit;
+        .level-up-card {
+          position: relative;
 
-  background: linear-gradient(
-    90deg,
-    #d97706,
-    #f59e0b,
-    #fbbf24
-  );
+          width: min(
+            430px,
+            100%
+          );
 
-  transition:
-    width 0.4s ease;
-}
+          padding:
+            38px 30px 30px;
 
-.daily-goal-bottom {
-  margin-top: 10px;
+          border:
+            1px solid
+            rgba(
+              255,
+              255,
+              255,
+              0.5
+            );
 
-  font-size: 12px;
+          border-radius: 28px;
 
-  color: #a8a29e;
-}
+          background:
+            linear-gradient(
+              180deg,
+              #ffffff,
+              #fffbeb
+            );
 
-/* =========================================================
-   LEVEL UP
-   ========================================================= */
+          text-align: center;
 
-.level-up-overlay {
-  position: fixed;
+          box-shadow:
+            0 30px 80px
+            rgba(
+              0,
+              0,
+              0,
+              0.25
+            );
+        }
 
-  inset: 0;
+        .level-up-icon {
+          width: 82px;
+          height: 82px;
 
-  z-index: 9999;
+          margin:
+            0 auto 12px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-  padding: 20px;
+          border-radius: 50%;
 
-  background:
-    rgba(
-      69,
-      26,
-      3,
-      0.68
-    );
+          background:
+            linear-gradient(
+              135deg,
+              #fef3c7,
+              #fbbf24
+            );
 
-  backdrop-filter:
-    blur(7px);
+          font-size: 43px;
 
-  animation:
-    overlayIn 0.25s ease;
-}
+          box-shadow:
+            0 10px 25px
+            rgba(
+              245,
+              158,
+              11,
+              0.3
+            );
+        }
 
-@keyframes overlayIn {
-  from {
-    opacity: 0;
-  }
+        .level-up-small {
+          font-size: 11px;
+          font-weight: 800;
 
-  to {
-    opacity: 1;
-  }
-}
+          letter-spacing: 2px;
 
-.level-up-confetti {
-  position: absolute;
+          color: #78716c;
+        }
 
-  top: 16%;
+        .level-up-card h2 {
+          margin:
+            5px 0;
 
-  width: 100%;
+          font-size: 32px;
 
-  text-align: center;
+          color: #d97706;
+        }
 
-  font-size: 30px;
+        .level-up-number {
+          margin:
+            8px 0;
 
-  letter-spacing: 14px;
+          font-size: 25px;
+          font-weight: 900;
 
-  animation:
-    confettiFloat 1.5s
-    ease-in-out
-    infinite;
-}
+          color: #f59e0b;
+        }
 
-@keyframes confettiFloat {
-  0%,
-  100% {
-    transform:
-      translateY(0);
-  }
+        .level-up-card p {
+          margin:
+            10px 0;
 
-  50% {
-    transform:
-      translateY(-10px);
-  }
-}
+          font-size: 14px;
 
-.level-up-card {
-  position: relative;
+          color: #57534e;
+        }
 
-  width: min(
-    430px,
-    100%
-  );
+        .level-up-khmer {
+          margin-top: 8px;
 
-  padding: 38px 30px 30px;
+          font-size: 14px;
+          font-weight: 700;
 
-  border: 1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.5
-    );
+          color: #d97706;
+        }
 
-  border-radius: 28px;
+        .level-up-button {
+          margin-top: 22px;
 
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff,
-      #fffbeb
-    );
+          padding:
+            12px 23px;
 
-  text-align: center;
+          border: 0;
+          border-radius: 12px;
 
-  box-shadow:
-    0 30px 80px rgba(
-      0,
-      0,
-      0,
-      0.25
-    );
+          background:
+            linear-gradient(
+              135deg,
+              #d97706,
+              #f59e0b,
+              #fbbf24
+            );
 
-  animation:
-    levelUpCardIn
-    0.45s
-    cubic-bezier(
-      0.175,
-      0.885,
-      0.32,
-      1.275
-    );
-}
+          color: white;
 
-@keyframes levelUpCardIn {
-  from {
-    opacity: 0;
+          font-size: 14px;
+          font-weight: 800;
 
-    transform:
-      scale(0.7)
-      translateY(30px);
-  }
+          cursor: pointer;
 
-  to {
-    opacity: 1;
+          box-shadow:
+            0 8px 18px
+            rgba(
+              217,
+              119,
+              6,
+              0.25
+            );
+        }
 
-    transform:
-      scale(1)
-      translateY(0);
-  }
-}
+        /* =================================================
+           SCROLLBAR
+        ================================================= */
 
-.level-up-icon {
-  width: 82px;
-  height: 82px;
+        .student-menu::-webkit-scrollbar {
+          width: 5px;
+        }
 
-  margin: 0 auto 12px;
+        .student-menu::-webkit-scrollbar-track {
+          background: transparent;
+        }
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+        .student-menu::-webkit-scrollbar-thumb {
+          border-radius: 999px;
+          background: #fcd34d;
+        }
 
-  border-radius: 50%;
+        /* =================================================
+           TABLET
+        ================================================= */
 
-  background:
-    linear-gradient(
-      135deg,
-      #fef3c7,
-      #fbbf24
-    );
+        @media (max-width: 1100px) {
 
-  font-size: 43px;
+          .student-sidebar {
+            width: 220px;
+          }
 
-  box-shadow:
-    0 10px 25px
-    rgba(
-      245,
-      158,
-      11,
-      0.3
-    );
+          .student-main {
+            width:
+              calc(100% - 220px);
 
-  animation:
-    trophyPulse
-    1.2s
-    infinite;
-}
+            margin-left: 220px;
 
-@keyframes trophyPulse {
-  0%,
-  100% {
-    transform:
-      scale(1);
-  }
+            padding:
+              25px 25px 50px;
+          }
 
-  50% {
-    transform:
-      scale(1.08);
-  }
-}
+          .student-stat-grid {
+            grid-template-columns:
+              repeat(
+                2,
+                minmax(0, 1fr)
+              );
+          }
+        }
 
-.level-up-small {
-  font-size: 11px;
-  font-weight: 800;
+        /* =================================================
+           MOBILE
+        ================================================= */
 
-  letter-spacing: 2px;
+        @media (max-width: 760px) {
 
-  color: #78716c;
-}
+          .student-app {
+            display: block;
+          }
 
-.level-up-card h2 {
-  margin: 5px 0;
+          .student-sidebar {
+            position: relative;
 
-  font-size: 32px;
+            width: 100%;
+            height: auto;
 
-  color: #d97706;
-}
+            min-height: 0;
 
-.level-up-number {
-  margin: 8px 0;
+            padding: 12px;
 
-  font-size: 25px;
-  font-weight: 900;
+            border-right: 0;
 
-  color: #f59e0b;
-}
+            border-bottom:
+              1px solid #fde68a;
+          }
 
-.level-up-card p {
-  margin: 10px 0;
+          .student-logo {
+            padding-bottom: 12px;
+          }
 
-  font-size: 14px;
+          .student-profile {
+            margin:
+              12px 0;
+          }
 
-  color: #57534e;
-}
+          .student-menu {
+            display: flex;
 
-.level-up-khmer {
-  margin-top: 8px;
+            gap: 6px;
 
-  font-size: 14px;
-  font-weight: 700;
+            overflow-x: auto;
+            overflow-y: hidden;
 
-  color: #d97706;
-}
+            padding-bottom: 4px;
+          }
 
-.level-up-button {
-  margin-top: 22px;
+          .student-menu-title {
+            display: none;
+          }
 
-  padding: 12px 23px;
+          .student-menu-item {
+            width: auto;
 
-  border: 0;
-  border-radius: 12px;
+            flex-shrink: 0;
 
-  background:
-    linear-gradient(
-      135deg,
-      #d97706,
-      #f59e0b,
-      #fbbf24
-    );
+            margin-bottom: 0;
 
-  color: white;
+            padding:
+              9px 11px;
+          }
 
-  font-size: 14px;
-  font-weight: 800;
+          .student-menu-item
+            span:last-child {
+            display: none;
+          }
 
-  cursor: pointer;
+          .student-sidebar-bottom {
+            display: flex;
 
-  box-shadow:
-    0 8px 18px
-    rgba(
-      217,
-      119,
-      6,
-      0.25
-    );
+            gap: 6px;
 
-  transition:
-    transform 0.2s ease;
-}
+            padding-top: 8px;
+          }
 
-.level-up-button:hover {
-  transform:
-    translateY(-2px);
-}
+          .student-sidebar-bottom
+            .student-menu-item {
+            flex: 1;
+          }
 
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
+          .student-main {
+            width: 100%;
 
-.student-menu::-webkit-scrollbar {
-  width: 5px;
-}
+            margin-left: 0;
 
-.student-menu::-webkit-scrollbar-track {
-  background: transparent;
-}
+            padding:
+              20px 15px 40px;
+          }
 
-.student-menu::-webkit-scrollbar-thumb {
-  border-radius: 999px;
+          .student-header {
+            align-items:
+              flex-start;
+          }
 
-  background: #fcd34d;
-}
+          .student-header h1 {
+            font-size: 23px;
+          }
 
-/* =========================================================
-   RESPONSIVE - TABLET
-   ========================================================= */
+          .student-header-khmer {
+            font-size: 16px;
+          }
 
-@media (max-width: 1100px) {
-  .student-sidebar {
-    width: 220px;
-  }
+          .student-header-user {
+            display: none;
+          }
 
-  .student-main {
-    width: calc(100% - 220px);
+          .student-welcome {
+            min-height: 0;
 
-    margin-left: 220px;
+            padding:
+              25px 22px;
+          }
 
-    padding:
-      25px 25px 50px;
-  }
+          .student-welcome h2 {
+            font-size: 22px;
+          }
 
-  .student-stat-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-  }
-}
+          .student-welcome-symbol {
+            display: none;
+          }
 
-/* =========================================================
-   RESPONSIVE - MOBILE
-   ========================================================= */
+          .student-stat-grid {
+            grid-template-columns: 1fr;
+          }
 
-@media (max-width: 760px) {
-  .student-app {
-    display: block;
-  }
+          .student-learning-grid {
+            grid-template-columns: 1fr;
+          }
 
-  .student-sidebar {
-    position: relative;
+          .online-learning-card {
+            align-items:
+              flex-start;
 
-    width: 100%;
-    height: auto;
+            flex-wrap: wrap;
+          }
 
-    min-height: 0;
+          .online-learning-status {
+            width: 100%;
 
-    padding: 12px;
+            justify-content: center;
+          }
 
-    border-right: 0;
-    border-bottom: 1px solid #fde68a;
-  }
+          .level-up-confetti {
+            top: 10%;
 
-  .student-logo {
-    padding-bottom: 12px;
-  }
+            font-size: 21px;
 
-  .student-profile {
-    margin:
-      12px 0;
-  }
+            letter-spacing: 5px;
+          }
+        }
 
-  .student-menu {
-    display: flex;
+        /* =================================================
+           SMALL PHONE
+        ================================================= */
 
-    gap: 6px;
+        @media (max-width: 430px) {
 
-    overflow-x: auto;
-    overflow-y: hidden;
+          .student-main {
+            padding:
+              16px 11px 30px;
+          }
 
-    padding-bottom: 4px;
-  }
+          .student-header h1 {
+            font-size: 21px;
+          }
 
-  .student-menu-title {
-    display: none;
-  }
+          .student-header p {
+            font-size: 12px;
+          }
 
-  .student-menu-item {
-    width: auto;
+          .student-welcome {
+            border-radius: 18px;
 
-    flex-shrink: 0;
+            padding:
+              22px 18px;
+          }
 
-    margin-bottom: 0;
+          .student-welcome h2 {
+            font-size: 20px;
+          }
 
-    padding:
-      9px 11px;
-  }
+          .student-welcome p {
+            font-size: 13px;
+          }
 
-  .student-menu-item span:last-child {
-    display: none;
-  }
+          .student-stat-card {
+            padding: 14px;
+          }
 
-  .student-sidebar-bottom {
-    display: flex;
+          .learning-card {
+            grid-template-columns:
+              45px 1fr auto;
 
-    gap: 6px;
+            padding: 14px;
+          }
 
-    padding-top: 8px;
-  }
+          .learning-card-icon {
+            width: 45px;
+            height: 45px;
 
-  .student-sidebar-bottom
-  .student-menu-item {
-    flex: 1;
-  }
+            font-size: 21px;
+          }
 
-  .student-main {
-    width: 100%;
+          .level-up-card {
+            padding:
+              30px 20px 24px;
+          }
 
-    margin-left: 0;
-
-    padding:
-      20px 15px 40px;
-  }
-
-  .student-header {
-    align-items: flex-start;
-  }
-
-  .student-header h1 {
-    font-size: 23px;
-  }
-
-  .student-header-khmer {
-    font-size: 16px;
-  }
-
-  .student-header-user {
-    display: none;
-  }
-
-  .student-welcome {
-    min-height: 0;
-
-    padding: 25px 22px;
-  }
-
-  .student-welcome h2 {
-    font-size: 22px;
-  }
-
-  .student-welcome-symbol {
-    display: none;
-  }
-
-  .student-stat-grid {
-    grid-template-columns:
-      1fr;
-  }
-
-  .student-learning-grid {
-    grid-template-columns:
-      1fr;
-  }
-
-  .online-learning-card {
-    align-items: flex-start;
-
-    flex-wrap: wrap;
-  }
-
-  .online-learning-status {
-    width: 100%;
-
-    justify-content: center;
-  }
-
-  .level-up-confetti {
-    top: 10%;
-
-    font-size: 21px;
-
-    letter-spacing: 5px;
-  }
-}
-
-/* =========================================================
-   RESPONSIVE - SMALL PHONE
-   ========================================================= */
-
-@media (max-width: 430px) {
-  .student-main {
-    padding:
-      16px 11px 30px;
-  }
-
-  .student-header h1 {
-    font-size: 21px;
-  }
-
-  .student-header p {
-    font-size: 12px;
-  }
-
-  .student-welcome {
-    border-radius: 18px;
-
-    padding: 22px 18px;
-  }
-
-  .student-welcome h2 {
-    font-size: 20px;
-  }
-
-  .student-welcome p {
-    font-size: 13px;
-  }
-
-  .student-stat-card {
-    padding: 14px;
-  }
-
-  .learning-card {
-    grid-template-columns:
-      45px 1fr auto;
-
-    padding: 14px;
-  }
-
-  .learning-card-icon {
-    width: 45px;
-    height: 45px;
-
-    font-size: 21px;
-  }
-
-  .level-up-card {
-    padding:
-      30px 20px 24px;
-  }
-}
-
+        }
 
       `}</style>
     </>
