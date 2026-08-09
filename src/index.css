@@ -1,0 +1,1497 @@
+@import url('https://fonts.googleapis.com/css2?family=Khmer&family=Noto+Sans:wght@400;500;600;700;800;900&family=Noto+Sans+Khmer:wght@400;500;600;700;800&display=swap');
+
+/* =========================================================
+   FONT
+   ========================================================= */
+
+:root {
+  --font-vietnamese: "Noto Sans", Arial, sans-serif;
+  --font-khmer: "Noto Sans Khmer", "Khmer", Arial, sans-serif;
+}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+
+  font-family: var(--font-vietnamese);
+
+  color: #26382b;
+
+  background: #f8f4df;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================================================
+   FONT KHMER
+   Chỉ dùng cho chữ Khmer
+   ========================================================= */
+
+.khmer-symbol,
+.login-khmer,
+.student-logo-khmer,
+.student-welcome-khmer,
+.student-welcome-symbol {
+  font-family: var(--font-khmer);
+}
+
+/* =========================================================
+   FORM / BUTTON
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font-family: var(--font-vietnamese);
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* =========================================================
+   LOGIN PAGE
+   ========================================================= */
+
+.login-page {
+  min-height: 100vh;
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(218, 174, 42, 0.28),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 90% 90%,
+      rgba(31, 91, 51, 0.18),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #fffdf2 0%,
+      #faf6df 48%,
+      #eef3e8 100%
+    );
+}
+
+/* =========================================================
+   LOGIN DECORATION
+   ========================================================= */
+
+.login-decoration {
+  position: absolute;
+
+  font-size: 180px;
+  line-height: 1;
+
+  color: rgba(194, 148, 26, 0.10);
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.decoration-left {
+  left: -45px;
+  top: 5%;
+  transform: rotate(-15deg);
+}
+
+.decoration-right {
+  right: -35px;
+  bottom: 5%;
+  transform: rotate(20deg);
+}
+
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+.login-card {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 440px;
+
+  padding: 42px 40px 36px;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  border: 1px solid rgba(197, 153, 34, 0.30);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 20px 60px rgba(36, 69, 42, 0.14),
+    0 5px 18px rgba(190, 145, 25, 0.08);
+
+  text-align: center;
+}
+
+.login-logo {
+  display: flex;
+  justify-content: center;
+
+  margin-bottom: 15px;
+}
+
+.khmer-symbol {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #e7c34f,
+      #c89b24
+    );
+
+  color: white;
+
+  font-size: 38px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(190, 145, 30, 0.28);
+}
+
+.login-card h1 {
+  margin: 0;
+
+  font-family: var(--font-vietnamese);
+
+  color: #1e5a32;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+.login-khmer {
+  margin: 7px 0 4px;
+
+  color: #b78616;
+
+  font-size: 23px;
+  font-weight: 600;
+
+  line-height: 1.6;
+}
+
+.login-subtitle {
+  margin: 0 0 30px;
+
+  color: #687267;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form-group {
+  margin-bottom: 20px;
+
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #294d34;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group input {
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border: 1.5px solid #d8dfd1;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #fcfdf9;
+
+  color: #26372a;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #9ba39b;
+}
+
+.form-group input:focus {
+  background: #ffffff;
+
+  border-color: #c99b25;
+
+  box-shadow:
+    0 0 0 4px rgba(201, 155, 37, 0.13);
+}
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.login-button {
+  width: 100%;
+
+  margin-top: 5px;
+
+  padding: 14px 20px;
+
+  border: none;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e2bb3f,
+      #c38f18
+    );
+
+  color: white;
+
+  font-family: var(--font-vietnamese);
+
+  font-size: 15px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(177, 132, 25, 0.24);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 11px 23px rgba(177, 132, 25, 0.30);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+.login-links {
+  margin-top: 23px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+}
+
+.link-button {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #2e6840;
+
+  font-family: var(--font-vietnamese);
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.link-button:hover {
+  color: #b78616;
+
+  text-decoration: underline;
+}
+
+.link-separator {
+  color: #b9bdb7;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer {
+  position: absolute;
+
+  bottom: 16px;
+  left: 0;
+  right: 0;
+
+  text-align: center;
+
+  color: rgba(42, 79, 51, 0.58);
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
+
+.register-card {
+  max-width: 460px;
+}
+
+.form-note {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #8a928a;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+.required {
+  color: #b3261e;
+}
+
+/* =========================================================
+   PASSWORD
+   ========================================================= */
+
+.password-input-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+
+  right: 10px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 17px;
+
+  opacity: 0.7;
+}
+
+.password-toggle:hover {
+  background: rgba(196, 155, 46, 0.1);
+
+  opacity: 1;
+}
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+.forgot-success {
+  padding: 10px 0 5px;
+}
+
+.success-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e8f1e7;
+
+  color: #28653a;
+
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.forgot-success h2 {
+  margin: 0 0 12px;
+
+  color: #1e5a32;
+
+  font-size: 20px;
+}
+
+.forgot-success p {
+  margin: 8px 0;
+
+  color: #687267;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+}
+
+.forgot-success strong {
+  display: block;
+
+  margin: 12px 0;
+
+  color: #b78616;
+
+  font-size: 15px;
+
+  word-break: break-word;
+}
+
+.success-note {
+  margin-top: 18px !important;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background: #faf6e6;
+
+  color: #81754e !important;
+
+  font-size: 12px !important;
+}
+
+/* =========================================================
+   STUDENT APP
+   ========================================================= */
+
+.student-app {
+  width: 100%;
+
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: row;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffdf3 0%,
+      #f8f5e7 42%,
+      #eef3e8 100%
+    );
+
+  color: #24362a;
+}
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.student-sidebar {
+  width: 270px;
+
+  height: 100vh;
+
+  position: fixed;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  z-index: 100;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffdf4 0%,
+      #fff9df 55%,
+      #f5f0d7 100%
+    );
+
+  border-right: 3px solid #d2aa35;
+
+  box-shadow:
+    5px 0 22px rgba(86, 75, 31, 0.08);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   LOGO SIDEBAR
+   ========================================================= */
+
+.student-logo {
+  height: 86px;
+
+  padding: 15px 18px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  flex-shrink: 0;
+
+  border-bottom:
+    1px solid rgba(194, 151, 35, 0.22);
+}
+
+.student-logo-symbol {
+  width: 52px;
+  height: 52px;
+
+  flex-shrink: 0;
+
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      145deg,
+      #e7c34f,
+      #bd8c17
+    );
+
+  color: #ffffff;
+
+  font-size: 29px;
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+.student-logo-title {
+  color: #245633;
+
+  font-family: var(--font-vietnamese);
+
+  font-size: 14px;
+  font-weight: 900;
+
+  line-height: 1.3;
+}
+
+.student-logo-khmer {
+  margin-top: 3px;
+
+  color: #b78616;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+
+.student-profile {
+  margin: 18px 14px 12px;
+
+  padding: 13px;
+
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8d9,
+      #f7efc8
+    );
+
+  border:
+    1px solid rgba(203, 163, 45, 0.25);
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  flex-shrink: 0;
+}
+
+.student-avatar,
+.student-header-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d9b238,
+      #ad7d12
+    );
+
+  color: #ffffff;
+
+  font-family: var(--font-vietnamese);
+
+  font-weight: 800;
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.student-avatar {
+  width: 43px;
+  height: 43px;
+}
+
+.student-profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.student-profile-info strong {
+  color: #27422e;
+
+  font-size: 14px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-profile-info span {
+  margin-top: 3px;
+
+  color: #ad7d12;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   MENU
+   ========================================================= */
+
+.student-menu {
+  padding: 6px 12px;
+
+  flex: 1;
+
+  overflow-y: auto;
+}
+
+.student-menu-title {
+  padding: 10px 12px 8px;
+
+  color: #9a7a22;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 0.12em;
+}
+
+.student-menu-item {
+  width: 100%;
+
+  min-height: 45px;
+
+  border: none;
+
+  border-radius: 11px;
+
+  background: transparent;
+
+  color: #3f5845;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 9px 12px;
+
+  margin-bottom: 4px;
+
+  cursor: pointer;
+
+  font-family: var(--font-vietnamese);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-align: left;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.student-menu-item:hover {
+  background: #fff4c9;
+
+  color: #8b6812;
+
+  transform: translateX(2px);
+}
+
+.student-menu-item.active {
+  background:
+    linear-gradient(
+      90deg,
+      #e1bb42,
+      #d0a52d
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 5px 12px rgba(191, 145, 24, 0.18);
+}
+
+.student-menu-icon {
+  width: 25px;
+  min-width: 25px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  font-size: 18px;
+
+  line-height: 1;
+}
+
+.student-sidebar-bottom {
+  padding: 12px;
+
+  border-top:
+    1px solid rgba(194, 151, 35, 0.22);
+
+  flex-shrink: 0;
+}
+
+.student-menu-item.logout {
+  color: #9c3026;
+}
+
+.student-menu-item.logout:hover {
+  background: #fff0ed;
+
+  color: #b42318;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.student-main {
+  flex: 1;
+
+  min-width: 0;
+
+  margin-left: 270px;
+
+  padding: 0 38px 50px;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.student-header {
+  min-height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.student-header h1 {
+  margin: 0;
+
+  color: #234f30;
+
+  font-size: 26px;
+  font-weight: 850;
+}
+
+.student-header p {
+  margin: 6px 0 0;
+
+  color: #69766d;
+
+  font-size: 14px;
+}
+
+.student-header-user {
+  display: flex;
+  align-items: center;
+}
+
+.student-header-avatar {
+  width: 48px;
+  height: 48px;
+
+  font-size: 17px;
+}
+
+/* =========================================================
+   WELCOME
+   ========================================================= */
+
+.student-welcome {
+  min-height: 245px;
+
+  border-radius: 24px;
+
+  padding: 34px 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  overflow: hidden;
+
+  position: relative;
+
+  background:
+    radial-gradient(
+      circle at 85% 25%,
+      rgba(255, 255, 255, 0.32),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #d9b33f 0%,
+      #e2c153 45%,
+      #2d6b3e 100%
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 15px 35px rgba(104, 91, 31, 0.20);
+}
+
+.student-welcome-content {
+  max-width: 650px;
+
+  position: relative;
+  z-index: 2;
+}
+
+.student-welcome-khmer {
+  margin-bottom: 5px;
+
+  font-size: 18px;
+
+  line-height: 1.7;
+}
+
+.student-welcome h2 {
+  margin: 0 0 9px;
+
+  color: #ffffff;
+
+  font-size: 29px;
+  font-weight: 850;
+}
+
+.student-welcome p {
+  margin: 0 0 22px;
+
+  color: rgba(255, 255, 255, 0.92);
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+.student-primary-button {
+  border: none;
+
+  border-radius: 11px;
+
+  padding: 12px 21px;
+
+  background: #ffffff;
+
+  color: #2b6238;
+
+  font-family: var(--font-vietnamese);
+
+  font-size: 14px;
+  font-weight: 850;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.student-primary-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 20px rgba(54, 52, 17, 0.18);
+}
+
+.student-welcome-symbol {
+  margin-right: 40px;
+
+  color: #ffffff;
+
+  font-size: 180px;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  opacity: 0.18;
+
+  user-select: none;
+}
+
+/* =========================================================
+   STATISTICS
+   ========================================================= */
+
+.student-stat-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-top: 20px;
+}
+
+.student-stat-card {
+  background: #ffffff;
+
+  border: 1px solid rgba(194, 151, 35, 0.22);
+
+  border-top: 4px solid #d3a832;
+
+  border-radius: 17px;
+
+  padding: 19px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  box-shadow:
+    0 5px 18px rgba(74, 75, 38, 0.05);
+}
+
+.student-stat-icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff4c8,
+      #f8e7a6
+    );
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 23px;
+}
+
+.student-stat-card span {
+  display: block;
+
+  color: #7b817b;
+
+  font-size: 12px;
+
+  margin-bottom: 4px;
+}
+
+.student-stat-card strong {
+  display: block;
+
+  color: #285b35;
+
+  font-size: 18px;
+}
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.student-section {
+  margin-top: 30px;
+}
+
+.student-section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 15px;
+}
+
+.student-section-heading h2 {
+  margin: 0;
+
+  color: #285b35;
+
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.student-section-heading p {
+  margin: 5px 0 0;
+
+  color: #707a72;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   LEARNING CARDS
+   ========================================================= */
+
+.student-learning-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.learning-card {
+  border: 1px solid rgba(194, 151, 35, 0.20);
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  min-height: 135px;
+
+  padding: 22px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  position: relative;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.learning-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 10px 25px rgba(48, 70, 49, 0.09);
+
+  border-color: #d9b441;
+}
+
+.learning-card-icon {
+  width: 57px;
+  height: 57px;
+
+  flex-shrink: 0;
+
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff3c4,
+      #f6e4a0
+    );
+
+  color: #9b7313;
+
+  font-size: 27px;
+  font-weight: 700;
+
+  line-height: 1;
+}
+
+.learning-card h3 {
+  margin: 0 0 5px;
+
+  color: #285b35;
+
+  font-size: 16px;
+}
+
+.learning-card p {
+  margin: 0;
+
+  color: #707a72;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+.learning-arrow {
+  margin-left: auto;
+
+  color: #c49a28;
+
+  font-size: 22px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   DAILY GOAL
+   ========================================================= */
+
+.daily-goal-card {
+  background: #ffffff;
+
+  border: 1px solid rgba(194, 151, 35, 0.22);
+
+  border-radius: 18px;
+
+  padding: 23px;
+
+  box-shadow:
+    0 5px 18px rgba(74, 75, 38, 0.05);
+}
+
+.daily-goal-top {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  align-items: center;
+}
+
+.daily-goal-top strong {
+  color: #285b35;
+
+  font-size: 15px;
+}
+
+.daily-goal-top p {
+  margin: 5px 0 0;
+
+  color: #747d75;
+
+  font-size: 13px;
+}
+
+.daily-goal-percent {
+  color: #b17f0f;
+
+  font-size: 24px;
+  font-weight: 850;
+}
+
+.progress-track {
+  height: 11px;
+
+  border-radius: 20px;
+
+  background: #eee9d7;
+
+  margin-top: 17px;
+
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #e5c04b,
+      #c8951c
+    );
+}
+
+.daily-goal-bottom {
+  margin-top: 12px;
+
+  color: #8a918a;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .student-sidebar {
+    width: 235px;
+  }
+
+  .student-main {
+    margin-left: 235px;
+
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  .student-stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+
+  .student-sidebar {
+    width: 78px;
+  }
+
+  .student-logo {
+    justify-content: center;
+
+    padding: 12px;
+  }
+
+  .student-logo > div:last-child,
+  .student-profile-info,
+  .student-menu-title,
+  .student-menu-item span:last-child {
+    display: none;
+  }
+
+  .student-profile {
+    justify-content: center;
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding: 8px;
+  }
+
+  .student-menu-item {
+    justify-content: center;
+
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .student-main {
+    margin-left: 78px;
+
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .student-welcome {
+    padding: 28px;
+  }
+
+  .student-welcome-symbol {
+    font-size: 120px;
+
+    margin-right: 0;
+  }
+
+  .student-learning-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .login-page {
+    padding: 20px 15px;
+  }
+
+  .login-card {
+    padding: 34px 25px 30px;
+
+    border-radius: 20px;
+  }
+
+  .login-card h1 {
+    font-size: 23px;
+  }
+
+  .login-khmer {
+    font-size: 20px;
+  }
+
+  .khmer-symbol {
+    width: 62px;
+    height: 62px;
+
+    font-size: 32px;
+  }
+
+  .login-footer {
+    position: static;
+
+    margin-top: 20px;
+  }
+
+  .login-decoration {
+    display: none;
+  }
+
+  .student-header {
+    min-height: 85px;
+  }
+
+  .student-header h1 {
+    font-size: 21px;
+  }
+
+  .student-header p {
+    font-size: 12px;
+  }
+
+  .student-header-user {
+    display: none;
+  }
+
+  .student-welcome {
+    min-height: auto;
+
+    padding: 25px;
+  }
+
+  .student-welcome h2 {
+    font-size: 22px;
+  }
+
+  .student-welcome-symbol {
+    display: none;
+  }
+
+  .student-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .student-main {
+    padding-bottom: 30px;
+  }
+}

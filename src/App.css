@@ -1,0 +1,1663 @@
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family:
+    Arial,
+    "Noto Sans",
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-page {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px 20px;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 214, 77, 0.30),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(49, 116, 67, 0.24),
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #fffdf3 0%,
+      #f7f7e9 50%,
+      #edf4e7 100%
+    );
+}
+
+/* =========================================================
+   DECORATION
+========================================================= */
+
+.login-decoration {
+  position: absolute;
+
+  font-size: 180px;
+  line-height: 1;
+
+  color: rgba(205, 164, 52, 0.08);
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.decoration-left {
+  left: -45px;
+  top: 5%;
+  transform: rotate(-15deg);
+}
+
+.decoration-right {
+  right: -35px;
+  bottom: 5%;
+  transform: rotate(20deg);
+}
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: 440px;
+
+  padding: 42px 40px 36px;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  border: 1px solid rgba(196, 155, 45, 0.28);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 20px 60px rgba(39, 75, 44, 0.13),
+    0 4px 15px rgba(0, 0, 0, 0.05);
+
+  text-align: center;
+}
+
+.login-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.khmer-symbol {
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #e3b93e,
+      #c99722
+    );
+
+  color: #ffffff;
+
+  font-size: 38px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 20px rgba(190, 145, 30, 0.25);
+}
+
+.login-card h1 {
+  margin: 0;
+
+  color: #285b35;
+
+  font-size: 28px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+}
+
+.login-khmer {
+  margin: 7px 0 4px;
+
+  color: #b4851d;
+
+  font-size: 23px;
+  font-weight: 600;
+}
+
+.login-subtitle {
+  margin: 0 0 30px;
+
+  color: #687266;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #304d35;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group input {
+  width: 100%;
+
+  padding: 13px 15px;
+
+  border: 1.5px solid #d8dfd2;
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #fbfcf9;
+  color: #26372a;
+
+  font-size: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #9ba39b;
+}
+
+.form-group input:focus {
+  background: #ffffff;
+
+  border-color: #c49b2e;
+
+  box-shadow:
+    0 0 0 4px rgba(196, 155, 46, 0.12);
+}
+
+/* =========================================================
+   LOGIN BUTTON
+========================================================= */
+
+.login-button {
+  width: 100%;
+
+  margin-top: 5px;
+
+  padding: 14px 20px;
+
+  border: none;
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d9ad32,
+      #b9891c
+    );
+
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 18px rgba(177, 132, 25, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 11px 23px rgba(177, 132, 25, 0.28);
+}
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.login-links {
+  margin-top: 23px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+}
+
+.link-button {
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  color: #357047;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.link-button:hover {
+  color: #b4851d;
+  text-decoration: underline;
+}
+
+.link-separator {
+  color: #b9bdb7;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.login-footer {
+  position: absolute;
+
+  bottom: 16px;
+  left: 0;
+  right: 0;
+
+  text-align: center;
+
+  color: rgba(48, 77, 53, 0.55);
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   REGISTER
+========================================================= */
+
+.register-card {
+  max-width: 460px;
+}
+
+.form-note {
+  display: block;
+
+  margin-top: 6px;
+
+  color: #8a928a;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.required {
+  color: #b3261e;
+}
+
+/* =========================================================
+   PASSWORD
+========================================================= */
+
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input-wrapper input {
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+
+  right: 10px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  opacity: 0.7;
+
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.password-toggle:hover {
+  background: rgba(196, 155, 46, 0.1);
+  opacity: 1;
+}
+
+/* =========================================================
+   FORGOT PASSWORD
+========================================================= */
+
+.forgot-success {
+  padding: 10px 0 5px;
+}
+
+.success-icon {
+  width: 58px;
+  height: 58px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e6f1e5;
+
+  color: #357047;
+
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.forgot-success h2 {
+  margin: 0 0 12px;
+
+  color: #285b35;
+
+  font-size: 20px;
+}
+
+.forgot-success p {
+  margin: 8px 0;
+
+  color: #687266;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.forgot-success strong {
+  display: block;
+
+  margin: 12px 0;
+
+  color: #b4851d;
+
+  font-size: 15px;
+
+  word-break: break-word;
+}
+
+.success-note {
+  margin-top: 18px !important;
+
+  padding: 12px;
+
+  border-radius: 10px;
+
+  background: #faf7eb;
+
+  color: #81754e !important;
+
+  font-size: 12px !important;
+}
+
+/* =========================================================
+   STUDENT APP
+========================================================= */
+
+.student-app {
+  width: 100%;
+  min-height: 100vh;
+
+  display: block;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8faf5 0%,
+      #f4f7f0 100%
+    );
+
+  color: #1f2937;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.student-sidebar {
+  position: fixed;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 270px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffdf5 0%,
+      #ffffff 55%,
+      #f8faf5 100%
+    );
+
+  border-right:
+    1px solid rgba(184, 134, 11, 0.20);
+
+  box-shadow:
+    4px 0 22px rgba(39, 75, 44, 0.06);
+
+  z-index: 1000;
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   SIDEBAR LOGO
+========================================================= */
+
+.student-logo {
+  width: 100%;
+  height: 82px;
+
+  flex-shrink: 0;
+
+  padding: 15px 18px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  border-bottom:
+    1px solid rgba(184, 134, 11, 0.15);
+}
+
+.student-logo-symbol {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d8ae38,
+      #b9891c
+    );
+
+  color: #ffffff;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  box-shadow:
+    0 6px 16px rgba(184, 134, 11, 0.25);
+}
+
+.student-logo-title {
+  font-size: 14px;
+  font-weight: 800;
+
+  color: #285b35;
+
+  line-height: 1.3;
+}
+
+.student-logo-khmer {
+  margin-top: 2px;
+
+  font-size: 13px;
+
+  color: #b4851d;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.student-profile {
+  margin: 18px 14px 12px;
+
+  padding: 13px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8df,
+      #f8f3d9
+    );
+
+  border:
+    1px solid rgba(196, 155, 46, 0.18);
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  flex-shrink: 0;
+}
+
+.student-avatar,
+.student-header-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d8ae38,
+      #b9891c
+    );
+
+  color: #ffffff;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 4px 10px rgba(184, 134, 11, 0.18);
+}
+
+.student-avatar {
+  width: 43px;
+  height: 43px;
+}
+
+.student-profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.student-profile-info strong {
+  color: #285b35;
+
+  font-size: 14px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-profile-info span {
+  margin-top: 3px;
+
+  font-size: 12px;
+
+  color: #b4851d;
+}
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.student-menu {
+  width: 100%;
+
+  padding: 6px 12px;
+
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.student-menu-title {
+  padding: 10px 12px 8px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  color: #8a928a;
+
+  letter-spacing: 0.12em;
+
+  flex-shrink: 0;
+}
+
+.student-menu-item {
+  width: 100%;
+  min-height: 45px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 12px;
+
+  padding: 9px 12px;
+
+  margin: 0 0 4px 0;
+
+  border: none;
+  border-radius: 11px;
+
+  background: transparent;
+
+  color: #4b5563;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-align: left;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.student-menu-item:hover {
+  background:
+    linear-gradient(
+      90deg,
+      #fff8df,
+      #fffdf4
+    );
+
+  color: #285b35;
+
+  transform: translateX(2px);
+}
+
+.student-menu-item.active {
+  background:
+    linear-gradient(
+      90deg,
+      #f7e7ad,
+      #fff5d1
+    );
+
+  color: #285b35;
+
+  box-shadow:
+    inset 3px 0 0 #c49b2e;
+}
+
+.student-menu-icon {
+  width: 25px;
+  min-width: 25px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  font-size: 18px;
+}
+
+.student-sidebar-bottom {
+  width: 100%;
+
+  padding: 12px;
+
+  flex-shrink: 0;
+
+  border-top:
+    1px solid rgba(184, 134, 11, 0.15);
+}
+
+.student-menu-item.logout {
+  color: #b42318;
+}
+
+.student-menu-item.logout:hover {
+  background: #fef2f2;
+  color: #b42318;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.student-main {
+  width: calc(100% - 270px);
+
+  min-height: 100vh;
+
+  margin-left: 270px;
+
+  padding: 0 38px 50px;
+
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.student-header {
+  min-height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.student-header h1 {
+  margin: 0;
+
+  color: #285b35;
+
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.student-header p {
+  margin: 6px 0 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.student-header-user {
+  display: flex;
+  align-items: center;
+}
+
+.student-header-avatar {
+  width: 48px;
+  height: 48px;
+
+  font-size: 17px;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.student-welcome {
+  min-height: 245px;
+
+  padding: 34px 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background:
+    radial-gradient(
+      circle at 85% 25%,
+      rgba(255, 241, 170, 0.35),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(255, 255, 255, 0.10),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #285b35 0%,
+      #357047 48%,
+      #8d7020 100%
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 16px 38px rgba(39, 75, 44, 0.20);
+}
+
+.student-welcome-content {
+  max-width: 650px;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+.student-welcome-khmer {
+  margin-bottom: 5px;
+
+  color: #ffe58a;
+
+  font-size: 17px;
+  font-weight: 600;
+
+  opacity: 0.95;
+}
+
+.student-welcome h2 {
+  margin: 0 0 9px;
+
+  color: #ffffff;
+
+  font-size: 29px;
+}
+
+.student-welcome p {
+  margin: 0 0 22px;
+
+  color: rgba(255, 255, 255, 0.90);
+
+  font-size: 15px;
+
+  line-height: 1.6;
+}
+
+.student-primary-button {
+  padding: 11px 20px;
+
+  border: none;
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff4b8,
+      #e5bd42
+    );
+
+  color: #285b35;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.12);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.student-primary-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 20px rgba(0, 0, 0, 0.18);
+}
+
+.student-welcome-symbol {
+  margin-right: 40px;
+
+  color: #ffe58a;
+
+  font-size: 180px;
+
+  line-height: 1;
+
+  font-weight: 700;
+
+  opacity: 0.18;
+
+  user-select: none;
+}
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.student-stat-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 16px;
+
+  margin-top: 20px;
+}
+
+.student-stat-card {
+  min-width: 0;
+
+  padding: 19px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  background: #ffffff;
+
+  border:
+    1px solid rgba(184, 134, 11, 0.14);
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 5px 18px rgba(39, 75, 44, 0.04);
+}
+
+.student-stat-icon {
+  width: 48px;
+  height: 48px;
+
+  flex-shrink: 0;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff5c7,
+      #f7e6a1
+    );
+
+  color: #8d6c16;
+
+  font-size: 23px;
+}
+
+.student-stat-card span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+.student-stat-card strong {
+  display: block;
+
+  color: #285b35;
+
+  font-size: 18px;
+}
+
+/* =========================================================
+   EXP PROGRESS
+========================================================= */
+
+.exp-stat-card {
+  grid-column: span 2;
+
+  padding: 18px 20px;
+
+  gap: 14px;
+}
+
+.exp-icon {
+  background:
+    linear-gradient(
+      135deg,
+      #ffe999,
+      #d9ad32
+    ) !important;
+
+  color: #76560c;
+
+  box-shadow:
+    0 5px 14px rgba(218, 170, 38, 0.20);
+}
+
+.exp-stat-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.exp-stat-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 9px;
+}
+
+.exp-stat-header span {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+.exp-stat-header strong {
+  margin: 0;
+
+  color: #b8860b;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+/* EXP TRACK */
+
+.exp-progress-track {
+  width: 100%;
+
+  height: 14px;
+
+  overflow: hidden;
+
+  border-radius: 50px;
+
+  background:
+    #eef1e9;
+
+  border:
+    1px solid rgba(184, 134, 11, 0.13);
+
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* EXP FILL */
+
+.exp-progress-fill {
+  position: relative;
+
+  height: 100%;
+
+  min-width: 4px;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #b9891c 0%,
+      #e2b93b 45%,
+      #f5d76e 70%,
+      #c99722 100%
+    );
+
+  box-shadow:
+    0 2px 8px rgba(196, 150, 30, 0.35);
+
+  transition:
+    width 0.8s ease;
+}
+
+/* ÁNH SÁNG CHẠY */
+
+.exp-progress-shine {
+  position: absolute;
+
+  top: 0;
+  left: -35%;
+
+  width: 35%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.70),
+      transparent
+    );
+
+  animation:
+    expShine 2.5s infinite;
+}
+
+@keyframes expShine {
+  0% {
+    left: -35%;
+  }
+
+  55% {
+    left: 110%;
+  }
+
+  100% {
+    left: 110%;
+  }
+}
+
+/* THÔNG TIN EXP */
+
+.exp-stat-footer {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-top: 7px;
+
+  color: #8a928a;
+
+  font-size: 11px;
+}
+
+.exp-stat-footer span:last-child {
+  color: #b8860b;
+
+  font-weight: 700;
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.student-section {
+  margin-top: 30px;
+}
+
+.student-section-heading {
+  margin-bottom: 15px;
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student-section-heading h2 {
+  margin: 0;
+
+  color: #285b35;
+
+  font-size: 20px;
+}
+
+.student-section-heading p {
+  margin: 5px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+/* =========================================================
+   LEARNING CARDS
+========================================================= */
+
+.student-learning-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.learning-card {
+  width: 100%;
+  min-height: 135px;
+
+  padding: 22px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  position: relative;
+
+  border:
+    1px solid rgba(184, 134, 11, 0.13);
+
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.learning-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #e2c15b;
+
+  box-shadow:
+    0 10px 25px rgba(39, 75, 44, 0.09);
+}
+
+.learning-card-icon {
+  width: 57px;
+  height: 57px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff5c7,
+      #f3df91
+    );
+
+  color: #8d6c16;
+
+  font-size: 27px;
+  font-weight: 700;
+}
+
+.learning-card h3 {
+  margin: 0 0 5px;
+
+  color: #285b35;
+
+  font-size: 16px;
+}
+
+.learning-card p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+.learning-arrow {
+  margin-left: auto;
+
+  color: #b8860b;
+
+  font-size: 22px;
+}
+
+/* =========================================================
+   DAILY GOAL
+========================================================= */
+
+.daily-goal-card {
+  padding: 23px;
+
+  background: #ffffff;
+
+  border:
+    1px solid rgba(184, 134, 11, 0.14);
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 5px 18px rgba(39, 75, 44, 0.04);
+}
+
+.daily-goal-top {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.daily-goal-top strong {
+  color: #285b35;
+
+  font-size: 15px;
+}
+
+.daily-goal-top p {
+  margin: 5px 0 0;
+
+  color: #6b7280;
+
+  font-size: 13px;
+}
+
+.daily-goal-percent {
+  color: #b8860b;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+.progress-track {
+  height: 10px;
+
+  margin-top: 17px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: #eef1e9;
+}
+
+.progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #285b35,
+      #d4a72c
+    );
+}
+
+.daily-goal-bottom {
+  margin-top: 12px;
+
+  color: #8a928a;
+
+  font-size: 12px;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .student-sidebar {
+    width: 235px;
+  }
+
+  .student-main {
+    width: calc(100% - 235px);
+
+    margin-left: 235px;
+
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+  .student-stat-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .exp-stat-card {
+    grid-column: span 2;
+  }
+}
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+  .student-sidebar {
+    width: 78px;
+  }
+
+  .student-logo {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .student-logo > div:last-child,
+  .student-profile-info,
+  .student-menu-title,
+  .student-menu-item span:last-child {
+    display: none;
+  }
+
+  .student-profile {
+    justify-content: center;
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    padding: 8px;
+  }
+
+  .student-menu-item {
+    justify-content: center;
+
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .student-main {
+    width: calc(100% - 78px);
+
+    margin-left: 78px;
+
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .student-welcome {
+    padding: 28px;
+  }
+
+  .student-welcome-symbol {
+    margin-right: 0;
+
+    font-size: 120px;
+  }
+
+  .student-learning-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .login-page {
+    padding: 20px 15px;
+  }
+
+  .login-card {
+    padding: 34px 25px 30px;
+
+    border-radius: 20px;
+  }
+
+  .login-card h1 {
+    font-size: 23px;
+  }
+
+  .login-khmer {
+    font-size: 20px;
+  }
+
+  .khmer-symbol {
+    width: 62px;
+    height: 62px;
+
+    font-size: 32px;
+  }
+
+  .login-footer {
+    position: static;
+
+    margin-top: 20px;
+  }
+
+  .login-decoration {
+    display: none;
+  }
+
+  .student-header {
+    min-height: 85px;
+  }
+
+  .student-header h1 {
+    font-size: 21px;
+  }
+
+  .student-header p {
+    font-size: 12px;
+  }
+
+  .student-header-user {
+    display: none;
+  }
+
+  .student-welcome {
+    min-height: auto;
+
+    padding: 25px;
+  }
+
+  .student-welcome h2 {
+    font-size: 22px;
+  }
+
+  .student-welcome-symbol {
+    display: none;
+  }
+
+  .student-stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exp-stat-card {
+    grid-column: span 1;
+
+    padding: 16px;
+  }
+
+  .exp-stat-header strong {
+    font-size: 16px;
+  }
+
+  .exp-stat-footer {
+    font-size: 10px;
+  }
+
+  .student-main {
+    padding-bottom: 30px;
+  }
+}
