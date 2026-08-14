@@ -7,44 +7,303 @@ import "./Alphabet.css";
 ========================================================= */
 
 const consonants = [
-  { stt: 1, letter: "ក", roman: "Co", voice: "O" },
-  { stt: 2, letter: "ខ", roman: "Kho", voice: "O" },
-  { stt: 3, letter: "គ", roman: "Cô", voice: "Ô" },
-  { stt: 4, letter: "ឃ", roman: "Khô", voice: "Ô" },
-  { stt: 5, letter: "ង", roman: "Ngô", voice: "Ô" },
-
-  { stt: 6, letter: "ច", roman: "Cho", voice: "O" },
-  { stt: 7, letter: "ឆ", roman: "Chho", voice: "O" },
-  { stt: 8, letter: "ជ", roman: "Chô", voice: "Ô" },
-  { stt: 9, letter: "ឈ", roman: "Chhô", voice: "Ô" },
-  { stt: 10, letter: "ញ", roman: "Nhô", voice: "Ô" },
-
-  { stt: 11, letter: "ដ", roman: "Do", voice: "O" },
-  { stt: 12, letter: "ឋ", roman: "Tho", voice: "O" },
-  { stt: 13, letter: "ឌ", roman: "Đô", voice: "Ô" },
-  { stt: 14, letter: "ឍ", roman: "Thô", voice: "Ô" },
-  { stt: 15, letter: "ណ", roman: "No", voice: "O" },
-
-  { stt: 16, letter: "ត", roman: "To", voice: "O" },
-  { stt: 17, letter: "ថ", roman: "Tho", voice: "O" },
-  { stt: 18, letter: "ទ", roman: "Tô", voice: "Ô" },
-  { stt: 19, letter: "ធ", roman: "Thô", voice: "Ô" },
-  { stt: 20, letter: "ន", roman: "Nô", voice: "Ô" },
-
-  { stt: 21, letter: "ប", roman: "Bo", voice: "O" },
-  { stt: 22, letter: "ផ", roman: "Pho", voice: "O" },
-  { stt: 23, letter: "ព", roman: "Pô", voice: "Ô" },
-  { stt: 24, letter: "ភ", roman: "Phô", voice: "Ô" },
-  { stt: 25, letter: "ម", roman: "Mô", voice: "Ô" },
-
-  { stt: 26, letter: "យ", roman: "Dô", voice: "Ô" },
-  { stt: 27, letter: "រ", roman: "Rô", voice: "Ô" },
-  { stt: 28, letter: "ល", roman: "Lô", voice: "Ô" },
-  { stt: 29, letter: "វ", roman: "Vô", voice: "Ô" },
-  { stt: 30, letter: "ស", roman: "So", voice: "O" },
-  { stt: 31, letter: "ហ", roman: "Ho", voice: "O" },
-  { stt: 32, letter: "ឡ", roman: "Lo", voice: "O" },
-  { stt: 33, letter: "អ", roman: "O / Â", voice: "O" },
+  {
+    stt: 1,
+    letter: "ក",
+    roman: "Co",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 2,
+    letter: "ខ",
+    roman: "Kho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 3,
+    letter: "គ",
+    roman: "Cô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 4,
+    letter: "ឃ",
+    roman: "Khô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 5,
+    letter: "ង",
+    roman: "Ngô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 6,
+    letter: "ច",
+    roman: "Cho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 7,
+    letter: "ឆ",
+    roman: "Chho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 8,
+    letter: "ជ",
+    roman: "Chô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 9,
+    letter: "ឈ",
+    roman: "Chhô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 10,
+    letter: "ញ",
+    roman: "Nhô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 11,
+    letter: "ដ",
+    roman: "Do",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 12,
+    letter: "ឋ",
+    roman: "Tho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 13,
+    letter: "ឌ",
+    roman: "Đô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 14,
+    letter: "ឍ",
+    roman: "Thô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 15,
+    letter: "ណ",
+    roman: "No",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 16,
+    letter: "ត",
+    roman: "To",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 17,
+    letter: "ថ",
+    roman: "Tho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 18,
+    letter: "ទ",
+    roman: "Tô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 19,
+    letter: "ធ",
+    roman: "Thô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 20,
+    letter: "ន",
+    roman: "Nô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 21,
+    letter: "ប",
+    roman: "Bo",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 22,
+    letter: "ផ",
+    roman: "Pho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 23,
+    letter: "ព",
+    roman: "Pô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 24,
+    letter: "ភ",
+    roman: "Phô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 25,
+    letter: "ម",
+    roman: "Mô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 26,
+    letter: "យ",
+    roman: "Dô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 27,
+    letter: "រ",
+    roman: "Rô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 28,
+    letter: "ល",
+    roman: "Lô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 29,
+    letter: "វ",
+    roman: "Vô",
+    voice: "Ô",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 30,
+    letter: "ស",
+    roman: "So",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 31,
+    letter: "ហ",
+    roman: "Ho",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 32,
+    letter: "ឡ",
+    roman: "Lo",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
+  {
+    stt: 33,
+    letter: "អ",
+    roman: "O / Â",
+    voice: "O",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
+  },
 ];
 
 /* =========================================================
@@ -58,6 +317,9 @@ const vowels = [
     romanO: "a",
     romanOh: "ia",
     note: "Âm dài",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 2,
@@ -65,6 +327,9 @@ const vowels = [
     romanO: "ế",
     romanOh: "í",
     note: "Âm ngắn",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 3,
@@ -72,6 +337,9 @@ const vowels = [
     romanO: "ây",
     romanOh: "i",
     note: "Âm dài",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 4,
@@ -79,6 +347,9 @@ const vowels = [
     romanO: "ấ",
     romanOh: "ứ",
     note: "Âm ngắn",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 5,
@@ -86,6 +357,9 @@ const vowels = [
     romanO: "ơ",
     romanOh: "ơ / ư",
     note: "Âm dài",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 6,
@@ -93,6 +367,9 @@ const vowels = [
     romanO: "u",
     romanOh: "ú",
     note: "Âm ngắn",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 7,
@@ -100,6 +377,9 @@ const vowels = [
     romanO: "ua",
     romanOh: "ua",
     note: "Không đổi giọng",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 8,
@@ -107,6 +387,9 @@ const vowels = [
     romanO: "ờ",
     romanOh: "u",
     note: "",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 9,
@@ -114,6 +397,9 @@ const vowels = [
     romanO: "ưa",
     romanOh: "ưa",
     note: "Không đổi giọng",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 10,
@@ -121,6 +407,9 @@ const vowels = [
     romanO: "ia",
     romanOh: "ia",
     note: "Không đổi giọng",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 11,
@@ -128,6 +417,9 @@ const vowels = [
     romanO: "ê",
     romanOh: "ê",
     note: "Âm ê",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 12,
@@ -135,6 +427,9 @@ const vowels = [
     romanO: "e",
     romanOh: "ê",
     note: "Âm e / ê",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 13,
@@ -142,6 +437,9 @@ const vowels = [
     romanO: "ay",
     romanOh: "ây",
     note: "Âm ay / ây",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 14,
@@ -149,6 +447,9 @@ const vowels = [
     romanO: "ao",
     romanOh: "âu",
     note: "Âm ao / âu",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 15,
@@ -156,6 +457,9 @@ const vowels = [
     romanO: "au",
     romanOh: "âu",
     note: "Âm au / âu",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 16,
@@ -163,6 +467,9 @@ const vowels = [
     romanO: "um",
     romanOh: "um",
     note: "Nikkahit",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 17,
@@ -170,6 +477,9 @@ const vowels = [
     romanO: "om",
     romanOh: "um",
     note: "Dấu chấm tròn",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 18,
@@ -177,6 +487,9 @@ const vowels = [
     romanO: "ăm",
     romanOh: "oăm",
     note: "Âm ăm / oăm",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 19,
@@ -184,6 +497,9 @@ const vowels = [
     romanO: "ás",
     romanOh: "iás",
     note: "Reahmuk",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 20,
@@ -191,6 +507,9 @@ const vowels = [
     romanO: "és",
     romanOh: "ís",
     note: "Ngắt hơi",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 21,
@@ -198,6 +517,9 @@ const vowels = [
     romanO: "ốs",
     romanOh: "ús",
     note: "Ngắt hơi",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 22,
@@ -205,6 +527,9 @@ const vowels = [
     romanO: "és",
     romanOh: "és",
     note: "Ngắt hơi",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 23,
@@ -212,6 +537,9 @@ const vowels = [
     romanO: "ós",
     romanOh: "uás",
     note: "Ngắt hơi",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
   {
     stt: 24,
@@ -219,6 +547,9 @@ const vowels = [
     romanO: "ứs",
     romanOh: "ứs",
     note: "Ngắt hơi",
+    uppercase: null,
+    handwriting: null,
+    audio: null,
   },
 ];
 
@@ -229,16 +560,8 @@ const vowels = [
 const EXP_PER_MINUTE = 10;
 const SECONDS_PER_MINUTE = 60;
 
-const TIMER_STORAGE_PREFIX = "alphabet_study_";
-
 /* =========================================================
    FORMAT THỜI GIAN
-
-   65 giây       → 00:01:05
-   3661 giây     → 01:01:01
-   360000 giây   → 100:00:00
-
-   Không bao giờ reset về 00:00 khi sang phút mới.
 ========================================================= */
 
 const formatStudyTime = (totalSeconds) => {
@@ -247,14 +570,15 @@ const formatStudyTime = (totalSeconds) => {
     Math.floor(Number(totalSeconds) || 0)
   );
 
-  const hours = Math.floor(safeSeconds / 3600);
+  const hours = Math.floor(
+    safeSeconds / 3600
+  );
 
   const minutes = Math.floor(
     (safeSeconds % 3600) / 60
   );
 
-  const seconds =
-    safeSeconds % 60;
+  const seconds = safeSeconds % 60;
 
   return (
     `${String(hours).padStart(2, "0")}:` +
@@ -274,8 +598,9 @@ function Alphabet({
   onLogout,
   onProgressUpdated,
 }) {
-  const [tab, setTab] =
-    useState("consonants");
+  const [tab, setTab] = useState(
+    "consonants"
+  );
 
   const [voiceFilter, setVoiceFilter] =
     useState("all");
@@ -286,20 +611,25 @@ function Alphabet({
   const [selectedType, setSelectedType] =
     useState(null);
 
-  /* =======================================================
-     USER ID
-  ======================================================= */
-
   const userId =
     session?.user?.id ||
     profile?.id ||
     null;
 
-  /* =======================================================
-     TỔNG THỜI GIAN ĐÃ HỌC
+    /* =======================================================
+     TIMER
 
-     Đây là tổng thời gian lấy từ Supabase.
-     Không phải bộ đếm chỉ của một phút.
+     GIỐNG CƠ CHẾ VOCABULARY:
+
+     - Tổng thời gian lấy từ Supabase.
+     - Giây đang học chỉ tồn tại khi đang ở Alphabet.
+     - Khi vào Alphabet: giây lẻ bắt đầu từ 00.
+     - Đủ 60 giây:
+         +60 total_study_seconds
+         +10 EXP
+     - Thoát Alphabet:
+         reset giây lẻ về 00.
+     - Không dùng localStorage.
   ======================================================= */
 
   const [totalStudySeconds, setTotalStudySeconds] =
@@ -311,16 +641,6 @@ function Alphabet({
         )
       )
     );
-
-  /*
-    Phần giây chưa đủ 1 phút.
-    Ví dụ:
-    Supabase = 1200 giây
-    localStorage = 35 giây
-
-    Hiển thị:
-    00:20:35
-  */
 
   const [remainderSeconds, setRemainderSeconds] =
     useState(0);
@@ -352,11 +672,13 @@ function Alphabet({
   }, [remainderSeconds]);
 
   /* =======================================================
-     LOAD DỮ LIỆU THỜI GIAN
+     LOAD TỔNG THỜI GIAN TỪ SUPABASE
 
      Khi mở Alphabet:
-       1. Lấy total_study_seconds từ Supabase.
-       2. Lấy phần giây lẻ từ localStorage.
+
+     1. Lấy total_study_seconds
+     2. Giữ tổng thời gian đã học
+     3. Giây lẻ bắt đầu từ 00
   ======================================================= */
 
   useEffect(() => {
@@ -374,18 +696,16 @@ function Alphabet({
 
     const loadStudyTime = async () => {
       try {
-        /* -----------------------------------------------
-           LẤY TỔNG THỜI GIAN TỪ SUPABASE
-        ------------------------------------------------ */
-
-        const { data, error } =
-          await supabase
-            .from("profiles")
-            .select(
-              "total_study_seconds"
-            )
-            .eq("id", userId)
-            .maybeSingle();
+        const {
+          data,
+          error,
+        } = await supabase
+          .from("profiles")
+          .select(
+            "total_study_seconds"
+          )
+          .eq("id", userId)
+          .maybeSingle();
 
         if (error) {
           console.error(
@@ -411,42 +731,16 @@ function Alphabet({
           );
         }
 
-        /* -----------------------------------------------
-           LẤY PHẦN GIÂY LẺ
-        ------------------------------------------------ */
-
-        const storageKey =
-          `${TIMER_STORAGE_PREFIX}${userId}`;
-
-        let savedRemainder = 0;
-
-        try {
-          savedRemainder =
-            Math.max(
-              0,
-              Math.min(
-                SECONDS_PER_MINUTE - 1,
-                Number(
-                  localStorage.getItem(
-                    storageKey
-                  )
-                ) || 0
-              )
-            );
-        } catch (error) {
-          console.warn(
-            "⚠️ Không đọc được timer:",
-            error
-          );
-        }
+        /*
+          Mỗi lần mở Alphabet,
+          phần giây bắt đầu từ 00.
+        */
 
         if (!cancelled) {
           remainderSecondsRef.current =
-            savedRemainder;
+            0;
 
-          setRemainderSeconds(
-            savedRemainder
-          );
+          setRemainderSeconds(0);
         }
       } catch (error) {
         console.error(
@@ -462,42 +756,6 @@ function Alphabet({
       cancelled = true;
     };
   }, [userId]);
-
-  /* =======================================================
-     LƯU PHẦN GIÂY LẺ
-
-     Không lưu vào total_study_seconds.
-
-     Chỉ lưu:
-       1 → 59 giây
-  ======================================================= */
-
-  const saveRemainder = (seconds) => {
-    if (!userId) {
-      return;
-    }
-
-    const safeSeconds =
-      Math.max(
-        0,
-        Math.min(
-          SECONDS_PER_MINUTE - 1,
-          Number(seconds) || 0
-        )
-      );
-
-    try {
-      localStorage.setItem(
-        `${TIMER_STORAGE_PREFIX}${userId}`,
-        String(safeSeconds)
-      );
-    } catch (error) {
-      console.warn(
-        "⚠️ Không thể lưu timer tạm:",
-        error
-      );
-    }
-  };
 
   /* =======================================================
      CỘNG 1 PHÚT
@@ -518,14 +776,16 @@ function Alphabet({
     savingRef.current = true;
 
     try {
-      const { data: currentProfile, error: fetchError } =
-        await supabase
-          .from("profiles")
-          .select(
-            "exp, total_study_seconds"
-          )
-          .eq("id", userId)
-          .maybeSingle();
+      const {
+        data: currentProfile,
+        error: fetchError,
+      } = await supabase
+        .from("profiles")
+        .select(
+          "exp, total_study_seconds"
+        )
+        .eq("id", userId)
+        .maybeSingle();
 
       if (fetchError) {
         console.error(
@@ -556,8 +816,8 @@ function Alphabet({
         Math.max(
           0,
           Number(
-            currentProfile.total_study_seconds ??
-              0
+            currentProfile
+              .total_study_seconds ?? 0
           )
         );
 
@@ -569,15 +829,16 @@ function Alphabet({
         currentStudySeconds +
         SECONDS_PER_MINUTE;
 
-      const { error: updateError } =
-        await supabase
-          .from("profiles")
-          .update({
-            exp: newExp,
-            total_study_seconds:
-              newStudySeconds,
-          })
-          .eq("id", userId);
+      const {
+        error: updateError,
+      } = await supabase
+        .from("profiles")
+        .update({
+          exp: newExp,
+          total_study_seconds:
+            newStudySeconds,
+        })
+        .eq("id", userId);
 
       if (updateError) {
         console.error(
@@ -599,12 +860,16 @@ function Alphabet({
         newStudySeconds
       );
 
+      /*
+        Đã hoàn thành 1 phút.
+
+        Reset phần giây về 0.
+      */
+
       remainderSecondsRef.current =
         0;
 
       setRemainderSeconds(0);
-
-      saveRemainder(0);
 
       console.log(
         `✅ ALPHABET +${EXP_PER_MINUTE} EXP`
@@ -639,17 +904,32 @@ function Alphabet({
   };
 
   /* =======================================================
-     BỘ ĐẾM ALPHABET
+     ALPHABET TIMER
 
-     CHỈ chạy khi đang ở Alphabet.
+     Timer chỉ chạy khi đang ở Alphabet.
 
-     Quan trọng:
-     Không dùng studySeconds làm tổng thời gian nữa.
+     Ví dụ:
 
-     Tổng thời gian =
-       totalStudySeconds
-       +
-       remainderSeconds
+     Supabase:
+     00:20:00
+
+     Vào Alphabet:
+     00:20:00
+
+     Sau 30 giây:
+     00:20:30
+
+     Đủ 60 giây:
+     00:21:00
+     +10 EXP
+
+     Rời Alphabet:
+     00:21:00
+
+     Vào lại:
+     00:21:00
+     và bắt đầu:
+     00:21:01
   ======================================================= */
 
   useEffect(() => {
@@ -658,7 +938,7 @@ function Alphabet({
     }
 
     /*
-      Nếu đã có timer thì không tạo timer thứ hai.
+      Không tạo timer thứ hai.
     */
 
     if (timerRef.current) {
@@ -669,19 +949,29 @@ function Alphabet({
       "🟢 ALPHABET: bắt đầu tính thời gian."
     );
 
+    /*
+      Mỗi lần bắt đầu vào Alphabet,
+      phần giây luôn bắt đầu từ 0.
+    */
+
+    remainderSecondsRef.current =
+      0;
+
+    setRemainderSeconds(0);
+
     timerRef.current =
       setInterval(() => {
-        const currentRemainder =
-          remainderSecondsRef.current;
-
         /*
-          Nếu request cộng phút trước
-          vẫn đang xử lý thì chờ.
+          Nếu đang lưu phút trước
+          thì chờ vòng tiếp theo.
         */
 
         if (savingRef.current) {
           return;
         }
+
+        const currentRemainder =
+          remainderSecondsRef.current;
 
         const next =
           currentRemainder + 1;
@@ -701,19 +991,14 @@ function Alphabet({
             next
           );
 
-          saveRemainder(next);
-
           return;
         }
 
         /* ---------------------------------------------
            ĐỦ 60 GIÂY
 
-           KHÔNG reset tổng thời gian.
-
-           Chỉ reset phần giây lẻ.
-           Sau khi Supabase lưu thành công,
-           totalStudySeconds tăng thêm 60.
+           +60 giây
+           +10 EXP
         --------------------------------------------- */
 
         saveOneMinute();
@@ -730,12 +1015,24 @@ function Alphabet({
       }
 
       /*
-        Lưu phần giây lẻ khi rời trang.
+        Không lưu phần giây lẻ.
+
+        Ví dụ:
+
+        00:21:37
+
+        Thoát Alphabet
+        ↓
+        37 giây bị reset.
+
+        Lần sau:
+        00:21:00
       */
 
-      saveRemainder(
-        remainderSecondsRef.current
-      );
+      remainderSecondsRef.current =
+        0;
+
+      setRemainderSeconds(0);
 
       console.log(
         "⏹️ ALPHABET: dừng bộ đếm."
@@ -744,7 +1041,7 @@ function Alphabet({
   }, [userId]);
 
   /* =======================================================
-     TỔNG THỜI GIAN HIỂN THỊ
+     HIỂN THỊ THỜI GIAN
   ======================================================= */
 
   const displayedTotalSeconds =
@@ -762,8 +1059,7 @@ function Alphabet({
 
   const goToStudent = () => {
     if (
-      typeof navigate ===
-      "function"
+      typeof navigate === "function"
     ) {
       navigate("/student");
     } else {
@@ -773,7 +1069,7 @@ function Alphabet({
   };
 
   /* =======================================================
-     LỌC PHỤ ÂM
+     FILTER
   ======================================================= */
 
   const filteredConsonants =
@@ -798,9 +1094,7 @@ function Alphabet({
 
   const openVowel = (item) => {
     setSelected(item);
-    setSelectedType(
-      "vowel"
-    );
+    setSelectedType("vowel");
   };
 
   const closeModal = () => {
@@ -809,66 +1103,65 @@ function Alphabet({
   };
 
   /* =======================================================
+     ESC ĐÓNG MODAL
+  ======================================================= */
+
+  useEffect(() => {
+    if (!selected) {
+      return;
+    }
+
+    const handleKeyDown = (
+      event
+    ) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    document.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      document.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [selected]);
+
+  /* =======================================================
      RENDER
   ======================================================= */
 
   return (
-    <div>
+    <div className="alphabet-page">
+
       {/* =================================================
-          BỘ ĐẾM DUY NHẤT CỦA ALPHABET
+          TIMER
       ================================================= */}
 
-      <div
-        style={{
-          position: "fixed",
-          top: "20px",
-          right: "20px",
-          zIndex: 9999,
-          background: "#ffffff",
-          borderRadius: "14px",
-          padding: "12px 18px",
-          boxShadow:
-            "0 4px 18px rgba(0,0,0,0.15)",
-          textAlign: "center",
-          minWidth: "155px",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "12px",
-            fontWeight: "600",
-            color: "#666",
-            marginBottom: "5px",
-          }}
-        >
+      <div className="alphabet-timer">
+
+        <div className="alphabet-timer-label">
           🟢 ĐANG HỌC
         </div>
 
-        <div
-          style={{
-            fontSize: "27px",
-            fontWeight: "700",
-            lineHeight: "1.1",
-            fontVariantNumeric:
-              "tabular-nums",
-          }}
-        >
+        <div className="alphabet-timer-value">
           {displayTime}
         </div>
 
-        <div
-          style={{
-            fontSize: "11px",
-            color: "#888",
-            marginTop: "5px",
-          }}
-        >
+        <div className="alphabet-timer-exp">
           +10 EXP / phút
         </div>
+
       </div>
 
+
       {/* =================================================
-          NÚT QUAY LẠI
+          BACK
       ================================================= */}
 
       <button
@@ -879,12 +1172,15 @@ function Alphabet({
         ← Về trang học tập
       </button>
 
+
       {/* =================================================
           HEADER
       ================================================= */}
 
       <header className="alphabet-header">
+
         <div className="alphabet-header-main">
+
           <div className="alphabet-khmer">
             អក្សរខ្មែរ
           </div>
@@ -894,29 +1190,40 @@ function Alphabet({
           </h1>
 
           <p>
-            Tra cứu phụ âm và
-            nguyên âm tiếng Khmer
+            Tra cứu phụ âm và nguyên âm tiếng Khmer
           </p>
+
         </div>
 
         <div className="alphabet-stats">
+
           <div className="alphabet-stat">
             <strong>33</strong>
-            <span>Phụ âm</span>
+
+            <span>
+              Phụ âm
+            </span>
           </div>
 
           <div className="alphabet-stat">
             <strong>24</strong>
-            <span>Nguyên âm</span>
+
+            <span>
+              Nguyên âm
+            </span>
           </div>
+
         </div>
+
       </header>
+
 
       {/* =================================================
           TABS
       ================================================= */}
 
       <div className="alphabet-tabs">
+
         <button
           type="button"
           className={
@@ -930,8 +1237,11 @@ function Alphabet({
             setSelectedType(null);
           }}
         >
-          🔤 Phụ âm
-          <span>33 chữ</span>
+          Phụ âm
+
+          <span>
+            33 chữ
+          </span>
         </button>
 
         <button
@@ -947,10 +1257,15 @@ function Alphabet({
             setSelectedType(null);
           }}
         >
-          🔡 Nguyên âm
-          <span>24 âm</span>
+          Nguyên âm
+
+          <span>
+            24 âm
+          </span>
         </button>
+
       </div>
+
 
       {/* =================================================
           PHỤ ÂM
@@ -958,20 +1273,21 @@ function Alphabet({
 
       {tab === "consonants" && (
         <section>
+
           <div className="alphabet-toolbar">
+
             <div>
               <h2>
                 33 PHỤ ÂM KHMER
               </h2>
 
               <p>
-                Hai nhóm giọng
-                chính: Giọng O
-                và Giọng Ô
+                Nhấn vào chữ để xem đầy đủ thông tin
               </p>
             </div>
 
             <div className="voice-buttons">
+
               <button
                 type="button"
                 className={
@@ -1011,12 +1327,16 @@ function Alphabet({
                   setVoiceFilter("Ô")
                 }
               >
-                🔵 Giọng Ô
+                🟠 Giọng Ô
               </button>
+
             </div>
+
           </div>
 
+
           <div className="alphabet-grid">
+
             {filteredConsonants.map(
               (item) => (
                 <button
@@ -1026,35 +1346,50 @@ function Alphabet({
                   onClick={() =>
                     openConsonant(item)
                   }
+                  aria-label={
+                    `Xem chi tiết chữ ${item.letter}`
+                  }
                 >
+
                   <div className="consonant-number">
                     {item.stt}
                   </div>
 
-                  <div className="consonant-letter">
-                    {item.letter}
+                  <div className="consonant-card-content">
+
+                    <div className="consonant-letter">
+                      {item.letter}
+                    </div>
+
+                    <div className="consonant-card-roman">
+                      {item.roman}
+                    </div>
+
+                    <div
+                      className={
+                        item.voice === "O"
+                          ? "voice-badge voice-o"
+                          : "voice-badge voice-oh"
+                      }
+                    >
+                      Giọng {item.voice}
+                    </div>
+
+                    <div className="consonant-card-action">
+                      Nhấn để xem chi tiết →
+                    </div>
+
                   </div>
 
-                  <div className="consonant-roman">
-                    {item.roman}
-                  </div>
-
-                  <div
-                    className={
-                      item.voice === "O"
-                        ? "voice-badge voice-o"
-                        : "voice-badge voice-oh"
-                    }
-                  >
-                    Giọng{" "}
-                    {item.voice}
-                  </div>
                 </button>
               )
             )}
+
           </div>
 
+
           <div className="alphabet-notes">
+
             <h3>
               📌 Ghi chú phát âm
             </h3>
@@ -1063,29 +1398,28 @@ function Alphabet({
               <strong>
                 Chh (ឆ, ឈ):
               </strong>{" "}
-              Đọc như chữ S
-              tiếng Việt nhưng
-              có hơi bật mạnh.
+              Đọc như chữ S tiếng Việt nhưng có hơi bật mạnh.
             </p>
 
             <p>
               <strong>
                 P (ព):
               </strong>{" "}
-              Âm P phát rõ và
-              mạnh.
+              Âm P phát rõ và mạnh.
             </p>
 
             <p>
               <strong>
                 S (ស):
               </strong>{" "}
-              Đọc gần với âm X
-              trong tiếng Việt.
+              Đọc gần với âm X trong tiếng Việt.
             </p>
+
           </div>
+
         </section>
       )}
+
 
       {/* =================================================
           NGUYÊN ÂM
@@ -1093,21 +1427,24 @@ function Alphabet({
 
       {tab === "vowels" && (
         <section>
+
           <div className="alphabet-toolbar">
+
             <div>
               <h2>
                 24 NGUYÊN ÂM KHMER
               </h2>
 
               <p>
-                Cách đọc phụ thuộc
-                vào nhóm giọng của
-                phụ âm đi kèm.
+                Cách đọc phụ thuộc vào nhóm giọng của phụ âm đi kèm.
               </p>
             </div>
+
           </div>
 
+
           <div className="alphabet-grid vowel-grid">
+
             {vowels.map(
               (item) => (
                 <button
@@ -1118,6 +1455,7 @@ function Alphabet({
                     openVowel(item)
                   }
                 >
+
                   <div className="consonant-number">
                     {item.stt}
                   </div>
@@ -1127,8 +1465,11 @@ function Alphabet({
                   </div>
 
                   <div className="vowel-pronunciation">
+
                     <div>
-                      <span>O</span>
+                      <span>
+                        🟢 O
+                      </span>
 
                       <strong>
                         {item.romanO}
@@ -1136,70 +1477,79 @@ function Alphabet({
                     </div>
 
                     <div>
-                      <span>Ô</span>
+                      <span>
+                        🟠 Ô
+                      </span>
 
                       <strong>
                         {item.romanOh}
                       </strong>
                     </div>
+
                   </div>
 
                   <div className="vowel-note">
                     {item.note || "—"}
                   </div>
+
+                  <div className="consonant-card-action">
+                    Nhấn để xem chi tiết →
+                  </div>
+
                 </button>
               )
             )}
+
           </div>
 
+
           <div className="vowel-rule">
+
             <h3>
-              💡 Quy tắc đọc
-              nguyên âm
+              💡 Quy tắc đọc nguyên âm
             </h3>
 
             <div className="rule-grid">
+
               <div>
                 <strong>
                   🟢 Phụ âm Giọng O
                 </strong>
 
                 <p>
-                  Đọc nguyên âm
-                  theo cách đọc{" "}
+                  Đọc nguyên âm theo cách đọc{" "}
                   <b>Giọng O</b>.
                 </p>
               </div>
 
               <div>
                 <strong>
-                  🔵 Phụ âm Giọng Ô
+                  🟠 Phụ âm Giọng Ô
                 </strong>
 
                 <p>
-                  Đọc nguyên âm
-                  theo cách đọc{" "}
+                  Đọc nguyên âm theo cách đọc{" "}
                   <b>Giọng Ô</b>.
                 </p>
               </div>
 
               <div>
                 <strong>
-                  ⭐ 3 nguyên âm
-                  đặc biệt
+                  ⭐ Nguyên âm đặc biệt
                 </strong>
 
                 <p>
-                  ◌ូ, ើ và ៀ giữ
-                  nguyên cách đọc
-                  giữa hai nhóm
-                  giọng.
+                  Một số nguyên âm giữ nguyên cách đọc giữa hai nhóm giọng.
                 </p>
               </div>
+
             </div>
+
           </div>
+
         </section>
       )}
+
 
       {/* =================================================
           MODAL
@@ -1210,143 +1560,437 @@ function Alphabet({
           className="alphabet-modal-backdrop"
           onClick={closeModal}
         >
+
           <div
             className="alphabet-modal"
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
+
+            {/* =================================================
+                CLOSE
+            ================================================= */}
+
             <button
               type="button"
               className="modal-close"
               onClick={closeModal}
+              aria-label="Đóng"
             >
               ×
             </button>
 
+
+            {/* =================================================
+                MODAL PHỤ ÂM
+            ================================================= */}
+
             {selectedType ===
               "consonant" && (
               <>
-                <div className="modal-letter">
-                  {selected.letter}
-                </div>
 
-                <h2>
-                  {selected.roman}
-                </h2>
+                <div className="modal-consonant-header">
 
-                <div
-                  className={
-                    selected.voice === "O"
-                      ? "modal-voice voice-o"
-                      : "modal-voice voice-oh"
-                  }
-                >
-                  Giọng{" "}
-                  {selected.voice}
-                </div>
-
-                <div className="modal-info">
-                  <div>
-                    <span>STT</span>
-
-                    <strong>
-                      {selected.stt}
-                    </strong>
+                  <div className="modal-detail-stt">
+                    STT {selected.stt}
                   </div>
 
-                  <div>
-                    <span>
-                      Phụ âm
-                    </span>
+                  <div className="modal-consonant-letter">
+                    {selected.letter}
+                  </div>
 
-                    <strong>
+                  <div
+                    className={
+                      selected.voice === "O"
+                        ? "modal-voice voice-o"
+                        : "modal-voice voice-oh"
+                    }
+                  >
+                    {selected.voice ===
+                    "O"
+                      ? "🟢 Giọng O"
+                      : "🟠 Giọng Ô"}
+                  </div>
+
+                </div>
+
+
+                <div className="alphabet-detail-grid">
+
+                  {/* ===============================
+                      CHỮ THƯỜNG
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-normal">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        ✍️
+                      </span>
+
+                      <span>
+                        Chữ thường
+                      </span>
+
+                    </div>
+
+                    <div className="alphabet-detail-card-value normal-khmer-value">
+
                       {selected.letter}
-                    </strong>
+
+                    </div>
+
                   </div>
 
-                  <div>
-                    <span>
-                      Phiên âm
-                    </span>
 
-                    <strong>
+                  {/* ===============================
+                      CHỮ HOA
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-uppercase">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        ✍️
+                      </span>
+
+                      <span>
+                        Chữ hoa
+                      </span>
+
+                    </div>
+
+                    <div className="alphabet-detail-card-value uppercase-khmer-value">
+
+                      {selected.uppercase ||
+                        selected.letter}
+
+                    </div>
+
+                  </div>
+
+
+                  {/* ===============================
+                      VIẾT TAY
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-handwriting">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        ✍️
+                      </span>
+
+                      <span>
+                        Viết tay
+                      </span>
+
+                    </div>
+
+                    <div className="alphabet-detail-card-value handwriting-khmer-value">
+
+                      {selected.handwriting ||
+                        selected.letter}
+
+                    </div>
+
+                  </div>
+
+
+                  {/* ===============================
+                      PHIÊN ÂM
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-pronunciation">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        🗣️
+                      </span>
+
+                      <span>
+                        Phiên âm
+                      </span>
+
+                    </div>
+
+                    <div className="alphabet-detail-card-value pronunciation-value">
+
                       {selected.roman}
-                    </strong>
+
+                    </div>
+
                   </div>
+
                 </div>
+
+
+                {/* ===============================
+                    AUDIO
+                =============================== */}
+
+                <div className="modal-audio-divider">
+                  - - - - - - 🗣️ Giọng đọc - - - - - -
+                </div>
+
+                <div className="modal-audio-area">
+
+                  {selected.audio ? (
+                    <audio
+                      controls
+                      preload="none"
+                      src={
+                        selected.audio
+                      }
+                    />
+                  ) : (
+                    <div className="audio-coming">
+
+                      <span className="audio-icon">
+                        🔊
+                      </span>
+
+                      <strong>
+                        Chưa có MP3
+                      </strong>
+
+                    </div>
+                  )}
+
+                </div>
+
               </>
             )}
+
+
+            {/* =================================================
+                MODAL NGUYÊN ÂM
+            ================================================= */}
 
             {selectedType ===
               "vowel" && (
               <>
-                <div className="modal-letter vowel-modal-symbol">
-                  {selected.symbol}
+
+                <div className="modal-vowel-header">
+
+                  <div className="modal-detail-stt">
+                    STT {selected.stt}
+                  </div>
+
+                  <div className="vowel-main-symbol">
+                    {selected.symbol}
+                  </div>
+
                 </div>
 
-                <h2>
-                  Nguyên âm{" "}
-                  {selected.stt}
-                </h2>
 
-                <div className="modal-vowel-pronunciation">
-                  <div className="modal-vowel-item">
-                    <span>
-                      🟢 Giọng O
-                    </span>
+                <div className="alphabet-detail-grid vowel-detail-grid">
 
-                    <strong>
-                      {selected.romanO}
-                    </strong>
-                  </div>
+                  {/* ===============================
+                      CHỮ THƯỜNG
+                  =============================== */}
 
-                  <div className="modal-vowel-item">
-                    <span>
-                      🔵 Giọng Ô
-                    </span>
+                  <div className="alphabet-detail-card detail-card-normal">
 
-                    <strong>
-                      {selected.romanOh}
-                    </strong>
-                  </div>
-                </div>
+                    <div className="alphabet-detail-card-title">
 
-                <div className="modal-info">
-                  <div>
-                    <span>STT</span>
+                      <span className="detail-icon">
+                        ✍️
+                      </span>
 
-                    <strong>
-                      {selected.stt}
-                    </strong>
-                  </div>
+                      <span>
+                        Chữ thường
+                      </span>
 
-                  <div>
-                    <span>
-                      Ký hiệu
-                    </span>
+                    </div>
 
-                    <strong>
+                    <div className="alphabet-detail-card-value normal-khmer-value">
+
                       {selected.symbol}
-                    </strong>
+
+                    </div>
+
                   </div>
 
-                  <div>
-                    <span>
-                      Ghi chú
-                    </span>
+
+                  {/* ===============================
+                      CHỮ HOA
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-uppercase">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        ✍️
+                      </span>
+
+                      <span>
+                        Chữ hoa
+                      </span>
+
+                    </div>
+
+                    <div className="alphabet-detail-card-value uppercase-khmer-value">
+
+                      {selected.uppercase ||
+                        selected.symbol}
+
+                    </div>
+
+                  </div>
+
+
+                  {/* ===============================
+                      VIẾT TAY
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-handwriting">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        ✍️
+                      </span>
+
+                      <span>
+                        Viết tay
+                      </span>
+
+                    </div>
+
+                    <div className="alphabet-detail-card-value handwriting-khmer-value">
+
+                      {selected.handwriting ||
+                        selected.symbol}
+
+                    </div>
+
+                  </div>
+
+
+                  {/* ===============================
+                      PHIÊN ÂM
+                  =============================== */}
+
+                  <div className="alphabet-detail-card detail-card-pronunciation vowel-pronunciation-detail">
+
+                    <div className="alphabet-detail-card-title">
+
+                      <span className="detail-icon">
+                        🗣️
+                      </span>
+
+                      <span>
+                        Phiên âm
+                      </span>
+
+                    </div>
+
+                    <div className="vowel-modal-pronunciation">
+
+                      <div className="vowel-modal-pronunciation-row">
+
+                        <span className="vowel-modal-voice voice-o">
+                          🟢 Giọng O
+                        </span>
+
+                        <strong>
+                          {selected.romanO}
+                        </strong>
+
+                      </div>
+
+                      <div className="vowel-modal-pronunciation-row">
+
+                        <span className="vowel-modal-voice voice-oh">
+                          🟠 Giọng Ô
+                        </span>
+
+                        <strong>
+                          {selected.romanOh}
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                {/* ===============================
+                    GHI CHÚ
+                =============================== */}
+
+                <div className="modal-note">
+
+                  <span className="modal-note-icon">
+                    📝
+                  </span>
+
+                  <span>
 
                     <strong>
-                      {selected.note ||
-                        "—"}
-                    </strong>
-                  </div>
+                      Ghi chú:
+                    </strong>{" "}
+
+                    {selected.note ||
+                      "Không có ghi chú"}
+
+                  </span>
+
                 </div>
+
+
+                {/* ===============================
+                    AUDIO
+                =============================== */}
+
+                <div className="modal-audio-divider">
+                  - - - - - - 🗣️ Giọng đọc - - - - - -
+                </div>
+
+                <div className="modal-audio-area">
+
+                  {selected.audio ? (
+                    <audio
+                      controls
+                      preload="none"
+                      src={
+                        selected.audio
+                      }
+                    />
+                  ) : (
+                    <div className="audio-coming">
+
+                      <span className="audio-icon">
+                        🔊
+                      </span>
+
+                      <strong>
+                        Chưa có MP3
+                      </strong>
+
+                    </div>
+                  )}
+
+                </div>
+
               </>
             )}
+
           </div>
+
         </div>
       )}
+
     </div>
   );
 }

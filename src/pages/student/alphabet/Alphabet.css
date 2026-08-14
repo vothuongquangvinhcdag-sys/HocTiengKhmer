@@ -1,4 +1,33 @@
 /* =========================================================
+   KHMER FONTS
+========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer OS Muol";
+  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer Fasthand";
+  src: url("/fonts/KhmerFasthand.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================================
    ALPHABET - KHMER GOLD & GREEN
 ========================================================= */
 
@@ -29,6 +58,9 @@
 
 .alphabet-page {
   min-height: 100vh;
+
+  padding: 24px 32px 50px;
+
   background:
     linear-gradient(
       180deg,
@@ -37,15 +69,75 @@
     );
 
   color: var(--text-main);
-  padding: 24px 32px 50px;
 
   font-family:
     "Segoe UI",
-    "Noto Sans",
     Arial,
     sans-serif;
+
+  box-sizing: border-box;
 }
 
+.alphabet-page *,
+.alphabet-page *::before,
+.alphabet-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TIMER
+========================================================= */
+
+.alphabet-timer {
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  z-index: 9999;
+
+  min-width: 175px;
+  padding: 12px 18px;
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 18px;
+
+  text-align: center;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  box-shadow:
+    0 10px 30px rgba(15, 23, 42, 0.15);
+
+  backdrop-filter: blur(12px);
+}
+
+.alphabet-timer-label {
+  color: #16a34a;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.alphabet-timer-value {
+  margin-top: 2px;
+
+  color: #0f172a;
+
+  font-size: 27px;
+  line-height: 1.1;
+  font-weight: 900;
+
+  font-variant-numeric: tabular-nums;
+}
+
+.alphabet-timer-exp {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 700;
+}
 
 /* =========================================================
    BACK BUTTON
@@ -53,18 +145,24 @@
 
 .alphabet-back-button {
   display: inline-flex;
-  align-items: center;
-  gap: 7px;
 
-  border: none;
-  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
 
   padding: 10px 17px;
 
+  border: none;
+
+  border-radius: 10px;
+
   background: var(--khmer-green);
+
   color: white;
 
   font-size: 14px;
+
   font-weight: 700;
 
   cursor: pointer;
@@ -79,7 +177,9 @@
 
 .alphabet-back-button:hover {
   background: var(--khmer-green-dark);
+
   transform: translateY(-1px);
+
   box-shadow: var(--shadow-md);
 }
 
@@ -93,18 +193,21 @@
 ========================================================= */
 
 .alphabet-header {
-  margin-top: 20px;
-
   display: flex;
+
   align-items: center;
   justify-content: space-between;
+
   gap: 30px;
+
+  margin-top: 20px;
 
   padding: 30px 34px;
 
   background: var(--white);
 
   border: 1px solid #eadfbf;
+
   border-top: 5px solid var(--khmer-gold);
 
   border-radius: 18px;
@@ -116,29 +219,35 @@
   flex: 1;
 }
 
+
+/* =========================================================
+   KHMER HEADER
+========================================================= */
+
 .alphabet-khmer {
+  margin-bottom: 5px;
+
+  color: var(--khmer-gold-dark);
+
   font-family:
-    "Noto Sans Khmer",
     "Khmer OS",
     sans-serif;
 
   font-size: 35px;
-  font-weight: 700;
 
-  color: var(--khmer-gold-dark);
-
-  margin-bottom: 5px;
+  font-weight: 400;
 }
 
 .alphabet-header h1 {
   margin: 0;
 
+  color: var(--khmer-green-dark);
+
   font-size: 28px;
+
   line-height: 1.2;
 
   font-weight: 800;
-
-  color: var(--khmer-green-dark);
 }
 
 .alphabet-header p {
@@ -156,6 +265,7 @@
 
 .alphabet-stats {
   display: flex;
+
   gap: 14px;
 }
 
@@ -169,16 +279,18 @@
   background: var(--khmer-gold-light);
 
   border: 1px solid #ead49b;
+
   border-radius: 14px;
 }
 
 .alphabet-stat strong {
   display: block;
 
-  font-size: 28px;
-  line-height: 1;
-
   color: var(--khmer-green);
+
+  font-size: 28px;
+
+  line-height: 1;
 
   font-weight: 800;
 }
@@ -191,6 +303,7 @@
   color: #705a27;
 
   font-size: 13px;
+
   font-weight: 600;
 }
 
@@ -201,7 +314,9 @@
 
 .alphabet-tabs {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
 
   gap: 12px;
 
@@ -210,13 +325,18 @@
 
 .alphabet-tab {
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   gap: 12px;
 
   min-height: 60px;
 
+  padding: 10px;
+
   border: 1px solid var(--border);
+
   border-radius: 13px;
 
   background: var(--white);
@@ -224,6 +344,7 @@
   color: var(--text-main);
 
   font-size: 16px;
+
   font-weight: 750;
 
   cursor: pointer;
@@ -232,28 +353,36 @@
     background 0.2s ease,
     color 0.2s ease,
     border-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .alphabet-tab span {
-  font-size: 12px;
-  font-weight: 600;
-
   color: var(--text-soft);
+
+  font-size: 12px;
+
+  font-weight: 600;
 }
 
 .alphabet-tab:hover {
   border-color: var(--khmer-gold);
-  transform: translateY(-1px);
+
+  transform: translateY(-2px);
+
+  box-shadow: var(--shadow-sm);
 }
 
 .alphabet-tab.active {
   background: var(--khmer-green);
+
   border-color: var(--khmer-green);
 
   color: white;
 
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+
+  transform: translateY(-1px);
 }
 
 .alphabet-tab.active span {
@@ -267,6 +396,7 @@
 
 .alphabet-toolbar {
   display: flex;
+
   align-items: center;
   justify-content: space-between;
 
@@ -280,6 +410,7 @@
   background: var(--white);
 
   border: 1px solid var(--border);
+
   border-left: 5px solid var(--khmer-gold);
 
   border-radius: 14px;
@@ -290,17 +421,17 @@
 .alphabet-toolbar h2 {
   margin: 0;
 
-  font-size: 19px;
-
   color: var(--khmer-green-dark);
+
+  font-size: 19px;
 }
 
 .alphabet-toolbar p {
   margin: 5px 0 0;
 
-  font-size: 13px;
-
   color: var(--text-soft);
+
+  font-size: 13px;
 }
 
 
@@ -310,23 +441,27 @@
 
 .voice-buttons {
   display: flex;
+
   align-items: center;
+
   gap: 8px;
+
   flex-wrap: wrap;
 }
 
 .voice-btn {
+  padding: 8px 13px;
+
   border: 1px solid var(--border);
 
   border-radius: 9px;
-
-  padding: 8px 13px;
 
   background: white;
 
   color: var(--text-main);
 
   font-size: 13px;
+
   font-weight: 700;
 
   cursor: pointer;
@@ -336,10 +471,13 @@
 
 .voice-btn:hover {
   border-color: var(--khmer-gold);
+
+  transform: translateY(-1px);
 }
 
 .voice-btn.active {
   background: var(--khmer-gold);
+
   border-color: var(--khmer-gold-dark);
 
   color: white;
@@ -355,18 +493,22 @@
 }
 
 .voice-oh {
-  color: #9b741c;
+  color: var(--khmer-gold-dark);
 }
 
 .voice-btn.voice-o.active {
   background: var(--khmer-green);
+
   border-color: var(--khmer-green);
+
   color: white;
 }
 
 .voice-btn.voice-oh.active {
   background: var(--khmer-gold-dark);
+
   border-color: var(--khmer-gold-dark);
+
   color: white;
 }
 
@@ -395,13 +537,16 @@
   min-height: 205px;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
 
   padding: 18px 14px;
 
   border: 1px solid var(--border);
+
   border-radius: 15px;
 
   background: white;
@@ -422,13 +567,23 @@
 
   border-color: var(--khmer-gold);
 
-  box-shadow: var(--shadow-md);
-
   background: #fffdf8;
+
+  box-shadow: var(--shadow-md);
 }
 
 .consonant-card:active {
   transform: translateY(-1px);
+}
+
+.consonant-card-content {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
 }
 
 
@@ -443,9 +598,11 @@
   left: 11px;
 
   min-width: 27px;
+
   height: 27px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -456,29 +613,31 @@
   color: var(--khmer-gold-dark);
 
   font-size: 12px;
+
   font-weight: 800;
 }
 
 
 /* =========================================================
-   KHMER LETTER
+   KHMER LETTER - CARD
 ========================================================= */
 
 .consonant-letter {
-  font-family:
-    "Noto Sans Khmer",
-    "Khmer OS",
-    "Leelawadee UI",
-    sans-serif;
-
-  font-size: 64px;
-  line-height: 1.1;
-
-  font-weight: 700;
+  margin-bottom: 7px;
 
   color: var(--khmer-green-dark);
 
-  margin-bottom: 7px;
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 64px;
+
+  line-height: 1.1;
+
+  font-weight: 400;
+
+  font-style: normal;
 }
 
 
@@ -486,14 +645,15 @@
    ROMANIZATION
 ========================================================= */
 
+.consonant-card-roman,
 .consonant-roman {
-  font-size: 16px;
+  margin-bottom: 10px;
 
   color: var(--text-main);
 
-  font-weight: 750;
+  font-size: 16px;
 
-  margin-bottom: 10px;
+  font-weight: 750;
 }
 
 
@@ -504,17 +664,17 @@
 .voice-badge {
   padding: 5px 12px;
 
+  border: 1px solid #c9e4ca;
+
   border-radius: 20px;
-
-  font-size: 12px;
-
-  font-weight: 750;
 
   background: var(--khmer-green-light);
 
   color: var(--khmer-green);
 
-  border: 1px solid #c9e4ca;
+  font-size: 12px;
+
+  font-weight: 750;
 }
 
 .voice-badge.voice-oh {
@@ -523,6 +683,21 @@
   color: var(--khmer-gold-dark);
 
   border-color: #ead49b;
+}
+
+
+/* =========================================================
+   CARD ACTION
+========================================================= */
+
+.consonant-card-action {
+  margin-top: 9px;
+
+  color: var(--text-soft);
+
+  font-size: 11px;
+
+  font-weight: 600;
 }
 
 
@@ -537,13 +712,13 @@
 
   background: white;
 
-  border-left: 5px solid var(--khmer-green);
-
-  border-radius: 13px;
-
   border-top: 1px solid var(--border);
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
+
+  border-left: 5px solid var(--khmer-green);
+
+  border-radius: 13px;
 
   box-shadow: var(--shadow-sm);
 }
@@ -559,9 +734,9 @@
 .alphabet-notes p {
   margin: 7px 0;
 
-  font-size: 13px;
-
   color: var(--text-soft);
+
+  font-size: 13px;
 
   line-height: 1.55;
 }
@@ -580,13 +755,26 @@
 }
 
 .vowel-card {
-  min-height: 235px;
+  min-height: 205px;
 }
 
+
+/* =========================================================
+   VOWEL SYMBOL
+========================================================= */
+
 .vowel-symbol {
+  margin-bottom: 8px;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
   font-size: 52px;
 
-  margin-bottom: 10px;
+  line-height: 1;
+
+  font-weight: 400;
 }
 
 
@@ -603,17 +791,28 @@
 
   gap: 8px;
 
-  margin-top: 3px;
+  margin-top: 2px;
+
+  min-height: 52px;
 }
 
 .vowel-pronunciation > div {
-  padding: 8px 5px;
+  min-height: 52px;
 
-  border-radius: 9px;
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 5px 4px;
 
   background: #f8f8f5;
 
   border: 1px solid #ece9de;
+
+  border-radius: 9px;
 
   text-align: center;
 }
@@ -621,20 +820,31 @@
 .vowel-pronunciation span {
   display: block;
 
-  font-size: 11px;
-  font-weight: 800;
+  height: 16px;
+
+  margin-bottom: 2px;
 
   color: var(--text-soft);
 
-  margin-bottom: 3px;
+  font-size: 11px;
+
+  line-height: 16px;
+
+  font-weight: 800;
 }
 
 .vowel-pronunciation strong {
   display: block;
 
-  font-size: 15px;
+  height: 20px;
 
   color: var(--khmer-green-dark);
+
+  font-size: 15px;
+
+  line-height: 20px;
+
+  font-weight: 800;
 }
 
 
@@ -643,13 +853,15 @@
 ========================================================= */
 
 .vowel-note {
-  margin-top: 9px;
+  min-height: 15px;
 
-  font-size: 11px;
+  margin-top: 7px;
 
   color: var(--text-soft);
 
-  min-height: 15px;
+  font-size: 11px;
+
+  line-height: 15px;
 }
 
 
@@ -693,21 +905,21 @@
 .rule-grid > div {
   padding: 15px;
 
-  border-radius: 11px;
-
   background: #faf9f4;
 
   border: 1px solid #ebe7da;
+
+  border-radius: 11px;
 }
 
 .rule-grid strong {
   display: block;
 
+  margin-bottom: 7px;
+
   color: var(--text-main);
 
   font-size: 13px;
-
-  margin-bottom: 7px;
 }
 
 .rule-grid p {
@@ -718,6 +930,99 @@
   font-size: 12px;
 
   line-height: 1.55;
+}
+
+
+/* =========================================================
+   KHMER FONT CHUNG
+========================================================= */
+
+.khmer-normal-text,
+.khmer-handwriting-text,
+.modal-letter,
+.khmer-value,
+.vowel-main-symbol {
+  font-family:
+    "Khmer OS",
+    sans-serif;
+}
+
+
+/* =========================================================
+   CHỮ THƯỜNG
+   KHMER OS
+========================================================= */
+
+.normal-khmer-value {
+  color: var(--khmer-green-dark);
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  /*
+     TĂNG TỪ 32PX → 42PX
+     ĐỂ CHỮ KHMER HIỂN THỊ RÕ
+  */
+  font-size: 42px;
+
+  line-height: 1.2;
+
+  font-weight: 400;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   CHỮ HOA
+   KHMER OS MUOL
+========================================================= */
+
+.uppercase-khmer-value {
+  color: var(--khmer-green-dark);
+
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    sans-serif;
+
+  /*
+     TĂNG TỪ 32PX → 42PX
+  */
+  font-size: 42px;
+
+  line-height: 1.2;
+
+  font-weight: 400;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   VIẾT TAY
+   KHMER FASTHAND
+========================================================= */
+
+.handwriting-khmer-value {
+  color: var(--khmer-green-dark);
+
+  font-family:
+    "Khmer Fasthand",
+    "Khmer OS",
+    sans-serif;
+
+  /*
+     TĂNG TỪ 32PX → 42PX
+  */
+  font-size: 42px;
+
+  line-height: 1.2;
+
+  font-weight: 400;
+
+  white-space: nowrap;
 }
 
 
@@ -739,74 +1044,126 @@
 
   padding: 20px;
 
-  background: rgba(30, 45, 32, 0.55);
+  background: rgba(30, 45, 32, 0.58);
 
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(5px);
+
+  animation:
+    alphabetModalBackdropIn
+    0.18s ease;
+}
+
+@keyframes alphabetModalBackdropIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 
 /* =========================================================
    MODAL
+   TĂNG KÍCH THƯỚC KHUNG POPUP
 ========================================================= */
 
 .alphabet-modal {
   position: relative;
 
-  width: min(460px, 100%);
+  /*
+     TĂNG TỪ 560PX → 680PX
+  */
+  width: min(680px, 100%);
 
-  max-height: 90vh;
+  /*
+     Cho popup cao hơn
+  */
+  max-height: 94vh;
 
   overflow-y: auto;
 
-  padding: 32px;
+  /*
+     Padding lớn hơn để các ô thoáng
+  */
+  padding: 34px 32px 30px;
 
   background: white;
 
-  border-radius: 20px;
-
   border-top: 6px solid var(--khmer-gold);
+
+  border-radius: 22px;
 
   box-shadow:
     0 25px 70px rgba(0, 0, 0, 0.22);
 
   text-align: center;
+
+  animation:
+    alphabetModalIn
+    0.2s ease;
+}
+
+@keyframes alphabetModalIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
 }
 
 
 /* =========================================================
-   CLOSE
+   CLOSE BUTTON
 ========================================================= */
 
 .modal-close {
   position: absolute;
 
   top: 12px;
-  right: 14px;
+  right: 13px;
 
   width: 36px;
   height: 36px;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
   border: none;
+
   border-radius: 50%;
 
-  background: #f4f3ed;
+  background: transparent;
 
   color: #555;
 
-  font-size: 24px;
+  font-size: 28px;
+
   line-height: 1;
 
   cursor: pointer;
 
-  transition: all 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .modal-close:hover {
-  background: #ece9df;
+  background: #f1efe7;
 
   color: var(--khmer-green-dark);
 
@@ -815,36 +1172,64 @@
 
 
 /* =========================================================
-   MODAL LETTER
+   MODAL STT
 ========================================================= */
 
-.modal-letter {
-  font-family:
-    "Noto Sans Khmer",
-    "Khmer OS",
-    sans-serif;
-
-  font-size: 105px;
-  line-height: 1.1;
-
-  font-weight: 700;
-
-  color: var(--khmer-green-dark);
-
-  margin: 8px 0 8px;
-}
-
-.alphabet-modal h2 {
-  margin: 0 0 12px;
+.modal-detail-stt {
+  margin: 0;
 
   color: var(--text-main);
 
-  font-size: 24px;
+  font-size: 17px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
 }
 
 
 /* =========================================================
-   MODAL VOICE
+   MODAL PHỤ ÂM HEADER
+========================================================= */
+
+.modal-consonant-header {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   CHỮ KHMER LỚN TRONG MODAL
+========================================================= */
+
+.modal-consonant-letter {
+  margin-top: 6px;
+
+  color: var(--khmer-green-dark);
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  /*
+     TĂNG TỪ 78PX → 92PX
+  */
+  font-size: 92px;
+
+  line-height: 1.05;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   GIỌNG O / Ô
 ========================================================= */
 
 .modal-voice {
@@ -853,11 +1238,15 @@
   align-items: center;
   justify-content: center;
 
-  padding: 7px 17px;
+  margin-top: 6px;
 
-  border-radius: 30px;
+  padding: 5px 14px;
 
-  font-size: 13px;
+  border-radius: 20px;
+
+  font-size: 14px;
+
+  line-height: 1.2;
 
   font-weight: 800;
 }
@@ -880,100 +1269,425 @@
 
 
 /* =========================================================
-   MODAL INFO
+   VOWEL HEADER
 ========================================================= */
 
-.modal-info {
+.modal-vowel-header {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   NGUYÊN ÂM TRONG MODAL
+========================================================= */
+
+.vowel-main-symbol {
+  width: 100%;
+
+  min-height: 100px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 5px;
+
+  color: var(--khmer-green-dark);
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 88px;
+
+  line-height: 1;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   DETAIL GRID
+========================================================= */
+
+.alphabet-detail-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+    repeat(2, minmax(0, 1fr));
 
-  gap: 9px;
-
-  margin-top: 22px;
+  gap: 14px;
 }
 
-.modal-info > div {
-  padding: 12px 8px;
 
-  background: #faf9f4;
+/* =========================================================
+   DETAIL CARD
+========================================================= */
+
+.alphabet-detail-card {
+  min-height: 145px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fffdf8 0%,
+      #faf9f4 100%
+    );
 
   border: 1px solid #ebe7da;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 2px 7px rgba(50, 60, 40, 0.04);
+}
+
+
+/* =========================================================
+   CARD TOP BORDER
+========================================================= */
+
+.detail-card-normal {
+  border-top: 4px solid var(--khmer-green);
+}
+
+.detail-card-uppercase {
+  border-top: 4px solid var(--khmer-gold);
+}
+
+.detail-card-handwriting {
+  border-top: 4px solid var(--khmer-green);
+}
+
+.detail-card-pronunciation {
+  border-top: 4px solid var(--khmer-gold);
+}
+
+
+/* =========================================================
+   DETAIL TITLE
+========================================================= */
+
+.alphabet-detail-card-title {
+  min-height: 26px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-bottom: 7px;
+
+  color: var(--text-main);
+
+  font-size: 15px;
+
+  line-height: 1.2;
+
+  font-weight: 800;
+}
+
+.detail-icon {
+  font-size: 18px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   DETAIL VALUE
+========================================================= */
+
+.alphabet-detail-card-value {
+  width: 100%;
+
+  min-height: 70px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  color: var(--khmer-green-dark);
+
+  font-size: 20px;
+
+  line-height: 1.25;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   KHMER DETAIL VALUE
+   QUAN TRỌNG:
+   ÉP 3 LOẠI CHỮ LỚN HƠN
+========================================================= */
+
+/* =========================================================
+   KHMER DETAIL VALUE - KÍCH THƯỚC RIÊNG TỪNG LOẠI
+========================================================= */
+
+/* CHỮ THƯỜNG */
+.alphabet-detail-card .normal-khmer-value {
+  font-size: 60px;
+  line-height: 1.15;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* CHỮ HOA - LỚN NHẤT */
+.alphabet-detail-card .uppercase-khmer-value {
+  font-size: 80px;
+  line-height: 1.1;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* VIẾT TAY - NHỎ HƠN */
+.alphabet-detail-card .handwriting-khmer-value {
+  font-size: 50px;
+  line-height: 1.2;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   PHIÊN ÂM
+========================================================= */
+
+.pronunciation-value {
+  color: var(--text-main);
+
+  font-size: 26px;
+
+  font-weight: 850;
+}
+
+
+/* =========================================================
+   PHIÊN ÂM NGUYÊN ÂM
+========================================================= */
+
+.vowel-pronunciation-detail {
+  min-height: 160px;
+}
+
+.vowel-modal-pronunciation {
+  width: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.vowel-modal-pronunciation-row {
+  width: 100%;
+
+  min-height: 55px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 2px;
+
+  line-height: 1;
+}
+
+
+/* =========================================================
+   NHÃN GIỌNG NGUYÊN ÂM
+========================================================= */
+
+.vowel-modal-voice {
+  display: block;
+
+  color: var(--text-soft);
+
+  font-size: 13px;
+
+  line-height: 18px;
+
+  font-weight: 800;
+
+  text-align: center;
+}
+
+.vowel-modal-voice.voice-o {
+  color: var(--khmer-green);
+}
+
+.vowel-modal-voice.voice-oh {
+  color: var(--khmer-gold-dark);
+}
+
+
+/* =========================================================
+   PHIÊN ÂM CHÍNH
+========================================================= */
+
+.vowel-modal-pronunciation-row strong {
+  display: block;
+
+  color: var(--text-main);
+
+  font-size: 26px;
+
+  line-height: 31px;
+
+  font-weight: 850;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   GHI CHÚ
+========================================================= */
+
+.modal-note {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  margin-top: 14px;
+
+  padding: 5px 8px;
+
+  color: var(--text-soft);
+
+  font-size: 13px;
+
+  line-height: 1.35;
+
+  font-weight: 600;
+}
+
+.modal-note strong {
+  color: var(--text-main);
+}
+
+.modal-note-icon {
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   AUDIO DIVIDER
+========================================================= */
+
+.modal-audio-divider {
+  margin-top: 15px;
+
+  padding-top: 4px;
+
+  color: var(--text-main);
+
+  font-size: 13px;
+
+  line-height: 1.3;
+
+  font-weight: 850;
+
+  letter-spacing: 0.2px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   AUDIO AREA
+========================================================= */
+
+.modal-audio-area {
+  min-height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 8px;
+
+  padding: 9px 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #f8fbf7 0%,
+      #eef7ed 100%
+    );
+
+  border: 1px solid #c9e4ca;
 
   border-radius: 10px;
 }
 
-.modal-info span {
-  display: block;
+.modal-audio-area audio {
+  width: 100%;
 
-  font-size: 10px;
-
-  color: var(--text-soft);
-
-  margin-bottom: 5px;
-}
-
-.modal-info strong {
-  display: block;
-
-  font-size: 13px;
-
-  color: var(--text-main);
+  max-width: 500px;
 }
 
 
 /* =========================================================
-   VOWEL MODAL
+   AUDIO EMPTY
 ========================================================= */
 
-.vowel-modal-symbol {
-  font-size: 85px;
-}
+.audio-coming {
+  display: flex;
 
-.modal-vowel-pronunciation {
-  display: grid;
+  align-items: center;
+  justify-content: center;
 
-  grid-template-columns: 1fr 1fr;
-
-  gap: 12px;
-
-  margin-top: 18px;
-}
-
-.modal-vowel-item {
-  padding: 15px;
-
-  border-radius: 12px;
-
-  background: #faf9f4;
-
-  border: 1px solid #ebe7da;
-}
-
-.modal-vowel-item span {
-  display: block;
-
-  font-size: 12px;
-
-  font-weight: 750;
-
-  color: var(--text-soft);
-
-  margin-bottom: 7px;
-}
-
-.modal-vowel-item strong {
-  display: block;
-
-  font-size: 22px;
+  gap: 7px;
 
   color: var(--khmer-green-dark);
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+.audio-icon {
+  font-size: 19px;
 }
 
 
 /* =========================================================
-   FOCUS / ACCESSIBILITY
+   FOCUS
 ========================================================= */
 
 .alphabet-back-button:focus-visible,
@@ -1010,6 +1724,36 @@
     font-size: 58px;
   }
 
+  /*
+     POPUP TABLET
+  */
+
+  .alphabet-modal {
+    width: min(640px, 100%);
+
+    padding:
+      32px
+      28px
+      28px;
+  }
+
+  .modal-consonant-letter {
+    font-size: 86px;
+  }
+
+  .vowel-main-symbol {
+    font-size: 82px;
+  }
+
+  .alphabet-detail-card {
+    min-height: 140px;
+  }
+
+  .alphabet-detail-card .normal-khmer-value,
+  .alphabet-detail-card .uppercase-khmer-value,
+  .alphabet-detail-card .handwriting-khmer-value {
+    font-size: 40px;
+  }
 }
 
 
@@ -1023,8 +1767,15 @@
     padding: 16px 14px 30px;
   }
 
+  .alphabet-timer {
+    flex-wrap: wrap;
+
+    gap: 7px 12px;
+  }
+
   .alphabet-header {
     flex-direction: column;
+
     align-items: stretch;
 
     padding: 22px 18px;
@@ -1099,34 +1850,213 @@
     font-size: 54px;
   }
 
-  .consonant-roman {
+  .consonant-roman,
+  .consonant-card-roman {
     font-size: 14px;
   }
 
+
+  /* =====================================================
+     NGUYÊN ÂM MOBILE
+  ===================================================== */
+
   .vowel-card {
-    min-height: 215px;
+    min-height: 185px;
   }
 
   .vowel-symbol {
     font-size: 45px;
+
+    margin-bottom: 7px;
+  }
+
+  .vowel-pronunciation {
+    min-height: 48px;
+
+    gap: 6px;
+  }
+
+  .vowel-pronunciation > div {
+    min-height: 48px;
+
+    padding: 4px 3px;
+  }
+
+  .vowel-pronunciation span {
+    height: 15px;
+
+    line-height: 15px;
+
+    font-size: 10px;
+  }
+
+  .vowel-pronunciation strong {
+    height: 19px;
+
+    line-height: 19px;
+
+    font-size: 14px;
+  }
+
+  .vowel-note {
+    margin-top: 6px;
+
+    min-height: 14px;
+
+    line-height: 14px;
+
+    font-size: 10px;
   }
 
   .rule-grid {
     grid-template-columns: 1fr;
   }
 
+
+  /* =====================================================
+     MODAL MOBILE
+  ===================================================== */
+
   .alphabet-modal {
-    padding: 27px 18px 22px;
+    width: min(96vw, 540px);
+
+    max-height: 94vh;
+
+    padding:
+      30px
+      18px
+      22px;
+
+    border-radius: 20px;
   }
 
-  .modal-letter {
-    font-size: 85px;
+  .modal-detail-stt {
+    font-size: 15px;
   }
 
-  .modal-info {
-    grid-template-columns: 1fr;
+  .modal-consonant-header {
+    margin-bottom: 15px;
   }
 
+  /*
+     CHỮ ក TRONG ĐẦU POPUP
+     KHÔNG CHO NHỎ QUÁ
+  */
+
+  .modal-consonant-letter {
+    font-size: 76px;
+
+    line-height: 1.05;
+  }
+
+  .vowel-main-symbol {
+    min-height: 82px;
+
+    font-size: 72px;
+  }
+
+  /*
+     GRID 2 Ô
+  */
+
+  .alphabet-detail-grid {
+    gap: 9px;
+  }
+
+  .alphabet-detail-card {
+    min-height: 128px;
+
+    padding:
+      12px
+      7px;
+  }
+
+  .alphabet-detail-card-title {
+    min-height: 23px;
+
+    margin-bottom: 5px;
+
+    font-size: 13px;
+  }
+
+  .detail-icon {
+    font-size: 16px;
+  }
+
+  .alphabet-detail-card-value {
+    min-height: 62px;
+  }
+
+
+  /* =====================================================
+     KHMER FONT MOBILE
+     QUAN TRỌNG:
+     KHÔNG GIẢM XUỐNG 24-27PX NỮA
+  ===================================================== */
+
+  .normal-khmer-value,
+  .uppercase-khmer-value,
+  .handwriting-khmer-value,
+  .alphabet-detail-card .normal-khmer-value,
+  .alphabet-detail-card .uppercase-khmer-value,
+  .alphabet-detail-card .handwriting-khmer-value {
+    font-size: 36px;
+
+    line-height: 1.2;
+
+    font-weight: 400;
+  }
+
+  /*
+     PHIÊN ÂM NHỎ HƠN KHMER
+  */
+
+  .pronunciation-value {
+    font-size: 22px;
+  }
+
+
+  /* =====================================================
+     PHIÊN ÂM NGUYÊN ÂM MOBILE
+  ===================================================== */
+
+  .vowel-pronunciation-detail {
+    min-height: 145px;
+  }
+
+  .vowel-modal-pronunciation {
+    gap: 8px;
+  }
+
+  .vowel-modal-pronunciation-row {
+    min-height: 50px;
+
+    gap: 2px;
+  }
+
+  .vowel-modal-pronunciation-row strong {
+    font-size: 23px;
+
+    line-height: 28px;
+  }
+
+  .vowel-modal-voice {
+    font-size: 12px;
+
+    line-height: 17px;
+  }
+
+  .modal-note {
+    font-size: 12px;
+  }
+
+  .modal-audio-divider {
+    font-size: 11px;
+  }
+
+  .audio-coming {
+    font-size: 13px;
+  }
 }
 
 
@@ -1138,6 +2068,7 @@
 
   .alphabet-page {
     padding-left: 10px;
+
     padding-right: 10px;
   }
 
@@ -1163,8 +2094,187 @@
     font-size: 11px;
   }
 
-  .modal-vowel-pronunciation {
-    grid-template-columns: 1fr;
+
+  /* =====================================================
+     NGUYÊN ÂM
+  ===================================================== */
+
+  .vowel-card {
+    min-height: 175px;
   }
 
+  .vowel-symbol {
+    font-size: 40px;
+  }
+
+  .vowel-pronunciation {
+    min-height: 44px;
+
+    gap: 5px;
+  }
+
+  .vowel-pronunciation > div {
+    min-height: 44px;
+  }
+
+  .vowel-pronunciation span {
+    height: 14px;
+
+    line-height: 14px;
+
+    font-size: 9px;
+  }
+
+  .vowel-pronunciation strong {
+    height: 18px;
+
+    line-height: 18px;
+
+    font-size: 13px;
+  }
+
+  .vowel-note {
+    min-height: 13px;
+
+    line-height: 13px;
+
+    font-size: 9px;
+  }
+
+
+  /* =====================================================
+     MODAL MÀN HÌNH RẤT NHỎ
+  ===================================================== */
+
+  .alphabet-modal {
+    width: 96vw;
+
+    max-height: 94vh;
+
+    padding:
+      28px
+      10px
+      20px;
+
+    border-radius: 18px;
+  }
+
+  .modal-detail-stt {
+    font-size: 14px;
+  }
+
+  /*
+     CHỮ ក
+     VẪN GIỮ LỚN
+  */
+
+  .modal-consonant-letter {
+    font-size: 68px;
+
+    line-height: 1.05;
+  }
+
+  .vowel-main-symbol {
+    min-height: 72px;
+
+    font-size: 64px;
+  }
+
+
+  /* =====================================================
+     DETAIL GRID
+  ===================================================== */
+
+  .alphabet-detail-grid {
+    gap: 7px;
+  }
+
+  .alphabet-detail-card {
+    min-height: 115px;
+
+    padding:
+      9px
+      4px;
+  }
+
+  .alphabet-detail-card-title {
+    min-height: 21px;
+
+    font-size: 11px;
+
+    gap: 3px;
+  }
+
+  .detail-icon {
+    font-size: 14px;
+  }
+
+  .alphabet-detail-card-value {
+    min-height: 57px;
+  }
+
+
+  /* =====================================================
+     KHMER - KHÔNG THU NHỎ QUÁ
+  ===================================================== */
+
+  .normal-khmer-value,
+  .uppercase-khmer-value,
+  .handwriting-khmer-value,
+  .alphabet-detail-card .normal-khmer-value,
+  .alphabet-detail-card .uppercase-khmer-value,
+  .alphabet-detail-card .handwriting-khmer-value {
+    font-size: 32px;
+
+    line-height: 1.2;
+
+    font-weight: 400;
+  }
+
+  .pronunciation-value {
+    font-size: 19px;
+  }
+
+
+  /* =====================================================
+     PHIÊN ÂM NGUYÊN ÂM
+  ===================================================== */
+
+  .vowel-pronunciation-detail {
+    min-height: 135px;
+  }
+
+  .vowel-modal-pronunciation {
+    gap: 7px;
+  }
+
+  .vowel-modal-pronunciation-row {
+    min-height: 46px;
+
+    gap: 1px;
+  }
+
+  .vowel-modal-pronunciation-row strong {
+    font-size: 21px;
+
+    line-height: 26px;
+  }
+
+  .vowel-modal-voice {
+    font-size: 10px;
+
+    line-height: 16px;
+  }
+
+  .modal-note {
+    font-size: 11px;
+  }
+
+  .modal-audio-divider {
+    font-size: 10px;
+  }
+
+  .audio-coming {
+    font-size: 12px;
+  }
 }
