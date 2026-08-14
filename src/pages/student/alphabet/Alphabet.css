@@ -1,2878 +1,2894 @@
-/* =========================================================
-   KHMER FONTS
-========================================================= */
-
-@font-face {
-  font-family: "Khmer OS";
-  src: url("/fonts/KhmerOS.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Khmer OS Muol";
-  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Khmer Fasthand";
-  src: url("/fonts/KhmerFasthand.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-
-/* =========================================================
-   ROOT
-========================================================= */
-
-:root {
-  --khmer-gold: #d9a441;
-  --khmer-gold-dark: #b98216;
-  --khmer-gold-light: #fff7df;
-
-  --khmer-green: #2f7d32;
-  --khmer-green-dark: #216226;
-  --khmer-green-light: #eaf6ea;
-
-  --text-main: #263238;
-  --text-soft: #66736a;
-
-  --white: #ffffff;
-  --border: #e4e0d4;
-  --background: #f7f6f1;
-
-  --shadow-sm:
-    0 3px 12px rgba(50, 60, 40, 0.08);
-
-  --shadow-md:
-    0 10px 28px rgba(50, 60, 40, 0.13);
-}
-
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-.alphabet-page {
-  min-height: 100vh;
-  padding: 24px 32px 50px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #fffdf7 0%,
-      var(--background) 100%
-    );
-
-  color: var(--text-main);
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  box-sizing: border-box;
-}
-
-.alphabet-page *,
-.alphabet-page *::before,
-.alphabet-page *::after {
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   TIMER
-========================================================= */
-
-.alphabet-timer {
-  position: fixed;
-  top: 18px;
-  right: 20px;
-  z-index: 9999;
-
-  min-width: 175px;
-  padding: 12px 18px;
-
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 18px;
-
-  text-align: center;
-
-  background: rgba(255, 255, 255, 0.94);
-
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.15);
-
-  backdrop-filter: blur(12px);
-}
-
-.alphabet-timer-label {
-  color: #16a34a;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.alphabet-timer-value {
-  margin-top: 2px;
-
-  color: #0f172a;
-
-  font-size: 27px;
-  line-height: 1.1;
-  font-weight: 900;
-
-  font-variant-numeric: tabular-nums;
-}
-
-.alphabet-timer-exp {
-  margin-top: 4px;
-
-  color: #64748b;
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-
-/* =========================================================
-   BACK BUTTON
-========================================================= */
-
-.alphabet-back-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-
-  padding: 10px 17px;
-
-  border: none;
-  border-radius: 10px;
-
-  background: var(--khmer-green);
-  color: white;
-
-  font-size: 14px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  box-shadow: var(--shadow-sm);
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.alphabet-back-button:hover {
-  background: var(--khmer-green-dark);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.alphabet-back-button:active {
-  transform: translateY(0);
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.alphabet-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-
-  margin-top: 20px;
-  padding: 30px 34px;
-
-  background: var(--white);
-
-  border: 1px solid #eadfbf;
-  border-top: 5px solid var(--khmer-gold);
-  border-radius: 18px;
-
-  box-shadow: var(--shadow-sm);
-}
-
-.alphabet-header-main {
-  flex: 1;
-}
-
-.alphabet-khmer {
-  margin-bottom: 5px;
-
-  color: var(--khmer-gold-dark);
-
-  font-family: "Khmer OS Muol", sans-serif;
-
-  font-size: 35px;
-  font-weight: 400;
-}
-
-.alphabet-header h1 {
-  margin: 0;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 28px;
-  line-height: 1.2;
-  font-weight: 800;
-}
-
-.alphabet-header p {
-  margin: 8px 0 0;
-
-  color: var(--text-soft);
-
-  font-size: 14px;
-}
-
-
-/* =========================================================
-   STATISTICS
-========================================================= */
-
-.alphabet-stats {
-  display: flex;
-  gap: 14px;
-}
-
-.alphabet-stat {
-  min-width: 110px;
-  padding: 16px 20px;
-
-  text-align: center;
-
-  background: var(--khmer-gold-light);
-
-  border: 1px solid #ead49b;
-  border-radius: 14px;
-}
-
-.alphabet-stat strong {
-  display: block;
-
-  color: var(--khmer-green);
-
-  font-size: 28px;
-  line-height: 1;
-  font-weight: 800;
-}
-
-.alphabet-stat span {
-  display: block;
-
-  margin-top: 7px;
-
-  color: #705a27;
-
-  font-size: 13px;
-  font-weight: 600;
-}
-
-
-/* =========================================================
-   TABS
-========================================================= */
-
-.alphabet-tabs {
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 12px;
-
-  margin-top: 20px;
-}
-
-.alphabet-tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-
-  min-height: 60px;
-  padding: 10px;
-
-  border: 1px solid var(--border);
-  border-radius: 13px;
-
-  background: var(--white);
-  color: var(--text-main);
-
-  font-size: 16px;
-  font-weight: 750;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.alphabet-tab span {
-  color: var(--text-soft);
-
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.alphabet-tab:hover {
-  border-color: var(--khmer-gold);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
-}
-
-.alphabet-tab.active {
-  background: var(--khmer-green);
-  border-color: var(--khmer-green);
-  color: white;
-
-  box-shadow: var(--shadow-md);
-
-  transform: translateY(-1px);
-}
-
-.alphabet-tab.active span {
-  color: #e7f4e7;
-}
-
-
-/* =========================================================
-   TOOLBAR
-========================================================= */
-
-.alphabet-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-
-  margin-top: 24px;
-  margin-bottom: 18px;
-
-  padding: 20px 22px;
-
-  background: var(--white);
-
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--khmer-gold);
-  border-radius: 14px;
-
-  box-shadow: var(--shadow-sm);
-}
-
-.alphabet-toolbar h2 {
-  margin: 0;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 19px;
-}
-
-.alphabet-toolbar p {
-  margin: 5px 0 0;
-
-  color: var(--text-soft);
-
-  font-size: 13px;
-}
-
-
-/* =========================================================
-   VOICE BUTTONS
-========================================================= */
-
-.voice-buttons {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  flex-wrap: wrap;
-}
-
-.voice-btn {
-  padding: 8px 13px;
-
-  border: 1px solid var(--border);
-  border-radius: 9px;
-
-  background: white;
-  color: var(--text-main);
-
-  font-size: 13px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-}
-
-.voice-btn:hover {
-  border-color: var(--khmer-gold);
-  transform: translateY(-1px);
-}
-
-.voice-btn.active {
-  background: var(--khmer-gold);
-  border-color: var(--khmer-gold-dark);
-  color: white;
-}
-
-.voice-o {
-  color: var(--khmer-green);
-}
-
-.voice-oh {
-  color: var(--khmer-gold-dark);
-}
-
-.voice-btn.voice-o.active {
-  background: var(--khmer-green);
-  border-color: var(--khmer-green);
-  color: white;
-}
-
-.voice-btn.voice-oh.active {
-  background: var(--khmer-gold-dark);
-  border-color: var(--khmer-gold-dark);
-  color: white;
-}
-
-
-/* =========================================================
-   ALPHABET GRID
-========================================================= */
-
-.alphabet-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(5, minmax(0, 1fr));
-
-  gap: 14px;
-}
-
-
-/* =========================================================
-   CONSONANT CARD
-========================================================= */
-
-.consonant-card {
-  position: relative;
-
-  min-height: 205px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  padding: 18px 14px;
-
-  border: 1px solid var(--border);
-  border-radius: 15px;
-
-  background: white;
-
-  cursor: pointer;
-
-  box-shadow: var(--shadow-sm);
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
-
-.consonant-card:hover {
-  transform: translateY(-4px);
-
-  border-color: var(--khmer-gold);
-
-  background: #fffdf8;
-
-  box-shadow: var(--shadow-md);
-}
-
-.consonant-card:active {
-  transform: translateY(-1px);
-}
-
-.consonant-card-content {
-  width: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-
-/* =========================================================
-   NUMBER
-========================================================= */
-
-.consonant-number {
-  position: absolute;
-
-  top: 10px;
-  left: 11px;
-
-  min-width: 27px;
-  height: 27px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--khmer-gold-light);
-  color: var(--khmer-gold-dark);
-
-  font-size: 12px;
-  font-weight: 800;
-}
-
-
-/* =========================================================
-   LETTER
-========================================================= */
-
-.consonant-letter {
-  margin-bottom: 7px;
-
-  color: var(--text-main);
-
-  font-family: "Khmer OS", sans-serif;
-
-  font-size: 64px;
-  line-height: 1.1;
-
-  font-weight: 400;
-}
-
-
-/* =========================================================
-   ROMANIZATION
-========================================================= */
-
-.consonant-card-roman,
-.consonant-roman {
-  margin-bottom: 10px;
-
-  color: var(--text-main);
-
-  font-size: 16px;
-  font-weight: 750;
-}
-
-
-/* =========================================================
-   VOICE BADGE
-========================================================= */
-
-.voice-badge {
-  padding: 5px 12px;
-
-  border: 1px solid #c9e4ca;
-  border-radius: 20px;
-
-  background: var(--khmer-green-light);
-  color: var(--khmer-green);
-
-  font-size: 12px;
-  font-weight: 750;
-}
-
-.voice-badge.voice-oh {
-  background: var(--khmer-gold-light);
-  color: var(--khmer-gold-dark);
-  border-color: #ead49b;
-}
-
-
-/* =========================================================
-   CARD ACTION
-========================================================= */
-
-.consonant-card-action {
-  margin-top: 9px;
-
-  color: var(--text-soft);
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-
-/* =========================================================
-   NOTES
-========================================================= */
-
-.alphabet-notes {
-  margin-top: 20px;
-
-  padding: 20px 22px;
-
-  background: white;
-
-  border:
-    1px solid var(--border);
-
-  border-left: 5px solid var(--khmer-green);
-
-  border-radius: 13px;
-
-  box-shadow: var(--shadow-sm);
-}
-
-.alphabet-notes h3 {
-  margin: 0 0 12px;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 16px;
-}
-
-.alphabet-notes p {
-  margin: 7px 0;
-
-  color: var(--text-soft);
-
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.alphabet-notes strong {
-  color: var(--text-main);
-}
-
-
-/* =========================================================
-   VOWELS
-========================================================= */
-
-.vowel-grid {
-  margin-top: 2px;
-}
-
-.vowel-card {
-  min-height: 205px;
-}
-
-.vowel-symbol {
-  margin-bottom: 8px;
-
-  font-family: "Khmer OS", sans-serif;
-
-  font-size: 52px;
-  line-height: 1;
-
-  font-weight: 400;
-}
-
-.vowel-pronunciation {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  width: 100%;
-
-  gap: 8px;
-
-  margin-top: 2px;
-
-  min-height: 52px;
-}
-
-.vowel-pronunciation > div {
-  min-height: 52px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  padding: 5px 4px;
-
-  background: #f8f8f5;
-
-  border: 1px solid #ece9de;
-  border-radius: 9px;
-
-  text-align: center;
-}
-
-.vowel-pronunciation span {
-  display: block;
-
-  height: 16px;
-  margin-bottom: 2px;
-
-  color: var(--text-soft);
-
-  font-size: 11px;
-  line-height: 16px;
-
-  font-weight: 800;
-}
-
-.vowel-pronunciation strong {
-  display: block;
-
-  height: 20px;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 15px;
-  line-height: 20px;
-
-  font-weight: 800;
-}
-
-.vowel-note {
-  min-height: 15px;
-
-  margin-top: 7px;
-
-  color: var(--text-soft);
-
-  font-size: 11px;
-  line-height: 15px;
-}
-
-
-/* =========================================================
-   VOWEL RULE
-========================================================= */
-
-.vowel-rule {
-  margin-top: 20px;
-
-  padding: 21px 22px;
-
-  background: white;
-
-  border: 1px solid var(--border);
-  border-top: 4px solid var(--khmer-gold);
-
-  border-radius: 14px;
-
-  box-shadow: var(--shadow-sm);
-}
-
-.vowel-rule h3 {
-  margin: 0 0 16px;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 17px;
-}
-
-.rule-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
-
-  gap: 13px;
-}
-
-.rule-grid > div {
-  padding: 15px;
-
-  background: #faf9f4;
-
-  border: 1px solid #ebe7da;
-  border-radius: 11px;
-}
-
-.rule-grid strong {
-  display: block;
-
-  margin-bottom: 7px;
-
-  color: var(--text-main);
-
-  font-size: 13px;
-}
-
-.rule-grid p {
-  margin: 0;
-
-  color: var(--text-soft);
-
-  font-size: 12px;
-  line-height: 1.55;
-}
-
-
-/* =========================================================
-   KHMER FONT CHUNG
-========================================================= */
-
-.khmer-normal-text,
-.khmer-handwriting-text,
-.modal-letter,
-.khmer-value,
-.vowel-main-symbol {
-  font-family: "Khmer OS", sans-serif;
-}
-
-
-/* =========================================================
-   CHỮ THƯỜNG
-========================================================= */
-
-.normal-khmer-value,
-.uppercase-khmer-value,
-.handwriting-khmer-value {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-weight: 400;
-
-  white-space: nowrap;
-}
-
-.normal-khmer-value {
-  font-family: "Khmer OS", sans-serif;
-  font-size: 42px;
-  line-height: 1.2;
-}
-
-
-/* =========================================================
-   CHỮ HOA
-========================================================= */
-
-.uppercase-khmer-value {
-  font-family:
-    "Khmer OS Muol",
-    "Khmer OS",
-    sans-serif;
-
-  font-size: 42px;
-  line-height: 1.2;
-}
-
-
-/* =========================================================
-   VIẾT TAY
-========================================================= */
-
-.handwriting-khmer-value {
-  font-family:
-    "Khmer Fasthand",
-    "Khmer OS",
-    sans-serif;
-
-  font-size: 42px;
-  line-height: 1.2;
-}
-
-
-/* =========================================================
-   MODAL BACKDROP
-========================================================= */
-
-.alphabet-modal-backdrop {
-  position: fixed;
-  inset: 0;
-
-  z-index: 9999;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 20px;
-
-  background: rgba(30, 45, 32, 0.60);
-
-  backdrop-filter: blur(6px);
-
-  animation:
-    alphabetModalBackdropIn
-    0.18s ease;
-}
-
-@keyframes alphabetModalBackdropIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.alphabet-modal {
-  position: relative;
-
-  width: min(600px, 100%);
-  max-height: 94vh;
-
-  overflow-y: auto;
-
-  padding:
-    32px
-    28px
-    30px;
-
-  background: #ffffff;
-
-  border: 1px solid #eadfbf;
-  border-top: 6px solid var(--khmer-gold);
-
-  border-radius: 22px;
-
-  box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.24);
-
-  text-align: center;
-
-  animation:
-    alphabetModalIn
-    0.2s ease;
-}
-
-@keyframes alphabetModalIn {
-  from {
-    opacity: 0;
-
-    transform:
-      translateY(12px)
-      scale(0.97);
-  }
-
-  to {
-    opacity: 1;
-
-    transform:
-      translateY(0)
-      scale(1);
-  }
-}
-
-
-/* =========================================================
-   CLOSE BUTTON
-========================================================= */
-
-.modal-close {
-  position: absolute;
-
-  top: 12px;
-  right: 13px;
-
-  width: 38px;
-  height: 38px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: none;
-  border-radius: 50%;
-
-  background: transparent;
-  color: #555;
-
-  font-size: 28px;
-  line-height: 1;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.modal-close:hover {
-  background: #f1efe7;
-  color: var(--khmer-green-dark);
-
-  transform: rotate(90deg);
-}
-
-
-/* =========================================================
-   MODAL STT
-========================================================= */
-
-.modal-detail-stt {
-  margin: 0;
-  padding: 0;
-
-  color: var(--text-main);
-
-  font-size: 22px;
-  line-height: 1.25;
-
-  font-weight: 900;
-
-  text-align: center;
-}
-
-
-/* =========================================================
-   MODAL HEADER
-========================================================= */
-
-.modal-consonant-header,
-.modal-vowel-header {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  margin: 0 0 24px;
-  padding: 0;
-}
-
-
-/* =========================================================
-   ẨN CHỮ KHMER LỚN Ở ĐẦU POPUP
-========================================================= */
-
-.modal-consonant-letter,
-.vowel-main-symbol {
-  display: none;
-}
-
-
-/* =========================================================
-   GIỌNG O / Ô
-========================================================= */
-
-.modal-voice {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  margin-top: 8px;
-
-  padding:
-    6px
-    17px;
-
-  border-radius: 20px;
-
-  font-size: 14px;
-  line-height: 1.2;
-
-  font-weight: 850;
-}
-
-.modal-voice.voice-o {
-  background: var(--khmer-green-light);
-  color: var(--khmer-green);
-
-  border: 1px solid #c9e4ca;
-}
-
-.modal-voice.voice-oh {
-  background: var(--khmer-gold-light);
-  color: var(--khmer-gold-dark);
-
-  border: 1px solid #ead49b;
-}
-
-
-/* =========================================================
-   DETAIL GRID
-========================================================= */
-
-.alphabet-detail-grid {
-  width: 100%;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  gap: 20px 14px;
-
-  margin: 0;
-}
-
-
-/* =========================================================
-   DETAIL CARD
-========================================================= */
-
-.alphabet-detail-card {
-  position: relative;
-
-  width: 100%;
-  min-width: 0;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-
-  padding: 0;
-
-  overflow: visible;
-
-  background: transparent;
-
-  border: none;
-  border-radius: 0;
-
-  box-shadow: none;
-}
-
-
-/* =========================================================
-   DETAIL TITLE
-   TẤT CẢ TIÊU ĐỀ ĐỒNG ĐỀU
-========================================================= */
-
-.alphabet-detail-card-title {
-  width: 100%;
-  min-height: 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 7px;
-
-  margin: 0 0 7px;
-  padding: 0 4px;
-
-  background: transparent;
-
-  border: none;
-
-  color: var(--text-main);
-
-  font-size: 16px;
-  line-height: 1.2;
-
-  font-weight: 900;
-
-  text-align: center;
-}
-
-.detail-card-normal .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
-.detail-card-uppercase .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
-.detail-card-handwriting .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
-.detail-card-pronunciation .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
-
-/* =========================================================
-   DETAIL ICON
-   ĐỒNG ĐỀU VỚI TIÊU ĐỀ
-========================================================= */
-
-.detail-icon {
-  flex: 0 0 auto;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  line-height: 1;
-}
-
-
-/* =========================================================
-   DETAIL VALUE - KHUNG
-========================================================= */
-
-.alphabet-detail-card-value {
-  position: relative;
-
-  width: 100%;
-  min-width: 0;
-
-  height: 145px;
-  min-height: 145px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding:
-    10px
-    6px;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      180deg,
-      #fffdf8 0%,
-      #faf9f4 100%
-    );
-
-  border: 1px solid #ebe7da;
-
-  border-radius: 14px;
-
-  box-shadow:
-    0 3px 10px rgba(50, 60, 40, 0.06);
-
-  text-align: center;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 20px;
-  line-height: 1.2;
-
-  font-weight: 400;
-}
-
-
-/* =========================================================
-   MÀU VIỀN 3 KHUNG CHỮ
-========================================================= */
-
-.detail-card-normal .alphabet-detail-card-value,
-.detail-card-uppercase .alphabet-detail-card-value,
-.detail-card-handwriting .alphabet-detail-card-value {
-  border-top: 4px solid var(--text-main);
-}
-
-
-/* =========================================================
-   PHIÊN ÂM PHỤ ÂM
-========================================================= */
-
-.detail-card-pronunciation .alphabet-detail-card-value {
-  border-top: 4px solid var(--khmer-green);
-}
-
-
-/* =========================================================
-   PHIÊN ÂM PHỤ ÂM - GIỌNG O
-========================================================= */
-
-.detail-card-pronunciation
-.pronunciation-value.pronunciation-voice-o {
-  border-top: 4px solid var(--khmer-green);
-  border-top-color: var(--khmer-green);
-}
-
-
-/* =========================================================
-   PHIÊN ÂM PHỤ ÂM - GIỌNG Ô
-========================================================= */
-
-.detail-card-pronunciation
-.pronunciation-value.pronunciation-voice-oh {
-  border-top: 4px solid var(--khmer-gold);
-  border-top-color: var(--khmer-gold);
-}
-
-
-/* =========================================================
-   HOVER
-========================================================= */
-
-.alphabet-detail-card:hover
-.alphabet-detail-card-value {
-  border-left-color: #d7cda9;
-  border-right-color: #d7cda9;
-  border-bottom-color: #d7cda9;
-
-  box-shadow:
-    0 6px 16px rgba(50, 60, 40, 0.10);
-}
-
-
-/* =========================================================
-   ĐẢM BẢO HOVER KHÔNG GHI ĐÈ VIỀN O / Ô
-========================================================= */
-
-.alphabet-detail-card:hover
-.pronunciation-value.pronunciation-voice-o {
-  border-top: 4px solid var(--khmer-green);
-}
-
-.alphabet-detail-card:hover
-.pronunciation-value.pronunciation-voice-oh {
-  border-top: 4px solid var(--khmer-gold);
-}
-
-
-/* =========================================================
-   KHMER TRONG POPUP
-========================================================= */
-
-.alphabet-detail-card .normal-khmer-value {
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-size: 60px;
-  line-height: 1;
-
-  white-space: nowrap;
-}
-
-.alphabet-detail-card .uppercase-khmer-value {
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-size: 60px;
-  line-height: 0.95;
-
-  white-space: nowrap;
-}
-
-.alphabet-detail-card .handwriting-khmer-value {
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-size: 45px;
-  line-height: 1;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   PHIÊN ÂM
-========================================================= */
-
-.pronunciation-value {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  font-size: 28px;
-  line-height: 1.2;
-
-  font-weight: 850;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   PHIÊN ÂM NGUYÊN ÂM
-   GIỌNG O + GIỌNG Ô TRONG 2 Ô RIÊNG BIỆT
-========================================================= */
-
-.vowel-pronunciation-detail {
-  height: 145px;
-  min-height: 145px;
-
-  display: flex;
-
-  align-items: stretch;
-  justify-content: stretch;
-
-  padding: 0;
-}
-
-.vowel-modal-pronunciation {
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-
-  display: grid;
-
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
-
-  grid-template-rows: 1fr;
-
-  align-items: stretch;
-  justify-content: stretch;
-
-  gap: 8px;
-
-  padding: 0;
-}
-
-
-/* =========================================================
-   TỪNG Ô GIỌNG O / GIỌNG Ô
-   NỀN ĐỒNG NHẤT VỚI 3 KHUNG CÒN LẠI
-========================================================= */
-
-.vowel-modal-pronunciation-row {
-  width: 100%;
-  min-width: 0;
-
-  height: 100%;
-  min-height: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 5px;
-
-  padding:
-    8px
-    5px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #fffdf8 0%,
-      #faf9f4 100%
-    );
-
-  border: 1px solid #ebe7da;
-
-  border-radius: 10px;
-
-  box-shadow:
-    0 3px 10px rgba(50, 60, 40, 0.06);
-
-  line-height: 1;
-
-  text-align: center;
-
-  overflow: hidden;
-}
-
-
-/* =========================================================
-   VIỀN Ô GIỌNG O → XANH - 4PX
-========================================================= */
-
-.vowel-modal-pronunciation-row:has(.voice-o) {
-  border-top: 4px solid var(--khmer-green);
-}
-
-
-/* =========================================================
-   VIỀN Ô GIỌNG Ô → VÀNG - 4PX
-========================================================= */
-
-.vowel-modal-pronunciation-row:has(.voice-oh) {
-  border-top: 4px solid var(--khmer-gold);
-}
-
-
-/* =========================================================
-   NHÃN GIỌNG O / Ô
-========================================================= */
-
-.vowel-modal-voice {
-  display: block;
-
-  margin: 0;
-
-  color: var(--text-soft);
-
-  font-size: 13px;
-  line-height: 18px;
-
-  font-weight: 850;
-
-  text-align: center;
-
-  white-space: nowrap;
-}
-
-.vowel-modal-voice.voice-o {
-  color: var(--khmer-green);
-}
-
-.vowel-modal-voice.voice-oh {
-  color: var(--khmer-gold-dark);
-}
-
-
-/* =========================================================
-   PHIÊN ÂM CHÍNH NGUYÊN ÂM
-========================================================= */
-
-.vowel-modal-pronunciation-row strong {
-  display: block;
-
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  font-size: 26px;
-  line-height: 31px;
-
-  font-weight: 850;
-
-  text-align: center;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   GHI CHÚ
-   ĐỒNG KÍCH THƯỚC VỚI CÁC TIÊU ĐỀ
-========================================================= */
-
-.modal-note {
-  width: 100%;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 7px;
-
-  margin-top: 17px;
-
-  padding:
-    9px
-    12px;
-
-  background: #faf9f4;
-
-  border: 1px solid #ebe7da;
-
-  border-radius: 10px;
-
-  color: var(--text-soft);
-
-  font-size: 16px;
-  line-height: 1.2;
-
-  font-weight: 900;
-
-  text-align: center;
-}
-
-.modal-note strong {
-  color: var(--text-main);
-}
-
-.modal-note-icon {
-  flex: 0 0 auto;
-
-  font-size: 18px;
-}
-
-
-/* =========================================================
-   AUDIO
-   ĐỒNG KÍCH THƯỚC VỚI CÁC TIÊU ĐỀ
-========================================================= */
-
-.modal-audio-divider {
-  width: 100%;
-
-  margin-top: 18px;
-
-  color: var(--text-main);
-
-  font-size: 16px;
-  line-height: 1.3;
-
-  font-weight: 900;
-
-  letter-spacing: 0.2px;
-
-  text-align: center;
-}
-
-
-/* =========================================================
-   AUDIO AREA
-========================================================= */
-
-.modal-audio-area {
-  width: 100%;
-
-  min-height: 58px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  margin-top: 8px;
-
-  padding:
-    9px
-    12px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f8fbf7 0%,
-      #eef7ed 100%
-    );
-
-  border: 1px solid #c9e4ca;
-
-  border-radius: 10px;
-}
-
-.modal-audio-area audio {
-  width: 100%;
-  max-width: 100%;
-}
-
-.audio-coming {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 7px;
-
-  color: var(--khmer-green-dark);
-
-  font-size: 14px;
-  font-weight: 800;
-
-  text-align: center;
-}
-
-.audio-icon {
-  font-size: 19px;
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-.alphabet-modal::-webkit-scrollbar {
-  width: 7px;
-}
-
-.alphabet-modal::-webkit-scrollbar-track {
-  background: #f4f2eb;
-  border-radius: 10px;
-}
-
-.alphabet-modal::-webkit-scrollbar-thumb {
-  background: #d6c99f;
-  border-radius: 10px;
-}
-
-.alphabet-modal::-webkit-scrollbar-thumb:hover {
-  background: var(--khmer-gold);
-}
-
-
-/* =========================================================
-   FOCUS
-========================================================= */
-
-.alphabet-back-button:focus-visible,
-.alphabet-tab:focus-visible,
-.voice-btn:focus-visible,
-.consonant-card:focus-visible,
-.modal-close:focus-visible {
-  outline:
-    3px solid
-    rgba(217, 164, 65, 0.45);
-
-  outline-offset: 2px;
-}
-
-
-/* =========================================================
-   TABLET
-   ĐỒNG NHẤT VỚI DESKTOP
-========================================================= */
-
-@media (max-width: 1100px) {
-
-  .alphabet-page {
-    padding:
-      20px
-      22px
-      40px;
-  }
-
-  .alphabet-grid {
-    grid-template-columns:
-      repeat(4, minmax(0, 1fr));
-  }
-
-  .alphabet-header {
-    padding: 30px 25px;
-  }
-
-  .consonant-letter {
-    font-size: 60px;
-  }
-
-  /*
-     Không thu nhỏ popup như phiên bản cũ.
-     Giữ kích thước gần desktop.
-  */
-
-  .alphabet-modal {
-    width: min(600px, 94vw);
-
-    max-height: 94vh;
-
-    padding:
-      32px
-      28px
-      30px;
-  }
-
-  .alphabet-detail-card-value {
-    height: 145px;
-    min-height: 145px;
-  }
-
-  .alphabet-detail-card .normal-khmer-value {
-    font-size: 60px;
-  }
-
-  .alphabet-detail-card .uppercase-khmer-value {
-    font-size: 60px;
-  }
-
-  .alphabet-detail-card .handwriting-khmer-value {
-    font-size: 45px;
-  }
-
-
+/* ========================================================= 
+   KHMER FONTS 
+========================================================= */ 
+ 
+@font-face { 
+  font-family: "Khmer OS"; 
+  src: url("/fonts/KhmerOS.ttf") format("truetype"); 
+  font-weight: 400; 
+  font-style: normal; 
+  font-display: swap; 
+} 
+ 
+@font-face { 
+  font-family: "Khmer OS Muol"; 
+  src: url("/fonts/KhmerOSMuol.ttf") format("truetype"); 
+  font-weight: 400; 
+  font-style: normal; 
+  font-display: swap; 
+} 
+ 
+@font-face { 
+  font-family: "Khmer Fasthand"; 
+  src: url("/fonts/KhmerFasthand.ttf") format("truetype"); 
+  font-weight: 400; 
+  font-style: normal; 
+  font-display: swap; 
+} 
+ 
+ 
+/* ========================================================= 
+   ROOT 
+========================================================= */ 
+ 
+:root { 
+  --khmer-gold: #d9a441; 
+  --khmer-gold-dark: #b98216; 
+  --khmer-gold-light: #fff7df; 
+ 
+  --khmer-green: #2f7d32; 
+  --khmer-green-dark: #216226; 
+  --khmer-green-light: #eaf6ea; 
+ 
+  --text-main: #263238; 
+  --text-soft: #66736a; 
+ 
+  --white: #ffffff; 
+  --border: #e4e0d4; 
+  --background: #f7f6f1; 
+ 
+  --shadow-sm: 
+    0 3px 12px rgba(50, 60, 40, 0.08); 
+ 
+  --shadow-md: 
+    0 10px 28px rgba(50, 60, 40, 0.13); 
+} 
+ 
+ 
+/* ========================================================= 
+   PAGE 
+========================================================= */ 
+ 
+.alphabet-page { 
+  min-height: 100vh; 
+  padding: 24px 32px 50px; 
+ 
+  background: 
+    linear-gradient( 
+      180deg, 
+      #fffdf7 0%, 
+      var(--background) 100% 
+    ); 
+ 
+  color: var(--text-main); 
+ 
+  font-family: 
+    "Segoe UI", 
+    Arial, 
+    sans-serif; 
+ 
+  box-sizing: border-box; 
+} 
+ 
+.alphabet-page *, 
+.alphabet-page *::before, 
+.alphabet-page *::after { 
+  box-sizing: border-box; 
+} 
+ 
+ 
+/* ========================================================= 
+   TIMER 
+========================================================= */ 
+ 
+.alphabet-timer { 
+  position: fixed; 
+  top: 18px; 
+  right: 20px; 
+  z-index: 9999; 
+ 
+  min-width: 175px; 
+  padding: 12px 18px; 
+ 
+  border: 2px solid rgba(255, 255, 255, 0.8); 
+  border-radius: 18px; 
+ 
+  text-align: center; 
+ 
+  background: rgba(255, 255, 255, 0.94); 
+ 
+  box-shadow: 
+    0 10px 30px rgba(15, 23, 42, 0.15); 
+ 
+  backdrop-filter: blur(12px); 
+} 
+ 
+.alphabet-timer-label { 
+  color: #16a34a; 
+  font-size: 12px; 
+  font-weight: 900; 
+} 
+ 
+.alphabet-timer-value { 
+  margin-top: 2px; 
+ 
+  color: #0f172a; 
+ 
+  font-size: 27px; 
+  line-height: 1.1; 
+  font-weight: 900; 
+ 
+  font-variant-numeric: tabular-nums; 
+} 
+ 
+.alphabet-timer-exp { 
+  margin-top: 4px; 
+ 
+  color: #64748b; 
+ 
+  font-size: 11px; 
+  font-weight: 700; 
+} 
+ 
+ 
+/* ========================================================= 
+   BACK BUTTON 
+========================================================= */ 
+ 
+.alphabet-back-button { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 7px; 
+ 
+  padding: 10px 17px; 
+ 
+  border: none; 
+  border-radius: 10px; 
+ 
+  background: var(--khmer-green); 
+  color: white; 
+ 
+  font-size: 14px; 
+  font-weight: 700; 
+ 
+  cursor: pointer; 
+ 
+  box-shadow: var(--shadow-sm); 
+ 
+  transition: 
+    transform 0.2s ease, 
+    background 0.2s ease, 
+    box-shadow 0.2s ease; 
+} 
+ 
+.alphabet-back-button:hover { 
+  background: var(--khmer-green-dark); 
+  transform: translateY(-1px); 
+  box-shadow: var(--shadow-md); 
+} 
+ 
+.alphabet-back-button:active { 
+  transform: translateY(0); 
+} 
+ 
+ 
+/* ========================================================= 
+   HEADER 
+========================================================= */ 
+ 
+.alphabet-header { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 30px; 
+ 
+  margin-top: 20px; 
+  padding: 30px 34px; 
+ 
+  background: var(--white); 
+ 
+  border: 1px solid #eadfbf; 
+  border-top: 5px solid var(--khmer-gold); 
+  border-radius: 18px; 
+ 
+  box-shadow: var(--shadow-sm); 
+} 
+ 
+.alphabet-header-main { 
+  flex: 1; 
+} 
+ 
+.alphabet-khmer { 
+  margin-bottom: 5px; 
+ 
+  color: var(--khmer-gold-dark); 
+ 
+  font-family: "Khmer OS Muol", sans-serif; 
+ 
+  font-size: 35px; 
+  font-weight: 400; 
+} 
+ 
+.alphabet-header h1 { 
+  margin: 0; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 28px; 
+  line-height: 1.2; 
+  font-weight: 800; 
+} 
+ 
+.alphabet-header p { 
+  margin: 8px 0 0; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 14px; 
+} 
+ 
+ 
+/* ========================================================= 
+   STATISTICS 
+========================================================= */ 
+ 
+.alphabet-stats { 
+  display: flex; 
+  gap: 14px; 
+} 
+ 
+.alphabet-stat { 
+  min-width: 110px; 
+  padding: 16px 20px; 
+ 
+  text-align: center; 
+ 
+  background: var(--khmer-gold-light); 
+ 
+  border: 1px solid #ead49b; 
+  border-radius: 14px; 
+} 
+ 
+.alphabet-stat strong { 
+  display: block; 
+ 
+  color: var(--khmer-green); 
+ 
+  font-size: 28px; 
+  line-height: 1; 
+  font-weight: 800; 
+} 
+ 
+.alphabet-stat span { 
+  display: block; 
+ 
+  margin-top: 7px; 
+ 
+  color: #705a27; 
+ 
+  font-size: 13px; 
+  font-weight: 600; 
+} 
+ 
+ 
+/* ========================================================= 
+   TABS 
+========================================================= */ 
+ 
+.alphabet-tabs { 
+  display: grid; 
+ 
+  grid-template-columns: 
+    repeat(2, minmax(0, 1fr)); 
+ 
+  gap: 12px; 
+ 
+  margin-top: 20px; 
+} 
+ 
+.alphabet-tab { 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 12px; 
+ 
+  min-height: 60px; 
+  padding: 10px; 
+ 
+  border: 1px solid var(--border); 
+  border-radius: 13px; 
+ 
+  background: var(--white); 
+  color: var(--text-main); 
+ 
+  font-size: 16px; 
+  font-weight: 750; 
+ 
+  cursor: pointer; 
+ 
+  transition: 
+    background 0.2s ease, 
+    color 0.2s ease, 
+    border-color 0.2s ease, 
+    transform 0.2s ease, 
+    box-shadow 0.2s ease; 
+} 
+ 
+.alphabet-tab span { 
+  color: var(--text-soft); 
+ 
+  font-size: 12px; 
+  font-weight: 600; 
+} 
+ 
+.alphabet-tab:hover { 
+  border-color: var(--khmer-gold); 
+  transform: translateY(-2px); 
+  box-shadow: var(--shadow-sm); 
+} 
+ 
+.alphabet-tab.active { 
+  background: var(--khmer-green); 
+  border-color: var(--khmer-green); 
+  color: white; 
+ 
+  box-shadow: var(--shadow-md); 
+ 
+  transform: translateY(-1px); 
+} 
+ 
+.alphabet-tab.active span { 
+  color: #e7f4e7; 
+} 
+ 
+ 
+/* ========================================================= 
+   TOOLBAR 
+========================================================= */ 
+ 
+.alphabet-toolbar { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 20px; 
+ 
+  margin-top: 24px; 
+  margin-bottom: 18px; 
+ 
+  padding: 20px 22px; 
+ 
+  background: var(--white); 
+ 
+  border: 1px solid var(--border); 
+  border-left: 5px solid var(--khmer-gold); 
+  border-radius: 14px; 
+ 
+  box-shadow: var(--shadow-sm); 
+} 
+ 
+.alphabet-toolbar h2 { 
+  margin: 0; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 19px; 
+} 
+ 
+.alphabet-toolbar p { 
+  margin: 5px 0 0; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 13px; 
+} 
+ 
+ 
+/* ========================================================= 
+   VOICE BUTTONS 
+========================================================= */ 
+ 
+.voice-buttons { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+ 
+  flex-wrap: wrap; 
+} 
+ 
+.voice-btn { 
+  padding: 8px 13px; 
+ 
+  border: 1px solid var(--border); 
+  border-radius: 9px; 
+ 
+  background: white; 
+  color: var(--text-main); 
+ 
+  font-size: 13px; 
+  font-weight: 700; 
+ 
+  cursor: pointer; 
+ 
+  transition: all 0.2s ease; 
+} 
+ 
+.voice-btn:hover { 
+  border-color: var(--khmer-gold); 
+  transform: translateY(-1px); 
+} 
+ 
+.voice-btn.active { 
+  background: var(--khmer-gold); 
+  border-color: var(--khmer-gold-dark); 
+  color: white; 
+} 
+ 
+.voice-o { 
+  color: var(--khmer-green); 
+} 
+ 
+.voice-oh { 
+  color: var(--khmer-gold-dark); 
+} 
+ 
+.voice-btn.voice-o.active { 
+  background: var(--khmer-green); 
+  border-color: var(--khmer-green); 
+  color: white; 
+} 
+ 
+.voice-btn.voice-oh.active { 
+  background: var(--khmer-gold-dark); 
+  border-color: var(--khmer-gold-dark); 
+  color: white; 
+} 
+ 
+ 
+/* ========================================================= 
+   ALPHABET GRID 
+========================================================= */ 
+ 
+.alphabet-grid { 
+  display: grid; 
+ 
+  grid-template-columns: 
+    repeat(5, minmax(0, 1fr)); 
+ 
+  gap: 14px; 
+} 
+ 
+ 
+/* ========================================================= 
+   CONSONANT CARD 
+========================================================= */ 
+ 
+.consonant-card { 
+  position: relative; 
+ 
+  min-height: 205px; 
+ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  padding: 18px 14px; 
+ 
+  border: 1px solid var(--border); 
+  border-radius: 15px; 
+ 
+  background: white; 
+ 
+  cursor: pointer; 
+ 
+  box-shadow: var(--shadow-sm); 
+ 
+  transition: 
+    transform 0.2s ease, 
+    box-shadow 0.2s ease, 
+    border-color 0.2s ease, 
+    background 0.2s ease; 
+} 
+ 
+.consonant-card:hover { 
+  transform: translateY(-4px); 
+ 
+  border-color: var(--khmer-gold); 
+ 
+  background: #fffdf8; 
+ 
+  box-shadow: var(--shadow-md); 
+} 
+ 
+.consonant-card:active { 
+  transform: translateY(-1px); 
+} 
+ 
+.consonant-card-content { 
+  width: 100%; 
+ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+} 
+ 
+ 
+/* ========================================================= 
+   NUMBER 
+========================================================= */ 
+ 
+.consonant-number { 
+  position: absolute; 
+ 
+  top: 10px; 
+  left: 11px; 
+ 
+  min-width: 27px; 
+  height: 27px; 
+ 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  border-radius: 50%; 
+ 
+  background: var(--khmer-gold-light); 
+  color: var(--khmer-gold-dark); 
+ 
+  font-size: 12px; 
+  font-weight: 800; 
+} 
+ 
+ 
+/* ========================================================= 
+   LETTER 
+========================================================= */ 
+ 
+.consonant-letter { 
+  margin-bottom: 7px; 
+ 
+  color: var(--text-main); 
+ 
+  font-family: "Khmer OS", sans-serif; 
+ 
+  font-size: 64px; 
+  line-height: 1.1; 
+ 
+  font-weight: 400; 
+} 
+ 
+ 
+/* ========================================================= 
+   ROMANIZATION 
+========================================================= */ 
+ 
+.consonant-card-roman, 
+.consonant-roman { 
+  margin-bottom: 10px; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 16px; 
+  font-weight: 750; 
+} 
+ 
+ 
+/* ========================================================= 
+   VOICE BADGE 
+========================================================= */ 
+ 
+.voice-badge { 
+  padding: 5px 12px; 
+ 
+  border: 1px solid #c9e4ca; 
+  border-radius: 20px; 
+ 
+  background: var(--khmer-green-light); 
+  color: var(--khmer-green); 
+ 
+  font-size: 12px; 
+  font-weight: 750; 
+} 
+ 
+.voice-badge.voice-oh { 
+  background: var(--khmer-gold-light); 
+  color: var(--khmer-gold-dark); 
+  border-color: #ead49b; 
+} 
+ 
+ 
+/* ========================================================= 
+   CARD ACTION 
+========================================================= */ 
+ 
+.consonant-card-action { 
+  margin-top: 9px; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 11px; 
+  font-weight: 600; 
+} 
+ 
+ 
+/* ========================================================= 
+   NOTES 
+========================================================= */ 
+ 
+.alphabet-notes { 
+  margin-top: 20px; 
+ 
+  padding: 20px 22px; 
+ 
+  background: white; 
+ 
+  border: 1px solid var(--border); 
+ 
+  border-left: 5px solid var(--khmer-green); 
+ 
+  border-radius: 13px; 
+ 
+  box-shadow: var(--shadow-sm); 
+} 
+ 
+.alphabet-notes h3 { 
+  margin: 0 0 12px; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 16px; 
+} 
+ 
+.alphabet-notes p { 
+  margin: 7px 0; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 13px; 
+  line-height: 1.55; 
+} 
+ 
+.alphabet-notes strong { 
+  color: var(--text-main); 
+} 
+ 
+ 
+/* ========================================================= 
+   VOWELS 
+========================================================= */ 
+ 
+.vowel-grid { 
+  margin-top: 2px; 
+} 
+ 
+.vowel-card { 
+  min-height: 205px; 
+} 
+ 
+.vowel-symbol { 
+  margin-bottom: 8px; 
+ 
+  font-family: "Khmer OS", sans-serif; 
+ 
+  font-size: 52px; 
+  line-height: 1; 
+ 
+  font-weight: 400; 
+} 
+ 
+.vowel-pronunciation { 
+  display: grid; 
+ 
+  grid-template-columns: 1fr 1fr; 
+ 
+  width: 100%; 
+ 
+  gap: 8px; 
+ 
+  margin-top: 2px; 
+ 
+  min-height: 52px; 
+} 
+ 
+.vowel-pronunciation > div { 
+  min-height: 52px; 
+ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  padding: 5px 4px; 
+ 
+  background: #f8f8f5; 
+ 
+  border: 1px solid #ece9de; 
+  border-radius: 9px; 
+ 
+  text-align: center; 
+} 
+ 
+.vowel-pronunciation span { 
+  display: block; 
+ 
+  height: 16px; 
+  margin-bottom: 2px; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 11px; 
+  line-height: 16px; 
+ 
+  font-weight: 800; 
+} 
+ 
+.vowel-pronunciation strong { 
+  display: block; 
+ 
+  height: 20px; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 15px; 
+  line-height: 20px; 
+ 
+  font-weight: 800; 
+} 
+ 
+.vowel-note { 
+  min-height: 15px; 
+ 
+  margin-top: 7px; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 11px; 
+  line-height: 15px; 
+} 
+ 
+ 
+/* ========================================================= 
+   VOWEL RULE 
+========================================================= */ 
+ 
+.vowel-rule { 
+  margin-top: 20px; 
+ 
+  padding: 21px 22px; 
+ 
+  background: white; 
+ 
+  border: 1px solid var(--border); 
+  border-top: 4px solid var(--khmer-gold); 
+ 
+  border-radius: 14px; 
+ 
+  box-shadow: var(--shadow-sm); 
+} 
+ 
+.vowel-rule h3 { 
+  margin: 0 0 16px; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 17px; 
+} 
+ 
+.rule-grid { 
+  display: grid; 
+ 
+  grid-template-columns: 
+    repeat(3, minmax(0, 1fr)); 
+ 
+  gap: 13px; 
+} 
+ 
+.rule-grid > div { 
+  padding: 15px; 
+ 
+  background: #faf9f4; 
+ 
+  border: 1px solid #ebe7da; 
+  border-radius: 11px; 
+} 
+ 
+.rule-grid strong { 
+  display: block; 
+ 
+  margin-bottom: 7px; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 13px; 
+} 
+ 
+.rule-grid p { 
+  margin: 0; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 12px; 
+  line-height: 1.55; 
+} 
+ 
+ 
+/* ========================================================= 
+   KHMER FONT CHUNG 
+========================================================= */ 
+ 
+.khmer-normal-text, 
+.khmer-handwriting-text, 
+.modal-letter, 
+.khmer-value, 
+.vowel-main-symbol { 
+  font-family: "Khmer OS", sans-serif; 
+} 
+ 
+ 
+/* ========================================================= 
+   CHỮ THƯỜNG 
+========================================================= */ 
+ 
+.normal-khmer-value, 
+.uppercase-khmer-value, 
+.handwriting-khmer-value { 
+  display: inline-flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  max-width: 100%; 
+ 
+  color: var(--text-main); 
+ 
+  font-weight: 400; 
+ 
+  white-space: nowrap; 
+} 
+ 
+.normal-khmer-value { 
+  font-family: "Khmer OS", sans-serif; 
+  font-size: 42px; 
+  line-height: 1.2; 
+} 
+ 
+ 
+/* ========================================================= 
+   CHỮ HOA 
+========================================================= */ 
+ 
+.uppercase-khmer-value { 
+  font-family: 
+    "Khmer OS Muol", 
+    "Khmer OS", 
+    sans-serif; 
+ 
+  font-size: 42px; 
+  line-height: 1.2; 
+} 
+ 
+ 
+/* ========================================================= 
+   VIẾT TAY 
+========================================================= */ 
+ 
+.handwriting-khmer-value { 
+  font-family: 
+    "Khmer Fasthand", 
+    "Khmer OS", 
+    sans-serif; 
+ 
+  font-size: 42px; 
+  line-height: 1.2; 
+} 
+ 
+ 
+/* ========================================================= 
+   MODAL BACKDROP 
+========================================================= */ 
+ 
+.alphabet-modal-backdrop { 
+  position: fixed; 
+  inset: 0; 
+ 
+  z-index: 9999; 
+ 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  padding: 20px; 
+ 
+  background: rgba(30, 45, 32, 0.60); 
+ 
+  backdrop-filter: blur(6px); 
+ 
+  animation: 
+    alphabetModalBackdropIn 
+    0.18s ease; 
+} 
+ 
+@keyframes alphabetModalBackdropIn { 
+  from { 
+    opacity: 0; 
+  } 
+ 
+  to { 
+    opacity: 1; 
+  } 
+} 
+ 
+ 
+/* ========================================================= 
+   MODAL 
+========================================================= */ 
+ 
+.alphabet-modal { 
+  position: relative; 
+ 
+  width: min(600px, 100%); 
+  max-height: 94vh; 
+ 
+  overflow-y: auto; 
+ 
+  padding: 
+    32px 
+    28px 
+    30px; 
+ 
+  background: #ffffff; 
+ 
+  border: 1px solid #eadfbf; 
+  border-top: 6px solid var(--khmer-gold); 
+ 
+  border-radius: 22px; 
+ 
+  box-shadow: 
+    0 25px 70px rgba(0, 0, 0, 0.24); 
+ 
+  text-align: center; 
+ 
+  animation: 
+    alphabetModalIn 
+    0.2s ease; 
+} 
+ 
+@keyframes alphabetModalIn { 
+  from { 
+    opacity: 0; 
+ 
+    transform: 
+      translateY(12px) 
+      scale(0.97); 
+  } 
+ 
+  to { 
+    opacity: 1; 
+ 
+    transform: 
+      translateY(0) 
+      scale(1); 
+  } 
+} 
+ 
+ 
+/* ========================================================= 
+   CLOSE BUTTON 
+========================================================= */ 
+ 
+.modal-close { 
+  position: absolute; 
+ 
+  top: 12px; 
+  right: 13px; 
+ 
+  width: 38px; 
+  height: 38px; 
+ 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  border: none; 
+  border-radius: 50%; 
+ 
+  background: transparent; 
+  color: #555; 
+ 
+  font-size: 28px; 
+  line-height: 1; 
+ 
+  cursor: pointer; 
+ 
+  transition: 
+    background 0.2s ease, 
+    color 0.2s ease, 
+    transform 0.2s ease; 
+} 
+ 
+.modal-close:hover { 
+  background: #f1efe7; 
+  color: var(--khmer-green-dark); 
+ 
+  transform: rotate(90deg); 
+} 
+ 
+ 
+/* ========================================================= 
+   MODAL STT 
+========================================================= */ 
+ 
+.modal-detail-stt { 
+  margin: 0; 
+  padding: 0; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 22px; 
+  line-height: 1.25; 
+ 
+  font-weight: 900; 
+ 
+  text-align: center; 
+} 
+ 
+ 
+/* ========================================================= 
+   MODAL HEADER 
+========================================================= */ 
+ 
+.modal-consonant-header, 
+.modal-vowel-header { 
+  display: flex; 
+ 
+  flex-direction: column; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  margin: 0 0 24px; 
+  padding: 0; 
+} 
+ 
+ 
+/* ========================================================= 
+   ẨN CHỮ KHMER LỚN Ở ĐẦU POPUP 
+========================================================= */ 
+ 
+.modal-consonant-letter, 
+.vowel-main-symbol { 
+  display: none; 
+} 
+ 
+ 
+/* ========================================================= 
+   GIỌNG O / Ô 
+========================================================= */ 
+ 
+.modal-voice { 
+  display: inline-flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  margin-top: 8px; 
+ 
+  padding: 
+    6px 
+    17px; 
+ 
+  border-radius: 20px; 
+ 
+  font-size: 14px; 
+  line-height: 1.2; 
+ 
+  font-weight: 850; 
+} 
+ 
+.modal-voice.voice-o { 
+  background: var(--khmer-green-light); 
+  color: var(--khmer-green); 
+ 
+  border: 1px solid #c9e4ca; 
+} 
+ 
+.modal-voice.voice-oh { 
+  background: var(--khmer-gold-light); 
+  color: var(--khmer-gold-dark); 
+ 
+  border: 1px solid #ead49b; 
+} 
+ 
+ 
+/* ========================================================= 
+   DETAIL GRID 
+========================================================= */ 
+ 
+.alphabet-detail-grid { 
+  width: 100%; 
+ 
+  display: grid; 
+ 
+  grid-template-columns: 
+    repeat(2, minmax(0, 1fr)); 
+ 
+  gap: 20px 14px; 
+ 
+  margin: 0; 
+} 
+ 
+ 
+/* ========================================================= 
+   DETAIL CARD 
+========================================================= */ 
+ 
+.alphabet-detail-card { 
+  position: relative; 
+ 
+  width: 100%; 
+  min-width: 0; 
+ 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: flex-start; 
+ 
+  padding: 0; 
+ 
+  overflow: visible; 
+ 
+  background: transparent; 
+ 
+  border: none; 
+  border-radius: 0; 
+ 
+  box-shadow: none; 
+} 
+ 
+ 
+/* ========================================================= 
+   DETAIL TITLE 
+   TẤT CẢ TIÊU ĐỀ ĐỒNG ĐỀU 
+========================================================= */ 
+ 
+.alphabet-detail-card-title { 
+  width: 100%; 
+  min-height: 34px; 
+ 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  gap: 7px; 
+ 
+  margin: 0 0 7px; 
+  padding: 0 4px; 
+ 
+  background: transparent; 
+ 
+  border: none; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 16px; 
+  line-height: 1.2; 
+ 
+  font-weight: 900; 
+ 
+  text-align: center; 
+} 
+ 
+.detail-card-normal .alphabet-detail-card-title { 
+  color: var(--text-main); 
+} 
+ 
+.detail-card-uppercase .alphabet-detail-card-title { 
+  color: var(--text-main); 
+} 
+ 
+.detail-card-handwriting .alphabet-detail-card-title { 
+  color: var(--text-main); 
+} 
+ 
+.detail-card-pronunciation .alphabet-detail-card-title { 
+  color: var(--text-main); 
+} 
+ 
+ 
+/* ========================================================= 
+   DETAIL ICON 
+   ĐỒNG ĐỀU VỚI TIÊU ĐỀ 
+========================================================= */ 
+ 
+.detail-icon { 
+  flex: 0 0 auto; 
+ 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+ 
+  font-size: 18px; 
+  line-height: 1; 
+} 
+ 
+ 
+/* ========================================================= 
+   DETAIL VALUE - KHUNG 
+========================================================= */ 
+ 
+.alphabet-detail-card-value { 
+  position: relative; 
+ 
+  width: 100%; 
+  min-width: 0; 
+ 
+  height: 145px; 
+  min-height: 145px; 
+ 
+  display: flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  padding: 
+    10px 
+    6px; 
+ 
+  overflow: hidden; 
+ 
+  background: 
+    linear-gradient( 
+      180deg, 
+      #fffdf8 0%, 
+      #faf9f4 100% 
+    ); 
+ 
+  border: 1px solid #ebe7da; 
+ 
+  border-radius: 14px; 
+ 
+  box-shadow: 
+    0 3px 10px rgba(50, 60, 40, 0.06); 
+ 
+  text-align: center; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 20px; 
+  line-height: 1.2; 
+ 
+  font-weight: 400; 
+} 
+ 
+ 
+/* ========================================================= 
+   MÀU VIỀN 3 KHUNG CHỮ 
+========================================================= */ 
+ 
+.detail-card-normal .alphabet-detail-card-value, 
+.detail-card-uppercase .alphabet-detail-card-value, 
+.detail-card-handwriting .alphabet-detail-card-value { 
+  border-top: 4px solid var(--text-main); 
+} 
+ 
+ 
+/* ========================================================= 
+   PHIÊN ÂM PHỤ ÂM 
+========================================================= */ 
+ 
+.detail-card-pronunciation .alphabet-detail-card-value { 
+  border-top: 4px solid var(--khmer-green); 
+} 
+ 
+ 
+/* ========================================================= 
+   PHIÊN ÂM PHỤ ÂM - GIỌNG O 
+========================================================= */ 
+ 
+.detail-card-pronunciation 
+.pronunciation-value.pronunciation-voice-o { 
+  border-top: 4px solid var(--khmer-green); 
+  border-top-color: var(--khmer-green); 
+} 
+ 
+ 
+/* ========================================================= 
+   PHIÊN ÂM PHỤ ÂM - GIỌNG Ô 
+========================================================= */ 
+ 
+.detail-card-pronunciation 
+.pronunciation-value.pronunciation-voice-oh { 
+  border-top: 4px solid var(--khmer-gold); 
+  border-top-color: var(--khmer-gold); 
+} 
+ 
+ 
+/* ========================================================= 
+   HOVER 
+========================================================= */ 
+ 
+.alphabet-detail-card:hover 
+.alphabet-detail-card-value { 
+  border-left-color: #d7cda9; 
+  border-right-color: #d7cda9; 
+  border-bottom-color: #d7cda9; 
+ 
+  box-shadow: 
+    0 6px 16px rgba(50, 60, 40, 0.10); 
+} 
+ 
+ 
+/* ========================================================= 
+   ĐẢM BẢO HOVER KHÔNG GHI ĐÈ VIỀN O / Ô 
+========================================================= */ 
+ 
+.alphabet-detail-card:hover 
+.pronunciation-value.pronunciation-voice-o { 
+  border-top: 4px solid var(--khmer-green); 
+} 
+ 
+.alphabet-detail-card:hover 
+.pronunciation-value.pronunciation-voice-oh { 
+  border-top: 4px solid var(--khmer-gold); 
+} 
+ 
+ 
+/* ========================================================= 
+   KHMER TRONG POPUP 
+========================================================= */ 
+ 
+.alphabet-detail-card .normal-khmer-value { 
+  max-width: 100%; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 60px; 
+  line-height: 1; 
+ 
+  white-space: nowrap; 
+} 
+ 
+.alphabet-detail-card .uppercase-khmer-value { 
+  max-width: 100%; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 60px; 
+  line-height: 0.95; 
+ 
+  white-space: nowrap; 
+} 
+ 
+.alphabet-detail-card .handwriting-khmer-value { 
+  max-width: 100%; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 45px; 
+  line-height: 1; 
+ 
+  white-space: nowrap; 
+} 
+ 
+ 
+/* ========================================================= 
+   PHIÊN ÂM 
+========================================================= */ 
+ 
+.pronunciation-value { 
+  display: inline-flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  max-width: 100%; 
+ 
+  color: var(--text-main); 
+ 
+  font-family: 
+    "Segoe UI", 
+    Arial, 
+    sans-serif; 
+ 
+  font-size: 28px; 
+  line-height: 1.2; 
+ 
+  font-weight: 850; 
+ 
+  white-space: nowrap; 
+} 
+ 
+ 
+/* ========================================================= 
+   PHIÊN ÂM NGUYÊN ÂM 
+   GIỌNG O + GIỌNG Ô TRONG 2 Ô RIÊNG BIỆT 
+========================================================= */ 
+ 
+.vowel-pronunciation-detail { 
+  height: 145px; 
+  min-height: 145px; 
+ 
+  display: flex; 
+ 
+  align-items: stretch; 
+  justify-content: stretch; 
+ 
+  padding: 0; 
+} 
+ 
+.vowel-modal-pronunciation { 
+  width: 100%; 
+  height: 100%; 
+  min-height: 100%; 
+ 
+  display: grid; 
+ 
+  grid-template-columns: 
+    repeat(2, minmax(0, 1fr)); 
+ 
+  grid-template-rows: 1fr; 
+ 
+  align-items: stretch; 
+  justify-content: stretch; 
+ 
+  gap: 8px; 
+ 
+  padding: 0; 
+} 
+ 
+ 
+/* ========================================================= 
+   TỪNG Ô GIỌNG O / GIỌNG Ô 
+   NỀN ĐỒNG NHẤT VỚI 3 KHUNG CÒN LẠI 
+========================================================= */ 
+ 
+.vowel-modal-pronunciation-row { 
+  width: 100%; 
+  min-width: 0; 
+ 
+  height: 100%; 
+  min-height: 0; 
+ 
+  display: flex; 
+ 
+  flex-direction: column; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  gap: 5px; 
+ 
+  padding: 
+    8px 
+    5px; 
+ 
+  background: 
+    linear-gradient( 
+      180deg, 
+      #fffdf8 0%, 
+      #faf9f4 100% 
+    ); 
+ 
+  border: 1px solid #ebe7da; 
+ 
+  border-radius: 10px; 
+ 
+  box-shadow: 
+    0 3px 10px rgba(50, 60, 40, 0.06); 
+ 
+  line-height: 1; 
+ 
+  text-align: center; 
+ 
+  overflow: hidden; 
+} 
+ 
+ 
+/* ========================================================= 
+   VIỀN Ô GIỌNG O → XANH - 4PX 
+========================================================= */ 
+ 
+.vowel-modal-pronunciation-row:has(.voice-o) { 
+  border-top: 4px solid var(--khmer-green); 
+} 
+ 
+ 
+/* ========================================================= 
+   VIỀN Ô GIỌNG Ô → VÀNG - 4PX 
+========================================================= */ 
+ 
+.vowel-modal-pronunciation-row:has(.voice-oh) { 
+  border-top: 4px solid var(--khmer-gold); 
+} 
+ 
+ 
+/* ========================================================= 
+   NHÃN GIỌNG O / Ô 
+========================================================= */ 
+ 
+.vowel-modal-voice { 
+  display: block; 
+ 
+  margin: 0; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 13px; 
+  line-height: 18px; 
+ 
+  font-weight: 850; 
+ 
+  text-align: center; 
+ 
+  white-space: nowrap; 
+} 
+ 
+.vowel-modal-voice.voice-o { 
+  color: var(--khmer-green); 
+} 
+ 
+.vowel-modal-voice.voice-oh { 
+  color: var(--khmer-gold-dark); 
+} 
+ 
+ 
+/* ========================================================= 
+   PHIÊN ÂM CHÍNH NGUYÊN ÂM 
+========================================================= */ 
+ 
+.vowel-modal-pronunciation-row strong { 
+  display: block; 
+ 
+  max-width: 100%; 
+ 
+  color: var(--text-main); 
+ 
+  font-family: 
+    "Segoe UI", 
+    Arial, 
+    sans-serif; 
+ 
+  font-size: 26px; 
+  line-height: 31px; 
+ 
+  font-weight: 850; 
+ 
+  text-align: center; 
+ 
+  white-space: nowrap; 
+} 
+ 
+ 
+/* ========================================================= 
+   GHI CHÚ 
+   ĐỒNG KÍCH THƯỚC VỚI CÁC TIÊU ĐỀ 
+========================================================= */ 
+ 
+.modal-note { 
+  width: 100%; 
+ 
+  display: flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  gap: 7px; 
+ 
+  margin-top: 17px; 
+ 
+  padding: 
+    9px 
+    12px; 
+ 
+  background: #faf9f4; 
+ 
+  border: 1px solid #ebe7da; 
+ 
+  border-radius: 10px; 
+ 
+  color: var(--text-soft); 
+ 
+  font-size: 16px; 
+  line-height: 1.2; 
+ 
+  font-weight: 900; 
+ 
+  text-align: center; 
+} 
+ 
+.modal-note strong { 
+  color: var(--text-main); 
+} 
+ 
+.modal-note-icon { 
+  flex: 0 0 auto; 
+ 
+  font-size: 18px; 
+} 
+ 
+ 
+/* ========================================================= 
+   AUDIO 
+   ĐỒNG KÍCH THƯỚC VỚI CÁC TIÊU ĐỀ 
+========================================================= */ 
+ 
+.modal-audio-divider { 
+  width: 100%; 
+ 
+  margin-top: 18px; 
+ 
+  color: var(--text-main); 
+ 
+  font-size: 16px; 
+  line-height: 1.3; 
+ 
+  font-weight: 900; 
+ 
+  letter-spacing: 0.2px; 
+ 
+  text-align: center; 
+} 
+ 
+ 
+/* ========================================================= 
+   AUDIO AREA 
+========================================================= */ 
+ 
+.modal-audio-area { 
+  width: 100%; 
+ 
+  min-height: 58px; 
+ 
+  display: flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  margin-top: 8px; 
+ 
+  padding: 
+    9px 
+    12px; 
+ 
+  background: 
+    linear-gradient( 
+      180deg, 
+      #f8fbf7 0%, 
+      #eef7ed 100% 
+    ); 
+ 
+  border: 1px solid #c9e4ca; 
+ 
+  border-radius: 10px; 
+} 
+ 
+.modal-audio-area audio { 
+  width: 100%; 
+  max-width: 100%; 
+} 
+ 
+.audio-coming { 
+  display: flex; 
+ 
+  align-items: center; 
+  justify-content: center; 
+ 
+  gap: 7px; 
+ 
+  color: var(--khmer-green-dark); 
+ 
+  font-size: 14px; 
+  font-weight: 800; 
+ 
+  text-align: center; 
+} 
+ 
+.audio-icon { 
+  font-size: 19px; 
+} 
+ 
+ 
+/* ========================================================= 
+   SCROLLBAR 
+========================================================= */ 
+ 
+.alphabet-modal::-webkit-scrollbar { 
+  width: 7px; 
+} 
+ 
+.alphabet-modal::-webkit-scrollbar-track { 
+  background: #f4f2eb; 
+  border-radius: 10px; 
+} 
+ 
+.alphabet-modal::-webkit-scrollbar-thumb { 
+  background: #d6c99f; 
+  border-radius: 10px; 
+} 
+ 
+.alphabet-modal::-webkit-scrollbar-thumb:hover { 
+  background: var(--khmer-gold); 
+} 
+ 
+ 
+/* ========================================================= 
+   FOCUS 
+========================================================= */ 
+ 
+.alphabet-back-button:focus-visible, 
+.alphabet-tab:focus-visible, 
+.voice-btn:focus-visible, 
+.consonant-card:focus-visible, 
+.modal-close:focus-visible { 
+  outline: 
+    3px solid 
+    rgba(217, 164, 65, 0.45); 
+ 
+  outline-offset: 2px; 
+} 
+ 
+ 
+/* ========================================================= 
+   TABLET 
+   ĐỒNG NHẤT VỚI DESKTOP 
+========================================================= */ 
+ 
+@media (max-width: 1100px) { 
+ 
+  .alphabet-page { 
+    padding: 
+      20px 
+      22px 
+      40px; 
+  } 
+ 
+  .alphabet-grid { 
+    grid-template-columns: 
+      repeat(4, minmax(0, 1fr)); 
+  } 
+ 
+  .alphabet-header { 
+    padding: 30px 25px; 
+  } 
+ 
+  .consonant-letter { 
+    font-size: 60px; 
+  } 
+ 
+  /* 
+     Không thu nhỏ popup như phiên bản cũ. 
+     Giữ kích thước gần desktop. 
+  */ 
+ 
+  .alphabet-modal { 
+    width: min(600px, 94vw); 
+ 
+    max-height: 94vh; 
+ 
+    padding: 
+      32px 
+      28px 
+      30px; 
+  } 
+ 
+  .alphabet-detail-card-value { 
+    height: 145px; 
+    min-height: 145px; 
+  } 
+ 
   /* =======================================================
-     PHIÊN ÂM O / Ô TABLET
-     GIỮ ĐỒNG NHẤT VỚI DESKTOP
-  ======================================================= */
-
-  .detail-card-pronunciation
-  .alphabet-detail-card-value {
-    border-top-width: 4px;
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-o {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-oh {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-  .vowel-pronunciation-detail {
-    height: 145px;
-    min-height: 145px;
-
-    align-items: stretch;
-  }
-
-  .vowel-modal-pronunciation {
-    height: 100%;
-    min-height: 100%;
-
-    gap: 8px;
-
-    padding: 0;
-  }
-
-  .vowel-modal-pronunciation-row {
-    height: 100%;
-    min-height: 0;
-
-    padding:
-      8px
-      5px;
-
-    background:
-      linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #faf9f4 100%
-      );
-
-    border-radius: 10px;
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-o) {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-oh) {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-  .vowel-modal-pronunciation-row strong {
-    font-size: 26px;
-    line-height: 31px;
-  }
-
-  .vowel-modal-voice {
-    font-size: 13px;
-    line-height: 18px;
-  }
-
-
-  /* =======================================================
-     TIÊU ĐỀ TABLET
-     GIỮ CÙNG KÍCH THƯỚC DESKTOP
-  ======================================================= */
-
-  .alphabet-detail-card-title {
-    min-height: 34px;
-
-    margin-bottom: 7px;
-
-    font-size: 16px;
-    line-height: 1.2;
-
-    gap: 7px;
-  }
-
-  .detail-icon {
-    font-size: 18px;
-  }
-
-
-  /* =======================================================
-     GHI CHÚ TABLET
-     GIỮ CÙNG KÍCH THƯỚC DESKTOP
-  ======================================================= */
-
-  .modal-note {
-    font-size: 16px;
-    line-height: 1.2;
-    text-align: center;
-    justify-content: center;
-  }
-
-  .modal-note-icon {
-    font-size: 18px;
-  }
-
-
-  /* =======================================================
-     GIỌNG ĐỌC TABLET
-     GIỮ CÙNG KÍCH THƯỚC DESKTOP
-  ======================================================= */
-
-  .modal-audio-divider {
-    font-size: 16px;
-    line-height: 1.3;
-
-    text-align: center;
-  }
-
-  .modal-audio-area {
-    min-height: 58px;
-
-    padding:
-      9px
-      12px;
-  }
-
-  .audio-coming {
-    font-size: 14px;
-  }
-}
-
-
-/* =========================================================
-   MOBILE
-   ĐỒNG NHẤT VỚI DESKTOP NHƯNG VẪN VỪA MÀN HÌNH
-========================================================= */
-
-@media (max-width: 760px) {
-
-  .alphabet-page {
-    padding:
-      16px
-      14px
-      30px;
-  }
-
-
-  /* =======================================================
-     TIMER
-  ======================================================= */
-
-  .alphabet-timer {
-    min-width: 150px;
-
-    top: 12px;
-    right: 12px;
-
-    padding:
-      10px
-      14px;
-  }
-
-  .alphabet-timer-value {
-    font-size: 24px;
-  }
-
-
-  /* =======================================================
-     HEADER
-  ======================================================= */
-
-  .alphabet-header {
-    flex-direction: column;
-
-    align-items: stretch;
-
-    padding:
-      25px
-      18px;
-  }
-
-  .alphabet-header-main {
-    text-align: center;
-  }
-
-  .alphabet-khmer {
-    font-size: 32px;
-  }
-
-  .alphabet-header h1 {
-    font-size: 24px;
-  }
-
-  .alphabet-header p {
-    font-size: 14px;
-  }
-
-  .alphabet-stats {
-    display: grid;
-
-    grid-template-columns:
-      1fr
-      1fr;
-
-    gap: 12px;
-  }
-
-  .alphabet-stat {
-    min-width: 0;
-    padding: 16px 14px;
-  }
-
-  .alphabet-stat strong {
-    font-size: 27px;
-  }
-
-  .alphabet-stat span {
-    font-size: 13px;
-  }
-
-
-  /* =======================================================
-     TABS
-  ======================================================= */
-
-  .alphabet-tabs {
-    gap: 9px;
-  }
-
-  .alphabet-tab {
-    flex-direction: column;
-
-    gap: 5px;
-
-    min-height: 60px;
-
-    font-size: 15px;
-  }
-
-  .alphabet-tab span {
-    font-size: 12px;
-  }
-
-
-  /* =======================================================
-     TOOLBAR
-  ======================================================= */
-
-  .alphabet-toolbar {
-    flex-direction: column;
-
-    align-items: stretch;
-
-    padding:
-      18px;
-  }
-
-  .alphabet-toolbar h2 {
-    font-size: 18px;
-  }
-
-  .voice-buttons {
-    width: 100%;
-  }
-
-  .voice-btn {
-    flex: 1;
-
-    min-height: 40px;
-
-    padding:
-      8px
-      10px;
-
-    font-size: 13px;
-  }
-
-
-  /* =======================================================
-     GRID
-  ======================================================= */
-
-  .alphabet-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 10px;
-  }
-
-  .consonant-card {
-    min-height: 195px;
-
-    padding:
-      17px
-      10px;
-  }
-
-  .consonant-letter {
-    font-size: 58px;
-  }
-
-  .consonant-roman,
-  .consonant-card-roman {
-    font-size: 15px;
-  }
-
-
-  /* =======================================================
-     VOWEL
-  ======================================================= */
-
-  .vowel-card {
-    min-height: 195px;
-  }
-
-  .vowel-symbol {
-    font-size: 48px;
-    margin-bottom: 8px;
-  }
-
-  .vowel-pronunciation {
-    min-height: 50px;
-    gap: 7px;
-  }
-
-  .vowel-pronunciation > div {
-    min-height: 50px;
-
-    padding:
-      5px
-      3px;
-  }
-
-  .vowel-pronunciation span {
-    height: 16px;
-    line-height: 16px;
-    font-size: 10px;
-  }
-
-  .vowel-pronunciation strong {
-    height: 20px;
-    line-height: 20px;
-    font-size: 14px;
-  }
-
-  .vowel-note {
-    margin-top: 7px;
-
-    min-height: 15px;
-
-    line-height: 15px;
-    font-size: 10px;
-  }
-
-  .rule-grid {
-    grid-template-columns: 1fr;
-  }
-
-
-  /* =======================================================
-     POPUP
-  ======================================================= */
-
-  .alphabet-modal {
-    width: 94vw;
-
-    max-width: 600px;
-
-    max-height: 94vh;
-
-    padding:
-      30px
-      18px
-      25px;
-
-    border-radius: 20px;
-  }
-
-
-  /* =======================================================
-     STT
-  ======================================================= */
-
-  .modal-detail-stt {
-    font-size: 21px;
-  }
-
-
-  /* =======================================================
-     HEADER POPUP
-  ======================================================= */
-
-  .modal-consonant-header,
-  .modal-vowel-header {
-    margin-bottom: 22px;
-  }
-
-
-  /* =======================================================
-     GIỌNG
-  ======================================================= */
-
-  .modal-voice {
-    margin-top: 8px;
-
-    padding:
-      6px
-      16px;
-
-    font-size: 14px;
-  }
-
-
-  /* =======================================================
-     GRID POPUP
-  ======================================================= */
-
-  .alphabet-detail-grid {
-    gap:
-      18px
-      10px;
-  }
-
-
-  /* =======================================================
-     TITLE
-     GIỮ ĐỒNG NHẤT VỚI DESKTOP
-  ======================================================= */
-
-  .alphabet-detail-card-title {
-    min-height: 32px;
-
-    margin-bottom: 6px;
-
-    padding:
-      0
-      2px;
-
-    font-size: 15px;
-    line-height: 1.2;
-
-    gap: 6px;
-  }
-
-  .detail-icon {
-    font-size: 17px;
-  }
-
-
-  /* =======================================================
-     KHUNG
-     KHÔNG THU NHỎ QUÁ MỨC
-  ======================================================= */
-
-  .alphabet-detail-card-value {
-    height: 120px;
-    min-height: 120px;
-
-    padding:
-      8px
-      3px;
-
-    border-radius: 12px;
-  }
-
-
-  /* =======================================================
-     CHỮ THƯỜNG
-  ======================================================= */
-
-  .alphabet-detail-card .normal-khmer-value {
-    font-size: 52px;
-    line-height: 1;
-  }
-
-
-  /* =======================================================
-     CHỮ HOA
-  ======================================================= */
-
-  .alphabet-detail-card .uppercase-khmer-value {
-    font-size: 58px;
-    line-height: 0.95;
-  }
-
-
-  /* =======================================================
-     VIẾT TAY
-  ======================================================= */
-
-  .alphabet-detail-card .handwriting-khmer-value {
-    font-size: 43px;
-    line-height: 1;
-  }
-
-
-  /* =======================================================
-     PHIÊN ÂM
-  ======================================================= */
-
-  .pronunciation-value {
-    font-size: 25px;
-  }
-
-  .detail-card-pronunciation
-  .alphabet-detail-card-value {
-    border-top-width: 4px;
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-o {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-oh {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-
-  /* =======================================================
-     PHIÊN ÂM NGUYÊN ÂM
-     O | Ô ĐẦY CHIỀU CAO KHUNG
-  ======================================================= */
-
-  .vowel-pronunciation-detail {
-    height: 120px;
-    min-height: 120px;
-
-    display: flex;
-
-    align-items: stretch;
-    justify-content: stretch;
-
-    padding: 0;
-  }
-
-  .vowel-modal-pronunciation {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    grid-template-rows: 1fr;
-
-    align-items: stretch;
-    justify-content: stretch;
-
-    gap: 7px;
-
-    padding: 0;
-  }
-
-  .vowel-modal-pronunciation-row {
-    width: 100%;
-
-    height: 100%;
-    min-height: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    padding:
-      7px
-      3px;
-
-    gap: 4px;
-
-    background:
-      linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #faf9f4 100%
-      );
-
-    border:
-      1px solid #ebe7da;
-
-    border-radius: 9px;
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-o) {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-oh) {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-  .vowel-modal-pronunciation-row strong {
-    font-size: 24px;
-    line-height: 29px;
-  }
-
-  .vowel-modal-voice {
-    font-size: 12px;
-    line-height: 17px;
-  }
-
-
-  /* =======================================================
-     GHI CHÚ
-     GIỮ CÙNG TỶ LỆ VỚI DESKTOP
-  ======================================================= */
-
-  .modal-note {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 6px;
-
-    margin-top: 15px;
-
-    padding:
-      9px
-      10px;
-
-    font-size: 15px;
-    line-height: 1.2;
-
-    font-weight: 900;
-
-    text-align: center;
-  }
-
-  .modal-note-icon {
-    font-size: 17px;
-  }
-
-
-  /* =======================================================
-     GIỌNG ĐỌC
-     GIỮ CÙNG TỶ LỆ VỚI DESKTOP
-  ======================================================= */
-
-  .modal-audio-divider {
-    width: 100%;
-
-    margin-top: 16px;
-
-    font-size: 15px;
-    line-height: 1.3;
-
-    font-weight: 900;
-
-    text-align: center;
-  }
-
-  .modal-audio-area {
-    min-height: 55px;
-
-    margin-top: 8px;
-
-    padding:
-      8px
-      9px;
-  }
-
-  .audio-coming {
-    font-size: 13px;
-
-    justify-content: center;
-
-    text-align: center;
-  }
-
-  .audio-icon {
-    font-size: 18px;
-  }
-}
-
-
-/* =========================================================
-   VERY SMALL SCREEN
-   GIỮ ĐỒNG NHẤT VỚI MOBILE / DESKTOP
-========================================================= */
-
-@media (max-width: 420px) {
-
-  .alphabet-page {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .alphabet-grid {
-    gap: 8px;
-  }
-
-  .consonant-card {
-    min-height: 185px;
-  }
-
-  .consonant-letter {
-    font-size: 52px;
-  }
-
-  .alphabet-stat strong {
-    font-size: 25px;
-  }
-
-  .voice-btn {
-    padding:
-      8px
-      7px;
-
-    font-size: 12px;
-  }
-
-
-  /* =======================================================
-     VOWEL
-  ======================================================= */
-
-  .vowel-card {
-    min-height: 185px;
-  }
-
-  .vowel-symbol {
-    font-size: 44px;
-  }
-
-  .vowel-pronunciation {
-    min-height: 46px;
-    gap: 5px;
-  }
-
-  .vowel-pronunciation > div {
-    min-height: 46px;
-  }
-
-  .vowel-pronunciation span {
-    height: 15px;
-    line-height: 15px;
-    font-size: 9px;
-  }
-
-  .vowel-pronunciation strong {
-    height: 19px;
-    line-height: 19px;
-    font-size: 13px;
-  }
-
-  .vowel-note {
-    min-height: 14px;
-    line-height: 14px;
-    font-size: 9px;
-  }
-
-
-  /* =======================================================
-     POPUP
-  ======================================================= */
-
-  .alphabet-modal {
-    width: 94vw;
-
-    max-width: 600px;
-
-    max-height: 94vh;
-
-    padding:
-      27px
-      10px
-      20px;
-
-    border-radius: 18px;
-  }
-
-
-  /* =======================================================
-     STT
-  ======================================================= */
-
-  .modal-detail-stt {
-    font-size: 19px;
-  }
-
-
-  /* =======================================================
-     GIỌNG
-  ======================================================= */
-
-  .modal-voice {
-    font-size: 13px;
-
-    padding:
-      5px
-      13px;
-  }
-
-
-  /* =======================================================
-     GRID
-  ======================================================= */
-
-  .alphabet-detail-grid {
-    gap:
-      15px
-      7px;
-  }
-
-
-  /* =======================================================
-     TITLE
-     KHÔNG THU NHỎ QUÁ MỨC
-  ======================================================= */
-
-  .alphabet-detail-card-title {
-    min-height: 30px;
-
-    margin-bottom: 5px;
-
-    padding:
-      0
-      1px;
-
-    font-size: 14px;
-    line-height: 1.2;
-
-    gap: 4px;
-  }
-
-  .detail-icon {
-    font-size: 16px;
-  }
-
-
-  /* =======================================================
-     KHUNG
-     ĐỒNG NHẤT TỶ LỆ VỚI DESKTOP
-  ======================================================= */
-
-  .alphabet-detail-card-value {
-    height: 110px;
-    min-height: 110px;
-
-    padding:
-      6px
-      2px;
-
-    border-radius: 10px;
-  }
-
-
-  /* =======================================================
-     CHỮ THƯỜNG
-  ======================================================= */
-
-  .alphabet-detail-card .normal-khmer-value {
-    font-size: 46px;
-    line-height: 1;
-  }
-
-
-  /* =======================================================
-     CHỮ HOA
-  ======================================================= */
-
-  .alphabet-detail-card .uppercase-khmer-value {
-    font-size: 53px;
-    line-height: 0.92;
-  }
-
-
-  /* =======================================================
-     VIẾT TAY
-  ======================================================= */
-
-  .alphabet-detail-card .handwriting-khmer-value {
-    font-size: 41px;
-    line-height: 1;
-  }
-
-
-  /* =======================================================
-     PHIÊN ÂM
-  ======================================================= */
-
-  .pronunciation-value {
-    font-size: 22px;
-  }
-
-  .detail-card-pronunciation
-  .alphabet-detail-card-value {
-    border-top-width: 4px;
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-o {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-oh {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-
-  /* =======================================================
-     PHIÊN ÂM NGUYÊN ÂM
-     O | Ô KÉO ĐẦY CHIỀU CAO KHUNG
-  ======================================================= */
-
-  .vowel-pronunciation-detail {
-    height: 110px;
-    min-height: 110px;
-
-    display: flex;
-
-    align-items: stretch;
-    justify-content: stretch;
-
-    padding: 0;
-  }
-
-  .vowel-modal-pronunciation {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    grid-template-rows: 1fr;
-
-    align-items: stretch;
-    justify-content: stretch;
-
-    gap: 5px;
-
-    padding: 0;
-  }
-
-  .vowel-modal-pronunciation-row {
-    width: 100%;
-
-    height: 100%;
-    min-height: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    padding:
-      5px
-      1px;
-
-    gap: 3px;
-
-    background:
-      linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #faf9f4 100%
-      );
-
-    border:
-      1px solid #ebe7da;
-
-    border-radius: 8px;
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-o) {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-oh) {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-  .vowel-modal-pronunciation-row strong {
-    font-size: 21px;
-    line-height: 26px;
-  }
-
-  .vowel-modal-voice {
-    font-size: 10px;
-    line-height: 15px;
-  }
-
-
-  /* =======================================================
-     GHI CHÚ
-     CÙNG TỶ LỆ VỚI TIÊU ĐỀ
-  ======================================================= */
-
-  .modal-note {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 5px;
-
-    margin-top: 12px;
-
-    padding:
-      8px
-      8px;
-
-    font-size: 14px;
-    line-height: 1.2;
-
-    font-weight: 900;
-
-    text-align: center;
-  }
-
-  .modal-note-icon {
-    font-size: 16px;
-  }
-
-
-  /* =======================================================
-     GIỌNG ĐỌC
-     CÙNG TỶ LỆ VỚI TIÊU ĐỀ
-  ======================================================= */
-
-  .modal-audio-divider {
-    width: 100%;
-
-    margin-top: 14px;
-
-    font-size: 14px;
-    line-height: 1.3;
-
-    font-weight: 900;
-
-    text-align: center;
-  }
-
-  .modal-audio-area {
-    min-height: 50px;
-
-    margin-top: 7px;
-
-    padding:
-      6px
-      7px;
-  }
-
-  .audio-coming {
-    font-size: 12px;
-
-    justify-content: center;
-
-    text-align: center;
-  }
-
-  .audio-icon {
-    font-size: 17px;
-  }
+     CHỮ TRONG POPUP - TABLET
+     
+     CHỮ THƯỜNG GIỮ NGUYÊN 60PX
+     CHỮ HOA GIẢM TỪ 60PX → 52PX
+     VIẾT TAY GIẢM TỪ 45PX → 40PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .normal-khmer-value { 
+    font-size: 60px; 
+    line-height: 1; 
+  } 
+ 
+  .alphabet-detail-card .uppercase-khmer-value { 
+    font-size: 52px; 
+    line-height: 0.95; 
+  } 
+ 
+  .alphabet-detail-card .handwriting-khmer-value { 
+    font-size: 40px; 
+    line-height: 1; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     PHIÊN ÂM O / Ô TABLET 
+     GIỮ ĐỒNG NHẤT VỚI DESKTOP 
+  ======================================================= */ 
+ 
+  .detail-card-pronunciation 
+  .alphabet-detail-card-value { 
+    border-top-width: 4px; 
+  } 
+ 
+  .detail-card-pronunciation 
+  .pronunciation-value.pronunciation-voice-o { 
+    border-top: 4px solid var(--khmer-green); 
+  } 
+ 
+  .detail-card-pronunciation 
+  .pronunciation-value.pronunciation-voice-oh { 
+    border-top: 4px solid var(--khmer-gold); 
+  } 
+ 
+  .vowel-pronunciation-detail { 
+    height: 145px; 
+    min-height: 145px; 
+ 
+    align-items: stretch; 
+  } 
+ 
+  .vowel-modal-pronunciation { 
+    height: 100%; 
+    min-height: 100%; 
+ 
+    gap: 8px; 
+ 
+    padding: 0; 
+  } 
+ 
+  .vowel-modal-pronunciation-row { 
+    height: 100%; 
+    min-height: 0; 
+ 
+    padding: 
+      8px 
+      5px; 
+ 
+    background: 
+      linear-gradient( 
+        180deg, 
+        #fffdf8 0%, 
+        #faf9f4 100% 
+      ); 
+ 
+    border-radius: 10px; 
+  } 
+ 
+  .vowel-modal-pronunciation-row:has(.voice-o) { 
+    border-top: 4px solid var(--khmer-green); 
+  } 
+ 
+  .vowel-modal-pronunciation-row:has(.voice-oh) { 
+    border-top: 4px solid var(--khmer-gold); 
+  } 
+ 
+  .vowel-modal-pronunciation-row strong { 
+    font-size: 26px; 
+    line-height: 31px; 
+  } 
+ 
+  .vowel-modal-voice { 
+    font-size: 13px; 
+    line-height: 18px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     TIÊU ĐỀ TABLET 
+     GIỮ CÙNG KÍCH THƯỚC DESKTOP 
+  ======================================================= */ 
+ 
+  .alphabet-detail-card-title { 
+    min-height: 34px; 
+ 
+    margin-bottom: 7px; 
+ 
+    font-size: 16px; 
+    line-height: 1.2; 
+ 
+    gap: 7px; 
+  } 
+ 
+  .detail-icon { 
+    font-size: 18px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GHI CHÚ TABLET 
+     GIỮ CÙNG KÍCH THƯỚC DESKTOP 
+  ======================================================= */ 
+ 
+  .modal-note { 
+    font-size: 16px; 
+    line-height: 1.2; 
+    text-align: center; 
+    justify-content: center; 
+  } 
+ 
+  .modal-note-icon { 
+    font-size: 18px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GIỌNG ĐỌC TABLET 
+     GIỮ CÙNG KÍCH THƯỚC DESKTOP 
+  ======================================================= */ 
+ 
+  .modal-audio-divider { 
+    font-size: 16px; 
+    line-height: 1.3; 
+ 
+    text-align: center; 
+  } 
+ 
+  .modal-audio-area { 
+    min-height: 58px; 
+ 
+    padding: 
+      9px 
+      12px; 
+  } 
+ 
+  .audio-coming { 
+    font-size: 14px; 
+  } 
+} 
+ 
+ 
+/* ========================================================= 
+   MOBILE 
+   ĐỒNG NHẤT VỚI DESKTOP NHƯNG VẪN VỪA MÀN HÌNH 
+========================================================= */ 
+ 
+@media (max-width: 760px) { 
+ 
+  .alphabet-page { 
+    padding: 
+      16px 
+      14px 
+      30px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     TIMER 
+  ======================================================= */ 
+ 
+  .alphabet-timer { 
+    min-width: 150px; 
+ 
+    top: 12px; 
+    right: 12px; 
+ 
+    padding: 
+      10px 
+      14px; 
+  } 
+ 
+  .alphabet-timer-value { 
+    font-size: 24px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     HEADER 
+  ======================================================= */ 
+ 
+  .alphabet-header { 
+    flex-direction: column; 
+ 
+    align-items: stretch; 
+ 
+    padding: 
+      25px 
+      18px; 
+  } 
+ 
+  .alphabet-header-main { 
+    text-align: center; 
+  } 
+ 
+  .alphabet-khmer { 
+    font-size: 32px; 
+  } 
+ 
+  .alphabet-header h1 { 
+    font-size: 24px; 
+  } 
+ 
+  .alphabet-header p { 
+    font-size: 14px; 
+  } 
+ 
+  .alphabet-stats { 
+    display: grid; 
+ 
+    grid-template-columns: 
+      1fr 
+      1fr; 
+ 
+    gap: 12px; 
+  } 
+ 
+  .alphabet-stat { 
+    min-width: 0; 
+    padding: 16px 14px; 
+  } 
+ 
+  .alphabet-stat strong { 
+    font-size: 27px; 
+  } 
+ 
+  .alphabet-stat span { 
+    font-size: 13px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     TABS 
+  ======================================================= */ 
+ 
+  .alphabet-tabs { 
+    gap: 9px; 
+  } 
+ 
+  .alphabet-tab { 
+    flex-direction: column; 
+ 
+    gap: 5px; 
+ 
+    min-height: 60px; 
+ 
+    font-size: 15px; 
+  } 
+ 
+  .alphabet-tab span { 
+    font-size: 12px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     TOOLBAR 
+  ======================================================= */ 
+ 
+  .alphabet-toolbar { 
+    flex-direction: column; 
+ 
+    align-items: stretch; 
+ 
+    padding: 
+      18px; 
+  } 
+ 
+  .alphabet-toolbar h2 { 
+    font-size: 18px; 
+  } 
+ 
+  .voice-buttons { 
+    width: 100%; 
+  } 
+ 
+  .voice-btn { 
+    flex: 1; 
+ 
+    min-height: 40px; 
+ 
+    padding: 
+      8px 
+      10px; 
+ 
+    font-size: 13px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GRID 
+  ======================================================= */ 
+ 
+  .alphabet-grid { 
+    grid-template-columns: 
+      repeat(2, minmax(0, 1fr)); 
+ 
+    gap: 10px; 
+  } 
+ 
+  .consonant-card { 
+    min-height: 195px; 
+ 
+    padding: 
+      17px 
+      10px; 
+  } 
+ 
+  .consonant-letter { 
+    font-size: 58px; 
+  } 
+ 
+  .consonant-roman, 
+  .consonant-card-roman { 
+    font-size: 15px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     VOWEL 
+  ======================================================= */ 
+ 
+  .vowel-card { 
+    min-height: 195px; 
+  } 
+ 
+  .vowel-symbol { 
+    font-size: 48px; 
+    margin-bottom: 8px; 
+  } 
+ 
+  .vowel-pronunciation { 
+    min-height: 50px; 
+    gap: 7px; 
+  } 
+ 
+  .vowel-pronunciation > div { 
+    min-height: 50px; 
+ 
+    padding: 
+      5px 
+      3px; 
+  } 
+ 
+  .vowel-pronunciation span { 
+    height: 16px; 
+    line-height: 16px; 
+    font-size: 10px; 
+  } 
+ 
+  .vowel-pronunciation strong { 
+    height: 20px; 
+    line-height: 20px; 
+    font-size: 14px; 
+  } 
+ 
+  .vowel-note { 
+    margin-top: 7px; 
+ 
+    min-height: 15px; 
+ 
+    line-height: 15px; 
+    font-size: 10px; 
+  } 
+ 
+  .rule-grid { 
+    grid-template-columns: 1fr; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     POPUP 
+  ======================================================= */ 
+ 
+  .alphabet-modal { 
+    width: 94vw; 
+ 
+    max-width: 600px; 
+ 
+    max-height: 94vh; 
+ 
+    padding: 
+      30px 
+      18px 
+      25px; 
+ 
+    border-radius: 20px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     STT 
+  ======================================================= */ 
+ 
+  .modal-detail-stt { 
+    font-size: 21px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     HEADER POPUP 
+  ======================================================= */ 
+ 
+  .modal-consonant-header, 
+  .modal-vowel-header { 
+    margin-bottom: 22px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GIỌNG 
+  ======================================================= */ 
+ 
+  .modal-voice { 
+    margin-top: 8px; 
+ 
+    padding: 
+      6px 
+      16px; 
+ 
+    font-size: 14px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GRID POPUP 
+  ======================================================= */ 
+ 
+  .alphabet-detail-grid { 
+    gap: 
+      18px 
+      10px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     TITLE 
+     GIỮ ĐỒNG NHẤT VỚI DESKTOP 
+  ======================================================= */ 
+ 
+  .alphabet-detail-card-title { 
+    min-height: 32px; 
+ 
+    margin-bottom: 6px; 
+ 
+    padding: 
+      0 
+      2px; 
+ 
+    font-size: 15px; 
+    line-height: 1.2; 
+ 
+    gap: 6px; 
+  } 
+ 
+  .detail-icon { 
+    font-size: 17px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     KHUNG 
+     KHÔNG THU NHỎ QUÁ MỨC 
+  ======================================================= */ 
+ 
+  .alphabet-detail-card-value { 
+    height: 120px; 
+    min-height: 120px; 
+ 
+    padding: 
+      8px 
+      3px; 
+ 
+    border-radius: 12px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     CHỮ THƯỜNG 
+     GIỮ NGUYÊN 52PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .normal-khmer-value { 
+    font-size: 52px; 
+    line-height: 1; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     CHỮ HOA 
+     MOBILE → 50PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .uppercase-khmer-value { 
+    font-size: 50px; 
+    line-height: 0.95; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     VIẾT TAY 
+     MOBILE → 38PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .handwriting-khmer-value { 
+    font-size: 38px; 
+    line-height: 1; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     PHIÊN ÂM 
+  ======================================================= */ 
+ 
+  .pronunciation-value { 
+    font-size: 25px; 
+  } 
+ 
+  .detail-card-pronunciation 
+  .alphabet-detail-card-value { 
+    border-top-width: 4px; 
+  } 
+ 
+  .detail-card-pronunciation 
+  .pronunciation-value.pronunciation-voice-o { 
+    border-top: 4px solid var(--khmer-green); 
+  } 
+ 
+  .detail-card-pronunciation 
+  .pronunciation-value.pronunciation-voice-oh { 
+    border-top: 4px solid var(--khmer-gold); 
+  } 
+ 
+ 
+  /* ======================================================= 
+     PHIÊN ÂM NGUYÊN ÂM 
+     O | Ô ĐẦY CHIỀU CAO KHUNG 
+  ======================================================= */ 
+ 
+  .vowel-pronunciation-detail { 
+    height: 120px; 
+    min-height: 120px; 
+ 
+    display: flex; 
+ 
+    align-items: stretch; 
+    justify-content: stretch; 
+ 
+    padding: 0; 
+  } 
+ 
+  .vowel-modal-pronunciation { 
+    width: 100%; 
+    height: 100%; 
+    min-height: 100%; 
+ 
+    display: grid; 
+ 
+    grid-template-columns: 
+      repeat(2, minmax(0, 1fr)); 
+ 
+    grid-template-rows: 1fr; 
+ 
+    align-items: stretch; 
+    justify-content: stretch; 
+ 
+    gap: 7px; 
+ 
+    padding: 0; 
+  } 
+ 
+  .vowel-modal-pronunciation-row { 
+    width: 100%; 
+ 
+    height: 100%; 
+    min-height: 0; 
+ 
+    display: flex; 
+ 
+    flex-direction: column; 
+ 
+    align-items: center; 
+    justify-content: center; 
+ 
+    padding: 
+      7px 
+      3px; 
+ 
+    gap: 4px; 
+ 
+    background: 
+      linear-gradient( 
+        180deg, 
+        #fffdf8 0%, 
+        #faf9f4 100% 
+      ); 
+ 
+    border: 
+      1px solid #ebe7da; 
+ 
+    border-radius: 9px; 
+  } 
+ 
+  .vowel-modal-pronunciation-row:has(.voice-o) { 
+    border-top: 4px solid var(--khmer-green); 
+  } 
+ 
+  .vowel-modal-pronunciation-row:has(.voice-oh) { 
+    border-top: 4px solid var(--khmer-gold); 
+  } 
+ 
+  .vowel-modal-pronunciation-row strong { 
+    font-size: 24px; 
+    line-height: 29px; 
+  } 
+ 
+  .vowel-modal-voice { 
+    font-size: 12px; 
+    line-height: 17px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GHI CHÚ 
+     GIỮ CÙNG TỶ LỆ VỚI DESKTOP 
+  ======================================================= */ 
+ 
+  .modal-note { 
+    width: 100%; 
+ 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+ 
+    gap: 6px; 
+ 
+    margin-top: 15px; 
+ 
+    padding: 
+      9px 
+      10px; 
+ 
+    font-size: 15px; 
+    line-height: 1.2; 
+ 
+    font-weight: 900; 
+ 
+    text-align: center; 
+  } 
+ 
+  .modal-note-icon { 
+    font-size: 17px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GIỌNG ĐỌC 
+     GIỮ CÙNG TỶ LỆ VỚI DESKTOP 
+  ======================================================= */ 
+ 
+  .modal-audio-divider { 
+    width: 100%; 
+ 
+    margin-top: 16px; 
+ 
+    font-size: 15px; 
+    line-height: 1.3; 
+ 
+    font-weight: 900; 
+ 
+    text-align: center; 
+  } 
+ 
+  .modal-audio-area { 
+    min-height: 55px; 
+ 
+    margin-top: 8px; 
+ 
+    padding: 
+      8px 
+      9px; 
+  } 
+ 
+  .audio-coming { 
+    font-size: 13px; 
+ 
+    justify-content: center; 
+ 
+    text-align: center; 
+  } 
+ 
+  .audio-icon { 
+    font-size: 18px; 
+  } 
+} 
+ 
+ 
+/* ========================================================= 
+   VERY SMALL SCREEN 
+   GIỮ ĐỒNG NHẤT VỚI MOBILE / DESKTOP 
+========================================================= */ 
+ 
+@media (max-width: 420px) { 
+ 
+  .alphabet-page { 
+    padding-left: 10px; 
+    padding-right: 10px; 
+  } 
+ 
+  .alphabet-grid { 
+    gap: 8px; 
+  } 
+ 
+  .consonant-card { 
+    min-height: 185px; 
+  } 
+ 
+  .consonant-letter { 
+    font-size: 52px; 
+  } 
+ 
+  .alphabet-stat strong { 
+    font-size: 25px; 
+  } 
+ 
+  .voice-btn { 
+    padding: 
+      8px 
+      7px; 
+ 
+    font-size: 12px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     VOWEL 
+  ======================================================= */ 
+ 
+  .vowel-card { 
+    min-height: 185px; 
+  } 
+ 
+  .vowel-symbol { 
+    font-size: 44px; 
+  } 
+ 
+  .vowel-pronunciation { 
+    min-height: 46px; 
+    gap: 5px; 
+  } 
+ 
+  .vowel-pronunciation > div { 
+    min-height: 46px; 
+  } 
+ 
+  .vowel-pronunciation span { 
+    height: 15px; 
+    line-height: 15px; 
+    font-size: 9px; 
+  } 
+ 
+  .vowel-pronunciation strong { 
+    height: 19px; 
+    line-height: 19px; 
+    font-size: 13px; 
+  } 
+ 
+  .vowel-note { 
+    min-height: 14px; 
+    line-height: 14px; 
+    font-size: 9px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     POPUP 
+  ======================================================= */ 
+ 
+  .alphabet-modal { 
+    width: 94vw; 
+ 
+    max-width: 600px; 
+ 
+    max-height: 94vh; 
+ 
+    padding: 
+      27px 
+      10px 
+      20px; 
+ 
+    border-radius: 18px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     STT 
+  ======================================================= */ 
+ 
+  .modal-detail-stt { 
+    font-size: 19px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GIỌNG 
+  ======================================================= */ 
+ 
+  .modal-voice { 
+    font-size: 13px; 
+ 
+    padding: 
+      5px 
+      13px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GRID 
+  ======================================================= */ 
+ 
+  .alphabet-detail-grid { 
+    gap: 
+      15px 
+      7px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     TITLE 
+     KHÔNG THU NHỎ QUÁ MỨC 
+  ======================================================= */ 
+ 
+  .alphabet-detail-card-title { 
+    min-height: 30px; 
+ 
+    margin-bottom: 5px; 
+ 
+    padding: 
+      0 
+      1px; 
+ 
+    font-size: 14px; 
+    line-height: 1.2; 
+ 
+    gap: 4px; 
+  } 
+ 
+  .detail-icon { 
+    font-size: 16px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     KHUNG 
+     ĐỒNG NHẤT TỶ LỆ VỚI DESKTOP 
+  ======================================================= */ 
+ 
+  .alphabet-detail-card-value { 
+    height: 110px; 
+    min-height: 110px; 
+ 
+    padding: 
+      6px 
+      2px; 
+ 
+    border-radius: 10px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     CHỮ THƯỜNG 
+     GIỮ NGUYÊN 46PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .normal-khmer-value { 
+    font-size: 46px; 
+    line-height: 1; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     CHỮ HOA 
+     ≤420PX → 46PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .uppercase-khmer-value { 
+    font-size: 46px; 
+    line-height: 0.92; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     VIẾT TAY 
+     ≤420PX → 36PX
+  ======================================================= */ 
+ 
+  .alphabet-detail-card .handwriting-khmer-value { 
+    font-size: 36px; 
+    line-height: 1; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     PHIÊN ÂM 
+  ======================================================= */ 
+ 
+  .pronunciation-value { 
+    font-size: 22px; 
+  } 
+ 
+  .detail-card-pronunciation 
+  .alphabet-detail-card-value { 
+    border-top-width: 4px; 
+  } 
+ 
+  .detail-card-pronunciation 
+  .pronunciation-value.pronunciation-voice-o { 
+    border-top: 4px solid var(--khmer-green); 
+  } 
+ 
+  .detail-card-pronunciation 
+  .pronunciation-value.pronunciation-voice-oh { 
+    border-top: 4px solid var(--khmer-gold); 
+  } 
+ 
+ 
+  /* ======================================================= 
+     PHIÊN ÂM NGUYÊN ÂM 
+     O | Ô KÉO ĐẦY CHIỀU CAO KHUNG 
+  ======================================================= */ 
+ 
+  .vowel-pronunciation-detail { 
+    height: 110px; 
+    min-height: 110px; 
+ 
+    display: flex; 
+ 
+    align-items: stretch; 
+    justify-content: stretch; 
+ 
+    padding: 0; 
+  } 
+ 
+  .vowel-modal-pronunciation { 
+    width: 100%; 
+    height: 100%; 
+    min-height: 100%; 
+ 
+    display: grid; 
+ 
+    grid-template-columns: 
+      repeat(2, minmax(0, 1fr)); 
+ 
+    grid-template-rows: 1fr; 
+ 
+    align-items: stretch; 
+    justify-content: stretch; 
+ 
+    gap: 5px; 
+ 
+    padding: 0; 
+  } 
+ 
+  .vowel-modal-pronunciation-row { 
+    width: 100%; 
+ 
+    height: 100%; 
+    min-height: 0; 
+ 
+    display: flex; 
+ 
+    flex-direction: column; 
+ 
+    align-items: center; 
+    justify-content: center; 
+ 
+    padding: 
+      5px 
+      1px; 
+ 
+    gap: 3px; 
+ 
+    background: 
+      linear-gradient( 
+        180deg, 
+        #fffdf8 0%, 
+        #faf9f4 100% 
+      ); 
+ 
+    border: 
+      1px solid #ebe7da; 
+ 
+    border-radius: 8px; 
+  } 
+ 
+  .vowel-modal-pronunciation-row:has(.voice-o) { 
+    border-top: 4px solid var(--khmer-green); 
+  } 
+ 
+  .vowel-modal-pronunciation-row:has(.voice-oh) { 
+    border-top: 4px solid var(--khmer-gold); 
+  } 
+ 
+  .vowel-modal-pronunciation-row strong { 
+    font-size: 21px; 
+    line-height: 26px; 
+  } 
+ 
+  .vowel-modal-voice { 
+    font-size: 10px; 
+    line-height: 15px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GHI CHÚ 
+     CÙNG TỶ LỆ VỚI TIÊU ĐỀ 
+  ======================================================= */ 
+ 
+  .modal-note { 
+    width: 100%; 
+ 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+ 
+    gap: 5px; 
+ 
+    margin-top: 12px; 
+ 
+    padding: 
+      8px 
+      8px; 
+ 
+    font-size: 14px; 
+    line-height: 1.2; 
+ 
+    font-weight: 900; 
+ 
+    text-align: center; 
+  } 
+ 
+  .modal-note-icon { 
+    font-size: 16px; 
+  } 
+ 
+ 
+  /* ======================================================= 
+     GIỌNG ĐỌC 
+     CÙNG TỶ LỆ VỚI TIÊU ĐỀ 
+  ======================================================= */ 
+ 
+  .modal-audio-divider { 
+    width: 100%; 
+ 
+    margin-top: 14px; 
+ 
+    font-size: 14px; 
+    line-height: 1.3; 
+ 
+    font-weight: 900; 
+ 
+    text-align: center; 
+  } 
+ 
+  .modal-audio-area { 
+    min-height: 50px; 
+ 
+    margin-top: 7px; 
+ 
+    padding: 
+      6px 
+      7px; 
+  } 
+ 
+  .audio-coming { 
+    font-size: 12px; 
+ 
+    justify-content: center; 
+ 
+    text-align: center; 
+  } 
+ 
+  .audio-icon { 
+    font-size: 17px; 
+  } 
 }
