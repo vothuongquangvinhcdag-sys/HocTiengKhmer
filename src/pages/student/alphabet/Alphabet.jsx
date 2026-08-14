@@ -1632,7 +1632,7 @@ function Alphabet({
                 =============================== */}
 
                 <div className="modal-audio-divider">
-                  - - - - - - 🗣️ Giọng đọc - - - - - -
+                  - - - - - - 🔊 Giọng đọc - - - - - -
                 </div>
 
                 <div className="modal-audio-area">
