@@ -1596,10 +1596,6 @@ function Alphabet({
                     STT {selected.stt}
                   </div>
 
-                  <div className="modal-consonant-letter">
-                    {selected.letter}
-                  </div>
-
                   <div
                     className={
                       selected.voice === "O"
@@ -1780,10 +1776,6 @@ function Alphabet({
 
                   <div className="modal-detail-stt">
                     STT {selected.stt}
-                  </div>
-
-                  <div className="vowel-main-symbol">
-                    {selected.symbol}
                   </div>
 
                 </div>
