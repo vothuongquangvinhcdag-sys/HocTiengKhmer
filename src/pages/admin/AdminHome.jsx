@@ -609,7 +609,7 @@ function AdminHome({
                 buttonLogoutStyle
               }
             >
-              🚪 Đăng xuất
+              ➜] Đăng xuất
             </button>
           </div>
         </div>

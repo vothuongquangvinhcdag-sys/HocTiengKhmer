@@ -568,7 +568,7 @@ function StudentHome({
             >
 
               <span className="student-menu-icon">
-                🚪
+                ➜]
               </span>
 
               <span>

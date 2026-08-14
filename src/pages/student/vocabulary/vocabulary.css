@@ -1,6 +1,27 @@
 /* =========================================================
-   VOCABULARY - GIAO DIỆN MỚI
-   ========================================================= */
+   KHMER FONTS
+========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer OS Muol";
+  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================================
+   VOCABULARY - GIAO DIỆN
+========================================================= */
 
 * {
   box-sizing: border-box;
@@ -9,17 +30,42 @@
 .vocabulary-page {
   min-height: 100vh;
   padding: 25px;
+
   background:
-    radial-gradient(circle at 0% 0%, #dbeafe 0%, transparent 28%),
-    radial-gradient(circle at 100% 0%, #fce7f3 0%, transparent 28%),
-    radial-gradient(circle at 50% 100%, #dcfce7 0%, transparent 30%),
+    radial-gradient(
+      circle at 0% 0%,
+      #dbeafe 0%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      #fce7f3 0%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      #dcfce7 0%,
+      transparent 30%
+    ),
     #f8fafc;
+
   color: #172033;
+
+  /* FONT CHUNG CHO TIẾNG VIỆT + GIAO DIỆN */
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
 
 /* =========================================================
    TIMER
-   ========================================================= */
+========================================================= */
 
 .vocabulary-timer {
   position: fixed;
@@ -45,8 +91,10 @@
 
 .vocabulary-timer-label {
   color: #16a34a;
+
   font-size: 12px;
-  font-weight: 900;
+  font-weight: 800;
+  line-height: 1.3;
 }
 
 .vocabulary-timer-time {
@@ -56,7 +104,7 @@
 
   font-size: 27px;
   line-height: 1.1;
-  font-weight: 900;
+  font-weight: 800;
 
   font-variant-numeric: tabular-nums;
 }
@@ -67,12 +115,14 @@
   color: #64748b;
 
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 1.3;
 }
+
 
 /* =========================================================
    NÚT QUAY LẠI
-   ========================================================= */
+========================================================= */
 
 .vocabulary-back-button {
   display: inline-flex;
@@ -95,8 +145,15 @@
       #7c3aed
     );
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
+  line-height: 1.3;
 
   cursor: pointer;
 
@@ -113,9 +170,10 @@
     0 12px 28px rgba(79, 70, 229, 0.35);
 }
 
+
 /* =========================================================
    HEADER
-   ========================================================= */
+========================================================= */
 
 .vocabulary-header {
   position: relative;
@@ -191,8 +249,15 @@
   text-align: center;
 }
 
+
+/* =========================================================
+   ICON HEADER
+========================================================= */
+
 .vocabulary-header-icon {
   font-size: 52px;
+
+  line-height: 1;
 
   filter:
     drop-shadow(
@@ -200,36 +265,76 @@
     );
 }
 
+
+/* =========================================================
+   CHỮ KHMER HEADER
+========================================================= */
+
 .vocabulary-header-khmer {
-  margin-top: 4px;
+  margin-top: 8px;
+
+  color: white;
+
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    sans-serif;
 
   font-size: 30px;
-  line-height: 1.3;
-  font-weight: 900;
+  line-height: 1.55;
+
+  font-weight: 700;
+
+  letter-spacing: 0;
 }
+
+
+/* =========================================================
+   TIẾNG VIỆT / TIẾNG ANH HEADER
+========================================================= */
 
 .vocabulary-header h1 {
   margin: 8px 0 5px;
 
-  font-size: 32px;
-  line-height: 1.2;
-  font-weight: 950;
+  color: white;
 
-  letter-spacing: 0.5px;
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 32px;
+  line-height: 1.25;
+
+  font-weight: 800;
+
+  letter-spacing: 0.2px;
 }
 
 .vocabulary-header p {
   margin: 0;
 
-  font-size: 15px;
-  font-weight: 600;
+  color: white;
 
-  opacity: 0.9;
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  line-height: 1.5;
+
+  font-weight: 500;
+
+  opacity: 0.92;
 }
+
 
 /* =========================================================
    THỐNG KÊ
-   ========================================================= */
+========================================================= */
 
 .vocabulary-stats {
   position: relative;
@@ -266,10 +371,16 @@
 
   color: white;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 34px;
   line-height: 1;
 
-  font-weight: 950;
+  font-weight: 800;
 }
 
 .vocabulary-stat span {
@@ -279,22 +390,32 @@
 
   color: rgba(255, 255, 255, 0.9);
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 13px;
-  font-weight: 800;
+  line-height: 1.4;
+
+  font-weight: 600;
 }
+
 
 /* =========================================================
    CONTAINER
-   ========================================================= */
+========================================================= */
 
 .vocabulary-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
+
 /* =========================================================
    SECTION TITLE
-   ========================================================= */
+========================================================= */
 
 .vocabulary-section-title {
   position: relative;
@@ -335,8 +456,16 @@
 
   color: #312e81;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 23px;
-  font-weight: 900;
+  line-height: 1.3;
+
+  font-weight: 800;
 }
 
 .vocabulary-section-title p {
@@ -344,12 +473,22 @@
 
   color: #64748b;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
+  line-height: 1.5;
+
+  font-weight: 400;
 }
+
 
 /* =========================================================
    CATEGORY GRID
-   ========================================================= */
+========================================================= */
 
 .vocabulary-category-grid {
   display: grid;
@@ -363,9 +502,10 @@
   gap: 20px;
 }
 
+
 /* =========================================================
    CATEGORY CARD
-   ========================================================= */
+========================================================= */
 
 .vocabulary-category-card {
   position: relative;
@@ -449,6 +589,11 @@
   transform: scale(1.5);
 }
 
+
+/* =========================================================
+   CATEGORY ICON
+========================================================= */
+
 .vocabulary-category-icon {
   position: relative;
   z-index: 2;
@@ -463,6 +608,7 @@
   border-radius: 21px;
 
   font-size: 38px;
+  line-height: 1;
 
   background:
     linear-gradient(
@@ -475,6 +621,11 @@
     0 8px 18px rgba(79, 70, 229, 0.12);
 }
 
+
+/* =========================================================
+   CATEGORY CARD TEXT
+========================================================= */
+
 .vocabulary-category-card h3 {
   position: relative;
   z-index: 2;
@@ -483,8 +634,16 @@
 
   color: #312e81;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 22px;
-  font-weight: 900;
+  line-height: 1.3;
+
+  font-weight: 800;
 }
 
 .vocabulary-category-card p {
@@ -497,8 +656,16 @@
 
   color: #64748b;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.55;
+
+  font-weight: 400;
 }
 
 .vocabulary-category-card span {
@@ -514,16 +681,24 @@
   border-radius: 999px;
 
   color: #4338ca;
-
   background: #eef2ff;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 12px;
-  font-weight: 900;
+  line-height: 1.3;
+
+  font-weight: 700;
 }
+
 
 /* =========================================================
    QUAY LẠI CHỦ ĐỀ
-   ========================================================= */
+========================================================= */
 
 .vocabulary-category-back {
   margin-bottom: 18px;
@@ -534,11 +709,18 @@
   padding: 10px 16px;
 
   color: #4338ca;
-
   background: #eef2ff;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
-  font-weight: 800;
+  line-height: 1.3;
+
+  font-weight: 700;
 
   cursor: pointer;
 
@@ -558,9 +740,10 @@
   transform: translateX(-4px);
 }
 
+
 /* =========================================================
    TOPIC HEADER
-   ========================================================= */
+========================================================= */
 
 .vocabulary-topic-header {
   display: flex;
@@ -600,6 +783,7 @@
   border-radius: 20px;
 
   font-size: 39px;
+  line-height: 1;
 
   background: rgba(255, 255, 255, 0.18);
 
@@ -609,21 +793,43 @@
 .vocabulary-topic-header h2 {
   margin: 0;
 
+  color: white;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 28px;
-  font-weight: 900;
+  line-height: 1.3;
+
+  font-weight: 800;
 }
 
 .vocabulary-topic-header p {
   margin: 5px 0 0;
 
+  color: white;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
+  line-height: 1.5;
+
+  font-weight: 400;
 
   opacity: 0.9;
 }
 
+
 /* =========================================================
    WORD GRID
-   ========================================================= */
+========================================================= */
 
 .vocabulary-word-grid {
   display: grid;
@@ -637,9 +843,10 @@
   gap: 17px;
 }
 
+
 /* =========================================================
    WORD CARD
-   ========================================================= */
+========================================================= */
 
 .vocabulary-word-card {
   position: relative;
@@ -696,14 +903,23 @@
     0 17px 35px rgba(37, 99, 235, 0.17);
 }
 
+
+/* =========================================================
+   WORD IMAGE
+========================================================= */
+
 .vocabulary-word-image {
   margin-top: 5px;
   margin-bottom: 10px;
 
   font-size: 44px;
-
   line-height: 1;
 }
+
+
+/* =========================================================
+   WORD NUMBER
+========================================================= */
 
 .vocabulary-word-number {
   position: absolute;
@@ -723,45 +939,91 @@
   border-radius: 999px;
 
   color: #475569;
-
   background: #f1f5f9;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 10px;
-  font-weight: 900;
+  line-height: 1;
+
+  font-weight: 700;
 }
+
+
+/* =========================================================
+   ⭐ CHỮ KHMER TRÊN THẺ
+========================================================= */
 
 .vocabulary-word-khmer {
   margin-top: 8px;
 
   color: #312e81;
 
-  font-size: 29px;
-  line-height: 1.3;
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
 
-  font-weight: 950;
+  font-size: 29px;
+  line-height: 1.55;
+
+  font-weight: 400;
+
+  letter-spacing: 0;
 }
+
+
+/* =========================================================
+   ROMAN
+========================================================= */
 
 .vocabulary-word-roman {
   margin-top: 7px;
 
   color: #7c3aed;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
-  font-weight: 900;
+  line-height: 1.4;
+
+  font-weight: 700;
 }
+
+
+/* =========================================================
+   TIẾNG VIỆT
+========================================================= */
 
 .vocabulary-word-vietnamese {
   margin-top: 8px;
 
   color: #475569;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
-  font-weight: 800;
+  line-height: 1.5;
+
+  font-weight: 600;
 }
 
+
 /* =========================================================
-   MODAL
-   ========================================================= */
+   MODAL BACKDROP
+========================================================= */
 
 .vocabulary-modal-backdrop {
   position: fixed;
@@ -781,6 +1043,11 @@
 
   backdrop-filter: blur(8px);
 }
+
+
+/* =========================================================
+   MODAL
+========================================================= */
 
 .vocabulary-modal {
   position: relative;
@@ -805,6 +1072,7 @@
 @keyframes vocabularyModalIn {
   from {
     opacity: 0;
+
     transform:
       translateY(18px)
       scale(0.94);
@@ -812,11 +1080,17 @@
 
   to {
     opacity: 1;
+
     transform:
       translateY(0)
       scale(1);
   }
 }
+
+
+/* =========================================================
+   MODAL CLOSE
+========================================================= */
 
 .vocabulary-modal-close {
   position: absolute;
@@ -834,7 +1108,14 @@
 
   background: #f1f5f9;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 24px;
+  line-height: 1;
 
   cursor: pointer;
 
@@ -849,38 +1130,87 @@
   transform: rotate(90deg);
 }
 
+
+/* =========================================================
+   MODAL IMAGE
+========================================================= */
+
 .vocabulary-modal-image {
   font-size: 68px;
+  line-height: 1;
 }
+
+
+/* =========================================================
+   ⭐ CHỮ KHMER TRONG MODAL
+========================================================= */
 
 .vocabulary-modal-khmer {
   margin-top: 12px;
 
   color: #312e81;
 
-  font-size: 50px;
-  line-height: 1.3;
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
 
-  font-weight: 950;
+  font-size: 50px;
+  line-height: 1.55;
+
+  font-weight: 400;
+
+  letter-spacing: 0;
 }
+
+
+/* =========================================================
+   MODAL ROMAN
+========================================================= */
 
 .vocabulary-modal-roman {
   margin-top: 7px;
 
   color: #7c3aed;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 20px;
-  font-weight: 900;
+  line-height: 1.4;
+
+  font-weight: 700;
 }
+
+
+/* =========================================================
+   MODAL TIẾNG VIỆT
+========================================================= */
 
 .vocabulary-modal-vietnamese {
   margin-top: 8px;
 
   color: #475569;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 17px;
-  font-weight: 800;
+  line-height: 1.5;
+
+  font-weight: 600;
 }
+
+
+/* =========================================================
+   NÚT PHÁT ÂM
+========================================================= */
 
 .vocabulary-speak-button {
   margin-top: 25px;
@@ -899,8 +1229,16 @@
       #7c3aed
     );
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
-  font-weight: 900;
+  line-height: 1.3;
+
+  font-weight: 700;
 
   cursor: pointer;
 
@@ -917,14 +1255,16 @@
     0 13px 27px rgba(79, 70, 229, 0.35);
 }
 
+
 /* =========================================================
    FOOTER
-   ========================================================= */
+========================================================= */
 
 .vocabulary-footer {
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 10px;
 
   margin-top: 35px;
@@ -932,30 +1272,55 @@
 
   color: #64748b;
 
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 13px;
-  font-weight: 600;
+  line-height: 1.5;
+
+  font-weight: 500;
 }
 
+
 /* =========================================================
-   MOBILE
-   ========================================================= */
+   MOBILE - TABLET
+========================================================= */
 
 @media (max-width: 950px) {
+
   .vocabulary-category-grid {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
   }
 
   .vocabulary-word-grid {
     grid-template-columns:
-      repeat(3, minmax(0, 1fr));
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
   }
 }
 
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @media (max-width: 700px) {
+
   .vocabulary-page {
     padding: 15px;
   }
+
+
+  /* TIMER */
 
   .vocabulary-timer {
     position: relative;
@@ -968,8 +1333,12 @@
     margin-bottom: 15px;
   }
 
+
+  /* HEADER */
+
   .vocabulary-header {
     padding: 30px 18px;
+
     border-radius: 24px;
   }
 
@@ -979,11 +1348,21 @@
 
   .vocabulary-header-khmer {
     font-size: 25px;
+    line-height: 1.55;
   }
 
   .vocabulary-header h1 {
     font-size: 24px;
+    line-height: 1.3;
   }
+
+  .vocabulary-header p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+
+  /* STATS */
 
   .vocabulary-stats {
     gap: 10px;
@@ -991,7 +1370,9 @@
 
   .vocabulary-stat {
     min-width: 0;
+
     flex: 1;
+
     padding: 14px 10px;
   }
 
@@ -999,38 +1380,74 @@
     font-size: 28px;
   }
 
+  .vocabulary-stat span {
+    font-size: 12px;
+  }
+
+
+  /* CATEGORY */
+
   .vocabulary-category-grid {
     grid-template-columns: 1fr;
   }
 
+
+  /* WORD */
+
   .vocabulary-word-grid {
     grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
   }
 
   .vocabulary-word-card {
     min-height: 215px;
+
     padding: 20px 10px;
   }
 
   .vocabulary-word-khmer {
     font-size: 25px;
+    line-height: 1.55;
   }
+
+  .vocabulary-word-roman {
+    font-size: 13px;
+  }
+
+  .vocabulary-word-vietnamese {
+    font-size: 13px;
+  }
+
+
+  /* TOPIC */
 
   .vocabulary-topic-header {
     align-items: flex-start;
+
     padding: 18px;
   }
 
   .vocabulary-topic-icon {
     width: 58px;
     height: 58px;
+
     font-size: 31px;
   }
 
   .vocabulary-topic-header h2 {
     font-size: 23px;
+    line-height: 1.3;
   }
+
+  .vocabulary-topic-header p {
+    font-size: 13px;
+  }
+
+
+  /* MODAL */
 
   .vocabulary-modal {
     padding: 30px 20px;
@@ -1038,11 +1455,30 @@
 
   .vocabulary-modal-khmer {
     font-size: 40px;
+    line-height: 1.55;
+  }
+
+  .vocabulary-modal-vietnamese {
+    font-size: 16px;
   }
 }
 
+
+/* =========================================================
+   MOBILE NHỎ
+========================================================= */
+
 @media (max-width: 400px) {
+
   .vocabulary-word-grid {
     grid-template-columns: 1fr;
+  }
+
+  .vocabulary-header h1 {
+    font-size: 22px;
+  }
+
+  .vocabulary-header-khmer {
+    font-size: 23px;
   }
 }
