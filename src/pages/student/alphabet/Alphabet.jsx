@@ -616,20 +616,8 @@ function Alphabet({
     profile?.id ||
     null;
 
-    /* =======================================================
+  /* =======================================================
      TIMER
-
-     GIỐNG CƠ CHẾ VOCABULARY:
-
-     - Tổng thời gian lấy từ Supabase.
-     - Giây đang học chỉ tồn tại khi đang ở Alphabet.
-     - Khi vào Alphabet: giây lẻ bắt đầu từ 00.
-     - Đủ 60 giây:
-         +60 total_study_seconds
-         +10 EXP
-     - Thoát Alphabet:
-         reset giây lẻ về 00.
-     - Không dùng localStorage.
   ======================================================= */
 
   const [totalStudySeconds, setTotalStudySeconds] =
@@ -672,13 +660,7 @@ function Alphabet({
   }, [remainderSeconds]);
 
   /* =======================================================
-     LOAD TỔNG THỜI GIAN TỪ SUPABASE
-
-     Khi mở Alphabet:
-
-     1. Lấy total_study_seconds
-     2. Giữ tổng thời gian đã học
-     3. Giây lẻ bắt đầu từ 00
+     LOAD TỔNG THỜI GIAN
   ======================================================= */
 
   useEffect(() => {
@@ -731,11 +713,6 @@ function Alphabet({
           );
         }
 
-        /*
-          Mỗi lần mở Alphabet,
-          phần giây bắt đầu từ 00.
-        */
-
         if (!cancelled) {
           remainderSecondsRef.current =
             0;
@@ -759,9 +736,6 @@ function Alphabet({
 
   /* =======================================================
      CỘNG 1 PHÚT
-
-     +60 total_study_seconds
-     +10 EXP
   ======================================================= */
 
   const saveOneMinute = async () => {
@@ -849,22 +823,12 @@ function Alphabet({
         return false;
       }
 
-      /* -----------------------------------------------
-         CẬP NHẬT NGAY TRÊN MÀN HÌNH
-      ------------------------------------------------ */
-
       totalStudySecondsRef.current =
         newStudySeconds;
 
       setTotalStudySeconds(
         newStudySeconds
       );
-
-      /*
-        Đã hoàn thành 1 phút.
-
-        Reset phần giây về 0.
-      */
 
       remainderSecondsRef.current =
         0;
@@ -878,10 +842,6 @@ function Alphabet({
       console.log(
         `✅ Tổng thời gian: ${newStudySeconds}s`
       );
-
-      /* -----------------------------------------------
-         ĐỒNG BỘ STUDENT HOME
-      ------------------------------------------------ */
 
       if (
         typeof onProgressUpdated ===
@@ -905,41 +865,12 @@ function Alphabet({
 
   /* =======================================================
      ALPHABET TIMER
-
-     Timer chỉ chạy khi đang ở Alphabet.
-
-     Ví dụ:
-
-     Supabase:
-     00:20:00
-
-     Vào Alphabet:
-     00:20:00
-
-     Sau 30 giây:
-     00:20:30
-
-     Đủ 60 giây:
-     00:21:00
-     +10 EXP
-
-     Rời Alphabet:
-     00:21:00
-
-     Vào lại:
-     00:21:00
-     và bắt đầu:
-     00:21:01
   ======================================================= */
 
   useEffect(() => {
     if (!userId) {
       return;
     }
-
-    /*
-      Không tạo timer thứ hai.
-    */
 
     if (timerRef.current) {
       return;
@@ -949,11 +880,6 @@ function Alphabet({
       "🟢 ALPHABET: bắt đầu tính thời gian."
     );
 
-    /*
-      Mỗi lần bắt đầu vào Alphabet,
-      phần giây luôn bắt đầu từ 0.
-    */
-
     remainderSecondsRef.current =
       0;
 
@@ -961,11 +887,6 @@ function Alphabet({
 
     timerRef.current =
       setInterval(() => {
-        /*
-          Nếu đang lưu phút trước
-          thì chờ vòng tiếp theo.
-        */
-
         if (savingRef.current) {
           return;
         }
@@ -975,10 +896,6 @@ function Alphabet({
 
         const next =
           currentRemainder + 1;
-
-        /* ---------------------------------------------
-           CHƯA ĐỦ 60 GIÂY
-        --------------------------------------------- */
 
         if (
           next <
@@ -994,13 +911,6 @@ function Alphabet({
           return;
         }
 
-        /* ---------------------------------------------
-           ĐỦ 60 GIÂY
-
-           +60 giây
-           +10 EXP
-        --------------------------------------------- */
-
         saveOneMinute();
       }, 1000);
 
@@ -1013,21 +923,6 @@ function Alphabet({
         timerRef.current =
           null;
       }
-
-      /*
-        Không lưu phần giây lẻ.
-
-        Ví dụ:
-
-        00:21:37
-
-        Thoát Alphabet
-        ↓
-        37 giây bị reset.
-
-        Lần sau:
-        00:21:00
-      */
 
       remainderSecondsRef.current =
         0;
@@ -1699,6 +1594,8 @@ function Alphabet({
 
                   {/* ===============================
                       PHIÊN ÂM
+                      SỬA QUAN TRỌNG:
+                      GÁN CLASS TRỰC TIẾP THEO GIỌNG
                   =============================== */}
 
                   <div className="alphabet-detail-card detail-card-pronunciation">
@@ -1715,10 +1612,14 @@ function Alphabet({
 
                     </div>
 
-                    <div className="alphabet-detail-card-value pronunciation-value">
-
+                    <div
+                      className={
+                        selected.voice === "O"
+                          ? "alphabet-detail-card-value pronunciation-value pronunciation-voice-o"
+                          : "alphabet-detail-card-value pronunciation-value pronunciation-voice-oh"
+                      }
+                    >
                       {selected.roman}
-
                     </div>
 
                   </div>
@@ -1867,7 +1768,7 @@ function Alphabet({
 
 
                   {/* ===============================
-                      PHIÊN ÂM
+                      PHIÊN ÂM NGUYÊN ÂM
                   =============================== */}
 
                   <div className="alphabet-detail-card detail-card-pronunciation vowel-pronunciation-detail">
