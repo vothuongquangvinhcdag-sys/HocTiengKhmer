@@ -17,7 +17,7 @@ const consonants = [
   { stt: 8, letter: "ជ", roman: "Chô", voice: "Ô", uppercase: null, handwriting: null },
   { stt: 9, letter: "ឈ", roman: "Chhô", voice: "Ô", uppercase: null, handwriting: null },
   { stt: 10, letter: "ញ", roman: "Nhô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 11, letter: "ដ", roman: "Do", voice: "O", uppercase: null, handwriting: null },
+  { stt: 11, letter: "ដ", roman: "Đo", voice: "O", uppercase: null, handwriting: null },
   { stt: 12, letter: "ឋ", roman: "Tho", voice: "O", uppercase: null, handwriting: null },
   { stt: 13, letter: "ឌ", roman: "Đô", voice: "Ô", uppercase: null, handwriting: null },
   { stt: 14, letter: "ឍ", roman: "Thô", voice: "Ô", uppercase: null, handwriting: null },
@@ -39,7 +39,7 @@ const consonants = [
   { stt: 30, letter: "ស", roman: "So", voice: "O", uppercase: null, handwriting: null },
   { stt: 31, letter: "ហ", roman: "Ho", voice: "O", uppercase: null, handwriting: null },
   { stt: 32, letter: "ឡ", roman: "Lo", voice: "O", uppercase: null, handwriting: null },
-  { stt: 33, letter: "អ", roman: "O / Â", voice: "O", uppercase: null, handwriting: null },
+  { stt: 33, letter: "អ", roman: "O", voice: "O", uppercase: null, handwriting: null },
 ];
 
 /* =========================================================
