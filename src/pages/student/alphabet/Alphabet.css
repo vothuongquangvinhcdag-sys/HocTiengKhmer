@@ -47,11 +47,8 @@
   --border: #e4e0d4;
   --background: #f7f6f1;
 
-  --shadow-sm:
-    0 3px 12px rgba(50, 60, 40, 0.08);
-
-  --shadow-md:
-    0 10px 28px rgba(50, 60, 40, 0.13);
+  --shadow-sm: 0 3px 12px rgba(50, 60, 40, 0.08);
+  --shadow-md: 0 10px 28px rgba(50, 60, 40, 0.13);
 }
 
 
@@ -115,6 +112,7 @@
 
 .alphabet-timer-label {
   color: #16a34a;
+
   font-size: 12px;
   font-weight: 900;
 }
@@ -693,7 +691,6 @@
   grid-template-columns: 1fr 1fr;
 
   width: 100%;
-
   gap: 8px;
 
   margin-top: 2px;
@@ -837,14 +834,13 @@
 
 
 /* =========================================================
-   CHỮ THƯỜNG
+   CHỮ THƯỜNG / CHỮ HOA / VIẾT TAY
 ========================================================= */
 
 .normal-khmer-value,
 .uppercase-khmer-value,
 .handwriting-khmer-value {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
@@ -859,14 +855,10 @@
 
 .normal-khmer-value {
   font-family: "Khmer OS", sans-serif;
+
   font-size: 42px;
   line-height: 1.2;
 }
-
-
-/* =========================================================
-   CHỮ HOA
-========================================================= */
 
 .uppercase-khmer-value {
   font-family:
@@ -877,11 +869,6 @@
   font-size: 42px;
   line-height: 1.2;
 }
-
-
-/* =========================================================
-   VIẾT TAY
-========================================================= */
 
 .handwriting-khmer-value {
   font-family:
@@ -914,9 +901,7 @@
 
   backdrop-filter: blur(6px);
 
-  animation:
-    alphabetModalBackdropIn
-    0.18s ease;
+  animation: alphabetModalBackdropIn 0.18s ease;
 }
 
 @keyframes alphabetModalBackdropIn {
@@ -959,9 +944,7 @@
 
   text-align: center;
 
-  animation:
-    alphabetModalIn
-    0.2s ease;
+  animation: alphabetModalIn 0.2s ease;
 }
 
 @keyframes alphabetModalIn {
@@ -1051,9 +1034,7 @@
 .modal-consonant-header,
 .modal-vowel-header {
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
 
@@ -1078,7 +1059,6 @@
 
 .modal-voice {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
@@ -1159,7 +1139,6 @@
 
 /* =========================================================
    DETAIL TITLE
-   TẤT CẢ TIÊU ĐỀ ĐỒNG ĐỀU
 ========================================================= */
 
 .alphabet-detail-card-title {
@@ -1189,18 +1168,9 @@
   text-align: center;
 }
 
-.detail-card-normal .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
-.detail-card-uppercase .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
-.detail-card-handwriting .alphabet-detail-card-title {
-  color: var(--text-main);
-}
-
+.detail-card-normal .alphabet-detail-card-title,
+.detail-card-uppercase .alphabet-detail-card-title,
+.detail-card-handwriting .alphabet-detail-card-title,
 .detail-card-pronunciation .alphabet-detail-card-title {
   color: var(--text-main);
 }
@@ -1208,7 +1178,6 @@
 
 /* =========================================================
    DETAIL ICON
-   ĐỒNG ĐỀU VỚI TIÊU ĐỀ
 ========================================================= */
 
 .detail-icon {
@@ -1224,7 +1193,7 @@
 
 
 /* =========================================================
-   DETAIL VALUE - KHUNG
+   DETAIL VALUE
 ========================================================= */
 
 .alphabet-detail-card-value {
@@ -1237,7 +1206,6 @@
   min-height: 145px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -1255,7 +1223,6 @@
     );
 
   border: 1px solid #ebe7da;
-
   border-radius: 14px;
 
   box-shadow:
@@ -1284,38 +1251,26 @@
 
 
 /* =========================================================
-   PHIÊN ÂM PHỤ ÂM
+   PHIÊN ÂM PHỤ ÂM - O / Ô
 ========================================================= */
 
 .detail-card-pronunciation .alphabet-detail-card-value {
   border-top: 4px solid var(--khmer-green);
 }
 
-
-/* =========================================================
-   PHIÊN ÂM PHỤ ÂM - GIỌNG O
-========================================================= */
-
 .detail-card-pronunciation
 .pronunciation-value.pronunciation-voice-o {
   border-top: 4px solid var(--khmer-green);
-  border-top-color: var(--khmer-green);
 }
-
-
-/* =========================================================
-   PHIÊN ÂM PHỤ ÂM - GIỌNG Ô
-========================================================= */
 
 .detail-card-pronunciation
 .pronunciation-value.pronunciation-voice-oh {
   border-top: 4px solid var(--khmer-gold);
-  border-top-color: var(--khmer-gold);
 }
 
 
 /* =========================================================
-   HOVER
+   HOVER DETAIL
 ========================================================= */
 
 .alphabet-detail-card:hover
@@ -1330,59 +1285,32 @@
 
 
 /* =========================================================
-   ĐẢM BẢO HOVER KHÔNG GHI ĐÈ VIỀN O / Ô
-========================================================= */
-
-.alphabet-detail-card:hover
-.pronunciation-value.pronunciation-voice-o {
-  border-top: 4px solid var(--khmer-green);
-}
-
-.alphabet-detail-card:hover
-.pronunciation-value.pronunciation-voice-oh {
-  border-top: 4px solid var(--khmer-gold);
-}
-
-
-/* =========================================================
    KHMER TRONG POPUP
-   DESKTOP:
-   THƯỜNG 60PX
-   HOA 60PX
-   VIẾT TAY 45PX
 ========================================================= */
 
-.alphabet-detail-card .normal-khmer-value {
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-size: 60px;
-  line-height: 1;
-
-  white-space: nowrap;
-}
-
-.alphabet-detail-card .uppercase-khmer-value {
-  max-width: 100%;
-
-  color: var(--text-main);
-
-  font-size: 60px;
-  line-height: 0.95;
-
-  white-space: nowrap;
-}
-
+.alphabet-detail-card .normal-khmer-value,
+.alphabet-detail-card .uppercase-khmer-value,
 .alphabet-detail-card .handwriting-khmer-value {
   max-width: 100%;
 
   color: var(--text-main);
 
+  white-space: nowrap;
+}
+
+.alphabet-detail-card .normal-khmer-value {
+  font-size: 60px;
+  line-height: 1;
+}
+
+.alphabet-detail-card .uppercase-khmer-value {
+  font-size: 60px;
+  line-height: 0.95;
+}
+
+.alphabet-detail-card .handwriting-khmer-value {
   font-size: 45px;
   line-height: 1;
-
-  white-space: nowrap;
 }
 
 
@@ -1392,7 +1320,6 @@
 
 .pronunciation-value {
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
 
@@ -1416,7 +1343,6 @@
 
 /* =========================================================
    PHIÊN ÂM NGUYÊN ÂM
-   GIỌNG O + GIỌNG Ô TRONG 2 Ô RIÊNG BIỆT
 ========================================================= */
 
 .vowel-pronunciation-detail {
@@ -1424,7 +1350,6 @@
   min-height: 145px;
 
   display: flex;
-
   align-items: stretch;
   justify-content: stretch;
 
@@ -1453,8 +1378,7 @@
 
 
 /* =========================================================
-   TỪNG Ô GIỌNG O / GIỌNG Ô
-   NỀN ĐỒNG NHẤT VỚI 3 KHUNG CÒN LẠI
+   TỪNG Ô GIỌNG O / Ô
 ========================================================= */
 
 .vowel-modal-pronunciation-row {
@@ -1465,9 +1389,7 @@
   min-height: 0;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
 
@@ -1485,7 +1407,6 @@
     );
 
   border: 1px solid #ebe7da;
-
   border-radius: 10px;
 
   box-shadow:
@@ -1498,19 +1419,9 @@
   overflow: hidden;
 }
 
-
-/* =========================================================
-   VIỀN Ô GIỌNG O → XANH - 4PX
-========================================================= */
-
 .vowel-modal-pronunciation-row:has(.voice-o) {
   border-top: 4px solid var(--khmer-green);
 }
-
-
-/* =========================================================
-   VIỀN Ô GIỌNG Ô → VÀNG - 4PX
-========================================================= */
 
 .vowel-modal-pronunciation-row:has(.voice-oh) {
   border-top: 4px solid var(--khmer-gold);
@@ -1576,14 +1487,12 @@
 
 /* =========================================================
    GHI CHÚ
-   ĐỒNG KÍCH THƯỚC VỚI CÁC TIÊU ĐỀ
 ========================================================= */
 
 .modal-note {
   width: 100%;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -1598,7 +1507,6 @@
   background: #faf9f4;
 
   border: 1px solid #ebe7da;
-
   border-radius: 10px;
 
   color: var(--text-soft);
@@ -1623,8 +1531,7 @@
 
 
 /* =========================================================
-   AUDIO
-   ĐỒNG KÍCH THƯỚC VỚI CÁC TIÊU ĐỀ
+   AUDIO TITLE
 ========================================================= */
 
 .modal-audio-divider {
@@ -1647,44 +1554,190 @@
 
 /* =========================================================
    AUDIO AREA
+   KHÔNG CÓ KHUNG NGOÀI
 ========================================================= */
 
 .modal-audio-area {
   width: 100%;
 
-  min-height: 58px;
+  min-height: 92px;
 
   display: flex;
-
   align-items: center;
   justify-content: center;
 
-  margin-top: 8px;
+  margin-top: 6px;
 
-  padding:
-    9px
-    12px;
+  padding: 6px;
 
-  background:
-    linear-gradient(
-      180deg,
-      #f8fbf7 0%,
-      #eef7ed 100%
-    );
+  background: transparent;
 
-  border: 1px solid #c9e4ca;
+  border: none;
+  border-radius: 0;
 
-  border-radius: 10px;
+  box-shadow: none;
 }
+
+
+/* =========================================================
+   ẨN AUDIO NATIVE
+========================================================= */
 
 .modal-audio-area audio {
-  width: 100%;
-  max-width: 100%;
+  display: none;
 }
+
+
+/* =========================================================
+   CUSTOM AUDIO BUTTON
+========================================================= */
+
+.custom-audio-button {
+  width: 76px !important;
+  height: 76px !important;
+
+  min-width: 76px !important;
+  min-height: 76px !important;
+
+  max-width: 76px !important;
+  max-height: 76px !important;
+
+  flex: 0 0 76px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 !important;
+  margin: 0;
+
+  border: none !important;
+  border-radius: 50% !important;
+
+  color: #000000 !important;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size: 34px !important;
+  line-height: 1;
+
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.16);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.custom-audio-button.audio-voice-o {
+  background: var(--khmer-green) !important;
+  border-color: var(--khmer-green) !important;
+}
+
+.custom-audio-button.audio-voice-oh {
+  background: var(--khmer-gold) !important;
+  border-color: var(--khmer-gold) !important;
+}
+
+
+/* =========================================================
+   AUDIO PLAY / PAUSE ICON
+========================================================= */
+
+.custom-audio-button .audio-play-icon {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 !important;
+  margin: 0;
+
+  color: #000000 !important;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size: 34px !important;
+  line-height: 1;
+
+  font-weight: 900;
+
+  text-align: center;
+}
+
+.custom-audio-button .audio-play-icon.play {
+  padding-left: 0 !important;
+
+  color: #000000 !important;
+
+  font-size: 35px !important;
+}
+
+.custom-audio-button .audio-play-icon.pause {
+  padding-left: 0 !important;
+
+  color: #000000 !important;
+
+  font-size: 35px !important;
+}
+
+
+/* =========================================================
+   AUDIO PLAYING / HOVER / ACTIVE / FOCUS
+========================================================= */
+
+.custom-audio-button.is-playing {
+  box-shadow:
+    0 0 0 4px rgba(0, 0, 0, 0.08),
+    0 8px 22px rgba(0, 0, 0, 0.20);
+}
+
+.custom-audio-button:hover {
+  transform: scale(1.08);
+
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 9px 24px rgba(0, 0, 0, 0.20);
+}
+
+.custom-audio-button:active {
+  transform: scale(0.94);
+
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.custom-audio-button:focus-visible {
+  outline:
+    3px solid rgba(0, 0, 0, 0.22);
+
+  outline-offset: 5px;
+}
+
+
+/* =========================================================
+   AUDIO CHƯA CÓ
+========================================================= */
 
 .audio-coming {
   display: flex;
-
   align-items: center;
   justify-content: center;
 
@@ -1727,7 +1780,7 @@
 
 
 /* =========================================================
-   FOCUS
+   GLOBAL FOCUS
 ========================================================= */
 
 .alphabet-back-button:focus-visible,
@@ -1736,8 +1789,7 @@
 .consonant-card:focus-visible,
 .modal-close:focus-visible {
   outline:
-    3px solid
-    rgba(217, 164, 65, 0.45);
+    3px solid rgba(217, 164, 65, 0.45);
 
   outline-offset: 2px;
 }
@@ -1745,9 +1797,7 @@
 
 /* =========================================================
    TABLET
-   THƯỜNG 55PX
-   HOA 55PX
-   VIẾT TAY 40PX
+   ≤1100PX
 ========================================================= */
 
 @media (max-width: 1100px) {
@@ -1788,11 +1838,6 @@
     min-height: 145px;
   }
 
-
-  /* =======================================================
-     CHỮ TRONG POPUP - TABLET
-  ======================================================= */
-
   .alphabet-detail-card .normal-khmer-value {
     font-size: 55px;
     line-height: 1;
@@ -1807,83 +1852,6 @@
     font-size: 40px;
     line-height: 1;
   }
-
-
-  /* =======================================================
-     PHIÊN ÂM O / Ô TABLET
-  ======================================================= */
-
-  .detail-card-pronunciation
-  .alphabet-detail-card-value {
-    border-top-width: 4px;
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-o {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-oh {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-  .vowel-pronunciation-detail {
-    height: 145px;
-    min-height: 145px;
-
-    align-items: stretch;
-  }
-
-  .vowel-modal-pronunciation {
-    height: 100%;
-    min-height: 100%;
-
-    gap: 8px;
-
-    padding: 0;
-  }
-
-  .vowel-modal-pronunciation-row {
-    height: 100%;
-    min-height: 0;
-
-    padding:
-      8px
-      5px;
-
-    background:
-      linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #faf9f4 100%
-      );
-
-    border-radius: 10px;
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-o) {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-oh) {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-  .vowel-modal-pronunciation-row strong {
-    font-size: 26px;
-    line-height: 31px;
-  }
-
-  .vowel-modal-voice {
-    font-size: 13px;
-    line-height: 18px;
-  }
-
-
-  /* =======================================================
-     TIÊU ĐỀ TABLET
-  ======================================================= */
 
   .alphabet-detail-card-title {
     min-height: 34px;
@@ -1900,14 +1868,37 @@
     font-size: 18px;
   }
 
+  .vowel-pronunciation-detail {
+    height: 145px;
+    min-height: 145px;
+  }
 
-  /* =======================================================
-     GHI CHÚ TABLET
-  ======================================================= */
+  .vowel-modal-pronunciation {
+    gap: 8px;
+  }
+
+  .vowel-modal-pronunciation-row {
+    padding:
+      8px
+      5px;
+
+    border-radius: 10px;
+  }
+
+  .vowel-modal-pronunciation-row strong {
+    font-size: 26px;
+    line-height: 31px;
+  }
+
+  .vowel-modal-voice {
+    font-size: 13px;
+    line-height: 18px;
+  }
 
   .modal-note {
     font-size: 16px;
     line-height: 1.2;
+
     text-align: center;
     justify-content: center;
   }
@@ -1915,11 +1906,6 @@
   .modal-note-icon {
     font-size: 18px;
   }
-
-
-  /* =======================================================
-     GIỌNG ĐỌC TABLET
-  ======================================================= */
 
   .modal-audio-divider {
     font-size: 16px;
@@ -1929,11 +1915,34 @@
   }
 
   .modal-audio-area {
-    min-height: 58px;
+    min-height: 88px;
 
-    padding:
-      9px
-      12px;
+    margin-top: 6px;
+
+    padding: 5px;
+  }
+
+  .custom-audio-button {
+    width: 72px !important;
+    height: 72px !important;
+
+    min-width: 72px !important;
+    min-height: 72px !important;
+
+    max-width: 72px !important;
+    max-height: 72px !important;
+
+    flex-basis: 72px;
+
+    font-size: 32px !important;
+  }
+
+  .custom-audio-button .audio-play-icon {
+    font-size: 32px !important;
+  }
+
+  .custom-audio-button .audio-play-icon.pause {
+    font-size: 32px !important;
   }
 
   .audio-coming {
@@ -1944,9 +1953,7 @@
 
 /* =========================================================
    MOBILE
-   THƯỜNG 40PX
-   HOA 40PX
-   VIẾT TAY 35PX
+   ≤760PX
 ========================================================= */
 
 @media (max-width: 760px) {
@@ -1957,11 +1964,6 @@
       14px
       30px;
   }
-
-
-  /* =======================================================
-     TIMER
-  ======================================================= */
 
   .alphabet-timer {
     min-width: 150px;
@@ -1978,14 +1980,8 @@
     font-size: 24px;
   }
 
-
-  /* =======================================================
-     HEADER
-  ======================================================= */
-
   .alphabet-header {
     flex-direction: column;
-
     align-items: stretch;
 
     padding:
@@ -2021,7 +2017,10 @@
 
   .alphabet-stat {
     min-width: 0;
-    padding: 16px 14px;
+
+    padding:
+      16px
+      14px;
   }
 
   .alphabet-stat strong {
@@ -2031,11 +2030,6 @@
   .alphabet-stat span {
     font-size: 13px;
   }
-
-
-  /* =======================================================
-     TABS
-  ======================================================= */
 
   .alphabet-tabs {
     gap: 9px;
@@ -2055,18 +2049,11 @@
     font-size: 12px;
   }
 
-
-  /* =======================================================
-     TOOLBAR
-  ======================================================= */
-
   .alphabet-toolbar {
     flex-direction: column;
-
     align-items: stretch;
 
-    padding:
-      18px;
+    padding: 18px;
   }
 
   .alphabet-toolbar h2 {
@@ -2088,11 +2075,6 @@
 
     font-size: 13px;
   }
-
-
-  /* =======================================================
-     GRID
-  ======================================================= */
 
   .alphabet-grid {
     grid-template-columns:
@@ -2117,11 +2099,6 @@
   .consonant-card-roman {
     font-size: 15px;
   }
-
-
-  /* =======================================================
-     VOWEL
-  ======================================================= */
 
   .vowel-card {
     min-height: 195px;
@@ -2172,14 +2149,12 @@
 
 
   /* =======================================================
-     POPUP
+     MOBILE POPUP
   ======================================================= */
 
   .alphabet-modal {
     width: 94vw;
-
     max-width: 600px;
-
     max-height: 94vh;
 
     padding:
@@ -2190,29 +2165,14 @@
     border-radius: 20px;
   }
 
-
-  /* =======================================================
-     STT
-  ======================================================= */
-
   .modal-detail-stt {
     font-size: 21px;
   }
-
-
-  /* =======================================================
-     HEADER POPUP
-  ======================================================= */
 
   .modal-consonant-header,
   .modal-vowel-header {
     margin-bottom: 22px;
   }
-
-
-  /* =======================================================
-     GIỌNG
-  ======================================================= */
 
   .modal-voice {
     margin-top: 8px;
@@ -2224,21 +2184,11 @@
     font-size: 14px;
   }
 
-
-  /* =======================================================
-     GRID POPUP
-  ======================================================= */
-
   .alphabet-detail-grid {
     gap:
       18px
       10px;
   }
-
-
-  /* =======================================================
-     TITLE
-  ======================================================= */
 
   .alphabet-detail-card-title {
     min-height: 32px;
@@ -2259,11 +2209,6 @@
     font-size: 17px;
   }
 
-
-  /* =======================================================
-     KHUNG
-  ======================================================= */
-
   .alphabet-detail-card-value {
     height: 120px;
     min-height: 120px;
@@ -2275,139 +2220,42 @@
     border-radius: 12px;
   }
 
-
-  /* =======================================================
-     CHỮ THƯỜNG
-     MOBILE → 40PX
-  ======================================================= */
-
   .alphabet-detail-card .normal-khmer-value {
     font-size: 40px;
     line-height: 1;
   }
-
-
-  /* =======================================================
-     CHỮ HOA
-     MOBILE → 40PX
-  ======================================================= */
 
   .alphabet-detail-card .uppercase-khmer-value {
     font-size: 40px;
     line-height: 0.95;
   }
 
-
-  /* =======================================================
-     VIẾT TAY
-     MOBILE → 35PX
-  ======================================================= */
-
   .alphabet-detail-card .handwriting-khmer-value {
     font-size: 35px;
     line-height: 1;
   }
 
-
-  /* =======================================================
-     PHIÊN ÂM
-  ======================================================= */
-
   .pronunciation-value {
     font-size: 25px;
   }
 
-  .detail-card-pronunciation
-  .alphabet-detail-card-value {
-    border-top-width: 4px;
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-o {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-oh {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-
-  /* =======================================================
-     PHIÊN ÂM NGUYÊN ÂM
-     O | Ô ĐẦY CHIỀU CAO KHUNG
-  ======================================================= */
-
   .vowel-pronunciation-detail {
     height: 120px;
     min-height: 120px;
-
-    display: flex;
-
-    align-items: stretch;
-    justify-content: stretch;
-
-    padding: 0;
   }
 
   .vowel-modal-pronunciation {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    grid-template-rows: 1fr;
-
-    align-items: stretch;
-    justify-content: stretch;
-
     gap: 7px;
-
-    padding: 0;
   }
 
   .vowel-modal-pronunciation-row {
-    width: 100%;
-
-    height: 100%;
-    min-height: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
     padding:
       7px
       3px;
 
     gap: 4px;
 
-    background:
-      linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #faf9f4 100%
-      );
-
-    border:
-      1px solid #ebe7da;
-
     border-radius: 9px;
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-o) {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-oh) {
-    border-top: 4px solid var(--khmer-gold);
   }
 
   .vowel-modal-pronunciation-row strong {
@@ -2420,17 +2268,8 @@
     line-height: 17px;
   }
 
-
-  /* =======================================================
-     GHI CHÚ
-  ======================================================= */
-
   .modal-note {
     width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
     gap: 6px;
 
@@ -2454,30 +2293,46 @@
 
 
   /* =======================================================
-     GIỌNG ĐỌC
+     MOBILE AUDIO
+     68 × 68
   ======================================================= */
 
   .modal-audio-divider {
-    width: 100%;
-
     margin-top: 16px;
 
     font-size: 15px;
     line-height: 1.3;
-
-    font-weight: 900;
-
-    text-align: center;
   }
 
   .modal-audio-area {
-    min-height: 55px;
+    min-height: 82px;
 
-    margin-top: 8px;
+    margin-top: 5px;
 
-    padding:
-      8px
-      9px;
+    padding: 5px;
+  }
+
+  .custom-audio-button {
+    width: 68px !important;
+    height: 68px !important;
+
+    min-width: 68px !important;
+    min-height: 68px !important;
+
+    max-width: 68px !important;
+    max-height: 68px !important;
+
+    flex-basis: 68px;
+
+    font-size: 30px !important;
+  }
+
+  .custom-audio-button .audio-play-icon {
+    font-size: 30px !important;
+  }
+
+  .custom-audio-button .audio-play-icon.pause {
+    font-size: 30px !important;
   }
 
   .audio-coming {
@@ -2497,9 +2352,6 @@
 /* =========================================================
    VERY SMALL SCREEN
    ≤420PX
-   THƯỜNG 40PX
-   HOA 40PX
-   VIẾT TAY 35PX
 ========================================================= */
 
 @media (max-width: 420px) {
@@ -2532,11 +2384,6 @@
 
     font-size: 12px;
   }
-
-
-  /* =======================================================
-     VOWEL
-  ======================================================= */
 
   .vowel-card {
     min-height: 185px;
@@ -2575,14 +2422,12 @@
 
 
   /* =======================================================
-     POPUP
+     VERY SMALL POPUP
   ======================================================= */
 
   .alphabet-modal {
     width: 94vw;
-
     max-width: 600px;
-
     max-height: 94vh;
 
     padding:
@@ -2593,19 +2438,9 @@
     border-radius: 18px;
   }
 
-
-  /* =======================================================
-     STT
-  ======================================================= */
-
   .modal-detail-stt {
     font-size: 19px;
   }
-
-
-  /* =======================================================
-     GIỌNG
-  ======================================================= */
 
   .modal-voice {
     font-size: 13px;
@@ -2615,21 +2450,11 @@
       13px;
   }
 
-
-  /* =======================================================
-     GRID
-  ======================================================= */
-
   .alphabet-detail-grid {
     gap:
       15px
       7px;
   }
-
-
-  /* =======================================================
-     TITLE
-  ======================================================= */
 
   .alphabet-detail-card-title {
     min-height: 30px;
@@ -2650,11 +2475,6 @@
     font-size: 16px;
   }
 
-
-  /* =======================================================
-     KHUNG
-  ======================================================= */
-
   .alphabet-detail-card-value {
     height: 110px;
     min-height: 110px;
@@ -2666,139 +2486,42 @@
     border-radius: 10px;
   }
 
-
-  /* =======================================================
-     CHỮ THƯỜNG
-     ≤420PX → 40PX
-  ======================================================= */
-
   .alphabet-detail-card .normal-khmer-value {
     font-size: 40px;
     line-height: 1;
   }
-
-
-  /* =======================================================
-     CHỮ HOA
-     ≤420PX → 40PX
-  ======================================================= */
 
   .alphabet-detail-card .uppercase-khmer-value {
     font-size: 40px;
     line-height: 0.92;
   }
 
-
-  /* =======================================================
-     VIẾT TAY
-     ≤420PX → 35PX
-  ======================================================= */
-
   .alphabet-detail-card .handwriting-khmer-value {
     font-size: 35px;
     line-height: 1;
   }
 
-
-  /* =======================================================
-     PHIÊN ÂM
-  ======================================================= */
-
   .pronunciation-value {
     font-size: 22px;
   }
 
-  .detail-card-pronunciation
-  .alphabet-detail-card-value {
-    border-top-width: 4px;
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-o {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .detail-card-pronunciation
-  .pronunciation-value.pronunciation-voice-oh {
-    border-top: 4px solid var(--khmer-gold);
-  }
-
-
-  /* =======================================================
-     PHIÊN ÂM NGUYÊN ÂM
-     O | Ô KÉO ĐẦY CHIỀU CAO KHUNG
-  ======================================================= */
-
   .vowel-pronunciation-detail {
     height: 110px;
     min-height: 110px;
-
-    display: flex;
-
-    align-items: stretch;
-    justify-content: stretch;
-
-    padding: 0;
   }
 
   .vowel-modal-pronunciation {
-    width: 100%;
-    height: 100%;
-    min-height: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    grid-template-rows: 1fr;
-
-    align-items: stretch;
-    justify-content: stretch;
-
     gap: 5px;
-
-    padding: 0;
   }
 
   .vowel-modal-pronunciation-row {
-    width: 100%;
-
-    height: 100%;
-    min-height: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
     padding:
       5px
       1px;
 
     gap: 3px;
 
-    background:
-      linear-gradient(
-        180deg,
-        #fffdf8 0%,
-        #faf9f4 100%
-      );
-
-    border:
-      1px solid #ebe7da;
-
     border-radius: 8px;
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-o) {
-    border-top: 4px solid var(--khmer-green);
-  }
-
-  .vowel-modal-pronunciation-row:has(.voice-oh) {
-    border-top: 4px solid var(--khmer-gold);
   }
 
   .vowel-modal-pronunciation-row strong {
@@ -2811,32 +2534,15 @@
     line-height: 15px;
   }
 
-
-  /* =======================================================
-     GHI CHÚ
-  ======================================================= */
-
   .modal-note {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     gap: 5px;
 
     margin-top: 12px;
 
-    padding:
-      8px
-      8px;
+    padding: 8px;
 
     font-size: 14px;
     line-height: 1.2;
-
-    font-weight: 900;
-
-    text-align: center;
   }
 
   .modal-note-icon {
@@ -2845,30 +2551,54 @@
 
 
   /* =======================================================
-     GIỌNG ĐỌC
+     VERY SMALL AUDIO
+     64 × 64
   ======================================================= */
 
   .modal-audio-divider {
-    width: 100%;
-
     margin-top: 14px;
 
     font-size: 14px;
     line-height: 1.3;
-
-    font-weight: 900;
-
-    text-align: center;
   }
 
   .modal-audio-area {
-    min-height: 50px;
+    min-height: 78px;
 
-    margin-top: 7px;
+    margin-top: 5px;
 
-    padding:
-      6px
-      7px;
+    padding: 4px;
+  }
+
+  .custom-audio-button {
+    width: 64px !important;
+    height: 64px !important;
+
+    min-width: 64px !important;
+    min-height: 64px !important;
+
+    max-width: 64px !important;
+    max-height: 64px !important;
+
+    flex-basis: 64px;
+
+    font-size: 28px !important;
+  }
+
+  .custom-audio-button .audio-play-icon {
+    font-size: 28px !important;
+
+    color: #000000 !important;
+  }
+
+  .custom-audio-button .audio-play-icon.play {
+    padding-left: 0px !important;
+  }
+
+  .custom-audio-button .audio-play-icon.pause {
+    font-size: 28px !important;
+
+    padding-left: 0 !important;
   }
 
   .audio-coming {
