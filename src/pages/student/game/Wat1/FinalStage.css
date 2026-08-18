@@ -1,6 +1,36 @@
 /* =========================================================
    WAT 1 — FINAL STAGE
    CỔNG CHÌA KHÓA
+
+   FONT KHMER:
+   public/fonts/KhmerOS.ttf
+
+   QUAN TRỌNG:
+   - Không dùng "Khmer OS Muol"
+   - Không dùng tên file có khoảng trắng
+   - Font Khmer được áp dụng trực tiếp cho chữ Khmer
+========================================================= */
+
+
+/* =========================================================
+   KHMER OS FONT
+========================================================= */
+
+@font-face {
+  font-family: "KhmerOS";
+
+  src:
+    url("/fonts/KhmerOS.ttf") format("truetype");
+
+  font-weight: 400;
+  font-style: normal;
+
+  font-display: swap;
+}
+
+
+/* =========================================================
+   ROOT
 ========================================================= */
 
 .final-stage {
@@ -17,6 +47,9 @@
   --final-muted: #706956;
 
   min-height: 100vh;
+  min-height: 100dvh;
+
+  width: 100%;
 
   position: relative;
 
@@ -71,11 +104,39 @@
     Arial,
     sans-serif;
 
+  -webkit-text-size-adjust: 100%;
+
   animation:
     finalFade
     0.4s
     ease
     both;
+}
+
+
+/* =========================================================
+   BOX SIZING
+========================================================= */
+
+.final-stage *,
+.final-stage *::before,
+.final-stage *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BUTTON RESET
+========================================================= */
+
+.final-stage button {
+  font-family: inherit;
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+  touch-action:
+    manipulation;
 }
 
 
@@ -87,6 +148,8 @@
   position: fixed;
 
   inset: 0;
+
+  z-index: 0;
 
   pointer-events: none;
 
@@ -119,6 +182,13 @@
     48px 48px;
 
   mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 90%
+    );
+
+  -webkit-mask-image:
     linear-gradient(
       to bottom,
       black,
@@ -163,6 +233,11 @@
     15px;
 }
 
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
 .final-stage__back {
   min-height:
     40px;
@@ -172,12 +247,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.25
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.25
+    );
 
   border-radius:
     999px;
@@ -204,6 +279,9 @@
 
   transition:
     all 0.2s ease;
+
+  touch-action:
+    manipulation;
 }
 
 .final-stage__back:hover {
@@ -221,6 +299,16 @@
   transform:
     translateY(-1px);
 }
+
+.final-stage__back:active {
+  transform:
+    scale(0.97);
+}
+
+
+/* =========================================================
+   MINI TITLE
+========================================================= */
 
 .final-stage__title-mini {
   color:
@@ -256,12 +344,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.15
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.15
+    );
 
   border-radius:
     999px;
@@ -292,12 +380,12 @@
 
   text-shadow:
     0 0 12px
-      rgba(
-        217,
-        107,
-        95,
-        0.5
-      );
+    rgba(
+      217,
+      107,
+      95,
+      0.5
+    );
 
   animation:
     finalHeartPulse
@@ -346,12 +434,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.45
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.45
+    );
 
   border-radius:
     50%;
@@ -373,12 +461,12 @@
 
   box-shadow:
     0 0 35px
-      rgba(
-        232,
-        198,
-        106,
-        0.08
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.08
+    );
 }
 
 .final-stage__eyebrow {
@@ -559,9 +647,6 @@
   min-height:
     300px;
 
-  box-sizing:
-    border-box;
-
   padding:
     28px 20px;
 
@@ -582,12 +667,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.2
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.2
+    );
 
   border-radius:
     25px;
@@ -611,12 +696,12 @@
 
   box-shadow:
     0 20px 55px
-      rgba(
-        0,
-        0,
-        0,
-        0.22
-      );
+    rgba(
+      0,
+      0,
+      0,
+      0.22
+    );
 }
 
 .final-stage__question-label {
@@ -635,7 +720,24 @@
 
 
 /* =========================================================
-   KHMER
+   KHMER CHARACTER
+   =========================================================
+
+   ĐÂY LÀ PHẦN QUAN TRỌNG NHẤT.
+
+   Font chính:
+   KhmerOS
+
+   File:
+   /public/fonts/KhmerOS.ttf
+
+   Fallback:
+   Noto Sans Khmer
+   Khmer OS
+   sans-serif
+
+   Không dùng:
+   Khmer OS Muol
 ========================================================= */
 
 .final-stage__khmer {
@@ -646,9 +748,9 @@
     var(--final-gold-light);
 
   font-family:
-    "Khmer OS Muol",
-    "Khmer OS",
+    "KhmerOS",
     "Noto Sans Khmer",
+    "Khmer OS",
     sans-serif;
 
   font-size:
@@ -658,18 +760,44 @@
       115px
     );
 
+  font-weight:
+    400;
+
+  font-style:
+    normal;
+
   line-height:
     1;
 
+  white-space:
+    nowrap;
+
+  text-rendering:
+    optimizeLegibility;
+
+  font-synthesis:
+    none;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+
   text-shadow:
     0 0 25px
-      rgba(
-        232,
-        198,
-        106,
-        0.12
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.12
+    );
 }
+
+
+/* =========================================================
+   ROMANIZATION
+========================================================= */
 
 .final-stage__roman {
   color:
@@ -727,7 +855,10 @@
   grid-template-columns:
     repeat(
       2,
-      minmax(0, 1fr)
+      minmax(
+        0,
+        1fr
+      )
     );
 
   gap:
@@ -736,6 +867,11 @@
   margin-top:
     15px;
 }
+
+
+/* =========================================================
+   VOICE CARD
+========================================================= */
 
 .final-voice {
   position:
@@ -764,12 +900,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.24
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.24
+    );
 
   border-radius:
     20px;
@@ -790,6 +926,9 @@
 
   transition:
     all 0.2s ease;
+
+  touch-action:
+    manipulation;
 }
 
 .final-voice:hover:not(:disabled) {
@@ -814,18 +953,28 @@
 
   box-shadow:
     0 12px 30px
-      rgba(
-        0,
-        0,
-        0,
-        0.2
-      );
+    rgba(
+      0,
+      0,
+      0,
+      0.2
+    );
 }
 
 .final-voice:disabled {
   cursor:
     default;
 }
+
+.final-voice:active:not(:disabled) {
+  transform:
+    scale(0.985);
+}
+
+
+/* =========================================================
+   VOICE KEY
+========================================================= */
 
 .final-voice__key {
   position:
@@ -854,12 +1003,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.18
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.18
+    );
 
   border-radius:
     50%;
@@ -874,6 +1023,11 @@
     900;
 }
 
+
+/* =========================================================
+   VOICE TITLE
+========================================================= */
+
 .final-voice__title {
   color:
     var(--final-soft);
@@ -887,6 +1041,11 @@
   letter-spacing:
     0.12em;
 }
+
+
+/* =========================================================
+   VOICE ROMAN
+========================================================= */
 
 .final-voice__roman {
   color:
@@ -909,7 +1068,7 @@
 
 
 /* =========================================================
-   CORRECT / WRONG
+   CORRECT
 ========================================================= */
 
 .final-voice--correct {
@@ -931,13 +1090,18 @@
 
   box-shadow:
     0 0 30px
-      rgba(
-        95,
-        190,
-        130,
-        0.1
-      );
+    rgba(
+      95,
+      190,
+      130,
+      0.1
+    );
 }
+
+
+/* =========================================================
+   WRONG
+========================================================= */
 
 .final-voice--wrong {
   border-color:
@@ -976,12 +1140,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.15
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.15
+    );
 
   border-radius:
     12px;
@@ -1061,12 +1225,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.13
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.13
+    );
 
   border-radius:
     14px;
@@ -1184,11 +1348,11 @@
   min-height:
     100vh;
 
+  min-height:
+    100dvh;
+
   margin:
     auto;
-
-  box-sizing:
-    border-box;
 
   padding:
     60px 0;
@@ -1238,12 +1402,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.65
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.65
+    );
 
   border-radius:
     50%;
@@ -1267,12 +1431,12 @@
 
   box-shadow:
     0 0 55px
-      rgba(
-        232,
-        198,
-        106,
-        0.14
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.14
+    );
 
   animation:
     finalKeyFloat
@@ -1437,9 +1601,6 @@
   padding:
     17px 10px;
 
-  box-sizing:
-    border-box;
-
   display:
     grid;
 
@@ -1451,12 +1612,12 @@
 
   border:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.17
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.17
+    );
 
   border-radius:
     18px;
@@ -1487,12 +1648,12 @@
 .final-result__stats > div + div {
   border-left:
     1px solid
-      rgba(
-        232,
-        198,
-        106,
-        0.11
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.11
+    );
 }
 
 .final-result__stats strong {
@@ -1526,9 +1687,6 @@
   width:
     100%;
 
-  box-sizing:
-    border-box;
-
   display:
     flex;
 
@@ -1546,12 +1704,12 @@
 
   border:
     1px solid
-      rgba(
-        95,
-        190,
-        130,
-        0.38
-      );
+    rgba(
+      95,
+      190,
+      130,
+      0.38
+    );
 
   border-radius:
     16px;
@@ -1646,7 +1804,7 @@
 
   border:
     1px solid
-      var(--final-gold);
+    var(--final-gold);
 
   border-radius:
     13px;
@@ -1675,6 +1833,9 @@
 
   transition:
     all 0.2s ease;
+
+  touch-action:
+    manipulation;
 }
 
 .final-result__button:hover {
@@ -1683,12 +1844,17 @@
 
   box-shadow:
     0 14px 38px
-      rgba(
-        232,
-        198,
-        106,
-        0.2
-      );
+    rgba(
+      232,
+      198,
+      106,
+      0.2
+    );
+}
+
+.final-result__button:active {
+  transform:
+    scale(0.98);
 }
 
 .final-result__button--secondary {
@@ -1738,12 +1904,12 @@
 
   border:
     1px solid
-      rgba(
-        217,
-        120,
-        110,
-        0.4
-      );
+    rgba(
+      217,
+      120,
+      110,
+      0.4
+    );
 
   border-radius:
     50%;
@@ -1805,6 +1971,7 @@
   }
 }
 
+
 @keyframes finalKeyFloat {
   0%,
   100% {
@@ -1819,6 +1986,7 @@
       rotate(2deg);
   }
 }
+
 
 @keyframes finalGlow {
   0%,
@@ -1839,6 +2007,7 @@
   }
 }
 
+
 @keyframes finalHeartPulse {
   0%,
   100% {
@@ -1851,6 +2020,7 @@
       scale(1.08);
   }
 }
+
 
 @keyframes finalWrongShake {
   0%,
@@ -1876,6 +2046,7 @@
 ========================================================= */
 
 @media (max-width: 700px) {
+
   .final-stage__topbar {
     width:
       calc(100% - 20px);
@@ -1894,6 +2065,12 @@
 ========================================================= */
 
 @media (max-width: 520px) {
+
+  .final-stage {
+    min-height:
+      100dvh;
+  }
+
   .final-stage__topbar {
     min-height:
       60px;
@@ -1954,10 +2131,43 @@
       20px 12px;
   }
 
+
+  /* =======================================================
+     KHMER MOBILE
+  ======================================================= */
+
   .final-stage__khmer {
+    font-family:
+      "KhmerOS",
+      "Noto Sans Khmer",
+      "Khmer OS",
+      sans-serif;
+
     font-size:
       78px;
+
+    font-weight:
+      400;
+
+    line-height:
+      1;
+
+    white-space:
+      nowrap;
+
+    font-synthesis:
+      none;
+
+    text-rendering:
+      optimizeLegibility;
+
+    -webkit-font-smoothing:
+      antialiased;
+
+    -moz-osx-font-smoothing:
+      grayscale;
   }
+
 
   .final-stage__voices {
     grid-template-columns:
@@ -1980,6 +2190,9 @@
   .final-result {
     width:
       calc(100% - 25px);
+
+    min-height:
+      100dvh;
 
     padding:
       40px 0;
@@ -2011,5 +2224,114 @@
   .final-result__stats span {
     font-size:
       6px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .final-stage__header h1 {
+    font-size:
+      24px;
+  }
+
+  .final-stage__header p {
+    font-size:
+      9px;
+  }
+
+  .final-stage__khmer {
+    font-family:
+      "KhmerOS",
+      "Noto Sans Khmer",
+      "Khmer OS",
+      sans-serif;
+
+    font-size:
+      68px;
+
+    font-weight:
+      400;
+
+    line-height:
+      1;
+
+    font-synthesis:
+      none;
+  }
+
+  .final-voice__roman {
+    font-size:
+      38px;
+  }
+
+  .final-result__gate {
+    gap:
+      9px;
+
+    padding:
+      12px;
+  }
+
+  .final-result__gate-icon {
+    font-size:
+      22px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICE
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .final-stage__back:hover {
+    transform:
+      none;
+  }
+
+  .final-voice:hover:not(:disabled) {
+    transform:
+      none;
+
+    box-shadow:
+      none;
+  }
+
+  .final-result__button:hover {
+    transform:
+      none;
+
+    box-shadow:
+      none;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .final-stage,
+  .final-result__key,
+  .final-result__key-glow,
+  .final-stage__heart--active,
+  .final-voice--wrong {
+    animation:
+      none !important;
+  }
+
+  .final-stage *,
+  .final-stage *::before,
+  .final-stage *::after {
+    transition:
+      none !important;
   }
 }
