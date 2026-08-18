@@ -1,4 +1,4 @@
-import React, {
+import {
   useCallback,
   useEffect,
   useMemo,
@@ -16,7 +16,7 @@ import {
    WAT 1 — FINAL STAGE
    CỔNG CHÌA KHÓA
 
-   LOGIC:
+   QUY TẮC:
 
    - 33 phụ âm Khmer
    - Nhìn phụ âm
@@ -24,10 +24,22 @@ import {
    - 10 câu / lượt
    - 3 mạng
    - Không lặp phụ âm trong cùng một lượt nếu còn chữ chưa dùng
-   - Chơi lại vô hạn sau khi mở khóa
-   - Thắng → nhận Chìa khóa Ák-Sâ
-   - Thắng → hoàn thành WAT 1
-   - Wat1.jsx chịu trách nhiệm mở WAT 2
+
+   LẦN ĐẦU THẮNG:
+   - Nhận chìa khóa Ák-Sâ
+   - Hoàn thành WAT 1
+   - Mở WAT 2
+   - Nhận XP
+
+   CHƠI LẠI:
+   - Không nhận chìa khóa lần nữa
+   - Không mở WAT 2 lần nữa
+   - Không nhận XP
+   - Chỉ ghi nhận điểm chơi lại
+
+   QUAN TRỌNG:
+   FinalStage KHÔNG render màn hình kết quả.
+   Kết quả được giao hoàn toàn cho Wat1 → ChallengeResult.
 ========================================================= */
 
 
@@ -36,8 +48,72 @@ import {
 ========================================================= */
 
 const TOTAL_QUESTIONS = 10;
-
 const MAX_LIVES = 3;
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+const FINAL_COMPLETED_KEY =
+  "khmer_wat1_final_completed";
+
+
+function getCompletedKey(profile) {
+  if (profile?.id) {
+    return `${FINAL_COMPLETED_KEY}_${profile.id}`;
+  }
+
+  if (profile?.user_id) {
+    return `${FINAL_COMPLETED_KEY}_${profile.user_id}`;
+  }
+
+  if (profile?.username) {
+    return `${FINAL_COMPLETED_KEY}_${profile.username}`;
+  }
+
+  if (profile?.email) {
+    return `${FINAL_COMPLETED_KEY}_${profile.email}`;
+  }
+
+  return FINAL_COMPLETED_KEY;
+}
+
+
+/* =========================================================
+   CHECK COMPLETED
+========================================================= */
+
+function hasCompletedBefore(profile) {
+  try {
+    return (
+      localStorage.getItem(
+        getCompletedKey(profile)
+      ) === "true"
+    );
+  } catch {
+    return false;
+  }
+}
+
+
+/* =========================================================
+   MARK COMPLETED
+========================================================= */
+
+function markCompleted(profile) {
+  try {
+    localStorage.setItem(
+      getCompletedKey(profile),
+      "true"
+    );
+  } catch (error) {
+    console.warn(
+      "FinalStage: Không thể lưu trạng thái hoàn thành.",
+      error
+    );
+  }
+}
 
 
 /* =========================================================
@@ -48,11 +124,9 @@ function normalizeConsonant(
   item,
   index
 ) {
-
   if (!item) {
     return null;
   }
-
 
   const khmer =
     item.khmer ??
@@ -61,19 +135,16 @@ function normalizeConsonant(
     item.character ??
     "";
 
-
   const roman =
     item.roman ??
     item.romanization ??
     "";
-
 
   const voice =
     item.voice ??
     item.sound ??
     item.class ??
     "";
-
 
   return {
     ...item,
@@ -119,7 +190,6 @@ const NORMALIZED_CONSONANTS =
 ========================================================= */
 
 function normalizeVoice(voice) {
-
   if (
     voice === null ||
     voice === undefined
@@ -127,12 +197,10 @@ function normalizeVoice(voice) {
     return "";
   }
 
-
   const original =
     String(voice)
       .trim()
       .toLowerCase();
-
 
   const value =
     original
@@ -159,7 +227,7 @@ function normalizeVoice(voice) {
 
 
   /* =======================================================
-     GIỌNG O
+     O
   ======================================================= */
 
   if (
@@ -171,7 +239,7 @@ function normalizeVoice(voice) {
 
 
   /* =======================================================
-     GIỌNG O — TEXT
+     O — TEXT
   ======================================================= */
 
   if (
@@ -180,7 +248,6 @@ function normalizeVoice(voice) {
   ) {
     return "O";
   }
-
 
   return "";
 }
@@ -191,11 +258,9 @@ function normalizeVoice(voice) {
 ========================================================= */
 
 function shuffle(array) {
-
   const result = [
     ...array,
   ];
-
 
   for (
     let i =
@@ -205,13 +270,11 @@ function shuffle(array) {
 
     i--
   ) {
-
     const j =
       Math.floor(
         Math.random() *
         (i + 1)
       );
-
 
     [
       result[i],
@@ -221,7 +284,6 @@ function shuffle(array) {
       result[i],
     ];
   }
-
 
   return result;
 }
@@ -235,14 +297,9 @@ function createQuestion(
   usedIds = []
 ) {
 
-  /* =======================================================
-     EMPTY DATA
-  ======================================================= */
-
   if (
     NORMALIZED_CONSONANTS.length === 0
   ) {
-
     return {
       correct: {
         id: "empty",
@@ -256,23 +313,19 @@ function createQuestion(
       options: [
         {
           id: "voice-O",
-          voice: "O",
           label: "O",
+          voice: "O",
         },
 
         {
           id: "voice-OH",
-          voice: "Ô",
           label: "Ô",
+          voice: "Ô",
         },
       ],
     };
   }
 
-
-  /* =======================================================
-     CHỮ CHƯA DÙNG
-  ======================================================= */
 
   const available =
     NORMALIZED_CONSONANTS.filter(
@@ -283,19 +336,11 @@ function createQuestion(
     );
 
 
-  /* =======================================================
-     HẾT CHỮ → DÙNG LẠI
-  ======================================================= */
-
   const pool =
     available.length > 0
       ? available
       : NORMALIZED_CONSONANTS;
 
-
-  /* =======================================================
-     CHỌN PHỤ ÂM
-  ======================================================= */
 
   const correct =
     pool[
@@ -306,19 +351,11 @@ function createQuestion(
     ];
 
 
-  /* =======================================================
-     VOICE THẬT
-  ======================================================= */
-
   const correctVoice =
     normalizeVoice(
       correct.voice
     );
 
-
-  /* =======================================================
-     OPTIONS
-  ======================================================= */
 
   const options =
     shuffle([
@@ -349,10 +386,8 @@ function createQuestion(
 ========================================================= */
 
 function createInitialGame() {
-
   const first =
     createQuestion([]);
-
 
   return {
     question: first,
@@ -375,7 +410,23 @@ export default function FinalStage({
 }) {
 
   /* =======================================================
-     INITIAL
+     CHECK FIRST COMPLETION
+     
+     Chỉ dùng để xác định:
+     - lần đầu thắng
+     - chơi lại
+  ======================================================= */
+
+  const completedBefore =
+    useMemo(
+      () =>
+        hasCompletedBefore(profile),
+      [profile]
+    );
+
+
+  /* =======================================================
+     INITIAL GAME
   ======================================================= */
 
   const initial =
@@ -462,12 +513,6 @@ export default function FinalStage({
   ] = useState(false);
 
 
-  const [
-    resultType,
-    setResultType,
-  ] = useState(null);
-
-
   /* =======================================================
      NEXT QUESTION
   ======================================================= */
@@ -515,6 +560,13 @@ export default function FinalStage({
 
   /* =======================================================
      FINISH WIN
+     
+     QUAN TRỌNG:
+     
+     KHÔNG setResultType
+     KHÔNG render result screen
+     
+     Chỉ gửi kết quả về Wat1.
   ======================================================= */
 
   const finishWin =
@@ -524,18 +576,48 @@ export default function FinalStage({
         finalCombo
       ) => {
 
+        if (finished) {
+          return;
+        }
+
+
         setFinished(true);
 
-        setResultType("win");
+
+        /*
+         * Kiểm tra NGAY LÚC THẮNG.
+         *
+         * Không dùng biến completedBefore
+         * để tránh trường hợp state/render cũ.
+         */
+
+        const isFirstWin =
+          !hasCompletedBefore(
+            profile
+          );
+
+
+        /*
+         * Chỉ lần đầu mới lưu chìa khóa.
+         */
+
+        if (isFirstWin) {
+          markCompleted(
+            profile
+          );
+        }
 
 
         const result = {
 
-          stageId: "final",
+          stageId:
+            "final",
 
-          result: "win",
+          result:
+            "win",
 
-          won: true,
+          won:
+            true,
 
           score:
             finalScore,
@@ -543,29 +625,90 @@ export default function FinalStage({
           combo:
             finalCombo,
 
+          /*
+           * Lần đầu:
+           *   XP = score
+           *
+           * Chơi lại:
+           *   XP = 0
+           */
+
           xp:
-            finalScore,
+            isFirstWin
+              ? finalScore
+              : 0,
+
+
+          /*
+           * CHÌA KHÓA
+           */
 
           key:
-            "ak-sa-key",
+            isFirstWin
+              ? "ak-sa-key"
+              : null,
+
+
+          /*
+           * CỰC KỲ QUAN TRỌNG
+           */
+
+          firstCompletion:
+            isFirstWin,
+
+
+          replay:
+            !isFirstWin,
+
 
           wat1Completed:
             true,
 
+
           wat2Unlocked:
-            true,
+            isFirstWin,
+
+
+          keyObtained:
+            isFirstWin,
+
         };
 
 
         console.log(
-          "FINAL STAGE: WIN",
+          "===================================="
+        );
+
+        console.log(
+          "FINAL STAGE — WIN"
+        );
+
+        console.log(
+          "Completed before:",
+          !isFirstWin
+        );
+
+        console.log(
+          "First completion:",
+          isFirstWin
+        );
+
+        console.log(
+          "Result:",
           result
         );
 
+        console.log(
+          "===================================="
+        );
 
-        /* ===============================================
-           GỬI VỀ WAT1
-        =============================================== */
+
+        /*
+         * GỬI VỀ WAT1
+         *
+         * Wat1 sẽ chuyển sang
+         * ChallengeResult.
+         */
 
         if (
           typeof onComplete ===
@@ -576,17 +719,13 @@ export default function FinalStage({
             result
           );
 
-        } else {
-
-          console.error(
-            "FinalStage: onComplete chưa được truyền vào."
-          );
-
         }
 
       },
       [
+        profile,
         onComplete,
+        finished,
       ]
     );
 
@@ -599,30 +738,54 @@ export default function FinalStage({
     useCallback(
       (finalScore) => {
 
-        setFinished(true);
+        if (finished) {
+          return;
+        }
 
-        setResultType("lose");
+
+        setFinished(true);
 
 
         const result = {
 
-          stageId: "final",
+          stageId:
+            "final",
 
-          result: "lose",
+          result:
+            "lose",
 
-          won: false,
+          won:
+            false,
 
           score:
             finalScore,
 
-          combo: 0,
+          combo:
+            0,
 
-          xp: 0,
+          xp:
+            0,
+
+          firstCompletion:
+            false,
+
+          replay:
+            false,
+
+          wat1Completed:
+            false,
+
+          wat2Unlocked:
+            false,
+
+          keyObtained:
+            false,
+
         };
 
 
         console.log(
-          "FINAL STAGE: LOSE",
+          "FINAL STAGE — LOSE",
           result
         );
 
@@ -641,13 +804,14 @@ export default function FinalStage({
       },
       [
         onComplete,
+        finished,
       ]
     );
 
 
   /* =======================================================
      ANSWER
-======================================================= */
+  ======================================================= */
 
   const handleAnswer =
     useCallback(
@@ -669,16 +833,14 @@ export default function FinalStage({
         }
 
 
-        setIsLocked(true);
+        setIsLocked(
+          true
+        );
 
         setSelectedVoice(
           selected
         );
 
-
-        /* =================================================
-           VOICE THẬT
-        ================================================= */
 
         const correctVoice =
           question.correctVoice;
@@ -724,7 +886,6 @@ export default function FinalStage({
             nextCombo
           );
 
-
           setScore(
             nextScore
           );
@@ -766,7 +927,9 @@ export default function FinalStage({
           lives - 1;
 
 
-        setCombo(0);
+        setCombo(
+          0
+        );
 
         setLives(
           nextLives
@@ -812,7 +975,7 @@ export default function FinalStage({
 
   /* =======================================================
      KEYBOARD
-======================================================= */
+  ======================================================= */
 
   useEffect(() => {
 
@@ -831,8 +994,6 @@ export default function FinalStage({
           event.key.toLowerCase();
 
 
-        /* O */
-
         if (
           key === "o"
         ) {
@@ -844,8 +1005,6 @@ export default function FinalStage({
           return;
         }
 
-
-        /* P = Ô */
 
         if (
           key === "p"
@@ -884,207 +1043,16 @@ export default function FinalStage({
 
   /* =======================================================
      CORRECT VOICE
-======================================================= */
+  ======================================================= */
 
   const correctVoice =
     question.correctVoice;
 
 
   /* =======================================================
-     RESULT SCREEN
-======================================================= */
-
-  if (finished) {
-
-    return (
-      <div className="final-stage">
-
-        <div className="final-stage__background" />
-
-
-        <main className="final-result">
-
-          {resultType === "win" ? (
-            <>
-
-              <div className="final-result__key">
-
-                <div className="final-result__key-glow" />
-
-                <span>
-                  🔑
-                </span>
-
-              </div>
-
-
-              <div className="final-result__eyebrow">
-                CỔNG CHÌA KHÓA
-              </div>
-
-
-              <h1>
-                CHÌA KHÓA ÁK-SÂ
-              </h1>
-
-
-              <p className="final-result__found">
-                BẠN ĐÃ TÌM THẤY!
-              </p>
-
-
-              <div className="final-result__line">
-                ✦
-              </div>
-
-
-              <p className="final-result__message">
-                Bạn đã hoàn thành toàn bộ
-                thử thách của WAT ÁK-SÂ.
-              </p>
-
-
-              <div className="final-result__stats">
-
-                <div>
-
-                  <strong>
-                    +{score} XP
-                  </strong>
-
-                  <span>
-                    ĐIỂM NHẬN ĐƯỢC
-                  </span>
-
-                </div>
-
-
-                <div>
-
-                  <strong>
-                    ⭐ {score}
-                  </strong>
-
-                  <span>
-                    ĐIỂM
-                  </span>
-
-                </div>
-
-
-                <div>
-
-                  <strong>
-                    🔥 {combo}
-                  </strong>
-
-                  <span>
-                    COMBO
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              <div className="final-result__gate">
-
-                <div className="final-result__gate-icon">
-                  🚪
-                </div>
-
-
-                <div>
-
-                  <strong>
-                    CỔNG SỐ 2
-                  </strong>
-
-                  <span>
-                    ĐÃ ĐƯỢC MỞ KHÓA
-                  </span>
-
-                </div>
-
-
-                <div className="final-result__gate-status">
-                  ✓
-                </div>
-
-              </div>
-
-
-              <button
-                type="button"
-                className="final-result__button"
-                onClick={
-                  onBackToMenu
-                }
-              >
-                TIẾP TỤC
-              </button>
-
-            </>
-
-          ) : (
-
-            <>
-
-              <div className="final-result__lose-icon">
-                ⚔
-              </div>
-
-
-              <div className="final-result__eyebrow">
-                CỔNG CHÌA KHÓA
-              </div>
-
-
-              <h1>
-                THỬ THÁCH THẤT BẠI
-              </h1>
-
-
-              <p className="final-result__message">
-                Chìa khóa vẫn đang chờ
-                người xứng đáng.
-              </p>
-
-
-              <div className="final-result__lose-score">
-
-                ĐIỂM:{" "}
-
-                <strong>
-                  {score}
-                </strong>
-
-              </div>
-
-
-              <button
-                type="button"
-                className="final-result__button final-result__button--secondary"
-                onClick={
-                  onBackToMenu
-                }
-              >
-                QUAY LẠI DANH SÁCH
-              </button>
-
-            </>
-
-          )}
-
-        </main>
-
-      </div>
-    );
-  }
-
-
-  /* =======================================================
      GAME SCREEN
+     
+     Không còn RESULT SCREEN ở đây.
   ======================================================= */
 
   return (
@@ -1180,10 +1148,12 @@ export default function FinalStage({
         <div className="final-stage__progress-info">
 
           <span>
-            CÂU {Math.min(
+            CÂU{" "}
+            {Math.min(
               round,
               TOTAL_QUESTIONS
-            )} /{" "}
+            )}{" "}
+            /{" "}
             {TOTAL_QUESTIONS}
           </span>
 
@@ -1400,8 +1370,11 @@ export default function FinalStage({
 
 
             <small>
-              Vượt qua 10 câu để nhận
-              Chìa khóa Ák-Sâ.
+              Vượt qua 10 câu để{" "}
+              {completedBefore
+                ? "thử thách lại."
+                : "nhận Chìa khóa Ák-Sâ."
+              }
             </small>
 
           </div>

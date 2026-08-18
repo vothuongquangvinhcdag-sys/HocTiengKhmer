@@ -17,48 +17,9 @@ import ChallengeResult from "./ChallengeResult";
 
 /* =========================================================
    WAT 1 — WAT ÁK-SÂ
-   ĐẢO BẢNG CHỮ CÁI
-
-   LUỒNG:
-
-   INTRO
-      ↓
-   MENU
-      ↓
-   STAGE 1
-      ↓ THẮNG
-   STAGE 2
-      ↓ THẮNG
-   STAGE 3
-      ↓ THẮNG
-   FINAL
-      ↓ THẮNG
-   HOÀN THÀNH WAT 1
-
-   QUY TẮC:
-
-   - Stage 1 mở mặc định.
-   - Thắng Stage 1 → mở Stage 2.
-   - Thắng Stage 2 → mở Stage 3.
-   - Thắng Stage 3 → mở Final.
-   - Thắng Final → hoàn thành WAT 1.
-   - Đã mở thì không khóa lại.
-   - Đã hoàn thành thì có thể chơi lại.
-   - Thua không làm mất unlock.
-   - Tiến trình lưu riêng từng user.
-========================================================= */
-
-
-/* =========================================================
-   STORAGE
-========================================================= */
+   ========================================================= */
 
 const STORAGE_PREFIX = "khmer_wat1_progress";
-
-
-/* =========================================================
-   CHALLENGE IDS
-========================================================= */
 
 const CHALLENGE_IDS = [
   "stage1",
@@ -67,10 +28,9 @@ const CHALLENGE_IDS = [
   "final",
 ];
 
-
 /* =========================================================
    INITIAL PROGRESS
-========================================================= */
+   ========================================================= */
 
 const createInitialProgress = () => ({
   stage1: {
@@ -94,14 +54,12 @@ const createInitialProgress = () => ({
   },
 
   wat1Completed: false,
-
   keyObtained: false,
 });
 
-
 /* =========================================================
    STORAGE KEY
-========================================================= */
+   ========================================================= */
 
 function getStorageKey(profile) {
   const userId =
@@ -114,10 +72,9 @@ function getStorageKey(profile) {
   return `${STORAGE_PREFIX}_${String(userId)}`;
 }
 
-
 /* =========================================================
-   NORMALIZE PROGRESS
-========================================================= */
+   NORMALIZE
+   ========================================================= */
 
 function normalizeProgress(savedProgress) {
   const initial = createInitialProgress();
@@ -131,7 +88,6 @@ function normalizeProgress(savedProgress) {
 
   const progress = {
     ...initial,
-
     ...savedProgress,
 
     stage1: {
@@ -154,11 +110,6 @@ function normalizeProgress(savedProgress) {
       ...(savedProgress.final || {}),
     },
   };
-
-
-  /* =======================================================
-     CHUẨN HÓA BOOLEAN
-  ======================================================= */
 
   progress.stage1.unlocked =
     Boolean(progress.stage1.unlocked);
@@ -190,36 +141,32 @@ function normalizeProgress(savedProgress) {
   progress.keyObtained =
     Boolean(progress.keyObtained);
 
-
-  /* =======================================================
-     STAGE 1
-  ======================================================= */
+  /* -------------------------------------------------------
+     STAGE 1 luôn mở
+  ------------------------------------------------------- */
 
   progress.stage1.unlocked = true;
 
-
-  /* =======================================================
+  /* -------------------------------------------------------
      STAGE 2
-  ======================================================= */
+  ------------------------------------------------------- */
 
   if (progress.stage1.completed) {
     progress.stage2.unlocked = true;
   }
 
-
-  /* =======================================================
+  /* -------------------------------------------------------
      STAGE 3
-  ======================================================= */
+  ------------------------------------------------------- */
 
   if (progress.stage2.completed) {
     progress.stage2.unlocked = true;
     progress.stage3.unlocked = true;
   }
 
-
-  /* =======================================================
+  /* -------------------------------------------------------
      FINAL
-  ======================================================= */
+  ------------------------------------------------------- */
 
   if (progress.stage3.completed) {
     progress.stage2.unlocked = true;
@@ -227,10 +174,9 @@ function normalizeProgress(savedProgress) {
     progress.final.unlocked = true;
   }
 
-
-  /* =======================================================
+  /* -------------------------------------------------------
      WAT 1 COMPLETED
-  ======================================================= */
+  ------------------------------------------------------- */
 
   if (progress.final.completed) {
     progress.stage2.unlocked = true;
@@ -241,32 +187,30 @@ function normalizeProgress(savedProgress) {
     progress.keyObtained = true;
   }
 
-
   return progress;
 }
 
-
 /* =========================================================
-   LOAD PROGRESS
-========================================================= */
+   LOAD
+   ========================================================= */
 
 function loadProgress(profile) {
   try {
     const key = getStorageKey(profile);
 
-    const saved = localStorage.getItem(key);
+    const saved =
+      localStorage.getItem(key);
 
     if (!saved) {
       return createInitialProgress();
     }
 
-    const parsed = JSON.parse(saved);
-
-    return normalizeProgress(parsed);
-
+    return normalizeProgress(
+      JSON.parse(saved)
+    );
   } catch (error) {
     console.error(
-      "WAT 1: Không thể đọc tiến trình:",
+      "WAT 1: lỗi đọc progress:",
       error
     );
 
@@ -274,10 +218,9 @@ function loadProgress(profile) {
   }
 }
 
-
 /* =========================================================
-   SAVE PROGRESS
-========================================================= */
+   SAVE
+   ========================================================= */
 
 function saveProgress(profile, progress) {
   try {
@@ -290,24 +233,17 @@ function saveProgress(profile, progress) {
       key,
       JSON.stringify(normalized)
     );
-
-    console.log(
-      "WAT 1: Đã lưu progress:",
-      normalized
-    );
-
   } catch (error) {
     console.error(
-      "WAT 1: Không thể lưu tiến trình:",
+      "WAT 1: lỗi lưu progress:",
       error
     );
   }
 }
 
-
 /* =========================================================
    COMPONENT
-========================================================= */
+   ========================================================= */
 
 export default function Wat1({
   profile,
@@ -315,9 +251,8 @@ export default function Wat1({
   navigate,
   onWat1Completed,
 }) {
-
   /* =======================================================
-     STORAGE KEY
+     STORAGE
   ======================================================= */
 
   const storageKey = useMemo(
@@ -330,14 +265,12 @@ export default function Wat1({
     ]
   );
 
-
   /* =======================================================
      SCREEN
   ======================================================= */
 
   const [screen, setScreen] =
     useState("intro");
-
 
   /* =======================================================
      PROGRESS
@@ -348,14 +281,12 @@ export default function Wat1({
       loadProgress(profile)
     );
 
-
   /* =======================================================
      RESULT
   ======================================================= */
 
   const [result, setResult] =
     useState(null);
-
 
   /* =======================================================
      CURRENT CHALLENGE
@@ -366,25 +297,19 @@ export default function Wat1({
     setCurrentChallenge,
   ] = useState(null);
 
-
   /* =======================================================
-     LOAD USER PROGRESS
+     LOAD USER
   ======================================================= */
 
   useEffect(() => {
-    const nextProgress =
+    const loaded =
       loadProgress(profile);
 
-    setProgress(nextProgress);
-
+    setProgress(loaded);
     setResult(null);
-
     setCurrentChallenge(null);
-
     setScreen("intro");
-
   }, [storageKey]);
-
 
   /* =======================================================
      AUTO SAVE
@@ -397,29 +322,24 @@ export default function Wat1({
     );
   }, [
     storageKey,
-    profile,
     progress,
   ]);
 
-
   /* =======================================================
-     SYNC WAT 1 COMPLETION
+     WAT1 COMPLETED
   ======================================================= */
 
   useEffect(() => {
     if (
       progress.wat1Completed &&
-      typeof onWat1Completed ===
-        "function"
+      typeof onWat1Completed === "function"
     ) {
       onWat1Completed(progress);
     }
   }, [
     progress.wat1Completed,
     onWat1Completed,
-    progress,
   ]);
-
 
   /* =======================================================
      BACK TO GAME
@@ -427,35 +347,25 @@ export default function Wat1({
 
   const handleBackToGame =
     useCallback(() => {
-
       if (
-        typeof onBackToGame ===
-        "function"
+        typeof onBackToGame === "function"
       ) {
         onBackToGame();
         return;
       }
 
       if (
-        typeof navigate ===
-        "function"
+        typeof navigate === "function"
       ) {
         navigate("/game");
         return;
       }
 
-      if (
-        typeof window !==
-        "undefined"
-      ) {
-        window.history.back();
-      }
-
+      window.history.back();
     }, [
       onBackToGame,
       navigate,
     ]);
-
 
   /* =======================================================
      INTRO → MENU
@@ -463,22 +373,14 @@ export default function Wat1({
 
   const handleStartChallenges =
     useCallback(() => {
-
-      const latestProgress =
+      const latest =
         loadProgress(profile);
 
-      setProgress(latestProgress);
-
+      setProgress(latest);
       setResult(null);
-
       setCurrentChallenge(null);
-
       setScreen("menu");
-
-    }, [
-      profile,
-    ]);
-
+    }, [profile]);
 
   /* =======================================================
      MENU → INTRO
@@ -486,15 +388,10 @@ export default function Wat1({
 
   const handleBackToIntro =
     useCallback(() => {
-
       setResult(null);
-
       setCurrentChallenge(null);
-
       setScreen("intro");
-
     }, []);
-
 
   /* =======================================================
      STAGE → MENU
@@ -502,22 +399,14 @@ export default function Wat1({
 
   const handleBackToMenu =
     useCallback(() => {
-
-      const latestProgress =
+      const latest =
         loadProgress(profile);
 
-      setProgress(latestProgress);
-
+      setProgress(latest);
       setResult(null);
-
       setCurrentChallenge(null);
-
       setScreen("menu");
-
-    }, [
-      profile,
-    ]);
-
+    }, [profile]);
 
   /* =======================================================
      START CHALLENGE
@@ -526,94 +415,50 @@ export default function Wat1({
   const startChallenge =
     useCallback(
       (challengeId) => {
-
         if (
           !CHALLENGE_IDS.includes(
             challengeId
           )
         ) {
-          console.warn(
-            "WAT 1: Challenge không hợp lệ:",
-            challengeId
-          );
-
           return;
         }
 
-
-        /* ===============================================
-           LOAD PROGRESS MỚI NHẤT
-        =============================================== */
-
-        const latestProgress =
+        const latest =
           loadProgress(profile);
 
-        setProgress(latestProgress);
-
-
-        /* ===============================================
-           LẤY CHALLENGE
-        =============================================== */
+        setProgress(latest);
 
         const challenge =
-          latestProgress[
-            challengeId
-          ];
-
+          latest[challengeId];
 
         if (!challenge) {
-          console.warn(
-            "WAT 1: Không tìm thấy challenge:",
-            challengeId
-          );
-
           return;
         }
-
-
-        /* ===============================================
-           KIỂM TRA UNLOCK
-        =============================================== */
 
         if (!challenge.unlocked) {
-          console.warn(
-            `WAT 1: ${challengeId} chưa được mở khóa.`,
-            latestProgress
-          );
-
           return;
         }
-
-
-        /* ===============================================
-           START
-        =============================================== */
 
         setCurrentChallenge(
           challengeId
         );
 
         setResult(null);
-
-        setScreen(
-          challengeId
-        );
-
+        setScreen(challengeId);
       },
-      [
-        profile,
-      ]
+      [profile]
     );
 
-
   /* =======================================================
-     HANDLE CHALLENGE RESULT
+     HANDLE RESULT
+     
+     QUAN TRỌNG:
+     FINAL KHÔNG ĐƯỢC ĐI QUA ChallengeResult
   ======================================================= */
 
   const handleChallengeResult =
     useCallback(
       (resultData = {}) => {
-
         const {
           challengeId,
           won,
@@ -624,38 +469,19 @@ export default function Wat1({
           ...extra
         } = resultData;
 
-
-        /* ===============================================
-           VALIDATE CHALLENGE
-        =============================================== */
-
-        if (!challengeId) {
-          console.error(
-            "WAT 1: Thiếu challengeId.",
-            resultData
-          );
-
-          return;
-        }
-
-
         if (
+          !challengeId ||
           !CHALLENGE_IDS.includes(
             challengeId
           )
         ) {
           console.error(
-            "WAT 1: challengeId không hợp lệ:",
-            challengeId
+            "WAT 1: result không hợp lệ",
+            resultData
           );
 
           return;
         }
-
-
-        /* ===============================================
-           CHUẨN HÓA RESULT
-        =============================================== */
 
         const hasWon =
           won === true ||
@@ -663,18 +489,8 @@ export default function Wat1({
           won === 1 ||
           resultValue === "win";
 
-
-        /* ===============================================
-           LOAD PROGRESS MỚI NHẤT
-        =============================================== */
-
         const currentProgress =
           loadProgress(profile);
-
-
-        /* ===============================================
-           COPY PROGRESS
-        =============================================== */
 
         const nextProgress = {
           ...currentProgress,
@@ -696,110 +512,78 @@ export default function Wat1({
           },
         };
 
-
-        /* ===============================================
+        /* =================================================
            THẮNG
-        =============================================== */
+        ================================================= */
 
         if (hasWon) {
-
-          /* =============================================
+          /* -----------------------------------------------
              STAGE 1
-          ============================================= */
+          ----------------------------------------------- */
 
           if (
             challengeId === "stage1"
           ) {
-
             nextProgress.stage1 = {
               ...nextProgress.stage1,
-
               unlocked: true,
-
               completed: true,
             };
 
             nextProgress.stage2 = {
               ...nextProgress.stage2,
-
               unlocked: true,
             };
-
-            console.log(
-              "WAT 1: STAGE 1 THẮNG → STAGE 2 MỞ"
-            );
           }
 
-
-          /* =============================================
+          /* -----------------------------------------------
              STAGE 2
-          ============================================= */
+          ----------------------------------------------- */
 
           if (
             challengeId === "stage2"
           ) {
-
             nextProgress.stage2 = {
               ...nextProgress.stage2,
-
               unlocked: true,
-
               completed: true,
             };
 
             nextProgress.stage3 = {
               ...nextProgress.stage3,
-
               unlocked: true,
             };
-
-            console.log(
-              "WAT 1: STAGE 2 THẮNG → STAGE 3 MỞ"
-            );
           }
 
-
-          /* =============================================
+          /* -----------------------------------------------
              STAGE 3
-          ============================================= */
+          ----------------------------------------------- */
 
           if (
             challengeId === "stage3"
           ) {
-
             nextProgress.stage3 = {
               ...nextProgress.stage3,
-
               unlocked: true,
-
               completed: true,
             };
 
             nextProgress.final = {
               ...nextProgress.final,
-
               unlocked: true,
             };
-
-            console.log(
-              "WAT 1: STAGE 3 THẮNG → FINAL MỞ"
-            );
           }
 
-
-          /* =============================================
+          /* -----------------------------------------------
              FINAL
-          ============================================= */
+          ----------------------------------------------- */
 
           if (
             challengeId === "final"
           ) {
-
             nextProgress.final = {
               ...nextProgress.final,
-
               unlocked: true,
-
               completed: true,
             };
 
@@ -808,56 +592,73 @@ export default function Wat1({
 
             nextProgress.keyObtained =
               true;
-
-            console.log(
-              "WAT 1: FINAL THẮNG → WAT 1 HOÀN THÀNH"
-            );
-
-            console.log(
-              "🔑 CHÌA KHÓA ÁK-SÂ ĐÃ NHẬN"
-            );
-
-            console.log(
-              "🚪 WAT 2 ĐƯỢC MỞ KHÓA"
-            );
           }
         }
 
-
-        /* ===============================================
-           NORMALIZE
-        =============================================== */
+        /* =================================================
+           NORMALIZE + SAVE
+        ================================================= */
 
         const finalProgress =
           normalizeProgress(
             nextProgress
           );
 
-
-        /* ===============================================
-           SAVE NGAY
-        =============================================== */
-
         saveProgress(
           profile,
           finalProgress
         );
 
-
-        /* ===============================================
-           UPDATE STATE
-        =============================================== */
-
         setProgress(
           finalProgress
         );
 
+        /* =================================================
+           FINAL — KHÔNG HIỆN CHALLENGERESULT
+           
+           Đây là phần sửa lỗi chính.
+        ================================================= */
 
-        /* ===============================================
-           RESULT
-        =============================================== */
+        if (
+          challengeId === "final"
+        ) {
+          console.log(
+            "FINAL RESULT:",
+            resultData
+          );
 
-        setResult({
+          console.log(
+            "WAT1:",
+            finalProgress
+          );
+
+          /*
+           * Không:
+           *
+           * setResult(...)
+           * setScreen("result")
+           *
+           * Vì đó chính là nơi ChallengeResult
+           * được hiển thị.
+           */
+
+          setResult(null);
+          setCurrentChallenge(null);
+
+          /*
+           * Trở thẳng về danh sách thử thách.
+           */
+
+          setScreen("menu");
+
+          return;
+        }
+
+        /* =================================================
+           CÁC STAGE BÌNH THƯỜNG
+        ================================================= */
+
+        const finalResult = {
           challengeId,
 
           won: hasWon,
@@ -872,61 +673,20 @@ export default function Wat1({
             Number(combo) || 0,
 
           ...extra,
+        };
 
-        });
-
+        setResult(
+          finalResult
+        );
 
         setCurrentChallenge(
           challengeId
         );
 
-
-        /* ===============================================
-           RESULT SCREEN
-        =============================================== */
-
-        setScreen(
-          "result"
-        );
-
-
-        /* ===============================================
-           DEBUG
-        =============================================== */
-
-        console.log(
-          "===================================="
-        );
-
-        console.log(
-          "WAT 1 — CHALLENGE RESULT"
-        );
-
-        console.log(
-          "Challenge:",
-          challengeId
-        );
-
-        console.log(
-          "Won:",
-          hasWon
-        );
-
-        console.log(
-          "Progress:",
-          finalProgress
-        );
-
-        console.log(
-          "===================================="
-        );
-
+        setScreen("result");
       },
-      [
-        profile,
-      ]
+      [profile]
     );
-
 
   /* =======================================================
      RESULT → MENU
@@ -934,49 +694,29 @@ export default function Wat1({
 
   const handleContinueFromResult =
     useCallback(() => {
-
-      const latestProgress =
+      const latest =
         loadProgress(profile);
 
-      setProgress(
-        latestProgress
-      );
-
+      setProgress(latest);
       setResult(null);
-
       setCurrentChallenge(null);
-
       setScreen("menu");
-
-    }, [
-      profile,
-    ]);
-
+    }, [profile]);
 
   /* =======================================================
-     RESULT → MENU / RETRY
+     RETRY
   ======================================================= */
 
   const handleRetryFromResult =
     useCallback(() => {
-
-      const latestProgress =
+      const latest =
         loadProgress(profile);
 
-      setProgress(
-        latestProgress
-      );
-
+      setProgress(latest);
       setResult(null);
-
       setCurrentChallenge(null);
-
       setScreen("menu");
-
-    }, [
-      profile,
-    ]);
-
+    }, [profile]);
 
   /* =======================================================
      INTRO
@@ -986,18 +726,15 @@ export default function Wat1({
     return (
       <Wat1Intro
         profile={profile}
-
         onBackToGame={
           handleBackToGame
         }
-
         onStartChallenges={
           handleStartChallenges
         }
       />
     );
   }
-
 
   /* =======================================================
      MENU
@@ -1007,24 +744,19 @@ export default function Wat1({
     return (
       <ChallengeMenu
         progress={progress}
-
         profile={profile}
-
         onBackToIntro={
           handleBackToIntro
         }
-
         onBackToGame={
           handleBackToGame
         }
-
         onStartChallenge={
           startChallenge
         }
       />
     );
   }
-
 
   /* =======================================================
      STAGE 1
@@ -1034,22 +766,19 @@ export default function Wat1({
     return (
       <Stage1
         profile={profile}
-
         onBackToMenu={
           handleBackToMenu
         }
-
         onComplete={
-          (resultData = {}) =>
+          (data = {}) =>
             handleChallengeResult({
               challengeId: "stage1",
-              ...resultData,
+              ...data,
             })
         }
       />
     );
   }
-
 
   /* =======================================================
      STAGE 2
@@ -1059,22 +788,19 @@ export default function Wat1({
     return (
       <Stage2
         profile={profile}
-
         onBackToMenu={
           handleBackToMenu
         }
-
         onComplete={
-          (resultData = {}) =>
+          (data = {}) =>
             handleChallengeResult({
               challengeId: "stage2",
-              ...resultData,
+              ...data,
             })
         }
       />
     );
   }
-
 
   /* =======================================================
      STAGE 3
@@ -1084,22 +810,19 @@ export default function Wat1({
     return (
       <Stage3
         profile={profile}
-
         onBackToMenu={
           handleBackToMenu
         }
-
         onComplete={
-          (resultData = {}) =>
+          (data = {}) =>
             handleChallengeResult({
               challengeId: "stage3",
-              ...resultData,
+              ...data,
             })
         }
       />
     );
   }
-
 
   /* =======================================================
      FINAL
@@ -1109,44 +832,36 @@ export default function Wat1({
     return (
       <FinalStage
         profile={profile}
-
         onBackToMenu={
           handleBackToMenu
         }
-
         onComplete={
-          (resultData = {}) =>
+          (data = {}) =>
             handleChallengeResult({
               challengeId: "final",
-              ...resultData,
+              ...data,
             })
         }
       />
     );
   }
 
-
   /* =======================================================
-     RESULT
+     RESULT — CHỈ CHO STAGE 1/2/3
   ======================================================= */
 
   if (screen === "result") {
-
     if (!result) {
       return (
         <ChallengeMenu
           progress={progress}
-
           profile={profile}
-
           onBackToIntro={
             handleBackToIntro
           }
-
           onBackToGame={
             handleBackToGame
           }
-
           onStartChallenge={
             startChallenge
           }
@@ -1157,20 +872,16 @@ export default function Wat1({
     return (
       <ChallengeResult
         result={result}
-
         progress={progress}
-
         onContinue={
           handleContinueFromResult
         }
-
         onBackToMenu={
           handleRetryFromResult
         }
       />
     );
   }
-
 
   /* =======================================================
      FALLBACK
@@ -1179,11 +890,9 @@ export default function Wat1({
   return (
     <Wat1Intro
       profile={profile}
-
       onBackToGame={
         handleBackToGame
       }
-
       onStartChallenges={
         handleStartChallenges
       }
