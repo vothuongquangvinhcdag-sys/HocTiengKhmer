@@ -4,16 +4,24 @@
    ========================================================= */
 
 /* =========================================================
-   FONT KHMER OS
+   KHMER FONT
    FILE:
-   public/fonts/Khmer OS.ttf
+   public/fonts/KhmerOS.ttf
+
+   QUAN TRỌNG:
+   - Không dùng khoảng trắng trong tên file font
+   - Tên file phải đúng chữ hoa/chữ thường
    ========================================================= */
 
 @font-face {
   font-family: "KhmerOS";
-  src: url("/fonts/Khmer%20OS.ttf") format("truetype");
+
+  src:
+    url("/fonts/KhmerOS.ttf") format("truetype");
+
   font-weight: 400;
   font-style: normal;
+
   font-display: swap;
 }
 
@@ -80,6 +88,30 @@
     0.35s
     ease
     both;
+
+  -webkit-text-size-adjust: 100%;
+}
+
+
+/* =========================================================
+   BOX SIZING
+   ========================================================= */
+
+.stage3 *,
+.stage3 *::before,
+.stage3 *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   BUTTON RESET
+   ========================================================= */
+
+.stage3 button {
+  font-family: inherit;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -93,6 +125,8 @@
   inset: 0;
 
   pointer-events: none;
+
+  z-index: 0;
 
   opacity: 0.15;
 
@@ -180,7 +214,11 @@
   font-weight: 900;
 
   transition:
-    all 0.2s ease;
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+  touch-action: manipulation;
 }
 
 .stage3__back:hover {
@@ -192,6 +230,11 @@
 
   transform:
     translateY(-1px);
+}
+
+.stage3__back:active {
+  transform:
+    scale(0.97);
 }
 
 
@@ -405,8 +448,6 @@
 .stage3__question {
   min-height: 270px;
 
-  box-sizing: border-box;
-
   display: flex;
 
   flex-direction: column;
@@ -498,6 +539,8 @@
     all 0.2s ease;
 
   overflow: hidden;
+
+  touch-action: manipulation;
 }
 
 .stage3__sound::before {
@@ -656,8 +699,6 @@
   padding:
     12px 17px;
 
-  box-sizing: border-box;
-
   border:
     1px solid
     rgba(232, 198, 106, 0.2);
@@ -678,6 +719,8 @@
     all 0.18s ease;
 
   overflow: hidden;
+
+  touch-action: manipulation;
 }
 
 .stage3-answer:hover:not(:disabled) {
@@ -697,6 +740,11 @@
 
 .stage3-answer:disabled {
   cursor: default;
+}
+
+.stage3-answer:active:not(:disabled) {
+  transform:
+    scale(0.985);
 }
 
 
@@ -735,7 +783,18 @@
 
 /* =========================================================
    KHMER ANSWER
-   DÙNG KHMER OS
+   =========================================================
+
+   FONT CHÍNH:
+   KhmerOS
+
+   FALLBACK:
+   "Noto Sans Khmer"
+   "Khmer OS"
+   sans-serif
+
+   Điều này giúp mobile vẫn hiển thị Khmer
+   nếu font custom chưa load kịp.
    ========================================================= */
 
 .stage3-answer__khmer {
@@ -744,6 +803,8 @@
 
   font-family:
     "KhmerOS",
+    "Noto Sans Khmer",
+    "Khmer OS",
     sans-serif;
 
   font-size:
@@ -762,6 +823,10 @@
   text-rendering: optimizeLegibility;
 
   -webkit-font-smoothing: antialiased;
+
+  -moz-osx-font-smoothing: grayscale;
+
+  font-synthesis: none;
 
   text-shadow:
     0 0 15px
@@ -948,8 +1013,6 @@
 
   padding:
     70px 0;
-
-  box-sizing: border-box;
 
   display: flex;
 
@@ -1139,8 +1202,6 @@
 
   padding: 15px;
 
-  box-sizing: border-box;
-
   text-align: left;
 
   border:
@@ -1243,6 +1304,8 @@
 
   transition:
     all 0.2s ease;
+
+  touch-action: manipulation;
 }
 
 .stage3-result__button:hover {
@@ -1252,6 +1315,11 @@
   box-shadow:
     0 12px 35px
     rgba(232, 198, 106, 0.18);
+}
+
+.stage3-result__button:active {
+  transform:
+    scale(0.98);
 }
 
 .stage3-result__button--secondary {
@@ -1356,6 +1424,10 @@
 
 @media (max-width: 520px) {
 
+  .stage3 {
+    min-height: 100dvh;
+  }
+
   .stage3__topbar {
     min-height: 60px;
   }
@@ -1407,10 +1479,29 @@
     min-height: 88px;
   }
 
+  /*
+     FONT KHMER MOBILE
+     Không để browser tự shrink font.
+  */
+
   .stage3-answer__khmer {
+    font-family:
+      "KhmerOS",
+      "Noto Sans Khmer",
+      "Khmer OS",
+      sans-serif;
+
     font-size: 48px;
 
+    font-weight: 400;
+
     line-height: 1.1;
+
+    font-synthesis: none;
+
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
   }
 
   .stage3-answer__roman {
@@ -1420,6 +1511,8 @@
   .stage3-result {
     width:
       calc(100% - 25px);
+
+    min-height: 100dvh;
 
     padding:
       40px 0;
@@ -1472,7 +1565,19 @@
   }
 
   .stage3-answer__khmer {
+    font-family:
+      "KhmerOS",
+      "Noto Sans Khmer",
+      "Khmer OS",
+      sans-serif;
+
     font-size: 42px;
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    font-synthesis: none;
   }
 
   .stage3-answer__roman {
@@ -1481,5 +1586,51 @@
 
   .stage3-answer__mark {
     font-size: 17px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+   ========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .stage3__sound:hover:not(:disabled) {
+    transform: none;
+
+    box-shadow: none;
+  }
+
+  .stage3-answer:hover:not(:disabled) {
+    transform: none;
+
+    box-shadow: none;
+  }
+
+  .stage3-result__button:hover {
+    transform: none;
+
+    box-shadow: none;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .stage3,
+  .stage3-answer--wrong,
+  .stage3__heart--active {
+    animation: none !important;
+  }
+
+  .stage3 *,
+  .stage3 *::before,
+  .stage3 *::after {
+    transition: none !important;
   }
 }
