@@ -1,0 +1,3420 @@
+/* =========================================================
+   WAT 1 — WAT ÁK-SÂ
+   ĐẢO BẢNG CHỮ CÁI
+
+   ANCIENT KHMER / MYSTIC / PREMIUM
+
+   FONT:
+   - Khmer OS      → CHỮ KHMER TRONG THỬ THÁCH
+   - Khmer OS Muol → TIÊU ĐỀ / TRANG TRÍ
+
+   DÙNG CHO:
+   - 33 phụ âm Khmer
+   - Giọng O / Giọng Ô
+   - Nghe & chọn chữ
+   - Nhìn chữ & nhận diện phiên âm
+   - Phân loại phụ âm
+   - Boss
+   - Complete / Failed
+
+   RESPONSIVE:
+   - Desktop
+   - Laptop
+   - Tablet
+   - Mobile
+========================================================= */
+
+
+/* =========================================================
+   0. KHMER FONT
+========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+
+  src:
+    url("/fonts/KhmerOS.ttf")
+    format("truetype");
+
+  font-weight: 400;
+  font-style: normal;
+
+  font-display: swap;
+}
+
+
+/* =========================================================
+   1. ROOT VARIABLES
+========================================================= */
+
+:root {
+  --wat1-bg: #07110f;
+  --wat1-bg-deep: #030807;
+  --wat1-bg-card: rgba(14, 29, 25, 0.92);
+
+  --wat1-green: #1f8a70;
+  --wat1-green-light: #45c9a2;
+  --wat1-green-dark: #0c5546;
+
+  --wat1-gold: #d8a84e;
+  --wat1-gold-light: #f3d58a;
+  --wat1-gold-dark: #8e6523;
+
+  --wat1-red: #c94b4b;
+  --wat1-red-light: #ff7777;
+
+  --wat1-blue: #4f91c9;
+  --wat1-purple: #8b68c7;
+
+  --wat1-text: #f5f0df;
+  --wat1-text-soft: #c8c7b8;
+  --wat1-text-muted: #858c84;
+
+  --wat1-border: rgba(216, 168, 78, 0.22);
+  --wat1-border-light: rgba(216, 168, 78, 0.38);
+
+  --wat1-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.48);
+
+  --wat1-radius: 22px;
+  --wat1-radius-small: 14px;
+
+  /* Font giao diện */
+  --wat1-font:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  /* =======================================================
+     KHMER OS
+     DÙNG CHO CHỮ KHMER TRONG THỬ THÁCH
+  ======================================================= */
+
+  --wat1-khmer:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  /* =======================================================
+     KHMER OS MUOL
+     DÙNG CHO TIÊU ĐỀ / TRANG TRÍ
+  ======================================================= */
+
+  --wat1-khmer-title:
+    "Khmer OS Muol",
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+}
+
+
+/* =========================================================
+   2. RESET
+========================================================= */
+
+.wat1-page *,
+.wat1-page *::before,
+.wat1-page *::after {
+  box-sizing: border-box;
+}
+
+.wat1-page button {
+  font-family: inherit;
+}
+
+.wat1-page {
+  min-height: 100vh;
+
+  color: var(--wat1-text);
+
+  font-family:
+    var(--wat1-font);
+}
+
+
+/* =========================================================
+   3. MAIN BACKGROUND
+========================================================= */
+
+.wat1-page {
+  position: relative;
+
+  min-height: 100vh;
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(31, 138, 112, 0.20),
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(216, 168, 78, 0.09),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(31, 138, 112, 0.08),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #030807 0%,
+      #07110f 48%,
+      #0a1714 100%
+    );
+}
+
+.wat1-page::before {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.16;
+
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px
+    );
+
+  background-size: 46px 46px;
+}
+
+.wat1-page::after {
+  content: "";
+
+  position: fixed;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 40%,
+      rgba(0, 0, 0, 0.44) 100%
+    );
+}
+
+
+/* =========================================================
+   4. BACKGROUND KHMER SYMBOLS
+========================================================= */
+
+.wat1-bg-symbol {
+  position: fixed;
+
+  z-index: 0;
+
+  color:
+    rgba(216, 168, 78, 0.035);
+
+  /*
+     Background trang trí dùng Muol
+     để giữ cảm giác cổ / đền Khmer.
+  */
+
+  font-family:
+    var(--wat1-khmer-title);
+
+  font-size:
+    clamp(180px, 28vw, 430px);
+
+  pointer-events: none;
+  user-select: none;
+
+  line-height: 1;
+}
+
+.symbol-one {
+  top: 2%;
+  left: -5%;
+
+  transform: rotate(-8deg);
+}
+
+.symbol-two {
+  right: -5%;
+  top: 30%;
+
+  transform: rotate(12deg);
+}
+
+.symbol-three {
+  bottom: -10%;
+  left: 35%;
+
+  transform: rotate(-5deg);
+}
+
+
+/* =========================================================
+   5. COMMON CONTAINER
+========================================================= */
+
+.wat1-container {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(1120px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding: 36px 0 60px;
+}
+
+
+/* =========================================================
+   6. BACK BUTTON
+========================================================= */
+
+.wat1-back-button {
+  display: inline-flex;
+
+  align-items: center;
+  gap: 9px;
+
+  margin-bottom: 24px;
+
+  padding: 11px 17px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.22);
+
+  border-radius: 12px;
+
+  background:
+    rgba(7, 17, 15, 0.72);
+
+  color:
+    var(--wat1-text-soft);
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.wat1-back-button:hover {
+  color:
+    var(--wat1-gold-light);
+
+  border-color:
+    var(--wat1-border-light);
+
+  background:
+    rgba(216, 168, 78, 0.07);
+
+  transform:
+    translateX(-3px);
+}
+
+
+/* =========================================================
+   7. INTRO CARD
+========================================================= */
+
+.wat1-intro-card {
+  position: relative;
+
+  width:
+    min(760px, 100%);
+
+  margin: 0 auto;
+
+  padding:
+    50px 58px 54px;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.25);
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 40, 34, 0.96),
+      rgba(7, 17, 15, 0.97)
+    );
+
+  box-shadow:
+    0 35px 100px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+
+  overflow: hidden;
+}
+
+.wat1-intro-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 15%;
+  right: 15%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--wat1-gold),
+      transparent
+    );
+
+  box-shadow:
+    0 0 25px rgba(216, 168, 78, 0.45);
+}
+
+.wat1-intro-card::after {
+  content: "";
+
+  position: absolute;
+
+  width: 300px;
+  height: 300px;
+
+  top: -170px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(216, 168, 78, 0.13),
+      transparent 70%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   8. TEMPLE EMBLEM
+========================================================= */
+
+.wat1-temple-emblem {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 94px;
+  height: 94px;
+
+  margin:
+    0 auto 24px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.55);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(216, 168, 78, 0.17),
+      rgba(216, 168, 78, 0.035) 65%,
+      transparent 70%
+    );
+
+  box-shadow:
+    0 0 45px rgba(216, 168, 78, 0.12),
+    inset 0 0 25px rgba(216, 168, 78, 0.08);
+}
+
+.wat1-temple-emblem::before,
+.wat1-temple-emblem::after {
+  content: "";
+
+  position: absolute;
+
+  width: 112px;
+  height: 112px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.10);
+
+  border-radius: 50%;
+}
+
+.wat1-temple-emblem::after {
+  width: 126px;
+  height: 126px;
+}
+
+.wat1-temple-emblem span {
+  /*
+     Emblem trang trí → Muol
+  */
+
+  font-family:
+    var(--wat1-khmer-title);
+
+  font-size: 52px;
+
+  color:
+    var(--wat1-gold-light);
+
+  text-shadow:
+    0 0 20px rgba(216, 168, 78, 0.35);
+}
+
+
+/* =========================================================
+   9. INTRO TYPOGRAPHY
+========================================================= */
+
+.wat1-eyebrow,
+.result-eyebrow {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color:
+    var(--wat1-gold);
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.24em;
+}
+
+.wat1-intro-card h1 {
+  margin: 0;
+
+  color:
+    var(--wat1-text);
+
+  font-size:
+    clamp(42px, 7vw, 68px);
+
+  line-height: 1;
+
+  letter-spacing: 0.04em;
+
+  text-shadow:
+    0 8px 35px rgba(0, 0, 0, 0.45);
+}
+
+.wat1-khmer-title {
+  margin-top: 12px;
+
+  color:
+    var(--wat1-gold-light);
+
+  /*
+     TIÊU ĐỀ KHMER → MUOL
+  */
+
+  font-family:
+    var(--wat1-khmer-title);
+
+  font-size:
+    clamp(28px, 4vw, 40px);
+
+  text-shadow:
+    0 0 22px rgba(216, 168, 78, 0.22);
+}
+
+.wat1-intro-card h2 {
+  margin:
+    18px 0 18px;
+
+  color:
+    var(--wat1-green-light);
+
+  font-size: 16px;
+
+  letter-spacing: 0.24em;
+}
+
+.wat1-intro-description {
+  width:
+    min(610px, 100%);
+
+  margin: 0 auto;
+
+  color:
+    var(--wat1-text-soft);
+
+  font-size: 15px;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   10. OBJECTIVES
+========================================================= */
+
+.wat1-objectives {
+  display: grid;
+
+  gap: 10px;
+
+  margin-top: 32px;
+
+  text-align: left;
+}
+
+.wat1-objective {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  padding:
+    14px 16px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.12);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+.wat1-objective > span {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex:
+    0 0 38px;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(216, 168, 78, 0.09);
+
+  color:
+    var(--wat1-gold);
+
+  font-family:
+    var(--wat1-khmer);
+
+  font-size: 17px;
+}
+
+.wat1-objective strong {
+  display: block;
+
+  color:
+    var(--wat1-text);
+
+  font-size: 14px;
+}
+
+.wat1-objective small {
+  display: block;
+
+  margin-top: 3px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   11. INTRO STATS
+========================================================= */
+
+.wat1-intro-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  margin:
+    30px 0;
+
+  padding:
+    20px 0;
+
+  border-top:
+    1px solid rgba(216, 168, 78, 0.12);
+
+  border-bottom:
+    1px solid rgba(216, 168, 78, 0.12);
+}
+
+.wat1-intro-stats div {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-right:
+    1px solid rgba(216, 168, 78, 0.10);
+}
+
+.wat1-intro-stats div:last-child {
+  border-right: none;
+}
+
+.wat1-intro-stats strong {
+  color:
+    var(--wat1-gold-light);
+
+  font-size: 27px;
+}
+
+.wat1-intro-stats span {
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.13em;
+}
+
+
+/* =========================================================
+   12. BUTTONS
+========================================================= */
+
+.wat1-primary-button,
+.wat1-secondary-button {
+  border: none;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.wat1-primary-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  min-height: 50px;
+
+  padding:
+    14px 24px;
+
+  border:
+    1px solid rgba(243, 213, 138, 0.50);
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #c79437,
+      #e0b75d
+    );
+
+  color: #211708;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+
+  box-shadow:
+    0 10px 30px rgba(216, 168, 78, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+
+.wat1-primary-button:hover {
+  transform:
+    translateY(-2px);
+
+  filter:
+    brightness(1.08);
+
+  box-shadow:
+    0 15px 40px rgba(216, 168, 78, 0.25);
+}
+
+.wat1-primary-button:active {
+  transform:
+    translateY(0);
+}
+
+.wat1-secondary-button {
+  display: block;
+
+  width: 100%;
+
+  margin-top: 10px;
+
+  padding: 13px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.16);
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    var(--wat1-text-soft);
+
+  font-weight: 700;
+}
+
+.wat1-secondary-button:hover {
+  border-color:
+    rgba(216, 168, 78, 0.32);
+
+  color:
+    var(--wat1-gold-light);
+}
+
+
+/* =========================================================
+   13. GAME HEADER
+========================================================= */
+
+.wat1-game-page {
+  padding-bottom: 50px;
+}
+
+.wat1-game-header {
+  position: relative;
+
+  z-index: 20;
+
+  display: grid;
+
+  grid-template-columns:
+    52px 1fr auto;
+
+  align-items: center;
+
+  gap: 18px;
+
+  min-height: 72px;
+
+  padding:
+    12px max(24px, calc((100vw - 1180px) / 2));
+
+  border-bottom:
+    1px solid rgba(216, 168, 78, 0.13);
+
+  background:
+    rgba(4, 11, 9, 0.86);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+}
+
+.wat1-header-back {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.17);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  color:
+    var(--wat1-text-soft);
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.wat1-header-back:hover {
+  color:
+    var(--wat1-gold-light);
+
+  border-color:
+    rgba(216, 168, 78, 0.38);
+}
+
+.wat1-header-title {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.wat1-header-title span {
+  color:
+    var(--wat1-text);
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.12em;
+}
+
+.wat1-header-title small {
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.18em;
+}
+
+.wat1-header-stats {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+}
+
+.wat1-header-stat {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  min-width: 62px;
+
+  color:
+    var(--wat1-text);
+}
+
+.wat1-header-stat span {
+  font-size: 15px;
+}
+
+.wat1-header-stat strong {
+  font-size: 14px;
+}
+
+.wat1-lives {
+  display: flex;
+
+  gap: 3px;
+
+  margin-left: 3px;
+}
+
+.wat1-lives span {
+  font-size: 20px;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.wat1-lives .life-active {
+  color: #ff5c5c;
+
+  text-shadow:
+    0 0 13px rgba(255, 65, 65, 0.42);
+}
+
+.wat1-lives .life-lost {
+  color: #37413d;
+
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   14. GAME MAIN
+========================================================= */
+
+.wat1-game-main {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(820px, calc(100% - 40px));
+
+  margin: 0 auto;
+
+  padding:
+    28px 0 60px;
+}
+
+.wat1-boat-main {
+  width:
+    min(980px, calc(100% - 40px));
+}
+
+
+/* =========================================================
+   15. PROGRESS
+========================================================= */
+
+.wat1-progress-area {
+  margin-bottom: 28px;
+}
+
+.wat1-progress-info {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 9px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+.wat1-progress-info strong {
+  color:
+    var(--wat1-gold-light);
+
+  font-size: 11px;
+}
+
+.wat1-progress-track {
+  width: 100%;
+
+  height: 6px;
+
+  overflow: hidden;
+
+  border-radius: 100px;
+
+  background:
+    rgba(255, 255, 255, 0.07);
+}
+
+.wat1-progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--wat1-green),
+      var(--wat1-gold)
+    );
+
+  box-shadow:
+    0 0 14px rgba(216, 168, 78, 0.28);
+
+  transition:
+    width 0.45s ease;
+}
+
+
+/* =========================================================
+   16. STAGE LABEL
+========================================================= */
+
+.wat1-stage-label {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 12px;
+}
+
+.wat1-stage-label span {
+  color:
+    var(--wat1-gold);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.17em;
+}
+
+.wat1-stage-label strong {
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 10px;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   17. QUESTION CARD
+========================================================= */
+
+.wat1-question-card {
+  position: relative;
+
+  padding:
+    38px 42px 42px;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.18);
+
+  border-radius:
+    var(--wat1-radius);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 35, 30, 0.95),
+      rgba(8, 18, 15, 0.97)
+    );
+
+  box-shadow:
+    var(--wat1-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.wat1-question-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 25%;
+  right: 25%;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(216, 168, 78, 0.5),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   18. QUESTION ICON
+========================================================= */
+
+.wat1-question-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  margin:
+    0 auto 14px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(31, 138, 112, 0.12);
+
+  border:
+    1px solid rgba(69, 201, 162, 0.20);
+
+  font-size: 25px;
+
+  box-shadow:
+    0 0 30px rgba(31, 138, 112, 0.10);
+}
+
+
+/* =========================================================
+   CHỮ KHMER TRONG QUESTION
+   → KHMER OS
+========================================================= */
+
+.wat1-question-khmer {
+  color:
+    var(--wat1-gold);
+
+  font-family:
+    var(--wat1-khmer);
+
+  font-size: 27px;
+
+  line-height: 1.2;
+
+  opacity: 0.95;
+
+  text-shadow:
+    0 0 18px rgba(216, 168, 78, 0.18);
+}
+
+.wat1-question-card h1 {
+  margin:
+    10px 0 7px;
+
+  color:
+    var(--wat1-text);
+
+  font-size:
+    clamp(22px, 4vw, 31px);
+}
+
+.wat1-question-card > p {
+  margin: 0 auto;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   19. LISTEN BUTTON
+========================================================= */
+
+.wat1-listen-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  min-width: 145px;
+
+  margin:
+    22px 0 26px;
+
+  padding:
+    11px 17px;
+
+  border:
+    1px solid rgba(69, 201, 162, 0.28);
+
+  border-radius: 12px;
+
+  background:
+    rgba(31, 138, 112, 0.10);
+
+  color:
+    var(--wat1-green-light);
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wat1-listen-button:hover {
+  background:
+    rgba(31, 138, 112, 0.19);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 8px 25px rgba(31, 138, 112, 0.14);
+}
+
+.wat1-listen-button:active {
+  transform:
+    translateY(0);
+}
+
+
+/* =========================================================
+   20. LETTER DISPLAY — STAGE 2
+   → KHMER OS
+========================================================= */
+
+.wat1-letter-display {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 145px;
+
+  color:
+    var(--wat1-gold-light);
+
+  font-family:
+    var(--wat1-khmer);
+
+  font-size:
+    clamp(82px, 13vw, 125px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 35px rgba(216, 168, 78, 0.16);
+
+  margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   21. ANSWER GRID
+========================================================= */
+
+.wat1-answer-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 2px;
+}
+
+.wat1-answer {
+  position: relative;
+
+  min-height: 112px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.15);
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.035),
+      rgba(255, 255, 255, 0.012)
+    );
+
+  color:
+    var(--wat1-text);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.wat1-answer::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(216, 168, 78, 0.07),
+      transparent 65%
+    );
+
+  opacity: 0;
+
+  transition:
+    opacity 0.2s ease;
+}
+
+.wat1-answer:hover:not(:disabled) {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(216, 168, 78, 0.40);
+
+  background:
+    rgba(216, 168, 78, 0.055);
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.wat1-answer:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.wat1-answer:disabled {
+  cursor: default;
+}
+
+
+/* =========================================================
+   CHỮ KHMER TRONG ANSWER
+   → KHMER OS
+========================================================= */
+
+.answer-letter {
+  position: relative;
+
+  z-index: 2;
+
+  display: block;
+
+  color:
+    var(--wat1-text);
+
+  font-family:
+    var(--wat1-khmer);
+
+  font-size:
+    clamp(45px, 7vw, 65px);
+
+  font-weight: 400;
+
+  line-height: 1;
+}
+
+.roman-answer {
+  min-height: 105px;
+
+  padding: 16px;
+}
+
+.answer-roman {
+  position: relative;
+
+  z-index: 2;
+
+  display: block;
+
+  color:
+    var(--wat1-gold-light);
+
+  font-size:
+    clamp(19px, 3vw, 25px);
+
+  font-weight: 900;
+}
+
+.roman-answer small {
+  position: relative;
+
+  z-index: 2;
+
+  display: block;
+
+  margin-top: 7px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.10em;
+}
+
+
+/* =========================================================
+   22. ANSWER STATES
+========================================================= */
+
+.wat1-answer.answer-correct {
+  border-color:
+    rgba(69, 201, 162, 0.75);
+
+  background:
+    rgba(31, 138, 112, 0.18);
+
+  box-shadow:
+    0 0 30px rgba(31, 138, 112, 0.13);
+}
+
+.wat1-answer.answer-correct .answer-letter,
+.wat1-answer.answer-correct .answer-roman {
+  color:
+    var(--wat1-green-light);
+}
+
+.wat1-answer.answer-wrong {
+  border-color:
+    rgba(255, 90, 90, 0.72);
+
+  background:
+    rgba(201, 75, 75, 0.14);
+
+  animation:
+    wat1-shake 0.35s ease;
+}
+
+.wat1-answer.answer-wrong .answer-letter,
+.wat1-answer.answer-wrong .answer-roman {
+  color:
+    var(--wat1-red-light);
+}
+
+.wat1-answer.answer-reveal {
+  border-color:
+    rgba(69, 201, 162, 0.58);
+
+  background:
+    rgba(31, 138, 112, 0.11);
+}
+
+
+/* =========================================================
+   23. FEEDBACK
+========================================================= */
+
+.wat1-feedback {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  width:
+    min(820px, calc(100% - 40px));
+
+  margin:
+    14px auto 0;
+
+  padding:
+    13px 18px;
+
+  border-radius: 13px;
+
+  animation:
+    wat1-feedback-in 0.25s ease;
+}
+
+.wat1-feedback.correct {
+  border:
+    1px solid rgba(69, 201, 162, 0.25);
+
+  background:
+    rgba(31, 138, 112, 0.12);
+
+  color:
+    var(--wat1-green-light);
+}
+
+.wat1-feedback.wrong {
+  border:
+    1px solid rgba(255, 90, 90, 0.24);
+
+  background:
+    rgba(201, 75, 75, 0.10);
+
+  color:
+    var(--wat1-red-light);
+}
+
+.wat1-feedback strong {
+  font-size: 13px;
+}
+
+.wat1-feedback span {
+  color:
+    var(--wat1-text-soft);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   24. BOAT CARD
+========================================================= */
+
+.wat1-boat-card {
+  position: relative;
+
+  padding: 38px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.18);
+
+  border-radius:
+    var(--wat1-radius);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 35, 30, 0.95),
+      rgba(8, 18, 15, 0.97)
+    );
+
+  box-shadow:
+    var(--wat1-shadow);
+}
+
+
+/* =========================================================
+   25. BOAT INSTRUCTION
+========================================================= */
+
+.wat1-boat-instruction {
+  text-align: center;
+}
+
+.instruction-symbol {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  margin:
+    0 auto 14px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(216, 168, 78, 0.08);
+
+  border:
+    1px solid rgba(216, 168, 78, 0.20);
+
+  font-size: 22px;
+}
+
+.wat1-boat-instruction h1 {
+  margin: 0;
+
+  color:
+    var(--wat1-text);
+
+  font-size:
+    clamp(23px, 4vw, 31px);
+}
+
+.wat1-boat-instruction p {
+  max-width: 600px;
+
+  margin:
+    9px auto 25px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 13px;
+
+  line-height: 1.65;
+}
+
+
+/* =========================================================
+   26. CURRENT CARD
+========================================================= */
+
+.wat1-current-card {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 240px;
+
+  margin-bottom: 24px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.16);
+
+  border-radius: 20px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(216, 168, 78, 0.075),
+      transparent 55%
+    ),
+    rgba(255, 255, 255, 0.018);
+}
+
+.current-card-label {
+  margin-bottom: 7px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.22em;
+}
+
+
+/* =========================================================
+   CHỮ KHMER TRONG PHÂN LOẠI
+   → KHMER OS
+========================================================= */
+
+.current-letter {
+  color:
+    var(--wat1-gold-light);
+
+  font-family:
+    var(--wat1-khmer);
+
+  font-size:
+    clamp(100px, 16vw, 155px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  text-shadow:
+    0 0 35px rgba(216, 168, 78, 0.16);
+}
+
+.current-card-hint {
+  margin-top: 10px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   27. BOATS
+========================================================= */
+
+.wat1-boats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 16px;
+}
+
+.wat1-boat {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  min-height: 110px;
+
+  padding:
+    18px 20px;
+
+  border-radius: 18px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.wat1-boat:disabled {
+  opacity: 0.6;
+
+  cursor: default;
+}
+
+.wat1-boat:not(:disabled):hover {
+  transform:
+    translateY(-4px);
+}
+
+.wat1-boat-o {
+  border:
+    1px solid rgba(69, 201, 162, 0.26);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(31, 138, 112, 0.16),
+      rgba(31, 138, 112, 0.045)
+    );
+
+  color:
+    var(--wat1-green-light);
+}
+
+.wat1-boat-o:not(:disabled):hover {
+  border-color:
+    rgba(69, 201, 162, 0.55);
+
+  box-shadow:
+    0 15px 35px rgba(31, 138, 112, 0.14);
+}
+
+.wat1-boat-oh {
+  border:
+    1px solid rgba(216, 168, 78, 0.27);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(216, 168, 78, 0.15),
+      rgba(216, 168, 78, 0.045)
+    );
+
+  color:
+    var(--wat1-gold-light);
+}
+
+.wat1-boat-oh:not(:disabled):hover {
+  border-color:
+    rgba(216, 168, 78, 0.55);
+
+  box-shadow:
+    0 15px 35px rgba(216, 168, 78, 0.14);
+}
+
+.boat-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  margin-right: 15px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.035);
+
+  font-size: 27px;
+}
+
+.boat-content {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 3px;
+}
+
+.boat-content span {
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.16em;
+}
+
+.boat-content strong {
+  font-size: 15px;
+
+  letter-spacing: 0.08em;
+}
+
+.boat-count {
+  margin-left: auto;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(0, 0, 0, 0.18);
+
+  font-size: 12px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   28. BOAT LEGEND
+========================================================= */
+
+.wat1-boat-legend {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 25px;
+
+  margin-top: 19px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 10px;
+}
+
+.wat1-boat-legend span {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+}
+
+.wat1-boat-legend i {
+  display: block;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--wat1-green-light);
+
+  box-shadow:
+    0 0 8px rgba(69, 201, 162, 0.40);
+}
+
+.wat1-boat-legend span:last-child i {
+  background:
+    var(--wat1-gold);
+
+  box-shadow:
+    0 0 8px rgba(216, 168, 78, 0.40);
+}
+
+
+/* =========================================================
+   29. BOSS PAGE
+========================================================= */
+
+.wat1-boss-page {
+  background:
+    radial-gradient(
+      circle at 50% 25%,
+      rgba(143, 55, 55, 0.17),
+      transparent 40%
+    ),
+    linear-gradient(
+      145deg,
+      #090605,
+      #120b09 55%,
+      #070a08
+    );
+}
+
+.wat1-boss-glow {
+  position: fixed;
+
+  z-index: 0;
+
+  width: 600px;
+  height: 600px;
+
+  top: 20%;
+  left: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(201, 75, 75, 0.10),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+.wat1-boss-title {
+  position: relative;
+
+  z-index: 2;
+
+  margin-bottom: 22px;
+
+  text-align: center;
+}
+
+.boss-crown {
+  color:
+    var(--wat1-gold);
+
+  font-size: 32px;
+
+  text-shadow:
+    0 0 22px rgba(216, 168, 78, 0.35);
+}
+
+.wat1-boss-title > span {
+  display: block;
+
+  margin-top: 6px;
+
+  color:
+    var(--wat1-red-light);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.22em;
+}
+
+.wat1-boss-title h1 {
+  margin:
+    7px 0;
+
+  color:
+    var(--wat1-gold-light);
+
+  font-size:
+    clamp(28px, 6vw, 46px);
+
+  letter-spacing: 0.05em;
+}
+
+.wat1-boss-title p {
+  max-width: 550px;
+
+  margin: 0 auto;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+.wat1-boss-card {
+  border-color:
+    rgba(201, 75, 75, 0.22);
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.60),
+    0 0 50px rgba(201, 75, 75, 0.045);
+}
+
+.wat1-boss-round {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  padding:
+    7px 13px;
+
+  border:
+    1px solid rgba(201, 75, 75, 0.30);
+
+  border-radius: 100px;
+
+  background:
+    rgba(201, 75, 75, 0.08);
+
+  color:
+    var(--wat1-red-light);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
+}
+
+.wat1-boss-card h2 {
+  margin:
+    12px 0 0;
+
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   30. BOSS BUTTON
+========================================================= */
+
+.wat1-boss-button {
+  display: flex;
+
+  width:
+    min(340px, 100%);
+
+  margin:
+    20px auto 0;
+}
+
+
+/* =========================================================
+   31. RESULT CARD
+========================================================= */
+
+.wat1-result-card {
+  position: relative;
+
+  width:
+    min(600px, 100%);
+
+  margin:
+    60px auto 0;
+
+  padding: 45px;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.20);
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 35, 30, 0.96),
+      rgba(7, 17, 15, 0.98)
+    );
+
+  box-shadow:
+    var(--wat1-shadow);
+}
+
+.wat1-failed-card {
+  border-color:
+    rgba(201, 75, 75, 0.22);
+}
+
+.result-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 76px;
+  height: 76px;
+
+  margin:
+    0 auto 20px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(201, 75, 75, 0.09);
+
+  border:
+    1px solid rgba(201, 75, 75, 0.25);
+
+  color:
+    var(--wat1-red-light);
+
+  font-size: 29px;
+}
+
+.wat1-result-card h1 {
+  margin:
+    10px 0;
+
+  color:
+    var(--wat1-text);
+
+  font-size:
+    clamp(30px, 6vw, 44px);
+}
+
+.wat1-result-card > p {
+  max-width: 480px;
+
+  margin:
+    0 auto 25px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 13px;
+
+  line-height: 1.75;
+}
+
+
+/* =========================================================
+   32. RESULT SCORE
+========================================================= */
+
+.result-score {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  margin:
+    22px 0 25px;
+}
+
+.result-score span {
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.18em;
+}
+
+.result-score strong {
+  margin-top: 3px;
+
+  color:
+    var(--wat1-gold-light);
+
+  font-size: 48px;
+
+  text-shadow:
+    0 0 30px rgba(216, 168, 78, 0.16);
+}
+
+.wat1-failed-card .wat1-primary-button,
+.wat1-failed-card .wat1-secondary-button {
+  width: 100%;
+}
+
+
+/* =========================================================
+   33. COMPLETE PAGE
+========================================================= */
+
+.wat1-complete-page {
+  background:
+    radial-gradient(
+      circle at 50% 25%,
+      rgba(216, 168, 78, 0.13),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 50% 70%,
+      rgba(31, 138, 112, 0.10),
+      transparent 40%
+    ),
+    linear-gradient(
+      145deg,
+      #030807,
+      #0a1714,
+      #07110f
+    );
+}
+
+.wat1-complete-particles {
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  color:
+    var(--wat1-gold);
+
+  opacity: 0.35;
+}
+
+.wat1-complete-particles span {
+  position: absolute;
+
+  animation:
+    wat1-float 4s ease-in-out infinite;
+}
+
+.wat1-complete-particles span:nth-child(1) {
+  top: 14%;
+  left: 15%;
+
+  font-size: 22px;
+}
+
+.wat1-complete-particles span:nth-child(2) {
+  top: 27%;
+  right: 18%;
+
+  font-size: 15px;
+
+  animation-delay: 0.8s;
+}
+
+.wat1-complete-particles span:nth-child(3) {
+  top: 68%;
+  left: 12%;
+
+  font-size: 19px;
+
+  animation-delay: 1.4s;
+}
+
+.wat1-complete-particles span:nth-child(4) {
+  bottom: 16%;
+  right: 14%;
+
+  font-size: 27px;
+
+  animation-delay: 2s;
+}
+
+.wat1-complete-particles span:nth-child(5) {
+  top: 52%;
+  right: 7%;
+
+  font-size: 13px;
+
+  animation-delay: 2.7s;
+}
+
+
+/* =========================================================
+   34. COMPLETE EMBLEM
+========================================================= */
+
+.temple-complete-emblem {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 100px;
+  height: 100px;
+
+  margin:
+    0 auto 22px;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.48);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(216, 168, 78, 0.17),
+      rgba(216, 168, 78, 0.03) 68%,
+      transparent 70%
+    );
+
+  box-shadow:
+    0 0 55px rgba(216, 168, 78, 0.15);
+}
+
+.temple-complete-emblem span {
+  color:
+    var(--wat1-gold-light);
+
+  /*
+     Trang trí → Muol
+  */
+
+  font-family:
+    var(--wat1-khmer-title);
+
+  font-size: 55px;
+
+  text-shadow:
+    0 0 22px rgba(216, 168, 78, 0.35);
+}
+
+.wat1-complete-card {
+  border-color:
+    rgba(216, 168, 78, 0.30);
+
+  margin-top: 30px;
+}
+
+.wat1-complete-card h1 {
+  margin-top: 7px;
+}
+
+.result-khmer {
+  margin-top: 7px;
+
+  color:
+    var(--wat1-gold);
+
+  /*
+     Kết quả Khmer → Khmer OS
+  */
+
+  font-family:
+    var(--wat1-khmer);
+
+  font-size: 30px;
+}
+
+.complete-title {
+  margin:
+    24px 0 10px;
+
+  color:
+    var(--wat1-green-light);
+
+  font-size: 15px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   35. RESULT STATS
+========================================================= */
+
+.result-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  margin: 28px 0;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.12);
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+.result-stats div {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  padding:
+    18px 10px;
+
+  border-right:
+    1px solid rgba(216, 168, 78, 0.10);
+}
+
+.result-stats div:last-child {
+  border-right: none;
+}
+
+.result-stats strong {
+  color:
+    var(--wat1-gold-light);
+
+  font-size: 25px;
+}
+
+.result-stats span {
+  margin-top: 4px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   36. UNLOCK MESSAGE
+========================================================= */
+
+.unlock-message {
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  margin-bottom: 20px;
+
+  padding: 15px;
+
+  text-align: left;
+
+  border:
+    1px solid rgba(69, 201, 162, 0.20);
+
+  border-radius: 15px;
+
+  background:
+    rgba(31, 138, 112, 0.075);
+}
+
+.unlock-message > span {
+  font-size: 23px;
+}
+
+.unlock-message strong {
+  display: block;
+
+  color:
+    var(--wat1-green-light);
+
+  font-size: 11px;
+
+  letter-spacing: 0.07em;
+}
+
+.unlock-message small {
+  display: block;
+
+  margin-top: 4px;
+
+  color:
+    var(--wat1-text-muted);
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   37. COMPLETE BUTTON
+========================================================= */
+
+.wat1-complete-card .wat1-primary-button {
+  width: 100%;
+}
+
+
+/* =========================================================
+   38. ANIMATIONS
+========================================================= */
+
+@keyframes wat1-shake {
+  0%,
+  100% {
+    transform:
+      translateX(0);
+  }
+
+  20% {
+    transform:
+      translateX(-7px);
+  }
+
+  40% {
+    transform:
+      translateX(7px);
+  }
+
+  60% {
+    transform:
+      translateX(-5px);
+  }
+
+  80% {
+    transform:
+      translateX(5px);
+  }
+}
+
+@keyframes wat1-feedback-in {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(7px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+@keyframes wat1-float {
+  0%,
+  100% {
+    transform:
+      translateY(0)
+      rotate(0deg);
+  }
+
+  50% {
+    transform:
+      translateY(-14px)
+      rotate(8deg);
+  }
+}
+
+
+/* =========================================================
+   39. LAPTOP
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .wat1-container {
+    width:
+      min(960px, calc(100% - 32px));
+  }
+
+  .wat1-intro-card {
+    padding:
+      44px 45px 48px;
+  }
+
+  .wat1-question-card {
+    padding:
+      34px 36px 38px;
+  }
+
+  .wat1-boat-card {
+    padding: 32px;
+  }
+}
+
+
+/* =========================================================
+   40. TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+
+  .wat1-game-header {
+    grid-template-columns:
+      44px 1fr auto;
+
+    gap: 11px;
+
+    padding:
+      10px 15px;
+  }
+
+  .wat1-header-back {
+    width: 38px;
+    height: 38px;
+  }
+
+  .wat1-header-title span {
+    font-size: 12px;
+  }
+
+  .wat1-header-title small {
+    font-size: 8px;
+  }
+
+  .wat1-header-stats {
+    gap: 8px;
+  }
+
+  .wat1-header-stat {
+    min-width: auto;
+  }
+
+  .wat1-header-stat strong {
+    font-size: 12px;
+  }
+
+  .wat1-lives span {
+    font-size: 17px;
+  }
+
+  .wat1-game-main {
+    width:
+      min(680px, calc(100% - 28px));
+
+    padding-top: 22px;
+  }
+
+  .wat1-question-card {
+    padding:
+      30px 25px 32px;
+  }
+
+  .wat1-answer {
+    min-height: 100px;
+  }
+
+  .answer-letter {
+    font-size: 52px;
+  }
+
+  .wat1-boat-card {
+    padding:
+      26px 22px;
+  }
+
+  .wat1-current-card {
+    min-height: 215px;
+  }
+
+  .current-letter {
+    font-size: 120px;
+  }
+
+  .wat1-container {
+    width:
+      min(680px, calc(100% - 28px));
+  }
+
+  .wat1-intro-card {
+    padding:
+      40px 30px 42px;
+  }
+
+  .wat1-intro-card h1 {
+    font-size: 48px;
+  }
+
+  .wat1-result-card {
+    padding:
+      36px 28px;
+  }
+}
+
+
+/* =========================================================
+   41. MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+
+  .wat1-container {
+    width:
+      calc(100% - 22px);
+
+    padding-top: 22px;
+  }
+
+  .wat1-back-button {
+    margin-bottom: 16px;
+
+    padding:
+      9px 13px;
+
+    font-size: 11px;
+  }
+
+  .wat1-intro-card {
+    padding:
+      34px 19px 35px;
+
+    border-radius: 23px;
+  }
+
+  .wat1-temple-emblem {
+    width: 78px;
+    height: 78px;
+  }
+
+  .wat1-temple-emblem span {
+    font-size: 42px;
+  }
+
+  .wat1-intro-card h1 {
+    font-size: 39px;
+  }
+
+  .wat1-khmer-title {
+    font-size: 27px;
+  }
+
+  .wat1-intro-card h2 {
+    font-size: 12px;
+
+    letter-spacing: 0.15em;
+  }
+
+  .wat1-intro-description {
+    font-size: 12px;
+
+    line-height: 1.7;
+  }
+
+  .wat1-objective {
+    gap: 11px;
+
+    padding: 12px;
+  }
+
+  .wat1-objective > span {
+    flex-basis: 33px;
+
+    width: 33px;
+    height: 33px;
+  }
+
+  .wat1-objective strong {
+    font-size: 12px;
+  }
+
+  .wat1-objective small {
+    font-size: 10px;
+  }
+
+  .wat1-intro-stats {
+    margin:
+      24px 0;
+
+    padding:
+      16px 0;
+  }
+
+  .wat1-intro-stats strong {
+    font-size: 23px;
+  }
+
+  .wat1-intro-stats span {
+    font-size: 8px;
+  }
+
+  .wat1-primary-button {
+    width: 100%;
+
+    min-height: 47px;
+
+    padding:
+      12px 14px;
+
+    font-size: 10px;
+  }
+
+
+  /* =====================================================
+     HEADER
+  ===================================================== */
+
+  .wat1-game-header {
+    grid-template-columns:
+      38px 1fr auto;
+
+    padding:
+      9px 10px;
+
+    gap: 8px;
+  }
+
+  .wat1-header-back {
+    width: 36px;
+    height: 36px;
+
+    font-size: 19px;
+  }
+
+  .wat1-header-title span {
+    font-size: 10px;
+
+    letter-spacing: 0.08em;
+  }
+
+  .wat1-header-title small {
+    display: none;
+  }
+
+  .wat1-header-stats {
+    gap: 6px;
+  }
+
+  .wat1-header-stat {
+    gap: 3px;
+  }
+
+  .wat1-header-stat span {
+    font-size: 12px;
+  }
+
+  .wat1-header-stat strong {
+    font-size: 10px;
+  }
+
+  .wat1-lives span {
+    font-size: 15px;
+  }
+
+
+  /* =====================================================
+     MAIN
+  ===================================================== */
+
+  .wat1-game-main,
+  .wat1-boat-main {
+    width:
+      calc(100% - 18px);
+
+    padding-top: 18px;
+  }
+
+  .wat1-progress-area {
+    margin-bottom: 19px;
+  }
+
+  .wat1-progress-info {
+    font-size: 8px;
+  }
+
+  .wat1-stage-label {
+    margin-bottom: 9px;
+  }
+
+  .wat1-stage-label span,
+  .wat1-stage-label strong {
+    font-size: 8px;
+  }
+
+
+  /* =====================================================
+     QUESTION
+  ===================================================== */
+
+  .wat1-question-card {
+    padding:
+      24px 14px 25px;
+
+    border-radius: 18px;
+  }
+
+  .wat1-question-icon {
+    width: 48px;
+    height: 48px;
+
+    font-size: 20px;
+  }
+
+  .wat1-question-khmer {
+    font-size: 23px;
+  }
+
+  .wat1-question-card h1 {
+    font-size: 21px;
+  }
+
+  .wat1-question-card > p {
+    font-size: 11px;
+  }
+
+  .wat1-listen-button {
+    margin:
+      17px 0 19px;
+
+    min-width: 130px;
+
+    padding:
+      10px 13px;
+
+    font-size: 9px;
+  }
+
+
+  /* =====================================================
+     ANSWERS
+  ===================================================== */
+
+  .wat1-answer-grid {
+    gap: 8px;
+  }
+
+  .wat1-answer {
+    min-height: 86px;
+
+    border-radius: 12px;
+  }
+
+  .answer-letter {
+    font-size: 43px;
+  }
+
+  .roman-answer {
+    min-height: 88px;
+
+    padding:
+      10px 7px;
+  }
+
+  .answer-roman {
+    font-size: 17px;
+  }
+
+  .roman-answer small {
+    font-size: 8px;
+  }
+
+
+  /* =====================================================
+     FEEDBACK
+  ===================================================== */
+
+  .wat1-feedback {
+    width:
+      calc(100% - 18px);
+
+    flex-direction: column;
+
+    gap: 3px;
+
+    margin-top: 9px;
+
+    padding: 10px;
+
+    text-align: center;
+  }
+
+  .wat1-feedback strong {
+    font-size: 11px;
+  }
+
+  .wat1-feedback span {
+    font-size: 9px;
+  }
+
+
+  /* =====================================================
+     STAGE 2
+  ===================================================== */
+
+  .wat1-letter-display {
+    min-height: 105px;
+
+    font-size: 85px;
+  }
+
+
+  /* =====================================================
+     BOAT
+  ===================================================== */
+
+  .wat1-boat-card {
+    padding:
+      22px 12px;
+
+    border-radius: 18px;
+  }
+
+  .instruction-symbol {
+    width: 45px;
+    height: 45px;
+
+    font-size: 19px;
+  }
+
+  .wat1-boat-instruction h1 {
+    font-size: 21px;
+  }
+
+  .wat1-boat-instruction p {
+    font-size: 10px;
+  }
+
+  .wat1-current-card {
+    min-height: 190px;
+  }
+
+  .current-letter {
+    font-size: 105px;
+  }
+
+  .wat1-boats {
+    gap: 8px;
+  }
+
+  .wat1-boat {
+    min-height: 92px;
+
+    padding:
+      12px 9px;
+
+    border-radius: 13px;
+  }
+
+  .boat-icon {
+    width: 38px;
+    height: 38px;
+
+    margin-right: 7px;
+
+    font-size: 20px;
+  }
+
+  .boat-content span {
+    font-size: 7px;
+  }
+
+  .boat-content strong {
+    font-size: 10px;
+
+    letter-spacing: 0.04em;
+  }
+
+  .boat-count {
+    min-width: 26px;
+    height: 26px;
+
+    font-size: 9px;
+  }
+
+  .wat1-boat-legend {
+    gap: 15px;
+
+    font-size: 8px;
+  }
+
+
+  /* =====================================================
+     BOSS
+  ===================================================== */
+
+  .wat1-boss-title h1 {
+    font-size: 28px;
+  }
+
+  .wat1-boss-title p {
+    font-size: 10px;
+  }
+
+  .wat1-boss-card {
+    padding-top: 22px;
+  }
+
+  .wat1-boss-card h2 {
+    font-size: 18px;
+  }
+
+
+  /* =====================================================
+     RESULT
+  ===================================================== */
+
+  .wat1-result-card {
+    margin-top: 28px;
+
+    padding:
+      31px 18px;
+
+    border-radius: 22px;
+  }
+
+  .wat1-result-card h1 {
+    font-size: 31px;
+  }
+
+  .wat1-result-card > p {
+    font-size: 11px;
+  }
+
+  .result-stats {
+    margin:
+      22px 0;
+  }
+
+  .result-stats div {
+    padding:
+      14px 5px;
+  }
+
+  .result-stats strong {
+    font-size: 21px;
+  }
+
+  .result-stats span {
+    font-size: 6px;
+  }
+
+  .unlock-message {
+    padding: 12px;
+  }
+
+  .unlock-message strong {
+    font-size: 9px;
+  }
+
+  .unlock-message small {
+    font-size: 9px;
+  }
+}
+
+
+/* =========================================================
+   42. SMALL MOBILE
+========================================================= */
+
+@media (max-width: 420px) {
+
+  .wat1-intro-card h1 {
+    font-size: 34px;
+  }
+
+  .wat1-khmer-title {
+    font-size: 24px;
+  }
+
+  .wat1-header-stats {
+    gap: 4px;
+  }
+
+  .wat1-lives {
+    gap: 1px;
+  }
+
+  .wat1-lives span {
+    font-size: 13px;
+  }
+
+  .wat1-question-card {
+    padding-left: 10px;
+
+    padding-right: 10px;
+  }
+
+  .wat1-answer {
+    min-height: 78px;
+  }
+
+  .answer-letter {
+    font-size: 38px;
+  }
+
+  .roman-answer {
+    min-height: 80px;
+  }
+
+  .answer-roman {
+    font-size: 15px;
+  }
+
+  .roman-answer small {
+    font-size: 7px;
+  }
+
+  .wat1-current-card {
+    min-height: 170px;
+  }
+
+  .current-letter {
+    font-size: 92px;
+  }
+
+  .wat1-boat {
+    padding:
+      10px 7px;
+  }
+
+  .boat-icon {
+    width: 32px;
+    height: 32px;
+
+    font-size: 17px;
+  }
+
+  .boat-content strong {
+    font-size: 9px;
+  }
+
+  .boat-count {
+    min-width: 23px;
+    height: 23px;
+  }
+}
+
+
+/* =========================================================
+   43. VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .wat1-header-title {
+    display: none;
+  }
+
+  .wat1-game-header {
+    grid-template-columns:
+      38px 1fr;
+  }
+
+  .wat1-header-stats {
+    justify-content: flex-end;
+  }
+
+  .wat1-answer-grid {
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .wat1-boats {
+    grid-template-columns:
+      1fr;
+  }
+
+  .wat1-boat {
+    min-height: 78px;
+  }
+
+  .result-stats span {
+    letter-spacing: 0;
+  }
+}
+
+
+/* =========================================================
+   44. ACCESSIBILITY
+========================================================= */
+
+.wat1-page button:focus-visible {
+  outline:
+    2px solid var(--wat1-gold-light);
+
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .wat1-page *,
+  .wat1-page *::before,
+  .wat1-page *::after {
+
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    scroll-behavior:
+      auto !important;
+
+    transition-duration:
+      0.01ms !important;
+  }
+}
+
+
+/* =========================================================
+   45. FORCE KHMER OS — CHALLENGE AREA
+   ---------------------------------------------------------
+   Các selector này được đặt CUỐI FILE để đảm bảo chúng
+   không bị rule khác ghi đè font.
+========================================================= */
+
+.wat1-game-page .wat1-question-khmer,
+.wat1-game-page .wat1-letter-display,
+.wat1-game-page .answer-letter,
+.wat1-game-page .current-letter,
+.wat1-game-page .result-khmer {
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   46. KHMER OS — BOSS / RESULT KHMER
+========================================================= */
+
+.wat1-boss-page .answer-letter,
+.wat1-boss-page .wat1-letter-display,
+.wat1-complete-page .result-khmer {
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-weight: 400;
+}
+
+
+/* =========================================================
+   47. MUOL — ONLY DECORATIVE KHMER
+========================================================= */
+
+.wat1-bg-symbol,
+.wat1-temple-emblem span,
+.temple-complete-emblem span,
+.wat1-khmer-title {
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+}

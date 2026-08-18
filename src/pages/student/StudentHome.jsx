@@ -303,11 +303,9 @@ function StudentHome({
       case "vocabulary":
         navigate("/vocabulary");
         break;
-
+        
       case "games":
-        alert(
-          "🎮 Phần Trò chơi đang được phát triển."
-        );
+        navigate("/game");
         break;
 
       case "listening":
