@@ -1,0 +1,446 @@
+/* =========================================================
+   WAT 1 — CHALLENGE RESULT
+   KẾT QUẢ THỬ THÁCH
+========================================================= */
+
+.challenge-result-page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.challenge-result-card {
+  width: min(680px, 100%);
+
+  padding: 42px 34px;
+
+  text-align: center;
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30, 25, 18, 0.98),
+      rgba(15, 15, 13, 0.98)
+    );
+
+  border: 1px solid rgba(212, 175, 55, 0.45);
+
+  box-shadow:
+    0 20px 70px rgba(0, 0, 0, 0.65),
+    inset 0 0 35px rgba(212, 175, 55, 0.04);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.challenge-result-icon {
+  font-size: 64px;
+
+  line-height: 1;
+
+  margin-bottom: 22px;
+
+  text-shadow:
+    0 0 15px rgba(255, 196, 72, 0.7),
+    0 0 35px rgba(255, 150, 20, 0.35);
+}
+
+.result-fail .challenge-result-icon {
+  text-shadow:
+    0 0 15px rgba(255, 80, 50, 0.65),
+    0 0 35px rgba(255, 40, 20, 0.3);
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.challenge-result-title {
+  margin: 0;
+
+  color: #e7c46a;
+
+  font-size: clamp(25px, 4vw, 38px);
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+.result-fail .challenge-result-title {
+  color: #d98a6e;
+}
+
+
+/* =========================================================
+   STAGE
+========================================================= */
+
+.challenge-result-stage {
+  margin-top: 12px;
+
+  color: rgba(255, 255, 255, 0.72);
+
+  font-size: 18px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.challenge-result-stats {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 16px;
+
+  margin: 32px 0;
+
+  flex-wrap: wrap;
+}
+
+.result-stat {
+  min-width: 120px;
+
+  padding: 18px 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 5px;
+
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.035);
+
+  border: 1px solid rgba(212, 175, 55, 0.22);
+}
+
+.result-stat-icon {
+  font-size: 25px;
+}
+
+.result-stat-label {
+  color: rgba(255, 255, 255, 0.5);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.result-stat-value {
+  color: #f4d47b;
+
+  font-size: 27px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   UNLOCK
+========================================================= */
+
+.challenge-unlock-message {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  margin: 25px auto;
+
+  padding: 18px 20px;
+
+  max-width: 500px;
+
+  text-align: left;
+
+  border-radius: 16px;
+
+  background: rgba(75, 130, 70, 0.12);
+
+  border: 1px solid rgba(130, 190, 100, 0.4);
+}
+
+.unlock-icon {
+  font-size: 34px;
+}
+
+.unlock-content {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.unlock-content strong {
+  color: #b8df8b;
+
+  font-size: 16px;
+}
+
+.unlock-content span {
+  color: rgba(255, 255, 255, 0.62);
+
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   FINAL KEY
+========================================================= */
+
+.final-key-icon {
+  margin: 25px 0 10px;
+
+  font-size: 72px;
+
+  filter:
+    drop-shadow(0 0 12px rgba(255, 210, 70, 0.7));
+}
+
+.final-key-title {
+  margin: 0;
+
+  color: #f0cf72;
+
+  font-size: 27px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.final-key-description {
+  margin: 18px auto;
+
+  max-width: 480px;
+
+  color: rgba(255, 255, 255, 0.68);
+
+  line-height: 1.7;
+
+  font-size: 15px;
+}
+
+.gate-unlocked {
+  margin: 25px auto;
+
+  padding: 18px;
+
+  max-width: 380px;
+
+  border-radius: 15px;
+
+  color: #d8efad;
+
+  background: rgba(90, 150, 70, 0.12);
+
+  border: 1px solid rgba(130, 190, 100, 0.4);
+
+  font-size: 18px;
+
+  font-weight: 900;
+
+  line-height: 1.7;
+}
+
+.gate-unlocked span {
+  font-size: 13px;
+
+  letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   FAIL MESSAGE
+========================================================= */
+
+.challenge-fail-message {
+  margin: 28px 0;
+
+  color: rgba(255, 255, 255, 0.7);
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.challenge-result-actions {
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 30px;
+}
+
+.challenge-result-button {
+  min-width: 230px;
+
+  padding: 15px 25px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  font-size: 14px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.challenge-result-button:hover {
+  transform: translateY(-2px);
+}
+
+.challenge-result-button:active {
+  transform: translateY(0);
+}
+
+.challenge-result-button.primary {
+  color: #241b08;
+
+  background: linear-gradient(
+    135deg,
+    #f5d77c,
+    #c99a35
+  );
+
+  box-shadow:
+    0 8px 25px rgba(210, 160, 50, 0.25);
+}
+
+.challenge-result-button.secondary {
+  color: #f0d3b0;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .challenge-result-page {
+    padding: 20px 12px;
+  }
+
+  .challenge-result-card {
+    padding: 32px 20px;
+
+    border-radius: 20px;
+  }
+
+  .challenge-result-icon {
+    font-size: 52px;
+  }
+
+  .challenge-result-title {
+    font-size: 25px;
+  }
+
+  .challenge-result-stage {
+    font-size: 15px;
+  }
+
+  .challenge-result-stats {
+    gap: 10px;
+  }
+
+  .result-stat {
+    min-width: 95px;
+
+    padding: 14px 12px;
+  }
+
+  .result-stat-value {
+    font-size: 23px;
+  }
+
+  .challenge-unlock-message {
+    text-align: left;
+
+    padding: 15px;
+  }
+
+  .challenge-result-button {
+    width: 100%;
+
+    min-width: 0;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL SCREEN
+========================================================= */
+
+@media (max-width: 400px) {
+  .challenge-result-card {
+    padding: 26px 15px;
+  }
+
+  .challenge-result-title {
+    font-size: 22px;
+  }
+
+  .result-stat {
+    min-width: 82px;
+  }
+
+  .result-stat-icon {
+    font-size: 21px;
+  }
+
+  .result-stat-value {
+    font-size: 20px;
+  }
+}

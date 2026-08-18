@@ -9,7 +9,7 @@ import StudentHome from "./pages/student/StudentHome";
 import Alphabet from "./pages/student/alphabet/Alphabet";
 import Vocabulary from "./pages/student/vocabulary/vocabulary";
 import Game from "./pages/student/game/Game";
-import Wat1 from "./pages/student/game/Wat1";
+import Wat1 from "./pages/student/game/Wat1/Wat1";
 import AdminHome from "./pages/admin/AdminHome";
 /* =========================================================
    CẤU HÌNH LEVEL

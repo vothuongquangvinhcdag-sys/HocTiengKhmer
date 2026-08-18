@@ -1,0 +1,1544 @@
+/* =========================================================
+   WAT 1 — INTRO
+   WAT ÁK-SÂ
+   ĐẢO BẢNG CHỮ CÁI
+
+   ANCIENT KHMER / MYSTIC / PREMIUM
+========================================================= */
+
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+.wat1-intro {
+  --intro-gold: #e8c66a;
+  --intro-gold-light: #ffe9a6;
+  --intro-gold-dark: #9b7128;
+
+  --intro-green: #1f6b4d;
+  --intro-green-light: #3d936c;
+
+  --intro-bg: #060a08;
+  --intro-panel: rgba(14, 25, 21, 0.9);
+
+  --intro-text: #f5ead0;
+  --intro-text-soft: #bdb293;
+  --intro-text-muted: #77705e;
+
+  min-height: 100vh;
+  width: 100%;
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  color: var(--intro-text);
+
+  background:
+    radial-gradient(
+      ellipse at 50% -10%,
+      rgba(232, 198, 106, 0.13),
+      transparent 40%
+    ),
+    radial-gradient(
+      ellipse at 0% 70%,
+      rgba(31, 107, 77, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 100% 80%,
+      rgba(31, 107, 77, 0.1),
+      transparent 35%
+    ),
+    linear-gradient(
+      180deg,
+      #050806 0%,
+      #09110d 50%,
+      #050806 100%
+    );
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  animation:
+    wat1IntroFadeIn
+    0.45s
+    ease
+    both;
+}
+
+
+/* =========================================================
+   GRID BACKGROUND
+========================================================= */
+
+.wat1-intro::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.18;
+
+  background-image:
+    linear-gradient(
+      rgba(232, 198, 106, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(232, 198, 106, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    48px 48px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black 0%,
+      transparent 90%
+    );
+}
+
+
+/* =========================================================
+   GLOW
+========================================================= */
+
+.wat1-intro__glow {
+  position: absolute;
+
+  pointer-events: none;
+
+  border-radius: 50%;
+
+  filter: blur(2px);
+
+  z-index: 0;
+}
+
+.wat1-intro__glow--top {
+  width: 560px;
+  height: 560px;
+
+  top: -350px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(232, 198, 106, 0.13),
+      rgba(232, 198, 106, 0.035) 45%,
+      transparent 70%
+    );
+}
+
+.wat1-intro__glow--bottom {
+  width: 500px;
+  height: 500px;
+
+  bottom: -380px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(31, 107, 77, 0.14),
+      transparent 70%
+    );
+}
+
+
+/* =========================================================
+   PARTICLES
+========================================================= */
+
+.wat1-intro__particles {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  z-index: 0;
+}
+
+.wat1-intro__particles span {
+  position: absolute;
+
+  display: block;
+
+  width: 3px;
+  height: 3px;
+
+  border-radius: 50%;
+
+  background:
+    var(--intro-gold);
+
+  opacity: 0.25;
+
+  box-shadow:
+    0 0 10px
+      rgba(232, 198, 106, 0.5);
+
+  animation:
+    wat1IntroParticle
+    5s
+    ease-in-out
+    infinite;
+}
+
+.wat1-intro__particles span:nth-child(1) {
+  top: 18%;
+  left: 12%;
+  animation-delay: 0s;
+}
+
+.wat1-intro__particles span:nth-child(2) {
+  top: 32%;
+  right: 14%;
+  animation-delay: 1s;
+}
+
+.wat1-intro__particles span:nth-child(3) {
+  top: 62%;
+  left: 8%;
+  animation-delay: 2s;
+}
+
+.wat1-intro__particles span:nth-child(4) {
+  top: 72%;
+  right: 9%;
+  animation-delay: 3s;
+}
+
+.wat1-intro__particles span:nth-child(5) {
+  top: 45%;
+  left: 4%;
+  animation-delay: 1.5s;
+}
+
+.wat1-intro__particles span:nth-child(6) {
+  top: 52%;
+  right: 5%;
+  animation-delay: 3.5s;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.wat1-intro__topbar {
+  position: relative;
+
+  z-index: 5;
+
+  width:
+    min(
+      1180px,
+      calc(100% - 40px)
+    );
+
+  min-height: 72px;
+
+  margin:
+    0 auto;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap: 20px;
+
+  box-sizing:
+    border-box;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+========================================================= */
+
+.wat1-intro__back {
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap: 9px;
+
+  min-height: 42px;
+
+  padding:
+    9px 16px;
+
+  border:
+    1px solid
+      rgba(232, 198, 106, 0.28);
+
+  border-radius:
+    999px;
+
+  color:
+    var(--intro-text-soft);
+
+  background:
+    rgba(8, 15, 12, 0.7);
+
+  cursor:
+    pointer;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.02em;
+
+  transition:
+    all 0.2s ease;
+}
+
+.wat1-intro__back:hover {
+  color:
+    var(--intro-gold-light);
+
+  border-color:
+    rgba(232, 198, 106, 0.65);
+
+  background:
+    rgba(20, 35, 29, 0.9);
+
+  box-shadow:
+    0 0 25px
+      rgba(232, 198, 106, 0.1);
+
+  transform:
+    translateY(-1px);
+}
+
+.wat1-intro__back-icon {
+  font-size:
+    18px;
+
+  line-height:
+    1;
+}
+
+
+/* =========================================================
+   WAT LABEL
+========================================================= */
+
+.wat1-intro__wat-label {
+  color:
+    var(--intro-gold);
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.16em;
+
+  opacity:
+    0.85;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.wat1-intro__main {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  width:
+    min(
+      900px,
+      calc(100% - 40px)
+    );
+
+  margin:
+    0 auto;
+
+  padding:
+    20px 0 45px;
+
+  box-sizing:
+    border-box;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+}
+
+
+/* =========================================================
+   TEMPLE
+========================================================= */
+
+.wat1-intro__temple {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  margin:
+    10px 0 18px;
+}
+
+.wat1-intro__temple-ring {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    96px;
+
+  height:
+    96px;
+
+  border:
+    1px solid
+      rgba(232, 198, 106, 0.65);
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(232, 198, 106, 0.12),
+      rgba(31, 107, 77, 0.08) 50%,
+      transparent 72%
+    );
+
+  box-shadow:
+    0 0 35px
+      rgba(232, 198, 106, 0.12),
+    inset 0 0 30px
+      rgba(232, 198, 106, 0.05);
+
+  animation:
+    wat1IntroTempleGlow
+    3s
+    ease-in-out
+    infinite;
+}
+
+.wat1-intro__temple-icon {
+  font-size:
+    43px;
+
+  line-height:
+    1;
+
+  filter:
+    drop-shadow(
+      0 0 10px
+      rgba(232, 198, 106, 0.35)
+    );
+}
+
+.wat1-intro__temple-line {
+  width:
+    1px;
+
+  height:
+    28px;
+
+  margin-top:
+    4px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      var(--intro-gold),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
+.wat1-intro__eyebrow {
+  margin-top:
+    3px;
+
+  color:
+    var(--intro-text-muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.25em;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.wat1-intro__title {
+  margin:
+    8px 0 0;
+
+  color:
+    var(--intro-gold-light);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      42px,
+      7vw,
+      78px
+    );
+
+  line-height:
+    1;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.02em;
+
+  text-align:
+    center;
+
+  text-shadow:
+    0 0 12px
+      rgba(232, 198, 106, 0.2),
+    0 0 35px
+      rgba(232, 198, 106, 0.08);
+}
+
+
+/* =========================================================
+   KHMER
+========================================================= */
+
+.wat1-intro__khmer {
+  margin-top:
+    10px;
+
+  color:
+    var(--intro-gold);
+
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-size:
+    clamp(
+      27px,
+      4.5vw,
+      48px
+    );
+
+  line-height:
+    1.35;
+
+  text-align:
+    center;
+
+  text-shadow:
+    0 0 18px
+      rgba(232, 198, 106, 0.17);
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.wat1-intro__subtitle {
+  margin-top:
+    8px;
+
+  color:
+    var(--intro-text-soft);
+
+  font-size:
+    clamp(
+      14px,
+      2vw,
+      18px
+    );
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.18em;
+
+  text-align:
+    center;
+}
+
+
+/* =========================================================
+   DIVIDER
+========================================================= */
+
+.wat1-intro__divider {
+  width:
+    min(
+      460px,
+      90%
+    );
+
+  margin:
+    22px auto;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    14px;
+}
+
+.wat1-intro__divider span {
+  flex:
+    1;
+
+  height:
+    1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(232, 198, 106, 0.45)
+    );
+}
+
+.wat1-intro__divider span:last-child {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(232, 198, 106, 0.45),
+      transparent
+    );
+}
+
+.wat1-intro__divider i {
+  color:
+    var(--intro-gold);
+
+  font-style:
+    normal;
+
+  font-size:
+    14px;
+
+  text-shadow:
+    0 0 10px
+      rgba(232, 198, 106, 0.5);
+}
+
+
+/* =========================================================
+   STORY
+========================================================= */
+
+.wat1-intro__story {
+  width:
+    min(
+      680px,
+      100%
+    );
+
+  padding:
+    22px 28px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid
+      rgba(232, 198, 106, 0.2);
+
+  border-radius:
+    18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(19, 34, 27, 0.78),
+      rgba(9, 17, 14, 0.8)
+    );
+
+  box-shadow:
+    0 20px 60px
+      rgba(0, 0, 0, 0.18);
+
+  text-align:
+    center;
+}
+
+.wat1-intro__story-mark {
+  color:
+    var(--intro-gold);
+
+  font-size:
+    18px;
+
+  margin-bottom:
+    10px;
+}
+
+.wat1-intro__story p {
+  margin:
+    0 0 12px;
+
+  color:
+    var(--intro-text-soft);
+
+  font-size:
+    15px;
+
+  line-height:
+    1.8;
+}
+
+.wat1-intro__story p:last-child {
+  margin-bottom:
+    0;
+}
+
+.wat1-intro__story-highlight {
+  color:
+    var(--intro-gold-light) !important;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.7 !important;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.wat1-intro__stats {
+  width:
+    min(
+      680px,
+      100%
+    );
+
+  margin-top:
+    20px;
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap:
+    14px;
+}
+
+.wat1-intro__stat {
+  min-height:
+    120px;
+
+  padding:
+    16px;
+
+  box-sizing:
+    border-box;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    1px solid
+      rgba(232, 198, 106, 0.22);
+
+  border-radius:
+    16px;
+
+  background:
+    rgba(12, 22, 18, 0.72);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.wat1-intro__stat:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    rgba(232, 198, 106, 0.5);
+
+  background:
+    rgba(20, 35, 29, 0.85);
+}
+
+.wat1-intro__stat-icon {
+  color:
+    var(--intro-gold);
+
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    sans-serif;
+
+  font-size:
+    22px;
+
+  line-height:
+    1.2;
+
+  min-height:
+    28px;
+}
+
+.wat1-intro__stat-value {
+  margin-top:
+    5px;
+
+  color:
+    var(--intro-gold-light);
+
+  font-size:
+    28px;
+
+  font-weight:
+    900;
+}
+
+.wat1-intro__stat-label {
+  margin-top:
+    3px;
+
+  color:
+    var(--intro-text-muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.13em;
+}
+
+
+/* =========================================================
+   OBJECTIVE
+========================================================= */
+
+.wat1-intro__objective {
+  width:
+    min(
+      680px,
+      100%
+    );
+
+  margin-top:
+    20px;
+
+  padding:
+    20px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid
+      rgba(232, 198, 106, 0.17);
+
+  border-radius:
+    18px;
+
+  background:
+    rgba(8, 16, 13, 0.62);
+}
+
+.wat1-intro__objective-title {
+  margin-bottom:
+    15px;
+
+  color:
+    var(--intro-gold);
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.16em;
+
+  text-align:
+    center;
+}
+
+.wat1-intro__objective-list {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap:
+    10px;
+}
+
+.wat1-intro__objective-item {
+  min-height:
+    48px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  padding:
+    9px 12px;
+
+  border:
+    1px solid
+      rgba(255, 255, 255, 0.04);
+
+  border-radius:
+    10px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+.wat1-intro__objective-item > span {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  width:
+    28px;
+
+  height:
+    28px;
+
+  flex:
+    0 0 28px;
+
+  border:
+    1px solid
+      rgba(232, 198, 106, 0.3);
+
+  border-radius:
+    50%;
+
+  color:
+    var(--intro-gold);
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+}
+
+.wat1-intro__objective-item p {
+  margin:
+    0;
+
+  color:
+    var(--intro-text-soft);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.4;
+}
+
+
+/* =========================================================
+   ACTION
+========================================================= */
+
+.wat1-intro__action {
+  width:
+    min(
+      560px,
+      100%
+    );
+
+  margin-top:
+    28px;
+}
+
+.wat1-intro__start {
+  width:
+    100%;
+
+  min-height:
+    70px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    15px;
+
+  padding:
+    10px 16px;
+
+  box-sizing:
+    border-box;
+
+  border:
+    1px solid
+      var(--intro-gold);
+
+  border-radius:
+    15px;
+
+  color:
+    #17140d;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffe9a6 0%,
+      #e8c66a 48%,
+      #cda94e 100%
+    );
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 12px 35px
+      rgba(232, 198, 106, 0.16);
+
+  text-align:
+    left;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    filter 0.22s ease;
+}
+
+.wat1-intro__start:hover {
+  transform:
+    translateY(-3px);
+
+  filter:
+    brightness(1.05);
+
+  box-shadow:
+    0 18px 45px
+      rgba(232, 198, 106, 0.28);
+}
+
+.wat1-intro__start:active {
+  transform:
+    translateY(0);
+}
+
+.wat1-intro__start-icon {
+  width:
+    46px;
+
+  height:
+    46px;
+
+  flex:
+    0 0 46px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border:
+    1px solid
+      rgba(20, 18, 12, 0.25);
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(255, 255, 255, 0.22);
+
+  font-size:
+    23px;
+}
+
+.wat1-intro__start-text {
+  flex:
+    1;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    3px;
+}
+
+.wat1-intro__start-text strong {
+  font-size:
+    15px;
+
+  font-weight:
+    950;
+
+  letter-spacing:
+    0.04em;
+}
+
+.wat1-intro__start-text small {
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  opacity:
+    0.68;
+}
+
+.wat1-intro__start-arrow {
+  font-size:
+    25px;
+
+  font-weight:
+    900;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.wat1-intro__footer {
+  margin-top:
+    25px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    9px;
+
+  color:
+    var(--intro-text-muted);
+
+  font-size:
+    9px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.14em;
+}
+
+.wat1-intro__footer i {
+  color:
+    var(--intro-gold-dark);
+
+  font-style:
+    normal;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes wat1IntroFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes wat1IntroTempleGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 30px
+        rgba(232, 198, 106, 0.1),
+      inset 0 0 30px
+        rgba(232, 198, 106, 0.04);
+  }
+
+  50% {
+    box-shadow:
+      0 0 45px
+        rgba(232, 198, 106, 0.2),
+      inset 0 0 35px
+        rgba(232, 198, 106, 0.08);
+  }
+}
+
+@keyframes wat1IntroParticle {
+  0%,
+  100% {
+    opacity:
+      0.12;
+
+    transform:
+      translateY(0)
+      scale(0.8);
+  }
+
+  50% {
+    opacity:
+      0.4;
+
+    transform:
+      translateY(-15px)
+      scale(1.2);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .wat1-intro__topbar {
+    width:
+      calc(100% - 28px);
+  }
+
+  .wat1-intro__main {
+    width:
+      calc(100% - 28px);
+
+    padding-top:
+      10px;
+  }
+
+  .wat1-intro__objective-list {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 560px) {
+  .wat1-intro__topbar {
+    width:
+      calc(100% - 20px);
+
+    min-height:
+      62px;
+  }
+
+  .wat1-intro__back {
+    min-height:
+      38px;
+
+    padding:
+      8px 11px;
+
+    font-size:
+      10px;
+  }
+
+  .wat1-intro__wat-label {
+    font-size:
+      9px;
+  }
+
+  .wat1-intro__main {
+    width:
+      calc(100% - 20px);
+
+    padding-bottom:
+      30px;
+  }
+
+  .wat1-intro__temple-ring {
+    width:
+      78px;
+
+    height:
+      78px;
+  }
+
+  .wat1-intro__temple-icon {
+    font-size:
+      35px;
+  }
+
+  .wat1-intro__title {
+    font-size:
+      43px;
+  }
+
+  .wat1-intro__khmer {
+    font-size:
+      28px;
+  }
+
+  .wat1-intro__subtitle {
+    font-size:
+      11px;
+
+    letter-spacing:
+      0.12em;
+  }
+
+  .wat1-intro__story {
+    padding:
+      18px 15px;
+  }
+
+  .wat1-intro__story p {
+    font-size:
+      13px;
+
+    line-height:
+      1.7;
+  }
+
+  .wat1-intro__stats {
+    grid-template-columns:
+      repeat(3, 1fr);
+
+    gap:
+      8px;
+  }
+
+  .wat1-intro__stat {
+    min-height:
+      100px;
+
+    padding:
+      9px 5px;
+  }
+
+  .wat1-intro__stat-icon {
+    font-size:
+      18px;
+  }
+
+  .wat1-intro__stat-value {
+    font-size:
+      23px;
+  }
+
+  .wat1-intro__stat-label {
+    font-size:
+      8px;
+
+    letter-spacing:
+      0.07em;
+  }
+
+  .wat1-intro__objective {
+    padding:
+      15px 12px;
+  }
+
+  .wat1-intro__objective-item p {
+    font-size:
+      12px;
+  }
+
+  .wat1-intro__start {
+    min-height:
+      64px;
+
+    gap:
+      10px;
+
+    padding:
+      8px 10px;
+  }
+
+  .wat1-intro__start-icon {
+    width:
+      40px;
+
+    height:
+      40px;
+
+    flex-basis:
+      40px;
+
+    font-size:
+      20px;
+  }
+
+  .wat1-intro__start-text strong {
+    font-size:
+      12px;
+  }
+
+  .wat1-intro__start-text small {
+    font-size:
+      9px;
+  }
+
+  .wat1-intro__start-arrow {
+    font-size:
+      20px;
+  }
+
+  .wat1-intro__footer {
+    font-size:
+      7px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 360px) {
+  .wat1-intro__title {
+    font-size:
+      37px;
+  }
+
+  .wat1-intro__khmer {
+    font-size:
+      25px;
+  }
+
+  .wat1-intro__stats {
+    gap:
+      5px;
+  }
+
+  .wat1-intro__stat {
+    min-height:
+      92px;
+  }
+
+  .wat1-intro__stat-value {
+    font-size:
+      21px;
+  }
+}

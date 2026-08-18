@@ -1,0 +1,1390 @@
+/* =========================================================
+   WAT 1 — STAGE 2
+   NGUYÊN ÂM & GIỌNG O / Ô
+========================================================= */
+
+
+/* =========================================================
+   KHMER OS FONT
+   File:
+   public/fonts/KhmerOS.ttf
+========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================================
+   STAGE 2
+========================================================= */
+
+.stage2 {
+  --s2-gold: #e8c66a;
+  --s2-gold-light: #ffe9a6;
+  --s2-gold-dark: #96702a;
+
+  --s2-green: #1f6b4d;
+
+  --s2-bg: #050907;
+  --s2-panel: rgba(12, 23, 18, 0.92);
+
+  --s2-text: #f5ead0;
+  --s2-soft: #bdb293;
+  --s2-muted: #706956;
+
+  min-height: 100vh;
+  width: 100%;
+
+  position: relative;
+
+  overflow-x: hidden;
+
+  box-sizing: border-box;
+
+  color: var(--s2-text);
+
+  background:
+    radial-gradient(
+      ellipse at 50% 15%,
+      rgba(232, 198, 106, 0.1),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 10% 65%,
+      rgba(31, 107, 77, 0.1),
+      transparent 32%
+    ),
+    radial-gradient(
+      ellipse at 90% 80%,
+      rgba(31, 107, 77, 0.08),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #050907,
+      #09110d,
+      #050907
+    );
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  animation:
+    stage2Fade
+    0.35s
+    ease
+    both;
+}
+
+
+/* =========================================================
+   BACKGROUND
+========================================================= */
+
+.stage2__background {
+  position: fixed;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.16;
+
+  background-image:
+    linear-gradient(
+      rgba(232, 198, 106, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(232, 198, 106, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    45px 45px;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black,
+      transparent 90%
+    );
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.stage2__topbar {
+  position: relative;
+
+  z-index: 10;
+
+  width:
+    min(
+      1050px,
+      calc(100% - 40px)
+    );
+
+  min-height: 72px;
+
+  margin: auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+.stage2__back {
+  min-height: 40px;
+
+  padding: 9px 15px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.25);
+
+  border-radius: 999px;
+
+  color: var(--s2-soft);
+
+  background:
+    rgba(5, 12, 9, 0.75);
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  transition:
+    all 0.2s ease;
+}
+
+
+.stage2__back:hover {
+  color: var(--s2-gold-light);
+
+  border-color:
+    rgba(232, 198, 106, 0.6);
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   LIVES
+========================================================= */
+
+.stage2__lives {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 8px 13px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.15);
+
+  border-radius: 999px;
+
+  background:
+    rgba(8, 15, 11, 0.8);
+}
+
+
+.stage2__heart {
+  color: #38362f;
+
+  font-size: 21px;
+
+  line-height: 1;
+}
+
+
+.stage2__heart--active {
+  color: #d96b5f;
+
+  text-shadow:
+    0 0 12px
+    rgba(217, 107, 95, 0.5);
+
+  animation:
+    stage2HeartPulse
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.stage2__header {
+  position: relative;
+
+  z-index: 2;
+
+  text-align: center;
+
+  margin:
+    12px auto 20px;
+}
+
+
+.stage2__eyebrow {
+  color: var(--s2-muted);
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.25em;
+}
+
+
+.stage2__header h1 {
+  margin: 7px 0 4px;
+
+  color: var(--s2-gold-light);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      28px,
+      5vw,
+      44px
+    );
+
+  line-height: 1.05;
+}
+
+
+.stage2__header p {
+  margin: 0;
+
+  color: var(--s2-soft);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.stage2__progress {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(
+      720px,
+      calc(100% - 40px)
+    );
+
+  margin:
+    0 auto 20px;
+}
+
+
+.stage2__progress-info {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+
+  color: var(--s2-muted);
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+
+.stage2__progress-info span:last-child {
+  color: var(--s2-gold);
+}
+
+
+.stage2__progress-track {
+  height: 5px;
+
+  overflow: hidden;
+
+  border-radius: 99px;
+
+  background:
+    rgba(232, 198, 106, 0.1);
+}
+
+
+.stage2__progress-fill {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--s2-green),
+      var(--s2-gold)
+    );
+
+  transition:
+    width 0.3s ease;
+}
+
+
+/* =========================================================
+   GAME
+========================================================= */
+
+.stage2__game {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    min(
+      720px,
+      calc(100% - 40px)
+    );
+
+  margin: 0 auto;
+
+  padding-bottom: 40px;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.stage2__question {
+  text-align: center;
+
+  padding:
+    25px 20px 22px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.18);
+
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(19, 33, 27, 0.88),
+      rgba(8, 16, 12, 0.92)
+    );
+
+  box-shadow:
+    0 20px 55px
+    rgba(0, 0, 0, 0.2);
+}
+
+
+.stage2__question-label {
+  color: var(--s2-muted);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.14em;
+}
+
+
+/* =========================================================
+   KHMER CHARACTER
+   DÙNG KHMER OS
+========================================================= */
+
+.stage2__khmer {
+  min-height: 150px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 7px 0;
+
+  padding: 8px 0;
+
+  box-sizing: border-box;
+
+  color: var(--s2-gold-light);
+
+  /*
+    QUAN TRỌNG:
+    Ký tự được hỏi dùng KHMER OS.
+  */
+
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-size:
+    clamp(
+      90px,
+      14vw,
+      145px
+    );
+
+  font-weight: 400;
+
+  line-height: 1.15;
+
+  text-rendering:
+    optimizeLegibility;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  text-shadow:
+    0 0 30px
+    rgba(232, 198, 106, 0.18);
+
+  animation:
+    stage2Character
+    0.3s
+    ease
+    both;
+}
+
+
+/*
+  Không cho font của phần câu hỏi bị
+  ảnh hưởng bởi font của button/body.
+*/
+
+.stage2__khmer::first-letter {
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+}
+
+
+/* =========================================================
+   VOICE BADGE
+========================================================= */
+
+.stage2__voice-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  padding: 6px 13px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.3);
+
+  border-radius: 999px;
+
+  color: var(--s2-soft);
+
+  background:
+    rgba(232, 198, 106, 0.06);
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+
+.stage2__voice-badge strong {
+  color: var(--s2-gold-light);
+
+  font-size: 12px;
+}
+
+
+.stage2__hint {
+  margin: 10px 0 0;
+
+  color: var(--s2-soft);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   ANSWERS
+========================================================= */
+
+.stage2__answers {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+
+  margin-top: 16px;
+}
+
+
+.stage2-answer {
+  position: relative;
+
+  min-height: 76px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 11px 17px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.2);
+
+  border-radius: 16px;
+
+  color: var(--s2-text);
+
+  background:
+    rgba(14, 26, 21, 0.88);
+
+  cursor: pointer;
+
+  text-align: left;
+
+  transition:
+    all 0.18s ease;
+}
+
+
+.stage2-answer:hover:not(:disabled) {
+  border-color:
+    rgba(232, 198, 106, 0.62);
+
+  background:
+    rgba(24, 42, 34, 0.95);
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 10px 28px
+    rgba(0, 0, 0, 0.2);
+}
+
+
+.stage2-answer:disabled {
+  cursor: default;
+}
+
+
+.stage2-answer__number {
+  width: 30px;
+
+  height: 30px;
+
+  flex: 0 0 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.2);
+
+  border-radius: 50%;
+
+  color: var(--s2-muted);
+
+  font-size: 10px;
+
+  font-weight: 900;
+}
+
+
+.stage2-answer__content {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+
+.stage2-answer__content strong {
+  color: var(--s2-gold-light);
+
+  /*
+    Phiên âm vẫn dùng font Latin.
+  */
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 20px;
+
+  line-height: 1.15;
+}
+
+
+.stage2-answer__content small {
+  color: var(--s2-muted);
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.1em;
+}
+
+
+.stage2-answer__mark {
+  margin-left: auto;
+
+  font-size: 20px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.stage2-answer--correct {
+  border-color:
+    rgba(95, 190, 130, 0.72) !important;
+
+  background:
+    rgba(40, 110, 72, 0.22) !important;
+
+  box-shadow:
+    0 0 25px
+    rgba(95, 190, 130, 0.1);
+}
+
+
+.stage2-answer--correct
+.stage2-answer__content strong {
+  color: #b5e9c5;
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.stage2-answer--wrong {
+  border-color:
+    rgba(210, 91, 81, 0.72) !important;
+
+  background:
+    rgba(130, 43, 38, 0.2) !important;
+
+  animation:
+    stage2WrongShake
+    0.3s
+    ease;
+}
+
+
+/* =========================================================
+   FEEDBACK
+========================================================= */
+
+.stage2__feedback {
+  margin:
+    14px auto 0;
+
+  padding:
+    11px 15px;
+
+  text-align: center;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.15);
+
+  border-radius: 12px;
+
+  font-size: 11px;
+
+  font-weight: 900;
+}
+
+
+.stage2__feedback--correct {
+  color: #9de0b4;
+
+  border-color:
+    rgba(95, 190, 130, 0.25);
+
+  background:
+    rgba(40, 110, 72, 0.1);
+}
+
+
+.stage2__feedback--wrong {
+  color: #e5a39d;
+
+  border-color:
+    rgba(210, 91, 81, 0.25);
+
+  background:
+    rgba(130, 43, 38, 0.1);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.stage2__footer {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  padding:
+    12px 20px 25px;
+
+  color: var(--s2-muted);
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.13em;
+}
+
+
+.stage2__footer strong {
+  color: var(--s2-gold);
+}
+
+
+/* =========================================================
+   RESULT
+========================================================= */
+
+.stage2-result {
+  position: relative;
+
+  z-index: 3;
+
+  width:
+    min(
+      620px,
+      calc(100% - 40px)
+    );
+
+  min-height: 100vh;
+
+  margin: auto;
+
+  padding: 70px 0;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+
+.stage2-result__symbol {
+  width: 86px;
+
+  height: 86px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 22px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.55);
+
+  border-radius: 50%;
+
+  color: var(--s2-gold-light);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(232, 198, 106, 0.14),
+      transparent 70%
+    );
+
+  font-size: 38px;
+
+  box-shadow:
+    0 0 40px
+    rgba(232, 198, 106, 0.1);
+}
+
+
+.stage2-result__symbol--lose {
+  color: #d9786e;
+
+  border-color:
+    rgba(217, 120, 110, 0.4);
+}
+
+
+.stage2-result__eyebrow {
+  color: var(--s2-muted);
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.25em;
+}
+
+
+.stage2-result h1 {
+  margin:
+    9px 0 5px;
+
+  color: var(--s2-gold-light);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      27px,
+      5vw,
+      42px
+    );
+}
+
+
+.stage2-result__subtitle {
+  margin: 0;
+
+  color: var(--s2-soft);
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+}
+
+
+/* =========================================================
+   RESULT STATS
+========================================================= */
+
+.stage2-result__stats {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  margin:
+    30px 0 20px;
+
+  padding:
+    18px 10px;
+
+  border:
+    1px solid
+    rgba(232, 198, 106, 0.18);
+
+  border-radius: 18px;
+
+  background:
+    rgba(12, 23, 18, 0.8);
+}
+
+
+.stage2-result__stats > div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  align-items: center;
+}
+
+
+.stage2-result__stats > div + div {
+  border-left:
+    1px solid
+    rgba(232, 198, 106, 0.12);
+}
+
+
+.stage2-result__stats strong {
+  color: var(--s2-gold-light);
+
+  font-size: 18px;
+}
+
+
+.stage2-result__stats span {
+  color: var(--s2-muted);
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   UNLOCK
+========================================================= */
+
+.stage2-result__unlock {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  padding: 15px;
+
+  box-sizing: border-box;
+
+  text-align: left;
+
+  border:
+    1px solid
+    rgba(95, 190, 130, 0.3);
+
+  border-radius: 15px;
+
+  background:
+    rgba(40, 110, 72, 0.1);
+}
+
+
+.stage2-result__unlock > span {
+  font-size: 25px;
+}
+
+
+.stage2-result__unlock div {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.stage2-result__unlock strong {
+  color: #a9e2bb;
+
+  font-size: 11px;
+}
+
+
+.stage2-result__unlock small {
+  color: var(--s2-soft);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   LOSE
+========================================================= */
+
+.stage2-result__lose-score {
+  margin:
+    28px 0;
+
+  color: var(--s2-soft);
+
+  font-size: 15px;
+}
+
+
+.stage2-result__lose-score strong {
+  color: var(--s2-gold-light);
+
+  font-size: 24px;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.stage2-result__button {
+  width:
+    min(
+      340px,
+      100%
+    );
+
+  min-height: 52px;
+
+  margin-top: 20px;
+
+  border:
+    1px solid
+    var(--s2-gold);
+
+  border-radius: 13px;
+
+  color: #17130b;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--s2-gold-light),
+      var(--s2-gold)
+    );
+
+  cursor: pointer;
+
+  font-size: 11px;
+
+  font-weight: 950;
+
+  letter-spacing: 0.08em;
+
+  transition:
+    all 0.2s ease;
+}
+
+
+.stage2-result__button:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 12px 35px
+    rgba(232, 198, 106, 0.18);
+}
+
+
+.stage2-result__button--secondary {
+  color: var(--s2-gold-light);
+
+  background:
+    rgba(14, 25, 20, 0.9);
+
+  border-color:
+    rgba(232, 198, 106, 0.3);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes stage2Fade {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+@keyframes stage2Character {
+  from {
+    opacity: 0;
+
+    transform:
+      scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      scale(1);
+  }
+}
+
+
+@keyframes stage2WrongShake {
+  0%,
+  100% {
+    transform:
+      translateX(0);
+  }
+
+  25% {
+    transform:
+      translateX(-5px);
+  }
+
+  75% {
+    transform:
+      translateX(5px);
+  }
+}
+
+
+@keyframes stage2HeartPulse {
+  0%,
+  100% {
+    transform:
+      scale(1);
+  }
+
+  50% {
+    transform:
+      scale(1.08);
+  }
+}
+
+
+/* =========================================================
+   MOBILE — <= 700px
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .stage2__topbar {
+    width:
+      calc(100% - 20px);
+  }
+
+
+  .stage2__progress,
+  .stage2__game {
+    width:
+      calc(100% - 20px);
+  }
+
+
+  .stage2-answer {
+    min-height: 68px;
+
+    padding:
+      10px 13px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE — <= 520px
+========================================================= */
+
+@media (max-width: 520px) {
+
+  .stage2__topbar {
+    min-height: 60px;
+  }
+
+
+  .stage2__back {
+    padding:
+      8px 11px;
+
+    font-size: 8px;
+  }
+
+
+  .stage2__heart {
+    font-size: 17px;
+  }
+
+
+  .stage2__lives {
+    gap: 4px;
+
+    padding:
+      7px 9px;
+  }
+
+
+  .stage2__header {
+    margin-top: 5px;
+  }
+
+
+  .stage2__header h1 {
+    font-size: 28px;
+  }
+
+
+  .stage2__question {
+    padding:
+      20px 13px;
+  }
+
+
+  /* ===============================================
+     KHMER OS — MOBILE
+  =============================================== */
+
+  .stage2__khmer {
+    min-height: 120px;
+
+    font-family:
+      "Khmer OS",
+      "Noto Sans Khmer",
+      sans-serif;
+
+    font-size: 105px;
+
+    line-height: 1.15;
+  }
+
+
+  .stage2__answers {
+    grid-template-columns: 1fr;
+
+    gap: 9px;
+  }
+
+
+  .stage2-result {
+    width:
+      calc(100% - 25px);
+
+    padding:
+      40px 0;
+  }
+
+
+  .stage2-result__stats {
+    padding:
+      14px 5px;
+  }
+
+
+  .stage2-result__stats strong {
+    font-size: 15px;
+  }
+
+
+  .stage2-result__stats span {
+    font-size: 6px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE — <= 380px
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .stage2__khmer {
+    min-height: 110px;
+
+    font-size: 90px;
+  }
+
+
+  .stage2__question {
+    padding:
+      18px 10px;
+  }
+
+
+  .stage2-answer {
+    min-height: 64px;
+
+    padding:
+      9px 11px;
+  }
+
+
+  .stage2-answer__content strong {
+    font-size: 18px;
+  }
+}
