@@ -1,0 +1,215 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+/* =========================================================
+   GAME 1 — STAGE 1
+   PHỤ ÂM → PHIÊN ÂM
+========================================================= */
+
+.game-stage-1 {
+  --stage-gold: #d4af37;
+  --stage-green: #16a34a;
+  --stage-red: #ef4444;
+}
+
+/* GAMEPLAY */
+
+.game-stage-1 .stage-game-area {
+  width: 100%;
+  max-width: 680px;
+  margin: 28px auto 0;
+}
+
+/* QUESTION */
+
+.game-stage-1 .stage-question {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 24px 20px 20px;
+  text-align: center;
+}
+
+.game-stage-1 .stage-question-label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.game-stage-1 .stage-khmer-letter {
+  min-height: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 0 10px;
+
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-size: clamp(76px, 10vw, 110px);
+  font-weight: 700;
+  line-height: 1;
+
+  text-shadow:
+    0 0 18px rgba(212, 175, 55, 0.3),
+    0 0 35px rgba(212, 175, 55, 0.12);
+}
+
+.game-stage-1 .stage-question p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+/* ANSWERS */
+
+.game-stage-1 .stage-options {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.game-stage-1 .stage-option {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 18px;
+  box-sizing: border-box;
+
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 16px;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* HOVER */
+
+.game-stage-1 .stage-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  border-color: rgba(212, 175, 55, 0.85);
+
+  background: rgba(212, 175, 55, 0.07);
+
+  box-shadow:
+    0 7px 20px rgba(0, 0, 0, 0.16),
+    0 0 18px rgba(212, 175, 55, 0.1);
+}
+
+/* ACTIVE */
+
+.game-stage-1 .stage-option:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* DISABLED */
+
+.game-stage-1 .stage-option:disabled {
+  cursor: default;
+}
+
+/* CORRECT */
+
+.game-stage-1 .stage-option.correct {
+  border-color: var(--stage-green);
+  background: rgba(22, 163, 74, 0.12);
+
+  box-shadow:
+    0 0 20px rgba(22, 163, 74, 0.25);
+}
+
+/* WRONG */
+
+.game-stage-1 .stage-option.wrong {
+  border-color: var(--stage-red);
+  background: rgba(239, 68, 68, 0.12);
+
+  box-shadow:
+    0 0 20px rgba(239, 68, 68, 0.22);
+}
+
+/* STAGE INFO */
+
+.game-stage-1 .stage-play-info {
+  width: min(100%, 680px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+  margin: 18px auto 0;
+}
+
+.game-stage-1 .stage-play-info > * {
+  min-width: 105px;
+
+  padding: 8px 12px;
+
+  border-radius: 10px;
+
+  text-align: center;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* MOBILE */
+
+@media (max-width: 640px) {
+  .game-stage-1 .stage-game-area {
+    margin-top: 20px;
+  }
+
+  .game-stage-1 .stage-question {
+    padding: 20px 16px 18px;
+  }
+
+  .game-stage-1 .stage-khmer-letter {
+    min-height: 105px;
+    font-size: clamp(68px, 22vw, 100px);
+  }
+
+  .game-stage-1 .stage-options {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .game-stage-1 .stage-option {
+    min-height: 62px;
+    font-size: 17px;
+  }
+
+  .game-stage-1 .stage-play-info {
+    flex-wrap: wrap;
+  }
+
+  .game-stage-1 .stage-play-info > * {
+    flex: 1;
+    min-width: 0;
+  }
+}

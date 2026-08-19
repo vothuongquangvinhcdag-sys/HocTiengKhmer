@@ -8,9 +8,11 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import StudentHome from "./pages/student/StudentHome";
 import Alphabet from "./pages/student/alphabet/Alphabet";
 import Vocabulary from "./pages/student/vocabulary/vocabulary";
-import Game from "./pages/student/game/Game";
-import Wat1 from "./pages/student/game/Wat1/Wat1";
+
 import AdminHome from "./pages/admin/AdminHome";
+
+import Game from "./pages/student/game/Game";
+
 /* =========================================================
    CẤU HÌNH LEVEL
 ========================================================= */
@@ -540,36 +542,7 @@ if (profile.role === "admin") {
       />
     );
   }
-/* =======================================================
-   GAME MAP
-======================================================= */
 
-if (path === "/game") {
-  return (
-    <Game
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onLogout={handleLogout}
-      onProgressUpdated={refreshProfile}
-    />
-  );
-}
-
-/* =======================================================
-   WAT 1
-======================================================= */
-
-if (path === "/game/Wat1") {
-  return (
-    <Wat1
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onProgressUpdated={refreshProfile}
-    />
-  );
-}
   /* =======================================================
      STUDENT KHÔNG ĐƯỢC VÀO ADMIN
   ======================================================= */
@@ -582,7 +555,24 @@ if (path === "/game/Wat1") {
 
     return null;
   }
+/* =======================================================
+   GAME
+======================================================= */
 
+if (
+  path === "/game" ||
+  path.startsWith("/game/")
+) {
+  return (
+    <Game
+      profile={profile}
+      session={session}
+      navigate={navigate}
+      onLogout={handleLogout}
+      path={path}
+    />
+  );
+}
   /* =======================================================
      TRANG CHƯA LÀM
   ======================================================= */

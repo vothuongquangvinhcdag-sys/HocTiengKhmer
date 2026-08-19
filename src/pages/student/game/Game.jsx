@@ -1,1257 +1,589 @@
+import React from "react";
+
+import GameHeader from "./components/GameHeader";
+import GameCard from "./components/GameCard";
+
+import Game1 from "./games/Game1/Game1";
+import Game2 from "./games/Game2/Game2";
+
+import { GAME_DATA } from "./data/gameData";
+
 import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+  isGameUnlocked,
+  isGameCompleted,
+  isStageCompleted,
+  GAME_EXP,
+  hasClaimedBadge,
+} from "./data/gameProgress";
 
 import "./Game.css";
 
+const TOTAL_STAGES = 4;
 
-/* =========================================================
-   STORAGE WAT 1
-========================================================= */
-
-const WAT1_STORAGE_PREFIX =
-  "khmer_wat1_progress";
-
-
-/* =========================================================
-   GET USER STORAGE KEY
-========================================================= */
-
-function getWat1StorageKey(profile) {
-  const userId =
-    profile?.id ||
-    profile?.user_id ||
-    profile?.username ||
-    profile?.email ||
-    "guest";
-
-  return `${WAT1_STORAGE_PREFIX}_${String(userId)}`;
-}
-
-
-/* =========================================================
-   READ WAT 1 PROGRESS
-========================================================= */
-
-function getWat1Progress(profile) {
-  try {
-    const key =
-      getWat1StorageKey(profile);
-
-    const saved =
-      localStorage.getItem(key);
-
-    if (!saved) {
-      return null;
-    }
-
-    const parsed =
-      JSON.parse(saved);
-
-    if (
-      !parsed ||
-      typeof parsed !== "object"
-    ) {
-      return null;
-    }
-
-    return parsed;
-
-  } catch (error) {
-
-    console.error(
-      "GAME: Không thể đọc tiến trình WAT 1:",
-      error
-    );
-
-    return null;
-  }
-}
-
-
-/* =========================================================
-   CHECK WAT 1 COMPLETED
-========================================================= */
-
-function isWat1Completed(profile) {
-  const progress =
-    getWat1Progress(profile);
-
-  return (
-    progress?.wat1Completed === true ||
-    progress?.keyObtained === true ||
-    progress?.final?.completed === true
-  );
-}
-
-
-/* =========================================================
-   GET COMPLETED WAT COUNT
-========================================================= */
-
-function getCompletedWatCount(profile) {
-
-  const profileCompleted =
-    Number(
-      profile?.completed_wat ?? 0
-    );
-
-  const wat1Completed =
-    isWat1Completed(profile);
-
-
-  /*
-    WAT 1 hoàn thành trong localStorage
-    nhưng profile chưa đồng bộ
-    → ép tối thiểu completedWat = 1
-  */
-
-  const localCompleted =
-    wat1Completed
-      ? 1
-      : 0;
-
-
-  return Math.max(
-    profileCompleted,
-    localCompleted
-  );
-}
-
-
-/* =========================================================
-   10 NGÔI ĐỀN
-========================================================= */
-
-const GAMES = [
-  {
-    id: 1,
-    wat: "Wat Ák-sâ",
-    khmer: "វត្តអក្សរ",
-    title: "Chùa Chữ Cái",
-    description:
-      "Nhận diện phụ âm và nguyên âm Khmer.",
-    icon: "🔤",
-    route: "/game/Wat1",
-  },
-
-  {
-    id: 2,
-    wat: "Wat Sâm-lâng",
-    khmer: "វត្តសំឡេង",
-    title: "Chùa Âm Thanh",
-    description:
-      "Nghe và nhận diện âm thanh Khmer.",
-    icon: "🔊",
-    route: "/game/wat-sam-lang",
-  },
-
-  {
-    id: 3,
-    wat: "Wat Sâp",
-    khmer: "វត្តពាក្យ",
-    title: "Chùa Từ Vựng",
-    description:
-      "Ghi nhớ và nhận diện từ vựng Khmer.",
-    icon: "📖",
-    route: "/game/wat-sap",
-  },
-
-  {
-    id: 4,
-    wat: "Wat Bân-teh",
-    khmer: "វត្តផ្សំពាក្យ",
-    title: "Chùa Ghép Chữ",
-    description:
-      "Ghép chữ và tạo thành từ Khmer.",
-    icon: "🧩",
-    route: "/game/wat-ban-teh",
-  },
-
-  {
-    id: 5,
-    wat: "Wat Sâm-râl",
-    khmer: "វត្តប្រតិកម្ម",
-    title: "Chùa Phản Xạ",
-    description:
-      "Rèn luyện khả năng phản xạ với tiếng Khmer.",
-    icon: "⚡",
-    route: "/game/wat-sam-ral",
-  },
-
-  {
-    id: 6,
-    wat: "Wat Châng",
-    khmer: "វត្តអក្ខរាវិរុទ្ធ",
-    title: "Chùa Chính Tả",
-    description:
-      "Luyện nghe, viết và chính tả Khmer.",
-    icon: "✍️",
-    route: "/game/wat-chang",
-  },
-
-  {
-    id: 7,
-    wat: "Wat Chhâk",
-    khmer: "វត្តប្រកួតប្រជែង",
-    title: "Chùa Thử Thách",
-    description:
-      "Vượt qua những thử thách tổng hợp.",
-    icon: "🎯",
-    route: "/game/wat-chhak",
-  },
-
-  {
-    id: 8,
-    wat: "Wat Bânh-chhâp",
-    khmer: "វត្តល្បឿន",
-    title: "Chùa Tốc Độ",
-    description:
-      "Hoàn thành thử thách trong thời gian giới hạn.",
-    icon: "⏱️",
-    route: "/game/wat-banh-chhap",
-  },
-
-  {
-    id: 9,
-    wat: "Wat Vôl",
-    khmer: "វត្តមហាប្រកួត",
-    title: "Chùa Đại Thử Thách",
-    description:
-      "Thử thách tổng hợp kiến thức tiếng Khmer.",
-    icon: "👑",
-    route: "/game/wat-vol",
-  },
-
-  {
-    id: 10,
-    wat: "Wat Mahâ-chây",
-    khmer: "វត្តមហាជ័យ",
-    title: "Đền Tối Cao",
-    description:
-      "Đại thử thách cuối cùng của hành trình tiếng Khmer.",
-    icon: "👑",
-    route: "/game/wat-maha-chay",
-    final: true,
-  },
-];
-
-
-/* =========================================================
-   COMPONENT
-========================================================= */
-
-function Game({
+const Game = ({
   profile,
   session,
   navigate,
   onLogout,
-  onProgressUpdated,
-}) {
-
+  path,
+}) => {
   /* =======================================================
-     COMPLETED WAT
+     ĐIỀU HƯỚNG GAME 1
   ======================================================= */
 
-  const [completedWat, setCompletedWat] =
-    useState(() =>
-      getCompletedWatCount(profile)
+  if (
+    path === "/game/1" ||
+    path.startsWith("/game/1/")
+  ) {
+    return (
+      <Game1
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
+      />
     );
-
-
-  /* =======================================================
-     SYNC PROGRESS
-  ======================================================= */
-
-  const syncProgress =
-    useCallback(() => {
-
-      const nextCount =
-        getCompletedWatCount(profile);
-
-      setCompletedWat(
-        nextCount
-      );
-
-      console.log(
-        "GAME: Đồng bộ tiến trình",
-        {
-          profileCompleted:
-            profile?.completed_wat,
-
-          wat1Completed:
-            isWat1Completed(profile),
-
-          completedWat:
-            nextCount,
-        }
-      );
-
-    }, [
-      profile,
-    ]);
-
+  }
 
   /* =======================================================
-     PROFILE THAY ĐỔI
+     ĐIỀU HƯỚNG GAME 2
   ======================================================= */
 
-  useEffect(() => {
-
-    syncProgress();
-
-  }, [
-    syncProgress,
-  ]);
-
-
-  /* =======================================================
-     LISTENER TIẾN TRÌNH
-  ======================================================= */
-
-  useEffect(() => {
-
-    const handleProgress =
-      () => {
-
-        syncProgress();
-
-      };
-
-
-    window.addEventListener(
-      "wat1-progress-updated",
-      handleProgress
+  if (
+    path === "/game/2" ||
+    path.startsWith("/game/2/")
+  ) {
+    return (
+      <Game2
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
+      />
     );
+  }
 
+  /* =======================================================
+     GAME ĐÃ HOÀN THÀNH
+  ======================================================= */
 
-    window.addEventListener(
-      "storage",
-      handleProgress
-    );
+  const completedGames = [];
 
+  GAME_DATA.forEach((game) => {
+    if (isGameCompleted(game.id)) {
+      completedGames.push(game.id);
+    }
+  });
 
-    return () => {
+  /* =======================================================
+     THÔNG TIN EXP
+  ======================================================= */
 
-      window.removeEventListener(
-        "wat1-progress-updated",
-        handleProgress
-      );
+  const totalExp =
+    Number(profile?.exp) || 0;
 
-      window.removeEventListener(
-        "storage",
-        handleProgress
-      );
+  /*
+    Dùng mapping Level hiện tại của hệ thống
+  */
 
+  const getLevel = (exp) => {
+    if (exp >= 25600) return 10;
+    if (exp >= 12800) return 9;
+    if (exp >= 6400) return 8;
+    if (exp >= 3200) return 7;
+    if (exp >= 1600) return 6;
+    if (exp >= 800) return 5;
+    if (exp >= 400) return 4;
+    if (exp >= 200) return 3;
+    if (exp >= 100) return 2;
+
+    return 1;
+  };
+
+  const getLevelStartExp = (level) => {
+    const levels = {
+      1: 0,
+      2: 100,
+      3: 200,
+      4: 400,
+      5: 800,
+      6: 1600,
+      7: 3200,
+      8: 6400,
+      9: 12800,
+      10: 25600,
     };
 
-  }, [
-    syncProgress,
-  ]);
+    return levels[level] || 0;
+  };
 
+  const level =
+    getLevel(totalExp);
 
-  /* =======================================================
-     PROFILE UPDATE CALLBACK
-  ======================================================= */
+  const levelStartExp =
+    getLevelStartExp(level);
 
-  useEffect(() => {
+  const nextLevelExp =
+    level >= 10
+      ? 25600
+      : getLevelStartExp(level + 1);
 
-    if (
-      typeof onProgressUpdated ===
-      "function"
-    ) {
-
-      onProgressUpdated();
-
-    }
-
-  }, [
-    completedWat,
-    onProgressUpdated,
-  ]);
-
-
-  /* =======================================================
-     COMPLETED COUNT
-  ======================================================= */
-
-  const completedCount =
-    Math.min(
-      Math.max(
-        Number(completedWat) || 0,
-        0
-      ),
-      GAMES.length
+  const levelExp =
+    Math.max(
+      0,
+      totalExp - levelStartExp
     );
 
+  const levelRange =
+    Math.max(
+      1,
+      nextLevelExp - levelStartExp
+    );
 
-  const badgeCount =
-    completedCount;
-
-
-  const progressPercent =
-    (completedCount / GAMES.length) *
-    100;
-
-
-  /* =======================================================
-     UNLOCK
-  ======================================================= */
-
-  const isWatUnlocked =
-    useCallback(
-      (game) => {
-
-        /*
-          WAT 1 luôn mở.
-
-          WAT 2 mở khi WAT 1 hoàn thành.
-
-          WAT 3 mở khi WAT 2 hoàn thành.
-
-          ...
-        */
-
-        return (
-          game.id <=
-          completedCount + 1
+  const expPercent =
+    level >= 10
+      ? 100
+      : Math.min(
+          100,
+          Math.round(
+            (levelExp / levelRange) * 100
+          )
         );
 
-      },
-      [
-        completedCount,
-      ]
-    );
-
-
   /* =======================================================
-     CLICK WAT
+     TÊN NGƯỜI HỌC
   ======================================================= */
 
-  const handleWatClick =
-    useCallback(
-      (game) => {
-
-        if (
-          !isWatUnlocked(game)
-        ) {
-
-          console.log(
-            `GAME: ${game.wat} chưa mở khóa.`
-          );
-
-          return;
-        }
-
-
-        navigate(
-          game.route
-        );
-
-      },
-      [
-        isWatUnlocked,
-        navigate,
-      ]
-    );
-
+  const learnerName =
+    profile?.full_name ||
+    profile?.name ||
+    profile?.username ||
+    "NGƯỜI HỌC";
 
   /* =======================================================
-     BACK
+     CLICK GAME
   ======================================================= */
 
-  const handleBack =
-    useCallback(() => {
-
-      navigate(
-        "/student"
+  const handleGameClick = (game) => {
+    const unlocked =
+      isGameUnlocked(
+        game.id,
+        completedGames
       );
 
-    }, [
-      navigate,
-    ]);
+    if (!unlocked) {
+      return;
+    }
 
+    navigate(
+      `/game/${game.id}`
+    );
+  };
 
   /* =======================================================
-     RENDER
+     TIẾN ĐỘ GAME
+  ======================================================= */
+
+  const getGameProgress = (gameId) => {
+    let completedStages = 0;
+
+    for (
+      let stageId = 1;
+      stageId <= TOTAL_STAGES;
+      stageId++
+    ) {
+      if (
+        isStageCompleted(
+          gameId,
+          stageId
+        )
+      ) {
+        completedStages++;
+      }
+    }
+
+    const percent =
+      Math.round(
+        (completedStages /
+          TOTAL_STAGES) *
+          100
+      );
+
+    return {
+      completedStages,
+      percent,
+    };
+  };
+
+  /* =======================================================
+     ĐẾM HUY HIỆU
+  ======================================================= */
+
+  const earnedBadges =
+    GAME_DATA.filter((game) =>
+      hasClaimedBadge(game.id)
+    );
+
+  /* =======================================================
+     GAME HOME
   ======================================================= */
 
   return (
     <div className="game-page">
 
-      {/* ===================================================
-          ÁNH SÁNG HUYỀN BÍ
-      =================================================== */}
+      <GameHeader
+        navigate={navigate}
+      />
 
-      <div className="game-mystic-glow game-glow-1" />
-      <div className="game-mystic-glow game-glow-2" />
-      <div className="game-mystic-glow game-glow-3" />
+      <main className="game-content">
 
+        {/* =================================================
+            INTRO
+        ================================================= */}
 
-      {/* ===================================================
-          HERO
-      =================================================== */}
+        <section className="game-intro">
 
-      <section className="game-hero">
-
-        <div className="hero-mist hero-mist-1" />
-        <div className="hero-mist hero-mist-2" />
-
-        <button
-          type="button"
-          className="game-back-button"
-          onClick={
-            handleBack
-          }
-        >
-          ← Trang học
-        </button>
-
-
-        <div className="game-hero-content">
-
-          <div className="game-hero-icon">
-            🛕
+          <div className="game-icon">
+            🎮
           </div>
 
-          <h1 className="game-hero-title">
-            HÀNH TRÌNH CHINH PHỤC 10 NGÔI ĐỀN
+          <div className="game-khmer-title">
+            ហ្គេម
+          </div>
+
+          <h1>
+            TRÒ CHƠI
           </h1>
 
-          <div className="game-hero-khmer-title">
-            ដំណើរនៃការយកឈ្នះប្រាសាទទាំង ១០
-          </div>
-
-          <p className="game-hero-subtitle">
-            Chinh phục tiếng Khmer qua từng ngôi đền
+          <p>
+            Hành trình chinh phục tiếng Khmer
           </p>
 
-          <div className="game-hero-khmer-subtitle">
-            ដំណើររៀនភាសាខ្មែរតាមរយៈប្រាសាទនីមួយៗ
+        </section>
+
+        {/* =================================================
+            THÔNG TIN NGƯỜI HỌC
+        ================================================= */}
+
+        <section className="game-progress-section">
+
+          <div className="game-section-title">
+            <span>👤</span>
+            THÔNG TIN NGƯỜI HỌC
           </div>
 
-          <div className="hero-rune-line">
-            ✦ ───── ✧ ───── ✦
-          </div>
+          <div className="learner-card">
 
-        </div>
-
-      </section>
-
-
-      {/* ===================================================
-          PLAYER CARD
-      =================================================== */}
-
-      <section className="game-player-card">
-
-        <div className="game-player-main">
-
-          <div className="game-player-info">
-
-            <div className="game-player-avatar">
-              👤
-            </div>
-
-            <div className="game-player-name">
-
-              <span className="game-player-label">
-                NHÀ CHINH PHỤC
-              </span>
-
+            <div className="learner-greeting">
+              XIN CHÀO,{" "}
               <strong>
-                {profile?.username ||
-                  "Học viên"}
+                {learnerName}
               </strong>
+            </div>
 
-              <small>
-                Hành trình chinh phục tiếng Khmer
-              </small>
+            <div className="learner-level-row">
 
+              <div className="learner-level">
+                LEVEL{" "}
+                <strong>
+                  {level}
+                </strong>
+              </div>
+
+              <div className="learner-exp">
+                {totalExp.toLocaleString()} EXP
+              </div>
+
+            </div>
+
+            <div className="exp-bar">
+
+              <div
+                className="exp-bar-fill"
+                style={{
+                  width: `${expPercent}%`,
+                }}
+              />
+
+            </div>
+
+            <div className="exp-detail">
+              {totalExp.toLocaleString()} /{" "}
+              {nextLevelExp.toLocaleString()} EXP
             </div>
 
           </div>
 
-
-          <div className="game-player-stats">
-
-            <div className="game-player-stat">
-
-              <span className="game-stat-icon">
-                ✦
-              </span>
-
-              <div>
-
-                <strong>
-                  {profile?.exp ?? 0}
-                </strong>
-
-                <small>
-                  EXP
-                </small>
-
-              </div>
-
-            </div>
-
-
-            <div className="game-player-stat">
-
-              <span className="game-stat-icon">
-                🛕
-              </span>
-
-              <div>
-
-                <strong>
-                  {completedCount} / 10
-                </strong>
-
-                <small>
-                  NGÔI ĐỀN
-                </small>
-
-              </div>
-
-            </div>
-
-
-            <div className="game-player-stat">
-
-              <span className="game-stat-icon">
-                🏆
-              </span>
-
-              <div>
-
-                <strong>
-                  {badgeCount} / 10
-                </strong>
-
-                <small>
-                  HUY HIỆU
-                </small>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
+        </section>
 
         {/* =================================================
-            PROGRESS
+            TIẾN ĐỘ GAME
         ================================================= */}
 
-        <div className="game-progress-area">
+        <section className="game-progress-section">
 
-          <div className="game-progress-heading">
-
-            <strong>
-              ✦ HÀNH TRÌNH CỦA BẠN
-            </strong>
-
-            <span>
-              {completedCount} / 10 ngôi đền
-            </span>
-
+          <div className="game-section-title">
+            <span>📊</span>
+            TIẾN ĐỘ TRÒ CHƠI
           </div>
 
+          <div className="game-progress-list">
 
-          <div className="game-progress-bar">
+            {GAME_DATA.map((game) => {
 
-            <div
-              className="game-progress-fill"
-              style={{
-                width:
-                  `${progressPercent}%`,
-              }}
-            />
-
-          </div>
-
-
-          <div className="game-progress-text">
-
-            {completedCount === 0
-              ? "Hãy bước qua cánh cổng và bắt đầu Wat Ák-sâ."
-
-              : completedCount === 10
-              ? "Bạn đã hoàn thành toàn bộ hành trình."
-
-              : `Đã chinh phục ${completedCount} ngôi đền — ${
-                  10 - completedCount
-                } ngôi đền vẫn đang chờ bạn.`}
-
-          </div>
-
-        </div>
-
-
-        {/* =================================================
-            BADGES
-        ================================================= */}
-
-        <div className="game-badges-section">
-
-          <div className="game-badges-header">
-
-            <div>
-
-              <h2>
-                🏯 HUY HIỆU CHINH PHỤC
-              </h2>
-
-              <p>
-                Mỗi huy hiệu đánh dấu một ngôi đền đã vượt qua
-              </p>
-
-            </div>
-
-            <span className="game-badge-count">
-              {badgeCount} / 10
-            </span>
-
-          </div>
-
-
-          <div className="game-badges">
-
-            {GAMES.map((game) => {
+              const unlocked =
+                isGameUnlocked(
+                  game.id,
+                  completedGames
+                );
 
               const completed =
-                game.id <=
-                completedCount;
+                isGameCompleted(
+                  game.id
+                );
 
+              const {
+                completedStages,
+                percent,
+              } =
+                getGameProgress(
+                  game.id
+                );
+
+              const reward =
+                GAME_EXP(game.id);
 
               return (
                 <div
                   key={game.id}
-                  className={`
-                    game-badge
-                    ${
-                      completed
-                        ? "game-badge-completed"
-                        : "game-badge-locked"
-                    }
-                    ${
-                      game.final
-                        ? "game-badge-final"
-                        : ""
-                    }
-                  `}
-                  title={
+                  className={[
+                    "game-progress-card",
+                    unlocked
+                      ? "unlocked"
+                      : "locked",
                     completed
-                      ? `${game.wat} — Đã chinh phục`
-                      : `${game.wat} — Chưa chinh phục`
+                      ? "completed"
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={() =>
+                    handleGameClick(game)
                   }
                 >
 
-                  <div className="game-badge-temple">
+                  {/* GAME TOP */}
 
-                    {completed
-                      ? "🛕"
-                      : "🔒"}
+                  <div className="game-progress-top">
 
-                    <span className="game-badge-number">
-                      {game.id}
+                    <div className="game-progress-name">
+
+                      <span className="game-progress-dot">
+                        {completed
+                          ? "🟢"
+                          : unlocked
+                          ? "🔵"
+                          : "🔒"}
+                      </span>
+
+                      GAME {game.id}
+
+                    </div>
+
+                    <div className="game-progress-count">
+                      {completedStages} /{" "}
+                      {TOTAL_STAGES} MÀN
+                    </div>
+
+                  </div>
+
+                  {/* DESCRIPTION */}
+
+                  <div className="game-progress-description">
+
+                    {unlocked
+                      ? game.description ||
+                        game.title ||
+                        "Hành trình chinh phục tiếng Khmer"
+                      : "Chưa mở khóa"}
+
+                  </div>
+
+                  {/* PROGRESS BAR */}
+
+                  <div className="game-progress-bar">
+
+                    <div
+                      className="game-progress-fill"
+                      style={{
+                        width: `${percent}%`,
+                      }}
+                    />
+
+                  </div>
+
+                  {/* BOTTOM */}
+
+                  <div className="game-progress-bottom">
+
+                    <span>
+                      {percent}%
+                    </span>
+
+                    <span className="game-progress-status">
+
+                      {completed
+                        ? "✓ HOÀN THÀNH"
+                        : unlocked
+                        ? "ĐANG HỌC"
+                        : "🔒 CHƯA MỞ"}
+
                     </span>
 
                   </div>
 
-                  <strong className="game-badge-wat">
-                    {game.wat}
-                  </strong>
+                  {/* EXP */}
 
-                  <span className="game-badge-khmer">
-                    {game.khmer}
-                  </span>
+                  <div className="game-progress-reward">
 
-                  <small>
-                    {game.title}
-                  </small>
+                    Hoàn thành Game nhận{" "}
+                    <strong>
+                      +{reward.toLocaleString()} EXP
+                    </strong>
+
+                  </div>
 
                 </div>
               );
-
             })}
 
           </div>
 
-        </div>
-
-      </section>
-
-
-      {/* ===================================================
-          START BANNER
-      =================================================== */}
-
-      <section className="game-start-banner">
-
-        <div className="game-start-icon">
-          🗝️
-        </div>
-
-        <div className="game-start-content">
-
-          <h2>
-            CÁNH CỔNG ĐANG CHỜ BẠN
-          </h2>
-
-          <p>
-            Bước vào hành trình khám phá những bí mật của tiếng Khmer
-          </p>
-
-          <div className="game-start-khmer">
-            ចាប់ផ្តើមដំណើររបស់អ្នក
-          </div>
-
-        </div>
-
-        <div className="game-start-arrow">
-          ↓
-        </div>
-
-      </section>
-
-
-      {/* ===================================================
-          MAP
-      =================================================== */}
-
-      <section className="game-section">
-
-        <div className="game-section-header">
-
-          <div className="game-section-icon">
-            ✦
-          </div>
-
-          <h2>
-            BẢN ĐỒ HÀNH TRÌNH
-          </h2>
-
-          <div className="game-section-khmer">
-            ផែនទីដំណើរ
-          </div>
-
-          <p>
-            Mỗi ngôi đền là một thử thách.
-            Mỗi bước tiến mở ra một bí mật mới.
-          </p>
-
-        </div>
-
+        </section>
 
         {/* =================================================
-            MAP
+            HUY HIỆU
         ================================================= */}
 
-        <div className="game-map">
+        <section className="game-progress-section badge-section">
 
-          <div className="game-map-mist map-mist-1" />
-          <div className="game-map-mist map-mist-2" />
-          <div className="game-map-mist map-mist-3" />
+          <div className="game-section-title">
+            <span>🏆</span>
+            HUY HIỆU
+          </div>
 
+          <div className="badge-count">
 
-          {/* SAO */}
-
-          <div className="game-stars">
-
-            <span className="map-star star-1">
-              ✦
-            </span>
-
-            <span className="map-star star-2">
-              ✧
-            </span>
-
-            <span className="map-star star-3">
-              ✦
-            </span>
-
-            <span className="map-star star-4">
-              ·
-            </span>
-
-            <span className="map-star star-5">
-              ✧
-            </span>
-
-            <span className="map-star star-6">
-              ✦
-            </span>
-
-            <span className="map-star star-7">
-              ·
-            </span>
-
-            <span className="map-star star-8">
-              ✧
-            </span>
-
-            <span className="map-star star-9">
-              ✦
-            </span>
-
-            <span className="map-star star-10">
-              ·
-            </span>
+            ĐÃ ĐẠT{" "}
+            <strong>
+              {earnedBadges.length}
+            </strong>{" "}
+            HUY HIỆU
 
           </div>
 
+          <div className="badge-grid">
 
-          {/* CHỮ KHMER */}
+            {GAME_DATA.map((game) => {
 
-          <div className="game-map-runes">
-
-            <span className="map-rune rune-1">
-              អ
-            </span>
-
-            <span className="map-rune rune-2">
-              ក
-            </span>
-
-            <span className="map-rune rune-3">
-              ខ
-            </span>
-
-            <span className="map-rune rune-4">
-              ម
-            </span>
-
-            <span className="map-rune rune-5">
-              យ
-            </span>
-
-            <span className="map-rune rune-6">
-              ភ
-            </span>
-
-          </div>
-
-
-          {/* ĐƯỜNG ÁNH SÁNG */}
-
-          <div className="game-map-energy-line" />
-
-
-          {/* =================================================
-              10 NGÔI ĐỀN
-          ================================================= */}
-
-          <div className="game-map-path">
-
-            {GAMES.map(
-              (game, index) => {
-
-                const completed =
-                  game.id <=
-                  completedCount;
-
-
-                const unlocked =
-                  isWatUnlocked(
-                    game
-                  );
-
-
-                const isCurrent =
-                  unlocked &&
-                  !completed;
-
-
-                return (
-                  <div
-                    key={game.id}
-                    className={`
-                      game-map-node-wrapper
-                      ${
-                        index % 2 === 0
-                          ? "map-left"
-                          : "map-right"
-                      }
-                    `}
-                  >
-
-                    {/* ĐƯỜNG NỐI */}
-
-                    {index <
-                      GAMES.length - 1 && (
-                      <div
-                        className={`
-                          game-map-connector
-                          ${
-                            completed
-                              ? "connector-completed"
-                              : ""
-                          }
-                        `}
-                      />
-                    )}
-
-
-                    {/* NGÔI ĐỀN */}
-
-                    <div
-                      className={`
-                        game-map-node
-
-                        ${
-                          completed
-                            ? "game-map-node-completed"
-                            : ""
-                        }
-
-                        ${
-                          isCurrent
-                            ? "game-map-node-current"
-                            : ""
-                        }
-
-                        ${
-                          !unlocked
-                            ? "game-map-node-locked"
-                            : ""
-                        }
-
-                        ${
-                          game.final
-                            ? "game-map-node-final"
-                            : ""
-                        }
-                      `}
-                      onClick={() =>
-                        handleWatClick(
-                          game
-                        )
-                      }
-                    >
-
-                      {/* HÀO QUANG */}
-
-                      <div className="temple-aura" />
-
-                      <div className="temple-aura temple-aura-2" />
-
-
-                      {/* SỐ */}
-
-                      <div className="game-map-number">
-                        {game.id}
-                      </div>
-
-
-                      {/* KHÓA */}
-
-                      {!unlocked && (
-                        <div className="game-map-lock">
-                          🔒
-                        </div>
-                      )}
-
-
-                      {/* HOÀN THÀNH */}
-
-                      {completed && (
-                        <div className="game-map-completed">
-                          ✓
-                        </div>
-                      )}
-
-
-                      {/* MÁI ĐỀN */}
-
-                      <div className="temple-building">
-
-                        <div className="temple-roof temple-roof-top">
-                          <span />
-                        </div>
-
-                        <div className="temple-roof temple-roof-middle">
-                          <span />
-                        </div>
-
-                        <div className="temple-roof temple-roof-bottom">
-                          <span />
-                        </div>
-
-
-                        {/* CỘT */}
-
-                        <div className="temple-pillars">
-
-                          <span className="temple-pillar" />
-                          <span className="temple-pillar" />
-                          <span className="temple-pillar" />
-                          <span className="temple-pillar" />
-
-                        </div>
-
-
-                        {/* CỬA */}
-
-                        <div className="temple-door">
-                          {game.icon}
-                        </div>
-
-
-                        {/* BỆ */}
-
-                        <div className="temple-base" />
-
-                      </div>
-
-
-                      {/* THÔNG TIN */}
-
-                      <div className="temple-info">
-
-                        <div className="temple-wat">
-                          {game.wat}
-                        </div>
-
-                        <div className="temple-khmer">
-                          {game.khmer}
-                        </div>
-
-                        <h3>
-                          {game.title}
-                        </h3>
-
-                        <p>
-                          {game.description}
-                        </p>
-
-                      </div>
-
-
-                      {/* TRẠNG THÁI */}
-
-                      <div
-                        className={`
-                          game-map-status
-
-                          ${
-                            completed
-                              ? "status-completed"
-                              : unlocked
-                              ? "status-available"
-                              : "status-locked"
-                          }
-                        `}
-                      >
-
-                        {completed ? (
-                          <>
-                            🏆 Đã chinh phục
-                          </>
-                        ) : unlocked ? (
-                          <>
-                            <span className="status-dot" />
-                            Chinh phục ngay
-                          </>
-                        ) : (
-                          <>
-                            🔒 Chưa mở khóa
-                          </>
-                        )}
-
-                      </div>
-
-                    </div>
-
-                  </div>
+              const earned =
+                hasClaimedBadge(
+                  game.id
                 );
 
-              }
-            )}
+              return (
+                <div
+                  key={game.id}
+                  className={
+                    `badge-card ${
+                      earned
+                        ? "earned"
+                        : "locked"
+                    }`
+                  }
+                >
+
+                  <div className="badge-icon">
+                    {earned
+                      ? game.badgeIcon || "🏆"
+                      : "🔒"}
+                  </div>
+
+                  <div className="badge-name">
+
+                    {earned
+                      ? game.badgeName ||
+                        `GAME ${game.id}`
+                      : "???"}
+
+                  </div>
+
+                  <div className="badge-description">
+
+                    {earned
+                      ? game.badgeDescription ||
+                        `Hoàn thành Game ${game.id}`
+                      : "Chưa đạt được"}
+
+                  </div>
+
+                </div>
+              );
+            })}
 
           </div>
 
+        </section>
 
-          {/* =================================================
-              CỔNG CUỐI
-          ================================================= */}
+        {/* =================================================
+            DANH SÁCH GAME GỐC
+        ================================================= */}
 
-          <div
-            className={`
-              game-map-ending
-              ${
-                completedCount === 10
-                  ? "game-map-ending-completed"
-                  : "game-map-ending-locked"
-              }
-            `}
-          >
+        <section className="game-list-section">
 
-            <div className="ending-energy-ring ending-ring-1" />
-            <div className="ending-energy-ring ending-ring-2" />
-            <div className="ending-energy-ring ending-ring-3" />
-
-            <div className="ending-symbol">
-              {completedCount === 10
-                ? "✦"
-                : "🔒"}
-            </div>
-
-            <div className="ending-title">
-              {completedCount === 10
-                ? "HÀNH TRÌNH HOÀN TẤT"
-                : "HẾT HÀNH TRÌNH"}
-            </div>
-
-            <div className="ending-khmer">
-              មហាជ័យ
-            </div>
-
-            <div className="ending-text">
-
-              {completedCount === 10 ? (
-                <>
-                  ✦ Bạn đã chinh phục đủ{" "}
-                  <strong>
-                    10 ngôi đền
-                  </strong>.
-                  <br />
-                  Cánh cổng Đại Thắng đã được đánh thức.
-                </>
-              ) : (
-                <>
-                  Chỉ người chinh phục đủ{" "}
-                  <strong>
-                    10 ngôi đền
-                  </strong>
-                  <br />
-                  mới có thể bước đến đây.
-                </>
-              )}
-
-            </div>
-
-            {completedCount === 10 && (
-              <div className="ending-complete-badge">
-                🏆 ĐÃ CHINH PHỤC 10 / 10 NGÔI ĐỀN
-              </div>
-            )}
-
+          <div className="game-section-title">
+            <span>🎮</span>
+            DANH SÁCH TRÒ CHƠI
           </div>
 
-        </div>
+          <section className="game-list">
 
-      </section>
+            {GAME_DATA.map((game) => {
+
+              const unlocked =
+                isGameUnlocked(
+                  game.id,
+                  completedGames
+                );
+
+              const completed =
+                isGameCompleted(
+                  game.id
+                );
+
+              return (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  unlocked={unlocked}
+                  completed={completed}
+                  onClick={() =>
+                    handleGameClick(game)
+                  }
+                />
+              );
+            })}
+
+          </section>
+
+        </section>
+
+      </main>
 
     </div>
   );
-}
-
+};
 
 export default Game;

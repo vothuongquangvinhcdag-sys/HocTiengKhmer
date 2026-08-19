@@ -1,0 +1,909 @@
+/* =========================================================
+   GAME STAGE — SHARED
+   STAGE 1 → GREEN
+   STAGE 2 → BLUE
+   STAGE 3 → PURPLE
+   STAGE 4 → RED
+   KHMER OS + KHMER OS MUOL
+========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer OS Muol";
+  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================================================
+   COLOR SYSTEM
+========================================================= */
+
+.game-stage-page {
+  --stage-main: #1dba22;
+  --stage-dark: #126817;
+  --stage-light: #f2fff3;
+  --stage-border: #8be58f;
+  --stage-glow: rgba(29, 186, 34, 0.22);
+  --stage-soft: rgba(29, 186, 34, 0.08);
+
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      var(--stage-soft),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      var(--stage-soft),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      var(--stage-soft),
+      transparent 32%
+    ),
+    var(--stage-light);
+
+  color: var(--stage-dark);
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+/* =========================================================
+   STAGE 1 — GREEN
+========================================================= */
+
+.game-stage-page.game-stage-1 {
+  --stage-main: #1dba22;
+  --stage-dark: #126817;
+  --stage-light: #f2fff3;
+  --stage-border: #8be58f;
+  --stage-glow: rgba(29, 186, 34, 0.22);
+  --stage-soft: rgba(29, 186, 34, 0.08);
+}
+
+/* =========================================================
+   STAGE 2 — BLUE
+========================================================= */
+
+.game-stage-page.game-stage-2 {
+  --stage-main: #3b82f6;
+  --stage-dark: #174a8b;
+  --stage-light: #f1f7ff;
+  --stage-border: #93c5fd;
+  --stage-glow: rgba(59, 130, 246, 0.22);
+  --stage-soft: rgba(59, 130, 246, 0.08);
+}
+
+/* =========================================================
+   STAGE 3 — PURPLE
+========================================================= */
+
+.game-stage-page.game-stage-3 {
+  --stage-main: #8b5cf6;
+  --stage-dark: #54269a;
+  --stage-light: #f7f4ff;
+  --stage-border: #c4b5fd;
+  --stage-glow: rgba(139, 92, 246, 0.22);
+  --stage-soft: rgba(139, 92, 246, 0.08);
+}
+
+/* =========================================================
+   STAGE 4 — RED
+========================================================= */
+
+.game-stage-page.game-stage-4 {
+  --stage-main: #ef4444;
+  --stage-dark: #a51d1d;
+  --stage-light: #fff5f5;
+  --stage-border: #fca5a5;
+  --stage-glow: rgba(239, 68, 68, 0.22);
+  --stage-soft: rgba(239, 68, 68, 0.08);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.game-stage-header {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 30px;
+}
+
+.game-stage-header button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+
+  background: var(--stage-main);
+  color: #ffffff;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px var(--stage-glow);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.game-stage-header button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(0.92);
+
+  box-shadow:
+    0 7px 22px var(--stage-glow);
+}
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.game-stage-content {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.game-stage-icon {
+  font-size: 52px;
+  margin-bottom: 8px;
+}
+
+/* =========================================================
+   KHMER
+========================================================= */
+
+.game-stage-khmer {
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  margin-bottom: 8px;
+
+  color: var(--stage-main);
+}
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.game-stage-content h1 {
+  margin: 0;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 42px;
+  font-weight: 900;
+  letter-spacing: 1px;
+
+  color: var(--stage-dark);
+}
+
+.game-stage-content > p {
+  margin: 12px auto 30px;
+  max-width: 650px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 17px;
+  line-height: 1.6;
+
+  color: var(--stage-dark);
+  opacity: 0.78;
+}
+
+/* =========================================================
+   STAGE LIST
+========================================================= */
+
+.stage-list {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   STAGE CARD
+========================================================= */
+
+.stage-card {
+  width: 100%;
+  min-height: 100px;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 18px 22px;
+  box-sizing: border-box;
+
+  border: 2px solid transparent;
+  border-radius: 18px;
+
+  background: #ffffff;
+
+  text-align: left;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+/* =========================================================
+   CARD UNLOCKED
+========================================================= */
+
+.stage-card-unlocked {
+  border-color: var(--stage-border);
+
+  box-shadow:
+    0 6px 18px var(--stage-soft);
+}
+
+.stage-card-unlocked:hover {
+  transform: translateY(-3px);
+
+  border-color: var(--stage-main);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      var(--stage-light) 100%
+    );
+
+  box-shadow:
+    0 8px 26px var(--stage-glow);
+}
+
+/* =========================================================
+   CARD LOCKED
+========================================================= */
+
+.stage-card-locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+.stage-card-locked .stage-card-number {
+  background: #cbd5e1 !important;
+  box-shadow: none !important;
+}
+
+.stage-card-locked .stage-card-arrow {
+  color: #94a3b8 !important;
+  text-shadow: none !important;
+}
+
+/* =========================================================
+   CARD COMPLETED
+========================================================= */
+
+.stage-card-completed {
+  border-color: var(--stage-main);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      var(--stage-light)
+    );
+
+  box-shadow:
+    0 0 18px var(--stage-glow);
+}
+
+/* =========================================================
+   NUMBER
+========================================================= */
+
+.stage-card-number {
+  width: 54px;
+  height: 54px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: var(--stage-main);
+  color: #ffffff;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  box-shadow:
+    0 4px 12px var(--stage-glow);
+}
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.stage-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.stage-card-info h3 {
+  margin: 0 0 5px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  color: var(--stage-dark);
+}
+
+.stage-card-info p {
+  margin: 0;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: #64748b;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.stage-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  margin-top: 9px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.stage-card-stats span:nth-child(1) {
+  color: var(--stage-main);
+}
+
+.stage-card-stats span:nth-child(2) {
+  color: #d99a00;
+}
+
+.stage-card-stats span:nth-child(3) {
+  color: #64748b;
+}
+
+/* =========================================================
+   ARROW / ✓
+========================================================= */
+
+.stage-card-arrow {
+  flex-shrink: 0;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 20px;
+  font-weight: 900;
+
+  color: var(--stage-main);
+
+  text-shadow:
+    0 0 8px var(--stage-glow);
+}
+
+/* =========================================================
+   PLAY INFO
+========================================================= */
+
+.stage-play-info {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+
+  margin: 20px auto;
+}
+
+.stage-play-info strong,
+.stage-play-info span {
+  padding: 10px 16px;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--stage-border);
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 900;
+
+  color: var(--stage-main);
+
+  box-shadow:
+    0 4px 12px var(--stage-soft);
+}
+
+/* =========================================================
+   GAME PLACEHOLDER
+========================================================= */
+
+.stage-game-placeholder {
+  width: 100%;
+  max-width: 700px;
+
+  margin: 30px auto;
+
+  padding: 40px 24px;
+  box-sizing: border-box;
+
+  border: 2px dashed var(--stage-border);
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 8px 25px var(--stage-soft);
+}
+
+.stage-placeholder-icon {
+  font-size: 52px;
+  margin-bottom: 12px;
+}
+
+.stage-game-placeholder h2 {
+  margin: 0 0 8px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 24px;
+  font-weight: 900;
+
+  color: var(--stage-dark);
+}
+
+.stage-game-placeholder p {
+  margin: 0 0 24px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: #64748b;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.stage-test-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.stage-test-buttons button,
+.stage-game-placeholder > button {
+  border: none;
+  border-radius: 12px;
+
+  padding: 12px 20px;
+
+  background: var(--stage-main);
+  color: #ffffff;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px var(--stage-glow);
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stage-test-buttons button:hover,
+.stage-game-placeholder > button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(0.92);
+
+  box-shadow:
+    0 7px 20px var(--stage-glow);
+}
+
+/* =========================================================
+   RESULT CARD
+========================================================= */
+
+.stage-result {
+  max-width: 650px;
+
+  margin: 60px auto;
+
+  padding: 42px 28px;
+  box-sizing: border-box;
+
+  border-radius: 24px;
+
+  background: #ffffff;
+
+  border: 2px solid var(--stage-border);
+
+  box-shadow:
+    0 10px 35px var(--stage-soft),
+    0 0 20px var(--stage-soft);
+
+  text-align: center;
+}
+
+/* =========================================================
+   RESULT ICON
+========================================================= */
+
+.stage-result-icon {
+  font-size: 64px;
+  margin-bottom: 10px;
+}
+
+/* =========================================================
+   KHMER RESULT
+   DÙNG KHMER OS
+========================================================= */
+
+.stage-result-khmer {
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  color: var(--stage-main);
+
+  font-size: 25px;
+  font-weight: 400;
+
+  line-height: 1.8;
+
+  margin-bottom: 8px;
+}
+
+/* =========================================================
+   RESULT TITLE
+========================================================= */
+
+.stage-result h1 {
+  margin: 0 0 12px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 32px;
+  font-weight: 900;
+
+  color: var(--stage-dark);
+}
+
+/* =========================================================
+   RESULT DESCRIPTION
+========================================================= */
+
+.stage-result p {
+  margin: 0 auto 24px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  color: #64748b;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   RESULT BUTTON
+========================================================= */
+
+.stage-result button {
+  display: block;
+
+  width: min(100%, 320px);
+
+  margin: 10px auto;
+
+  padding: 13px 20px;
+
+  border: none;
+  border-radius: 12px;
+
+  background: var(--stage-main);
+  color: #ffffff;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px var(--stage-glow);
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stage-result button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(0.92);
+
+  box-shadow:
+    0 7px 20px var(--stage-glow);
+}
+
+/* =========================================================
+   RESULT — LOSE
+   VẪN THEO MÀU CỦA STAGE
+========================================================= */
+
+.stage-result-lose {
+  border-color: var(--stage-border);
+
+  box-shadow:
+    0 10px 35px var(--stage-soft);
+}
+
+.stage-result-lose .stage-result-khmer {
+  color: var(--stage-main);
+}
+
+/* =========================================================
+   FINAL RESULT
+========================================================= */
+
+.stage-result-final {
+  border-color: var(--stage-main);
+
+  box-shadow:
+    0 10px 40px var(--stage-glow),
+    0 0 30px var(--stage-soft);
+}
+
+.stage-result-final .stage-result-khmer {
+  color: var(--stage-main);
+}
+
+/* =========================================================
+   REWARD
+========================================================= */
+
+.stage-reward {
+  display: grid;
+  gap: 10px;
+
+  margin: 24px auto;
+
+  padding: 18px;
+
+  border-radius: 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--stage-light),
+      #fffbea
+    );
+
+  border: 1px solid #e8c84a;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+.stage-reward strong {
+  font-size: 28px;
+
+  color: #d99a00;
+
+  text-shadow:
+    0 1px 8px rgba(250, 204, 21, 0.25);
+}
+
+.stage-reward span {
+  font-weight: 900;
+  color: var(--stage-main);
+}
+
+/* =========================================================
+   STAGE-SPECIFIC RESULT COLORS
+========================================================= */
+
+.game-stage-1 .stage-result-khmer {
+  color: #1dba22;
+}
+
+.game-stage-2 .stage-result-khmer {
+  color: #3b82f6;
+}
+
+.game-stage-3 .stage-result-khmer {
+  color: #8b5cf6;
+}
+
+.game-stage-4 .stage-result-khmer {
+  color: #ef4444;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+  .game-stage-page {
+    padding: 16px;
+  }
+
+  .game-stage-content h1 {
+    font-size: 32px;
+  }
+
+  .game-stage-khmer {
+    font-size: 23px;
+  }
+
+  .stage-card {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  .stage-card-number {
+    width: 46px;
+    height: 46px;
+  }
+
+  .stage-card-info h3 {
+    font-size: 17px;
+  }
+
+  .stage-card-stats {
+    display: grid;
+    gap: 5px;
+  }
+
+  .stage-play-info {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stage-result {
+    margin: 35px auto;
+    padding: 32px 20px;
+  }
+
+  .stage-result-khmer {
+    font-size: 22px;
+  }
+
+  .stage-result h1 {
+    font-size: 27px;
+  }
+}
