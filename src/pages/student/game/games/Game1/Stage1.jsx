@@ -25,15 +25,10 @@ const BASE_SCORE = 10;
    ÂM THANH
 ========================================================= */
 
-const SOUND_CORRECT =
-  "/audio/games/correct.mp3";
-
-const SOUND_WRONG =
-  "/audio/games/wrong.mp3";
-
+const SOUND_CORRECT = "/audio/games/correct.mp3";
+const SOUND_WRONG = "/audio/games/wrong.mp3";
 const SOUND_STAGE_COMPLETE =
   "/audio/games/stage-complete.mp3";
-
 const SOUND_STAGE_FAIL =
   "/audio/games/stage-fail.mp3";
 
@@ -41,10 +36,11 @@ const SOUND_STAGE_FAIL =
    RANDOM
 ========================================================= */
 
-const shuffle = (array) =>
-  [...array].sort(
+const shuffle = (array) => {
+  return [...array].sort(
     () => Math.random() - 0.5
   );
+};
 
 /* =========================================================
    PHÁT ÂM THANH
@@ -74,23 +70,37 @@ const playSound = (src) => {
 };
 
 /* =========================================================
+   TẠO ĐÁP ÁN SAI
+   - Không trùng phiên âm đúng
+   - Không trùng nhau
+   - Luôn lấy tối đa 3 phiên âm khác nhau
+========================================================= */
+
+const createWrongAnswers = (question) => {
+  const uniqueWrongRomans = [
+    ...new Set(
+      stage1Data
+        .filter(
+          (item) =>
+            item.id !== question.id &&
+            item.roman !== question.roman
+        )
+        .map((item) => item.roman)
+    ),
+  ];
+
+  return shuffle(uniqueWrongRomans).slice(0, 3);
+};
+
+/* =========================================================
    TẠO 1 CÂU HỎI
 ========================================================= */
 
 const createQuestion = () => {
-  const question =
-    shuffle(stage1Data)[0];
+  const question = shuffle(stage1Data)[0];
 
-  const wrongAnswers = shuffle(
-    stage1Data.filter(
-      (item) =>
-        item.id !== question.id
-    )
-  )
-    .slice(0, 3)
-    .map(
-      (item) => item.roman
-    );
+  const wrongAnswers =
+    createWrongAnswers(question);
 
   return {
     ...question,
@@ -109,16 +119,8 @@ const createQuestions = () => {
   return shuffle(stage1Data)
     .slice(0, TOTAL_QUESTIONS)
     .map((question) => {
-      const wrongAnswers = shuffle(
-        stage1Data.filter(
-          (item) =>
-            item.id !== question.id
-        )
-      )
-        .slice(0, 3)
-        .map(
-          (item) => item.roman
-        );
+      const wrongAnswers =
+        createWrongAnswers(question);
 
       return {
         ...question,
@@ -174,10 +176,7 @@ const Stage1 = ({ navigate }) => {
   ======================================================= */
 
   useEffect(() => {
-    startStage(
-      gameId,
-      stageId
-    );
+    startStage(gameId, stageId);
   }, []);
 
   /* =======================================================
@@ -196,15 +195,14 @@ const Stage1 = ({ navigate }) => {
       while (
         updated.some(
           (item) =>
-            item.id ===
-            newQuestion.id
+            item.id === newQuestion.id
         ) &&
         safety < 50
       ) {
         newQuestion =
           createQuestion();
 
-        safety++;
+        safety += 1;
       }
 
       updated[questionIndex] =
@@ -303,12 +301,10 @@ const Stage1 = ({ navigate }) => {
         combo + 1;
 
       const gainedScore =
-        nextCombo *
-        BASE_SCORE;
+        nextCombo * BASE_SCORE;
 
       const newScore =
-        score +
-        gainedScore;
+        score + gainedScore;
 
       setCombo(nextCombo);
       setScore(newScore);
@@ -510,7 +506,7 @@ const Stage1 = ({ navigate }) => {
             <div className="stage-options">
 
               {currentQuestion.options.map(
-                (option) => {
+                (option, optionIndex) => {
 
                   const isCorrect =
                     option ===
@@ -542,7 +538,7 @@ const Stage1 = ({ navigate }) => {
 
                   return (
                     <button
-                      key={option}
+                      key={`${currentQuestion.id}-${option}-${optionIndex}`}
                       type="button"
                       className={
                         className
