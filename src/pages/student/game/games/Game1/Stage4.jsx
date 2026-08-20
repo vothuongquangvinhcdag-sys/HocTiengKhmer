@@ -73,15 +73,10 @@ const playSound = (src) => {
 };
 
 /* =========================================================
-   LẤY 3 ĐÁP ÁN SAI KHÁC NHAU
+   LẤY 3 ĐÁP ÁN SAI
 ========================================================= */
 
 const getWrongAnswers = (question) => {
-  /*
-   * Lấy answer từ các câu khác
-   * và loại bỏ answer trùng nhau.
-   */
-
   const uniqueAnswers = [
     ...new Set(
       shuffle(
@@ -89,13 +84,9 @@ const getWrongAnswers = (question) => {
           .filter(
             (item) =>
               item.id !== question.id &&
-              item.answer !==
-                question.answer
+              item.answer !== question.answer
           )
-          .map(
-            (item) =>
-              item.answer
-          )
+          .map((item) => item.answer)
       )
     ),
   ];
@@ -105,8 +96,6 @@ const getWrongAnswers = (question) => {
 
 /* =========================================================
    TẠO 1 CÂU HỎI
-
-   1 đúng + 3 sai = 4 đáp án
 ========================================================= */
 
 const createQuestion = () => {
@@ -118,7 +107,6 @@ const createQuestion = () => {
 
   return {
     ...question,
-
     options: shuffle([
       question.answer,
       ...wrongAnswers,
@@ -134,13 +122,11 @@ const createQuestions = () => {
   return shuffle(stage4Data)
     .slice(0, TOTAL_QUESTIONS)
     .map((question) => {
-
       const wrongAnswers =
         getWrongAnswers(question);
 
       return {
         ...question,
-
         options: shuffle([
           question.answer,
           ...wrongAnswers,
@@ -155,7 +141,6 @@ const createQuestions = () => {
 ========================================================= */
 
 const Stage4 = ({ navigate }) => {
-
   /* =======================================================
      KIỂM TRA STAGE 3
   ======================================================= */
@@ -225,19 +210,6 @@ const Stage4 = ({ navigate }) => {
     setIsFirstWin,
   ] = useState(false);
 
-  /*
-   * Biến này KHÔNG dùng để nói
-   * "đã claim EXP hay chưa".
-   *
-   * Nó chỉ dùng để StageResult
-   * biết có cần hiện màn hình
-   * phần thưởng hay không.
-   *
-   * Lần đầu thắng:
-   * rewardClaimed = false
-   *
-   * → StageResult hiện +1.000 EXP.
-   */
   const [
     rewardClaimed,
     setRewardClaimed,
@@ -255,7 +227,6 @@ const Stage4 = ({ navigate }) => {
   ======================================================= */
 
   useEffect(() => {
-
     if (!stage3Completed) {
       navigate("/game/1");
       return;
@@ -265,26 +236,21 @@ const Stage4 = ({ navigate }) => {
       GAME_ID,
       STAGE_ID
     );
-
   }, [
     stage3Completed,
     navigate,
   ]);
 
   /* =======================================================
-     PHÁT AUDIO
+     PHÁT AUDIO CÂU HỎI
   ======================================================= */
 
   const playAudio = () => {
-
-    if (
-      !currentQuestion?.audio
-    ) {
+    if (!currentQuestion?.audio) {
       return;
     }
 
     try {
-
       const audio =
         new Audio(
           currentQuestion.audio
@@ -294,7 +260,6 @@ const Stage4 = ({ navigate }) => {
       audio.volume = 1;
 
       audio.play().catch(() => {});
-
     } catch {
       /* Không làm game lỗi */
     }
@@ -304,19 +269,15 @@ const Stage4 = ({ navigate }) => {
      THAY CÂU HIỆN TẠI
 
      Sai:
-     - Không tăng câu
+     - Không tăng số câu
      - Không reset điểm
      - Không reset lượt
      - Chỉ thay câu hiện tại
 ========================================================= */
 
   const replaceCurrentQuestion = () => {
-
     setQuestions((current) => {
-
-      const updated = [
-        ...current,
-      ];
+      const updated = [...current];
 
       let newQuestion =
         createQuestion();
@@ -331,16 +292,14 @@ const Stage4 = ({ navigate }) => {
         ) &&
         safety < 100
       ) {
-
         newQuestion =
           createQuestion();
 
         safety++;
       }
 
-      updated[
-        questionIndex
-      ] = newQuestion;
+      updated[questionIndex] =
+        newQuestion;
 
       return updated;
     });
@@ -354,29 +313,20 @@ const Stage4 = ({ navigate }) => {
   ======================================================= */
 
   const handleWin = (finalScore) => {
-
-    /* Âm thanh */
-
     playSound(
       SOUND_STAGE_COMPLETE
     );
-
-    /* Ghi 1 lượt chơi */
 
     recordStagePlay(
       GAME_ID,
       STAGE_ID
     );
 
-    /* Lưu điểm */
-
     recordStageScore(
       GAME_ID,
       STAGE_ID,
       finalScore
     );
-
-    /* Hoàn thành Stage */
 
     const completed =
       completeStage(
@@ -387,18 +337,13 @@ const Stage4 = ({ navigate }) => {
     const firstWin =
       completed.isFirstWin;
 
-    setIsFirstWin(
-      firstWin
-    );
+    setIsFirstWin(firstWin);
 
     /* =====================================================
        CLAIM EXP + BADGE
-
-       Chỉ lần đầu hoàn thành GAME.
     ===================================================== */
 
     if (firstWin) {
-
       if (
         !hasClaimedGameExp(
           GAME_ID
@@ -419,33 +364,12 @@ const Stage4 = ({ navigate }) => {
         );
       }
 
-      /*
-       * QUAN TRỌNG:
-       *
-       * Vừa claim EXP xong nhưng vẫn
-       * phải hiện màn hình phần thưởng.
-       *
-       * Vì vậy KHÔNG set true.
-       */
       setRewardClaimed(false);
-
     } else {
-
-      /*
-       * Đã hoàn thành Game trước đó.
-       * Không hiện màn hình nhận EXP lần nữa.
-       */
       setRewardClaimed(true);
     }
 
-    /* Điểm cuối */
-
-    setScore(
-      finalScore
-    );
-
-    /* Hiện StageResult */
-
+    setScore(finalScore);
     setResult("win");
   };
 
@@ -454,7 +378,6 @@ const Stage4 = ({ navigate }) => {
   ======================================================= */
 
   const handleLose = () => {
-
     playSound(
       SOUND_STAGE_FAIL
     );
@@ -478,7 +401,6 @@ const Stage4 = ({ navigate }) => {
   ======================================================= */
 
   const handleAnswer = (answer) => {
-
     if (
       answered ||
       !currentQuestion
@@ -486,10 +408,7 @@ const Stage4 = ({ navigate }) => {
       return;
     }
 
-    setSelectedAnswer(
-      answer
-    );
-
+    setSelectedAnswer(answer);
     setAnswered(true);
 
     const isCorrect =
@@ -501,7 +420,6 @@ const Stage4 = ({ navigate }) => {
     ===================================================== */
 
     if (isCorrect) {
-
       const nextCombo =
         combo + 1;
 
@@ -513,35 +431,21 @@ const Stage4 = ({ navigate }) => {
         score +
         gainedScore;
 
-      setCombo(
-        nextCombo
-      );
-
-      setScore(
-        newScore
-      );
+      setCombo(nextCombo);
+      setScore(newScore);
 
       playSound(
         SOUND_CORRECT
       );
 
       setTimeout(() => {
-
-        /* Đủ 10 câu */
-
         if (
           questionIndex >=
           questions.length - 1
         ) {
-
-          handleWin(
-            newScore
-          );
-
+          handleWin(newScore);
           return;
         }
-
-        /* Sang câu tiếp */
 
         setQuestionIndex(
           (current) =>
@@ -550,7 +454,6 @@ const Stage4 = ({ navigate }) => {
 
         setSelectedAnswer(null);
         setAnswered(false);
-
       }, 500);
 
       return;
@@ -567,7 +470,6 @@ const Stage4 = ({ navigate }) => {
     setCombo(0);
 
     setTimeout(() => {
-
       const newAttemptsLeft =
         attemptsLeft - 1;
 
@@ -575,26 +477,14 @@ const Stage4 = ({ navigate }) => {
         newAttemptsLeft
       );
 
-      /* Hết 3 lượt */
-
       if (
         newAttemptsLeft <= 0
       ) {
-
         handleLose();
-
         return;
       }
 
-      /*
-       * Còn lượt:
-       *
-       * Giữ nguyên số câu.
-       * Thay câu hiện tại.
-       */
-
       replaceCurrentQuestion();
-
     }, 500);
   };
 
@@ -603,7 +493,6 @@ const Stage4 = ({ navigate }) => {
   ======================================================= */
 
   const handleRetry = () => {
-
     setAttemptsLeft(
       MAX_ATTEMPTS
     );
@@ -612,9 +501,7 @@ const Stage4 = ({ navigate }) => {
     setCombo(0);
 
     setResult(null);
-
     setIsFirstWin(false);
-
     setRewardClaimed(false);
 
     setQuestions(
@@ -653,12 +540,9 @@ const Stage4 = ({ navigate }) => {
   ======================================================= */
 
   if (result) {
-
     return (
       <div className="game-stage-page game-stage-4">
-
         <main className="game-stage-content">
-
           <StageResult
             gameId={GAME_ID}
             result={result}
@@ -668,9 +552,7 @@ const Stage4 = ({ navigate }) => {
             rewardClaimed={
               rewardClaimed
             }
-            onRetry={
-              handleRetry
-            }
+            onRetry={handleRetry}
             onComplete={
               handleComplete
             }
@@ -678,9 +560,7 @@ const Stage4 = ({ navigate }) => {
               navigate("/game/1")
             }
           />
-
         </main>
-
       </div>
     );
   }
@@ -697,7 +577,6 @@ const Stage4 = ({ navigate }) => {
       =================================================== */}
 
       <header className="game-stage-header">
-
         <button
           type="button"
           onClick={() =>
@@ -706,7 +585,6 @@ const Stage4 = ({ navigate }) => {
         >
           ← DANH SÁCH STAGE
         </button>
-
       </header>
 
       {/* ===================================================
@@ -761,43 +639,50 @@ const Stage4 = ({ navigate }) => {
         </div>
 
         {/* =================================================
-            GAMEPLAY
+            GAMEPLAY — CẤU TRÚC CHUẨN
         ================================================= */}
 
         {currentQuestion && (
-
-          <section className="stage4-game">
+          <section className="stage-game-area">
 
             {/* =============================================
-                AUDIO
+                QUESTION
             ============================================= */}
 
-            <div className="stage4-audio-area">
+            <div className="stage-question">
 
-              <button
-                type="button"
-                className="stage4-audio-button"
-                onClick={playAudio}
-                aria-label="Nghe phát âm"
-              >
-                🔊
-              </button>
+              <span className="stage-question-label">
+                NGHE ÂM THANH
+              </span>
 
-              <div className="stage4-hint">
-                Nhấn để nghe
+              <div className="stage4-audio-area">
+
+                <button
+                  type="button"
+                  className="stage4-audio-button"
+                  onClick={playAudio}
+                  aria-label="Nghe phát âm"
+                >
+                  🔊
+                </button>
+
+                <div className="stage4-hint">
+                  Nhấn để nghe
+                </div>
+
               </div>
 
-              <div className="stage4-instruction">
+              <p>
                 Chọn ký tự tương ứng
-              </div>
+              </p>
 
             </div>
 
             {/* =============================================
-                4 ĐÁP ÁN
+                ANSWERS
             ============================================= */}
 
-            <div className="stage4-options">
+            <div className="stage-options">
 
               {currentQuestion.options.map(
                 (option, index) => {
@@ -811,19 +696,15 @@ const Stage4 = ({ navigate }) => {
                     currentQuestion.answer;
 
                   let className =
-                    "stage4-option";
-
-                  /* Đáp án đúng */
+                    "stage-option";
 
                   if (
                     answered &&
                     isCorrect
                   ) {
                     className +=
-                      " stage4-option-correct";
+                      " correct";
                   }
-
-                  /* Đáp án sai được chọn */
 
                   if (
                     answered &&
@@ -831,24 +712,20 @@ const Stage4 = ({ navigate }) => {
                     !isCorrect
                   ) {
                     className +=
-                      " stage4-option-wrong";
+                      " wrong";
                   }
 
                   return (
                     <button
                       key={`${option}-${index}`}
                       type="button"
-                      className={
-                        className
-                      }
+                      className={className}
                       onClick={() =>
                         handleAnswer(
                           option
                         )
                       }
-                      disabled={
-                        answered
-                      }
+                      disabled={answered}
                     >
                       {option}
                     </button>
@@ -859,11 +736,9 @@ const Stage4 = ({ navigate }) => {
             </div>
 
           </section>
-
         )}
 
       </main>
-
     </div>
   );
 };

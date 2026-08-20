@@ -39,6 +39,9 @@ const SOUND_WRONG =
 const SOUND_STAGE_COMPLETE =
   "/audio/games/stage-complete.mp3";
 
+const SOUND_STAGE_FAIL =
+  "/audio/games/stage-fail.mp3";
+
 /* =========================================================
    RANDOM
 ========================================================= */
@@ -184,9 +187,6 @@ const Stage3 = ({ navigate }) => {
 
   /* =======================================================
      START STAGE
-
-     Vào Stage / reload / retry
-     → KHÔNG tăng playCount
   ======================================================= */
 
   useEffect(() => {
@@ -202,8 +202,6 @@ const Stage3 = ({ navigate }) => {
 
   /* =======================================================
      BẢO VỆ STAGE 3
-
-     Không navigate trực tiếp trong render
   ======================================================= */
 
   useEffect(() => {
@@ -217,12 +215,6 @@ const Stage3 = ({ navigate }) => {
 
   /* =======================================================
      THAY CÂU HIỆN TẠI
-
-     Sai câu nào:
-     → giữ nguyên số câu
-     → chỉ thay câu đó
-     → không reset điểm
-     → không reset lượt
   ======================================================= */
 
   const replaceCurrentQuestion = () => {
@@ -235,11 +227,6 @@ const Stage3 = ({ navigate }) => {
         createQuestion();
 
       let safety = 0;
-
-      /* -----------------------------------------------
-         Tránh trùng với câu hiện tại
-         và các câu đang có
-      ----------------------------------------------- */
 
       while (
         updated.some(
@@ -270,37 +257,20 @@ const Stage3 = ({ navigate }) => {
   ======================================================= */
 
   const handleWin = (finalScore) => {
-    /* -----------------------------------------------
-       ÂM THANH HOÀN THÀNH
-    ----------------------------------------------- */
-
     playSound(
       SOUND_STAGE_COMPLETE
     );
-
-    /* -----------------------------------------------
-       KẾT THÚC 1 LƯỢT CHƠI
-       → +1 playCount
-    ----------------------------------------------- */
 
     recordStagePlay(
       gameId,
       stageId
     );
 
-    /* -----------------------------------------------
-       LƯU ĐIỂM
-    ----------------------------------------------- */
-
     recordStageScore(
       gameId,
       stageId,
       finalScore
     );
-
-    /* -----------------------------------------------
-       HOÀN THÀNH STAGE
-    ----------------------------------------------- */
 
     const completed =
       completeStage(
@@ -324,19 +294,14 @@ const Stage3 = ({ navigate }) => {
   ======================================================= */
 
   const handleLose = () => {
-    /* -----------------------------------------------
-       KẾT THÚC 1 LƯỢT CHƠI
-       → +1 playCount
-    ----------------------------------------------- */
+    playSound(
+      SOUND_STAGE_FAIL
+    );
 
     recordStagePlay(
       gameId,
       stageId
     );
-
-    /* -----------------------------------------------
-       LƯU ĐIỂM HIỆN TẠI
-    ----------------------------------------------- */
 
     recordStageScore(
       gameId,
@@ -371,22 +336,9 @@ const Stage3 = ({ navigate }) => {
     ===================================================== */
 
     if (isCorrect) {
-      /* -----------------------------------------------
-         ÂM THANH ĐÚNG
-      ----------------------------------------------- */
-
       playSound(
         SOUND_CORRECT
       );
-
-      /* -----------------------------------------------
-         COMBO
-
-         Đúng lần 1 → +10
-         Đúng lần 2 → +20
-         Đúng lần 3 → +30
-         ...
-      ----------------------------------------------- */
 
       const nextCombo =
         combo + 1;
@@ -407,15 +359,7 @@ const Stage3 = ({ navigate }) => {
         newScore
       );
 
-      /* -----------------------------------------------
-         Sau 500ms
-      ----------------------------------------------- */
-
       setTimeout(() => {
-        /* ---------------------------------------------
-           ĐỦ 10 CÂU
-        --------------------------------------------- */
-
         if (
           questionIndex >=
           questions.length - 1
@@ -426,12 +370,6 @@ const Stage3 = ({ navigate }) => {
 
           return;
         }
-
-        /* ---------------------------------------------
-           SANG CÂU TIẾP THEO
-
-           Lượt còn lại giữ nguyên
-        --------------------------------------------- */
 
         setQuestionIndex(
           (current) =>
@@ -449,23 +387,11 @@ const Stage3 = ({ navigate }) => {
        SAI
     ===================================================== */
 
-    /* -----------------------------------------------
-       ÂM THANH SAI
-    ----------------------------------------------- */
-
     playSound(
       SOUND_WRONG
     );
 
-    /* -----------------------------------------------
-       RESET COMBO
-    ----------------------------------------------- */
-
     setCombo(0);
-
-    /* -----------------------------------------------
-       Sau 500ms mới trừ lượt
-    ----------------------------------------------- */
 
     setTimeout(() => {
       const newAttemptsLeft =
@@ -475,10 +401,6 @@ const Stage3 = ({ navigate }) => {
         newAttemptsLeft
       );
 
-      /* ---------------------------------------------
-         HẾT LƯỢT
-      --------------------------------------------- */
-
       if (
         newAttemptsLeft <= 0
       ) {
@@ -487,23 +409,12 @@ const Stage3 = ({ navigate }) => {
         return;
       }
 
-      /* ---------------------------------------------
-         CÒN LƯỢT
-
-         Không tăng câu.
-         Không reset điểm.
-         Chỉ thay câu hiện tại.
-      --------------------------------------------- */
-
       replaceCurrentQuestion();
     }, 500);
   };
 
   /* =======================================================
      CHƠI LẠI
-
-     → KHÔNG recordStagePlay()
-     → KHÔNG tính là lượt chơi mới
   ======================================================= */
 
   const handleRetry = () => {
@@ -528,11 +439,6 @@ const Stage3 = ({ navigate }) => {
     setResult(null);
 
     setIsFirstWin(false);
-
-    /* -----------------------------------------------
-       startStage chỉ khởi tạo trạng thái Stage
-       Không tăng playCount
-    ----------------------------------------------- */
 
     startStage(
       gameId,
@@ -679,21 +585,23 @@ const Stage3 = ({ navigate }) => {
 
         {currentQuestion && (
 
-          <section className="stage3-game">
+          <section className="stage-game-area">
 
             {/* =============================================
                 QUESTION
             ============================================= */}
 
-            <div className="stage3-question">
+            <div className="stage-question">
 
-              <div className="stage3-label">
+              <span className="stage-question-label">
                 NGUYÊN ÂM
-              </div>
+              </span>
 
-              <div className="stage3-vowel">
+              <div className="stage-khmer-letter">
                 {currentQuestion.symbol}
               </div>
+
+              {/* GIỌNG */}
 
               <div
                 className={`stage3-voice ${
@@ -707,9 +615,11 @@ const Stage3 = ({ navigate }) => {
                 {currentQuestion.voice}
               </div>
 
-              <div className="stage3-prompt">
+              {/* PROMPT */}
+
+              <p className="stage3-prompt">
                 Có phiên âm là:
-              </div>
+              </p>
 
             </div>
 
@@ -717,7 +627,7 @@ const Stage3 = ({ navigate }) => {
                 ANSWERS
             ============================================= */}
 
-            <div className="stage3-options">
+            <div className="stage-options">
 
               {currentQuestion.options.map(
                 (option, index) => {
@@ -731,7 +641,7 @@ const Stage3 = ({ navigate }) => {
                     currentQuestion.answer;
 
                   let className =
-                    "stage3-option";
+                    "stage-option";
 
                   /* -------------------------------------
                      ĐÃ TRẢ LỜI
@@ -739,23 +649,19 @@ const Stage3 = ({ navigate }) => {
 
                   if (answered) {
 
-                    /* Đáp án đúng */
-
                     if (
                       isCorrect
                     ) {
                       className +=
-                        " stage3-option-correct";
+                        " correct";
                     }
-
-                    /* Đáp án người dùng chọn sai */
 
                     if (
                       isSelected &&
                       !isCorrect
                     ) {
                       className +=
-                        " stage3-option-wrong";
+                        " wrong";
                     }
                   }
 

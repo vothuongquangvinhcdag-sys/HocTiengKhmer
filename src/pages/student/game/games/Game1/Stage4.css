@@ -1,96 +1,206 @@
 /* =========================================================
    GAME 1 — STAGE 4
+
    NGHE → CHỌN KÝ TỰ
+
+   ĐỒNG BỘ UI VỚI STAGE 1
+
+   STAGE 4 → RED
 ========================================================= */
 
-.game-stage-4 .stage4-game {
+
+/* =========================================================
+   STAGE 4 COLOR
+========================================================= */
+
+.game-stage-4 {
+  --stage-red: #ef4444;
+}
+
+
+/* =========================================================
+   GAMEPLAY
+========================================================= */
+
+.game-stage-4 .stage-game-area {
   width: 100%;
   max-width: 680px;
-
   margin: 28px auto 0;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.game-stage-4 .stage-question {
+  width: 100%;
+  box-sizing: border-box;
   padding: 24px 20px 20px;
 
-  box-sizing: border-box;
-
-  background: #fff;
-
-  border: 2px solid #fca5a5;
+  border: 2px solid var(--stage-border);
   border-radius: 22px;
 
+  background: #ffffff;
+
   box-shadow:
-    0 10px 30px rgba(239, 68, 68, 0.1);
+    0 8px 25px var(--stage-soft);
 
   text-align: center;
 }
 
-/* AUDIO */
+
+/* =========================================================
+   QUESTION LABEL
+========================================================= */
+
+.game-stage-4 .stage-question-label {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+
+  color: var(--stage-main);
+}
+
+
+/* =========================================================
+   AUDIO AREA
+========================================================= */
 
 .game-stage-4 .stage4-audio-area {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  margin: 4px 0 10px;
 }
 
+
+/* =========================================================
+   AUDIO BUTTON
+========================================================= */
+
 .game-stage-4 .stage4-audio-button {
-  width: 110px;
-  height: 110px;
+  width: 100px;
+  height: 100px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin: 4px auto 10px;
+  margin: 0 auto 10px;
 
-  border: 3px solid #fca5a5;
+  box-sizing: border-box;
+
+  border: 3px solid var(--stage-border);
   border-radius: 50%;
 
-  background: #fff5f5;
-  color: #b91c1c;
+  background: var(--stage-light);
 
-  font-size: 42px;
+  color: var(--stage-main);
+
+  font-size: 40px;
 
   cursor: pointer;
 
   box-shadow:
-    0 8px 24px rgba(239, 68, 68, 0.14);
+    0 8px 24px var(--stage-soft);
 
-  transition: 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
 }
+
+
+/* =========================================================
+   AUDIO HOVER
+========================================================= */
 
 .game-stage-4 .stage4-audio-button:hover {
   transform: scale(1.05);
 
-  border-color: #ef4444;
-  background: #fee2e2;
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  color: var(--stage-main);
 
   box-shadow:
-    0 10px 28px rgba(239, 68, 68, 0.2);
+    0 10px 28px var(--stage-glow);
 }
+
+
+/* =========================================================
+   AUDIO ACTIVE
+========================================================= */
 
 .game-stage-4 .stage4-audio-button:active {
   transform: scale(0.96);
 }
 
+
+/* =========================================================
+   AUDIO HINT
+========================================================= */
+
 .game-stage-4 .stage4-hint {
+  margin: 0;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
   font-size: 14px;
   font-weight: 800;
+
   color: #64748b;
 }
 
-/* INSTRUCTION */
 
-.game-stage-4 .stage4-instruction {
-  margin-top: 8px;
+/* =========================================================
+   QUESTION TEXT
+========================================================= */
 
-  font-size: 13px;
-  font-weight: 800;
+.game-stage-4 .stage-question p {
+  margin: 8px 0 0;
 
-  color: #ef4444;
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  color: var(--stage-dark);
+
+  opacity: 0.75;
 }
 
-/* ANSWERS */
 
-.game-stage-4 .stage4-options {
+/* =========================================================
+   ANSWERS
+========================================================= */
+
+.game-stage-4 .stage-options {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
@@ -101,101 +211,194 @@
   margin-top: 16px;
 }
 
-.game-stage-4 .stage4-option {
-  min-height: 72px;
+
+/* =========================================================
+   ANSWER BUTTON
+
+   CHỮ KHMER LỚN HƠN NHƯNG KHÔNG TRÀN KHUNG
+========================================================= */
+
+.game-stage-4 .stage-option {
+  min-height: 78px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 10px 14px;
+  padding: 12px 18px;
 
   box-sizing: border-box;
 
-  border: 2px solid #fecaca;
+  border: 2px solid var(--stage-border);
   border-radius: 16px;
 
-  background: #fff;
+  background: #ffffff;
+
+  color: var(--stage-dark);
 
   font-family:
     "Khmer OS",
     sans-serif;
 
-  font-size: 34px;
+  font-size: clamp(36px, 5vw, 42px);
   font-weight: 400;
-  line-height: 1.2;
 
-  color: #a51d1d;
+  line-height: 1;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 
   cursor: pointer;
 
   box-shadow:
-    0 4px 12px rgba(239, 68, 68, 0.07);
+    0 5px 16px var(--stage-soft);
 
-  transition: 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
 }
 
-.game-stage-4 .stage4-option:hover:not(:disabled) {
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.game-stage-4 .stage-option:hover:not(:disabled) {
   transform: translateY(-2px);
 
-  border-color: #ef4444;
-  background: #fff5f5;
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  color: var(--stage-main);
 
   box-shadow:
-    0 7px 18px rgba(239, 68, 68, 0.16);
+    0 8px 24px var(--stage-glow);
 }
 
-.game-stage-4 .stage4-option:disabled {
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.game-stage-4 .stage-option:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.game-stage-4 .stage-option:disabled {
   cursor: default;
 }
 
-/* CORRECT */
 
-.game-stage-4 .stage4-option-correct {
-  border-color: #22c55e !important;
+/* =========================================================
+   CORRECT
+========================================================= */
 
-  background: #f0fdf4 !important;
+.game-stage-4 .stage-option.correct {
+  border-color: var(--stage-green);
 
-  color: #15803d !important;
+  background: #f0fdf4;
+
+  color: #15803d;
 
   box-shadow:
-    0 0 0 2px rgba(34, 197, 94, 0.08),
-    0 6px 18px rgba(34, 197, 94, 0.14);
+    0 0 18px rgba(34, 197, 94, 0.22);
 }
 
-/* WRONG */
 
-.game-stage-4 .stage4-option-wrong {
-  border-color: #ef4444 !important;
+/* =========================================================
+   WRONG
+========================================================= */
 
-  background: #fff5f5 !important;
+.game-stage-4 .stage-option.wrong {
+  border-color: var(--stage-red);
 
-  color: #b91c1c !important;
+  background: #fef2f2;
+
+  color: #b91c1c;
+
+  box-shadow:
+    0 0 18px rgba(239, 68, 68, 0.2);
 }
 
-/* MOBILE */
+
+/* =========================================================
+   STAGE PLAY INFO
+
+   DÙNG CHUNG VỚI GAMESTAGE.CSS
+
+   KHÔNG OVERRIDE KÍCH THƯỚC RIÊNG
+========================================================= */
+
+/*
+   Cố tình không định nghĩa lại:
+
+   .stage-play-info
+   .stage-play-info > *
+
+   Vì GameStage.css đã xử lý phần này
+   cho toàn bộ Stage 1 → Stage 4.
+*/
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media (max-width: 640px) {
-  .game-stage-4 .stage4-game {
-    padding: 20px 16px 18px;
+
+  .game-stage-4 .stage-game-area {
     margin-top: 20px;
   }
 
+
+  .game-stage-4 .stage-question {
+    padding: 20px 16px 18px;
+
+    border-radius: 18px;
+  }
+
+
   .game-stage-4 .stage4-audio-button {
-    width: 90px;
-    height: 90px;
+    width: 88px;
+    height: 88px;
+
     font-size: 34px;
   }
 
-  .game-stage-4 .stage4-options {
+
+  .game-stage-4 .stage-options {
     grid-template-columns: 1fr;
+
     gap: 10px;
-    margin-top: 16px;
   }
 
-  .game-stage-4 .stage4-option {
-    min-height: 62px;
-    font-size: 29px;
-    border-radius: 14px;
+
+  /* =======================================================
+     KHMER MOBILE
+     LỚN NHƯNG VẪN NẰM GỌN TRONG NÚT
+  ======================================================= */
+
+  .game-stage-4 .stage-option {
+    min-height: 66px;
+
+    padding: 10px 16px;
+
+    font-size: 36px;
+
+    line-height: 1;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
   }
 }

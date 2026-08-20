@@ -1,0 +1,785 @@
+/* =========================================================
+   GAME 2 — STAGE 1
+   GHÉP PHỤ ÂM + NGUYÊN ÂM
+   ĐỒNG BỘ UI VỚI STAGE 2
+   STAGE 1 → GREEN
+
+   JSX:
+   .stage-game-area
+   .stage-question
+   .stage-question-label
+   .stage1-expression
+   .stage1-consonant
+   .stage1-plus
+   .stage1-vowel
+   .stage1-question-hint
+   .stage-options
+   .stage-option
+   .stage1-option-character
+   .stage1-option-roman
+========================================================= */
+
+
+/* =========================================================
+   STAGE 1 COLOR
+========================================================= */
+
+.game-stage-1 {
+  --stage-green: #16a34a;
+  --stage-green-dark: #15803d;
+  --stage-green-light: #f0fdf4;
+
+  --stage-red: #ef4444;
+  --stage-red-dark: #b91c1c;
+  --stage-red-light: #fef2f2;
+}
+
+
+/* =========================================================
+   GAMEPLAY
+========================================================= */
+
+.game-stage-1 .stage-game-area {
+  width: 100%;
+  max-width: 680px;
+  margin: 28px auto 0;
+}
+
+
+/* =========================================================
+   QUESTION CARD
+========================================================= */
+
+.game-stage-1 .stage-question {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 24px 20px 20px;
+
+  border: 2px solid var(--stage-border);
+  border-radius: 22px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 25px var(--stage-soft);
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   QUESTION LABEL
+========================================================= */
+
+.game-stage-1 .stage-question-label {
+  display: block;
+
+  margin-bottom: 12px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+
+  color: var(--stage-main);
+}
+
+
+/* =========================================================
+   EXPRESSION
+   PHỤ ÂM + NGUYÊN ÂM
+
+   Ví dụ:
+   ដ + ី
+
+   Luôn nằm trên cùng một hàng.
+========================================================= */
+
+.game-stage-1 .stage1-expression {
+  min-height: 125px;
+
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 14px;
+
+  margin: 4px 0 10px;
+
+  white-space: nowrap;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  line-height: 1;
+
+  color: var(--stage-dark);
+}
+
+
+/* =========================================================
+   PHỤ ÂM
+========================================================= */
+
+.game-stage-1 .stage1-consonant {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 82px;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size:
+    clamp(62px, 8vw, 88px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+
+  text-shadow:
+    0 3px 12px var(--stage-glow);
+}
+
+
+/* =========================================================
+   DẤU +
+
+   Nhỏ hơn một chút so với phiên bản trước,
+   nhưng vẫn đủ lớn để cân đối với chữ Khmer.
+========================================================= */
+
+.game-stage-1 .stage1-plus {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  min-width: 32px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 34px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  color: var(--stage-main);
+
+  opacity: 0.82;
+}
+
+
+/* =========================================================
+   NGUYÊN ÂM
+========================================================= */
+
+.game-stage-1 .stage1-vowel {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 82px;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size:
+    clamp(62px, 8vw, 88px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+
+  text-shadow:
+    0 3px 12px var(--stage-glow);
+}
+
+
+/* =========================================================
+   QUESTION HINT
+========================================================= */
+
+.game-stage-1 .stage1-question-hint {
+  margin: 0;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  color: var(--stage-dark);
+
+  opacity: 0.72;
+}
+
+
+/* =========================================================
+   ANSWERS
+========================================================= */
+
+.game-stage-1 .stage-options {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 16px;
+}
+
+
+/* =========================================================
+   ANSWER BUTTON
+
+   Khmer + phiên âm luôn cùng một hàng:
+
+   ដាំ Đăm
+========================================================= */
+
+.game-stage-1 .stage-option {
+  min-height: 76px;
+
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding: 8px 14px;
+
+  box-sizing: border-box;
+
+  border: 2px solid var(--stage-border);
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  color: var(--stage-dark);
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 16px var(--stage-soft);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+
+/* =========================================================
+   ANSWER — KHMER CHARACTER
+
+   Nhỏ hơn để vừa khung đẹp hơn.
+========================================================= */
+
+.game-stage-1 .stage1-option-character {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size:
+    clamp(34px, 3.8vw, 46px);
+
+  font-weight: 400;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+
+  text-shadow:
+    0 2px 8px var(--stage-glow);
+
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   ANSWER — ROMANIZATION
+
+   Luôn nằm bên phải chữ Khmer.
+========================================================= */
+
+.game-stage-1 .stage1-option-roman {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: 0.3px;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+
+  opacity: 0.72;
+
+  transition:
+    color 0.18s ease,
+    opacity 0.18s ease;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.game-stage-1
+.stage-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  color: var(--stage-main);
+
+  box-shadow:
+    0 8px 24px var(--stage-glow);
+}
+
+
+.game-stage-1
+.stage-option:hover:not(:disabled)
+.stage1-option-character {
+  color: var(--stage-main);
+
+  transform: scale(1.03);
+}
+
+
+.game-stage-1
+.stage-option:hover:not(:disabled)
+.stage1-option-roman {
+  color: var(--stage-main);
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.game-stage-1
+.stage-option:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   SELECTED
+========================================================= */
+
+.game-stage-1 .stage-option.selected {
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  box-shadow:
+    0 0 18px var(--stage-glow);
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.game-stage-1 .stage-option:disabled {
+  cursor: default;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.game-stage-1 .stage-option.correct {
+  border-color: var(--stage-green);
+
+  background: var(--stage-green-light);
+
+  color: var(--stage-green-dark);
+
+  box-shadow:
+    0 0 18px rgba(34, 197, 94, 0.22);
+}
+
+
+.game-stage-1
+.stage-option.correct
+.stage1-option-character {
+  color: var(--stage-green-dark);
+}
+
+
+.game-stage-1
+.stage-option.correct
+.stage1-option-roman {
+  color: var(--stage-green-dark);
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.game-stage-1 .stage-option.wrong {
+  border-color: var(--stage-red);
+
+  background: var(--stage-red-light);
+
+  color: var(--stage-red-dark);
+
+  box-shadow:
+    0 0 18px rgba(239, 68, 68, 0.20);
+}
+
+
+.game-stage-1
+.stage-option.wrong
+.stage1-option-character {
+  color: var(--stage-red-dark);
+}
+
+
+.game-stage-1
+.stage-option.wrong
+.stage1-option-roman {
+  color: var(--stage-red-dark);
+
+  opacity: 1;
+}
+
+
+/* =========================================================
+   CÁC ĐÁP ÁN CÒN LẠI SAU KHI TRẢ LỜI
+========================================================= */
+
+.game-stage-1
+.stage-option:disabled:not(.correct):not(.wrong) {
+  opacity: 0.72;
+}
+
+
+/* =========================================================
+   STAGE PLAY INFO
+
+   DÙNG CHUNG VỚI GAMESTAGE.CSS
+   KHÔNG OVERRIDE KÍCH THƯỚC RIÊNG
+========================================================= */
+
+/*
+  Cố tình không định nghĩa lại:
+
+  .stage-play-info
+  .stage-play-info > *
+
+  Vì GameStage.css đã xử lý phần này
+  cho toàn bộ Stage 1 → Stage 4.
+*/
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+
+  /* ---------------------------------------------
+     GAME AREA
+  --------------------------------------------- */
+
+  .game-stage-1 .stage-game-area {
+    margin-top: 20px;
+  }
+
+
+  /* ---------------------------------------------
+     QUESTION
+  --------------------------------------------- */
+
+  .game-stage-1 .stage-question {
+    padding: 20px 16px 18px;
+
+    border-radius: 18px;
+  }
+
+
+  /* ---------------------------------------------
+     QUESTION LABEL
+  --------------------------------------------- */
+
+  .game-stage-1 .stage-question-label {
+    margin-bottom: 8px;
+
+    font-size: 11px;
+
+    letter-spacing: 1.2px;
+  }
+
+
+  /* ---------------------------------------------
+     EXPRESSION
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-expression {
+    min-height: 105px;
+
+    gap: 9px;
+
+    margin: 2px 0 8px;
+  }
+
+
+  /* ---------------------------------------------
+     PHỤ ÂM
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-consonant {
+    min-width: 66px;
+
+    font-size:
+      clamp(56px, 18vw, 82px);
+  }
+
+
+  /* ---------------------------------------------
+     +
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-plus {
+    width: 29px;
+
+    min-width: 29px;
+
+    font-size: 31px;
+  }
+
+
+  /* ---------------------------------------------
+     NGUYÊN ÂM
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-vowel {
+    min-width: 66px;
+
+    font-size:
+      clamp(56px, 18vw, 82px);
+  }
+
+
+  /* ---------------------------------------------
+     HINT
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-question-hint {
+    font-size: 14px;
+  }
+
+
+  /* ---------------------------------------------
+     ANSWERS
+  --------------------------------------------- */
+
+  .game-stage-1 .stage-options {
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+
+  /* ---------------------------------------------
+     ANSWER BUTTON
+
+     Vẫn ngang:
+
+     ដាំ Đăm
+  --------------------------------------------- */
+
+  .game-stage-1 .stage-option {
+    min-height: 68px;
+
+    flex-direction: row;
+
+    gap: 9px;
+
+    padding: 7px 14px;
+
+    border-radius: 15px;
+  }
+
+
+  /* ---------------------------------------------
+     KHMER ANSWER
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-option-character {
+    font-size: 36px;
+  }
+
+
+  /* ---------------------------------------------
+     ROMAN ANSWER
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-option-roman {
+    font-size: 14px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  /* ---------------------------------------------
+     EXPRESSION
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-expression {
+    gap: 7px;
+  }
+
+
+  /* ---------------------------------------------
+     PHỤ ÂM + NGUYÊN ÂM
+  --------------------------------------------- */
+
+  .game-stage-1
+  .stage1-consonant,
+
+  .game-stage-1
+  .stage1-vowel {
+    min-width: 58px;
+
+    font-size: 54px;
+  }
+
+
+  /* ---------------------------------------------
+     +
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-plus {
+    width: 25px;
+
+    min-width: 25px;
+
+    font-size: 28px;
+  }
+
+
+  /* ---------------------------------------------
+     ANSWER
+  --------------------------------------------- */
+
+  .game-stage-1 .stage-option {
+    min-height: 64px;
+
+    gap: 8px;
+
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+
+  /* ---------------------------------------------
+     KHMER ANSWER
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-option-character {
+    font-size: 34px;
+  }
+
+
+  /* ---------------------------------------------
+     ROMAN ANSWER
+  --------------------------------------------- */
+
+  .game-stage-1 .stage1-option-roman {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,634 @@
+/* =========================================================
+   GAME 2 — STAGE 4
+   PHIÊN ÂM → GHÉP CHỮ KHMER
+========================================================= */
+
+/* =========================================================
+   COLOR
+========================================================= */
+
+.game-stage-4 {
+  --stage-main: #16a34a;
+  --stage-main-dark: #15803d;
+  --stage-light: #f0fdf4;
+
+  --stage-border: #bbf7d0;
+  --stage-soft: rgba(22, 163, 74, 0.08);
+  --stage-glow: rgba(22, 163, 74, 0.18);
+
+  --stage-red: #ef4444;
+  --stage-red-dark: #b91c1c;
+  --stage-red-light: #fef2f2;
+
+  --stage-dark: #166534;
+}
+
+
+/* =========================================================
+   GAME AREA
+========================================================= */
+
+.game-stage-4 .stage4-game {
+  width: 100%;
+  max-width: 680px;
+  margin: 28px auto 0;
+  box-sizing: border-box;
+
+  padding: 24px 20px 24px;
+
+  background: #ffffff;
+
+  border: 2px solid var(--stage-border);
+  border-radius: 22px;
+
+  box-shadow:
+    0 8px 25px var(--stage-soft);
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   QUESTION
+========================================================= */
+
+.game-stage-4 .stage4-question {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   QUESTION LABEL
+========================================================= */
+
+.game-stage-4 .stage4-label {
+  display: block;
+
+  margin-bottom: 4px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+
+  color: var(--stage-main);
+}
+
+
+/* =========================================================
+   ROMANIZATION
+========================================================= */
+
+.game-stage-4 .stage4-roman {
+  min-height: 82px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px 12px;
+
+  box-sizing: border-box;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: clamp(38px, 6vw, 58px);
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: 1px;
+
+  color: var(--stage-dark);
+}
+
+
+/* =========================================================
+   INSTRUCTION
+========================================================= */
+
+.game-stage-4 .stage4-instruction {
+  max-width: 560px;
+
+  margin: 4px auto 0;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  color: var(--stage-dark);
+
+  opacity: 0.72;
+}
+
+
+/* =========================================================
+   SELECTION GROUP
+========================================================= */
+
+.game-stage-4 .stage4-selection-group {
+  width: 100%;
+
+  margin-top: 18px;
+}
+
+
+/* =========================================================
+   SELECTION TITLE
+========================================================= */
+
+.game-stage-4 .stage4-selection-title {
+  margin-bottom: 8px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 1.2px;
+
+  color: var(--stage-main);
+}
+
+
+/* =========================================================
+   HORIZONTAL OPTIONS
+
+   4 ô luôn nằm ngang
+========================================================= */
+
+.game-stage-4 .stage4-horizontal-options {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+/* =========================================================
+   OPTION
+========================================================= */
+
+.game-stage-4 .stage4-option {
+  width: 100%;
+  min-width: 0;
+  min-height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 10px;
+
+  box-sizing: border-box;
+
+  border: 2px solid var(--stage-border);
+
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 16px var(--stage-soft);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+
+/* =========================================================
+   KHMER OPTION
+========================================================= */
+
+.game-stage-4 .stage4-consonant-option,
+.game-stage-4 .stage4-vowel-option {
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 38px;
+  font-weight: 400;
+
+  line-height: 1;
+
+  color: var(--stage-dark);
+
+  text-shadow:
+    0 2px 8px var(--stage-glow);
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.game-stage-4
+.stage4-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  box-shadow:
+    0 8px 24px var(--stage-glow);
+}
+
+
+.game-stage-4
+.stage4-option:hover:not(:disabled)
+.stage4-consonant-option,
+.game-stage-4
+.stage4-option:hover:not(:disabled)
+.stage4-vowel-option {
+  color: var(--stage-main);
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.game-stage-4
+.stage4-option:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+
+/* =========================================================
+   SELECTED
+
+   Phụ âm được chọn trước:
+   → xanh nhẹ
+========================================================= */
+
+.game-stage-4
+.stage4-option.selected {
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  color: var(--stage-main);
+
+  box-shadow:
+    0 0 0 2px rgba(22, 163, 74, 0.08),
+    0 7px 20px var(--stage-glow);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.game-stage-4
+.stage4-option:disabled {
+  cursor: default;
+}
+
+
+/* =========================================================
+   DISABLED NGUYÊN ÂM KHI CHƯA CHỌN PHỤ ÂM
+========================================================= */
+
+.game-stage-4
+.stage4-vowel-option:disabled:not(.selected) {
+  opacity: 0.45;
+
+  cursor: not-allowed;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.03);
+}
+
+
+/* =========================================================
+   CENTER
+========================================================= */
+
+.game-stage-4 .stage4-center {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 20px auto 4px;
+}
+
+
+/* =========================================================
+   CENTER LABEL
+========================================================= */
+
+.game-stage-4 .stage4-center-label {
+  margin-bottom: 7px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 1.2px;
+
+  color: var(--stage-main);
+}
+
+
+/* =========================================================
+   COMBINED LETTER
+========================================================= */
+
+.game-stage-4 .stage4-combined {
+  width: 150px;
+  height: 108px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+
+  border: 2px dashed #d1d5db;
+
+  border-radius: 18px;
+
+  background: #fafafa;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 64px;
+  font-weight: 400;
+
+  line-height: 1;
+
+  color: #6b7280;
+
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   COMBINED — CORRECT
+========================================================= */
+
+.game-stage-4
+.stage4-combined-correct {
+  border: 2px solid #22c55e;
+
+  background: #f0fdf4;
+
+  color: #15803d;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.08),
+    0 0 24px rgba(34, 197, 94, 0.25);
+
+  transform: scale(1.03);
+}
+
+
+/* =========================================================
+   COMBINED — WRONG
+========================================================= */
+
+.game-stage-4
+.stage4-combined-wrong {
+  border: 2px solid var(--stage-red);
+
+  background: var(--stage-red-light);
+
+  color: var(--stage-red-dark);
+
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.07),
+    0 0 22px rgba(239, 68, 68, 0.2);
+
+  transform: scale(1.03);
+}
+
+
+/* =========================================================
+   WRONG / CORRECT OPTION STATE
+
+   Nếu JSX sau này thêm class correct / wrong
+   vẫn đồng bộ.
+========================================================= */
+
+.game-stage-4
+.stage4-option.correct {
+  border-color: #22c55e;
+
+  background: #f0fdf4;
+
+  color: #15803d;
+
+  box-shadow:
+    0 0 18px rgba(34, 197, 94, 0.22);
+}
+
+
+.game-stage-4
+.stage4-option.wrong {
+  border-color: var(--stage-red);
+
+  background: var(--stage-red-light);
+
+  color: var(--stage-red-dark);
+
+  box-shadow:
+    0 0 18px rgba(239, 68, 68, 0.2);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+
+  .game-stage-4 .stage4-game {
+    margin-top: 20px;
+
+    padding:
+      20px 16px 20px;
+
+    border-radius: 18px;
+  }
+
+
+  /* QUESTION */
+
+  .game-stage-4 .stage4-roman {
+    min-height: 72px;
+
+    font-size:
+      clamp(34px, 10vw, 50px);
+  }
+
+
+  .game-stage-4 .stage4-instruction {
+    font-size: 13px;
+
+    padding:
+      0 4px;
+  }
+
+
+  /* GROUP */
+
+  .game-stage-4 .stage4-selection-group {
+    margin-top: 15px;
+  }
+
+
+  /* 4 ĐÁP ÁN VẪN NẰM NGANG */
+
+  .game-stage-4
+  .stage4-horizontal-options {
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    gap: 7px;
+  }
+
+
+  /* OPTION */
+
+  .game-stage-4 .stage4-option {
+    min-height: 60px;
+
+    padding:
+      6px 4px;
+
+    border-radius: 13px;
+  }
+
+
+  .game-stage-4
+  .stage4-consonant-option,
+  .game-stage-4
+  .stage4-vowel-option {
+    font-size: 32px;
+  }
+
+
+  /* CENTER */
+
+  .game-stage-4 .stage4-center {
+    margin-top: 16px;
+  }
+
+
+  .game-stage-4 .stage4-combined {
+    width: 125px;
+    height: 92px;
+
+    font-size: 54px;
+
+    border-radius: 16px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .game-stage-4 .stage4-game {
+    padding:
+      18px 12px;
+  }
+
+
+  .game-stage-4
+  .stage4-horizontal-options {
+    gap: 5px;
+  }
+
+
+  .game-stage-4 .stage4-option {
+    min-height: 55px;
+
+    padding:
+      5px 2px;
+
+    border-radius: 11px;
+  }
+
+
+  .game-stage-4
+  .stage4-consonant-option,
+  .game-stage-4
+  .stage4-vowel-option {
+    font-size: 28px;
+  }
+
+
+  .game-stage-4 .stage4-combined {
+    width: 112px;
+    height: 84px;
+
+    font-size: 48px;
+  }
+
+
+  .game-stage-4 .stage4-instruction {
+    font-size: 12px;
+  }
+}

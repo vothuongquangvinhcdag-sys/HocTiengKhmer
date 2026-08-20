@@ -1,65 +1,78 @@
 /* =========================================================
-   GAME 1 — STAGE 3
-   NGUYÊN ÂM → PHIÊN ÂM
-   ĐỒNG BỘ UI VỚI STAGE 1
-   STAGE 3 → PURPLE
+   GAME 2 — STAGE 3
+
+   CHỮ KHMER ĐÃ GHÉP → PHIÊN ÂM
+
+   PURPLE GAMEPLAY
 ========================================================= */
 
+
 /* =========================================================
-   STAGE 3 COLOR
+   COLOR
 ========================================================= */
 
 .game-stage-3 {
-  --stage-purple: #8b5cf6;
-  --stage-purple-dark: #54269a;
-  --stage-purple-light: #f5f3ff;
-  --stage-purple-border: #c4b5fd;
-  --stage-purple-soft: rgba(139, 92, 246, 0.1);
-  --stage-purple-glow: rgba(139, 92, 246, 0.18);
+
+  --stage-main: #8b5cf6;
+  --stage-dark: #54269a;
+  --stage-light: #f5f3ff;
+  --stage-border: #c4b5fd;
+  --stage-soft: rgba(139, 92, 246, 0.10);
+  --stage-glow: rgba(139, 92, 246, 0.18);
 
   --stage-green: #16a34a;
+  --stage-green-dark: #15803d;
+  --stage-green-light: #f0fdf4;
+
   --stage-red: #ef4444;
+  --stage-red-dark: #b91c1c;
+  --stage-red-light: #fef2f2;
 }
+
 
 /* =========================================================
-   GAMEPLAY
+   GAME AREA
 ========================================================= */
 
-.game-stage-3 .stage3-game {
+.game-stage-3 .stage-game-area {
+
   width: 100%;
   max-width: 680px;
+
   margin: 28px auto 0;
-  padding: 24px 20px 20px;
-  box-sizing: border-box;
-
-  background: #ffffff;
-  border: 2px solid var(--stage-purple-border);
-  border-radius: 22px;
-
-  box-shadow:
-    0 8px 25px var(--stage-purple-soft);
-
-  text-align: center;
 }
+
 
 /* =========================================================
    QUESTION
 ========================================================= */
 
-.game-stage-3 .stage3-question {
+.game-stage-3 .stage-question {
+
   width: 100%;
+
   box-sizing: border-box;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 24px 20px 20px;
+
+  border: 2px solid var(--stage-border);
+  border-radius: 22px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 25px var(--stage-soft);
+
+  text-align: center;
 }
+
 
 /* =========================================================
    QUESTION LABEL
 ========================================================= */
 
-.game-stage-3 .stage3-label {
+.game-stage-3 .stage-question-label {
+
   display: block;
 
   margin-bottom: 10px;
@@ -71,89 +84,61 @@
     sans-serif;
 
   font-size: 12px;
+
   font-weight: 900;
+
   letter-spacing: 1.5px;
 
-  color: var(--stage-purple);
+  line-height: 1.4;
+
+  color: var(--stage-main);
 }
 
+
 /* =========================================================
-   KHMER VOWEL
+   KHMER QUESTION
 ========================================================= */
 
-.game-stage-3 .stage3-vowel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.game-stage-3 .stage-khmer-letter {
 
   min-height: 125px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
   margin: 4px 0 10px;
 
   font-family:
     "Khmer OS",
+    "Khmer OS Muol",
     sans-serif;
 
   font-size:
-    clamp(76px, 10vw, 110px);
+    clamp(64px, 8vw, 92px);
 
   font-weight: 400;
+
   line-height: 1;
 
-  color: var(--stage-purple-dark);
+  white-space: nowrap;
+
+  color: var(--stage-dark);
 
   text-shadow:
-    0 3px 12px var(--stage-purple-glow);
+    0 3px 12px var(--stage-glow);
 }
 
+
 /* =========================================================
-   VOICE
-   KHUNG NHỎ, GỌN
+   QUESTION HINT
 ========================================================= */
 
-.game-stage-3 .stage3-voice {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 78px;
-  height: 32px;
+.game-stage-3 .stage-question p {
 
   margin: 0;
-  padding: 0 12px;
-  box-sizing: border-box;
-
-  border: 1.5px solid var(--stage-purple-border);
-  border-radius: 10px;
-
-  background: var(--stage-purple-light);
-  color: var(--stage-purple);
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.5px;
-
-  box-shadow: none;
-}
-
-.game-stage-3 .stage3-voice-o,
-.game-stage-3 .stage3-voice-oh {
-  color: var(--stage-purple);
-  background: var(--stage-purple-light);
-  border-color: var(--stage-purple-border);
-}
-
-/* =========================================================
-   PROMPT
-========================================================= */
-
-.game-stage-3 .stage3-prompt {
-  margin: 10px 0 0;
 
   font-family:
     "Segoe UI",
@@ -162,50 +147,61 @@
     sans-serif;
 
   font-size: 15px;
-  font-weight: 800;
 
-  color: #7c3aed;
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  color: var(--stage-dark);
+
+  opacity: 0.72;
 }
 
-.game-stage-3 .stage3-prompt strong {
-  color: var(--stage-purple-dark);
-  font-weight: 900;
-}
 
 /* =========================================================
    ANSWERS
 ========================================================= */
 
-.game-stage-3 .stage3-options {
+.game-stage-3 .stage-options {
+
   width: 100%;
 
   display: grid;
+
   grid-template-columns:
     repeat(2, minmax(0, 1fr));
 
   gap: 12px;
+
   margin-top: 16px;
 }
+
 
 /* =========================================================
    ANSWER BUTTON
 ========================================================= */
 
-.game-stage-3 .stage3-option {
-  min-height: 72px;
+.game-stage-3 .stage-option {
+
+  min-height: 74px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
-  padding: 14px 18px;
+  padding: 8px 14px;
+
   box-sizing: border-box;
 
-  border: 2px solid #ddd6fe;
+  border: 2px solid var(--stage-border);
+
   border-radius: 16px;
 
   background: #ffffff;
-  color: var(--stage-purple-dark);
+
+  color: var(--stage-dark);
 
   font-family:
     "Segoe UI",
@@ -213,13 +209,18 @@
     Helvetica,
     sans-serif;
 
-  font-size: 18px;
+  font-size: 20px;
+
   font-weight: 900;
+
+  line-height: 1.2;
+
+  white-space: nowrap;
 
   cursor: pointer;
 
   box-shadow:
-    0 5px 16px var(--stage-purple-soft);
+    0 5px 16px var(--stage-soft);
 
   transition:
     transform 0.18s ease,
@@ -229,115 +230,184 @@
     color 0.18s ease;
 }
 
+
 /* =========================================================
    HOVER
 ========================================================= */
 
-.game-stage-3 .stage3-option:hover:not(:disabled) {
+.game-stage-3
+.stage-option:hover:not(:disabled) {
+
   transform: translateY(-2px);
 
-  border-color: var(--stage-purple);
-  background: var(--stage-purple-light);
-  color: var(--stage-purple);
+  border-color: var(--stage-main);
+
+  background: var(--stage-light);
+
+  color: var(--stage-main);
 
   box-shadow:
-    0 8px 24px var(--stage-purple-glow);
+    0 8px 24px var(--stage-glow);
 }
+
 
 /* =========================================================
    ACTIVE
 ========================================================= */
 
-.game-stage-3 .stage3-option:active:not(:disabled) {
+.game-stage-3
+.stage-option:active:not(:disabled) {
+
   transform: scale(0.98);
 }
+
 
 /* =========================================================
    DISABLED
 ========================================================= */
 
-.game-stage-3 .stage3-option:disabled {
+.game-stage-3
+.stage-option:disabled {
+
   cursor: default;
 }
+
 
 /* =========================================================
    CORRECT
 ========================================================= */
 
-.game-stage-3 .stage3-option-correct {
-  border-color: var(--stage-green) !important;
-  background: #f0fdf4 !important;
-  color: #15803d !important;
+.game-stage-3
+.stage-option.correct {
+
+  border-color: var(--stage-green);
+
+  background: var(--stage-green-light);
+
+  color: var(--stage-green-dark);
 
   box-shadow:
-    0 0 18px rgba(34, 197, 94, 0.22) !important;
+    0 0 18px rgba(34, 197, 94, 0.22);
 }
+
 
 /* =========================================================
    WRONG
 ========================================================= */
 
-.game-stage-3 .stage3-option-wrong {
-  border-color: var(--stage-red) !important;
-  background: #fef2f2 !important;
-  color: #b91c1c !important;
+.game-stage-3
+.stage-option.wrong {
+
+  border-color: var(--stage-red);
+
+  background: var(--stage-red-light);
+
+  color: var(--stage-red-dark);
 
   box-shadow:
-    0 0 18px rgba(239, 68, 68, 0.2) !important;
+    0 0 18px rgba(239, 68, 68, 0.20);
 }
 
+
 /* =========================================================
-   STAGE PLAY INFO
-   DÙNG CHUNG VỚI GAMESTAGE.CSS
+   OTHER DISABLED ANSWERS
 ========================================================= */
 
-/*
-  Không override:
+.game-stage-3
+.stage-option:disabled:not(.correct):not(.wrong) {
 
-  .stage-play-info
-  .stage-play-info > *
+  opacity: 0.72;
+}
 
-  GameStage.css xử lý phần này
-  thống nhất cho Stage 1 → Stage 4.
-*/
 
 /* =========================================================
    MOBILE
 ========================================================= */
 
 @media (max-width: 640px) {
-  .game-stage-3 .stage3-game {
+
+  .game-stage-3 .stage-game-area {
+
     margin-top: 20px;
+  }
+
+
+  .game-stage-3 .stage-question {
+
     padding: 20px 16px 18px;
+
     border-radius: 18px;
   }
 
-  .game-stage-3 .stage3-vowel {
+
+  /* QUESTION */
+
+  .game-stage-3 .stage-khmer-letter {
+
     min-height: 105px;
 
     font-size:
-      clamp(68px, 22vw, 100px);
+      clamp(58px, 18vw, 82px);
   }
 
-  .game-stage-3 .stage3-options {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
 
-  .game-stage-3 .stage3-option {
-    min-height: 62px;
-    font-size: 17px;
-  }
+  .game-stage-3 .stage-question p {
 
-  .game-stage-3 .stage3-prompt {
     font-size: 14px;
   }
 
-  .game-stage-3 .stage3-voice {
-    min-width: 74px;
-    height: 30px;
-    padding: 0 10px;
 
-    font-size: 12px;
+  /* ANSWERS */
+
+  .game-stage-3 .stage-options {
+
+    grid-template-columns: 1fr;
+
+    gap: 10px;
+  }
+
+
+  .game-stage-3 .stage-option {
+
+    min-height: 66px;
+
+    padding: 7px 12px;
+
+    border-radius: 15px;
+
+    font-size: 18px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .game-stage-3 .stage-khmer-letter {
+
+    min-height: 95px;
+
+    font-size: 56px;
+  }
+
+
+  .game-stage-3 .stage-question p {
+
+    font-size: 13px;
+  }
+
+
+  .game-stage-3 .stage-option {
+
+    min-height: 62px;
+
+    padding: 6px 10px;
+
+    font-size: 17px;
+
+    border-radius: 14px;
   }
 }

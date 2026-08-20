@@ -47,14 +47,14 @@ const consonants = [
 ========================================================= */
 
 const vowels = [
-  { stt: 1, symbol: "◌ា", romanO: "a", romanOh: "ia", note: "Âm dài", uppercase: null, handwriting: null },
-  { stt: 2, symbol: "◌ិ", romanO: "ế", romanOh: "í", note: "Âm ngắn", uppercase: null, handwriting: null },
-  { stt: 3, symbol: "◌ី", romanO: "ây", romanOh: "i", note: "Âm dài", uppercase: null, handwriting: null },
-  { stt: 4, symbol: "◌ឹ", romanO: "ấ", romanOh: "ứ", note: "Âm ngắn", uppercase: null, handwriting: null },
-  { stt: 5, symbol: "◌ឺ", romanO: "ơ", romanOh: "ư", note: "Âm dài", uppercase: null, handwriting: null },
-  { stt: 6, symbol: "◌ុ", romanO: "ố", romanOh: "ú", note: "Âm ngắn", uppercase: null, handwriting: null },
-  { stt: 7, symbol: "◌ូ", romanO: "ô", romanOh: "u", note: "Không đổi giọng", uppercase: null, handwriting: null },
-  { stt: 8, symbol: "◌ួ", romanO: "ua", romanOh: "ua", note: "", uppercase: null, handwriting: null },
+  { stt: 1, symbol: "ា", romanO: "a", romanOh: "ia", note: "Âm dài", uppercase: null, handwriting: null },
+  { stt: 2, symbol: "ិ", romanO: "ế", romanOh: "í", note: "Âm ngắn", uppercase: null, handwriting: null },
+  { stt: 3, symbol: "ី", romanO: "ây", romanOh: "i", note: "Âm dài", uppercase: null, handwriting: null },
+  { stt: 4, symbol: "ឹ", romanO: "ấ", romanOh: "ứ", note: "Âm ngắn", uppercase: null, handwriting: null },
+  { stt: 5, symbol: "ឺ", romanO: "ơ", romanOh: "ư", note: "Âm dài", uppercase: null, handwriting: null },
+  { stt: 6, symbol: "ុ", romanO: "ố", romanOh: "ú", note: "Âm ngắn", uppercase: null, handwriting: null },
+  { stt: 7, symbol: "ូ", romanO: "ô", romanOh: "u", note: "Không đổi giọng", uppercase: null, handwriting: null },
+  { stt: 8, symbol: "ួ", romanO: "ua", romanOh: "ua", note: "", uppercase: null, handwriting: null },
   { stt: 9, symbol: "ើ", romanO: "ờ", romanOh: "ơ", note: "Không đổi giọng", uppercase: null, handwriting: null },
   { stt: 10, symbol: "ឿ", romanO: "ưa", romanOh: "ưa", note: "Không đổi giọng", uppercase: null, handwriting: null },
   { stt: 11, symbol: "ៀ", romanO: "ia", romanOh: "ia", note: "Âm ê", uppercase: null, handwriting: null },
