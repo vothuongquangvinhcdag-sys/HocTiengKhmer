@@ -17,14 +17,14 @@
 ========================================================= */
 
 const vowels = [
-  { stt: 1, symbol: "◌ា", romanO: "a", romanOh: "ia", note: "Âm dài" },
-  { stt: 2, symbol: "◌ិ", romanO: "ế", romanOh: "í", note: "Âm ngắn" },
-  { stt: 3, symbol: "◌ី", romanO: "ây", romanOh: "i", note: "Âm dài" },
-  { stt: 4, symbol: "◌ឹ", romanO: "ấ", romanOh: "ứ", note: "Âm ngắn" },
-  { stt: 5, symbol: "◌ឺ", romanO: "ơ", romanOh: "ư", note: "Âm dài" },
-  { stt: 6, symbol: "◌ុ", romanO: "ố", romanOh: "ú", note: "Âm ngắn" },
-  { stt: 7, symbol: "◌ូ", romanO: "ô", romanOh: "u", note: "Không đổi giọng" },
-  { stt: 8, symbol: "◌ួ", romanO: "ua", romanOh: "ua", note: "" },
+  { stt: 1, symbol: "ា", romanO: "a", romanOh: "ia", note: "Âm dài" },
+  { stt: 2, symbol: "ិ", romanO: "ế", romanOh: "í", note: "Âm ngắn" },
+  { stt: 3, symbol: "ី", romanO: "ây", romanOh: "i", note: "Âm dài" },
+  { stt: 4, symbol: "ឹ", romanO: "ấ", romanOh: "ứ", note: "Âm ngắn" },
+  { stt: 5, symbol: "ឺ", romanO: "ơ", romanOh: "ư", note: "Âm dài" },
+  { stt: 6, symbol: "ុ", romanO: "ố", romanOh: "ú", note: "Âm ngắn" },
+  { stt: 7, symbol: "ូ", romanO: "ô", romanOh: "u", note: "Không đổi giọng" },
+  { stt: 8, symbol: "ួ", romanO: "ua", romanOh: "ua", note: "" },
   { stt: 9, symbol: "ើ", romanO: "ờ", romanOh: "ơ", note: "Không đổi giọng" },
   { stt: 10, symbol: "ឿ", romanO: "ưa", romanOh: "ưa", note: "Không đổi giọng" },
   { stt: 11, symbol: "ៀ", romanO: "ia", romanOh: "ia", note: "Âm ê" },

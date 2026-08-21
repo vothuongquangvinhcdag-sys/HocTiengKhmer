@@ -17,7 +17,7 @@ import "./Stage2.css";
    CẤU HÌNH
 ========================================================= */
 
-const GAME_ID = 3;
+const GAME_ID = 5;
 const STAGE_ID = 2;
 
 const MAX_ATTEMPTS = 3;
@@ -68,7 +68,7 @@ const playSound = (src) => {
 };
 
 /* =========================================================
-   STAGE 2 — GAME 3
+   STAGE 2 — GAME 5
 
    SƯỜN GAMEPLAY
 
@@ -183,7 +183,7 @@ const Stage2 = ({ navigate }) => {
 
   useEffect(() => {
     if (!stage1Completed) {
-      navigate("/game/3");
+      navigate("/game/5");
       return;
     }
 
@@ -301,7 +301,7 @@ const Stage2 = ({ navigate }) => {
   const handleContinue = () => {
 
     navigate(
-      "/game/3/stage/3"
+      "/game/5/stage/3"
     );
   };
 
@@ -332,7 +332,7 @@ const Stage2 = ({ navigate }) => {
             onRetry={handleRetry}
             onContinue={handleContinue}
             onBack={() =>
-              navigate("/game/3")
+              navigate("/game/5")
             }
           />
 
@@ -358,7 +358,7 @@ const Stage2 = ({ navigate }) => {
         <button
           type="button"
           onClick={() =>
-            navigate("/game/3")
+            navigate("/game/5")
           }
         >
           ← DANH SÁCH STAGE
@@ -385,7 +385,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <div className="game-stage-khmer">
-          ហ្គេម ៣
+          ហ្គេម ៥
         </div>
 
         {/* =================================================
@@ -436,7 +436,7 @@ const Stage2 = ({ navigate }) => {
         {/* =================================================
             GAMEPLAY PLACEHOLDER
 
-            Gameplay mới của Game 3 Stage 2
+            Gameplay mới của Game 5 Stage 2
             sẽ được thêm vào đây.
         ================================================= */}
 
@@ -453,7 +453,7 @@ const Stage2 = ({ navigate }) => {
             </h2>
 
             <p>
-              Gameplay của Stage 2 Game 3
+              Gameplay của Stage 2 Game 5
               sẽ được thêm vào đây.
             </p>
 

@@ -1,10 +1,28 @@
 /* =========================================================
    GAME STAGE — SHARED
-   STAGE 1 → GREEN
-   STAGE 2 → BLUE
-   STAGE 3 → PURPLE
-   STAGE 4 → RED
-   KHMER OS + KHMER OS MUOL
+   =========================================================
+
+   DÙNG CHUNG CHO TOÀN BỘ GAME / STAGE
+
+   GAME TITLE
+   → Khmer title: Vàng 24K + viền trắng nhẹ + bóng nhẹ
+   → English title: màu Stage hiện tại
+   → Description: xám đen
+
+   STAGE COLOR
+   → Stage 1: GREEN
+   → Stage 2: BLUE
+   → Stage 3: PURPLE
+   → Stage 4: RED
+
+   FONT
+   → Khmer OS
+   → Khmer OS Muol
+========================================================= */
+
+
+/* =========================================================
+   FONTS
 ========================================================= */
 
 @font-face {
@@ -23,11 +41,24 @@
   font-display: swap;
 }
 
+
 /* =========================================================
-   COLOR SYSTEM
+   GLOBAL
 ========================================================= */
 
 .game-stage-page {
+  /* ---------- KHMER GREEN ---------- */
+  --khmer-green: #1dba22;
+  --khmer-green-dark: #126817;
+  --khmer-green-light: #f2fff3;
+
+  /* ---------- PAGE ---------- */
+  --page-bg: #fffbea;
+  --white: #ffffff;
+  --text-dark: #252525;
+  --text-muted: #64748b;
+
+  /* ---------- DEFAULT STAGE ---------- */
   --stage-main: #1dba22;
   --stage-dark: #126817;
   --stage-light: #f2fff3;
@@ -42,20 +73,20 @@
   background:
     radial-gradient(
       circle at 10% 10%,
-      var(--stage-soft),
+      rgba(29, 186, 34, 0.06),
       transparent 28%
     ),
     radial-gradient(
       circle at 90% 15%,
-      var(--stage-soft),
+      rgba(29, 186, 34, 0.06),
       transparent 28%
     ),
     radial-gradient(
       circle at 50% 100%,
-      var(--stage-soft),
+      rgba(29, 186, 34, 0.05),
       transparent 32%
     ),
-    var(--stage-light);
+    var(--page-bg);
 
   color: var(--stage-dark);
 
@@ -65,6 +96,7 @@
     Helvetica,
     sans-serif;
 }
+
 
 /* =========================================================
    STAGE 1 — GREEN
@@ -79,6 +111,7 @@
   --stage-soft: rgba(29, 186, 34, 0.08);
 }
 
+
 /* =========================================================
    STAGE 2 — BLUE
 ========================================================= */
@@ -91,6 +124,7 @@
   --stage-glow: rgba(59, 130, 246, 0.22);
   --stage-soft: rgba(59, 130, 246, 0.08);
 }
+
 
 /* =========================================================
    STAGE 3 — PURPLE
@@ -105,6 +139,7 @@
   --stage-soft: rgba(139, 92, 246, 0.08);
 }
 
+
 /* =========================================================
    STAGE 4 — RED
 ========================================================= */
@@ -117,6 +152,7 @@
   --stage-glow: rgba(239, 68, 68, 0.22);
   --stage-soft: rgba(239, 68, 68, 0.08);
 }
+
 
 /* =========================================================
    HEADER
@@ -134,7 +170,7 @@
   border-radius: 12px;
 
   background: var(--stage-main);
-  color: #ffffff;
+  color: var(--white);
 
   font-family:
     "Segoe UI",
@@ -152,18 +188,18 @@
 
   transition:
     transform 0.2s ease,
-    background 0.2s ease,
+    filter 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .game-stage-header button:hover {
   transform: translateY(-2px);
-
   filter: brightness(0.92);
 
   box-shadow:
     0 7px 22px var(--stage-glow);
 }
+
 
 /* =========================================================
    CONTENT
@@ -173,35 +209,71 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
+
   text-align: center;
 }
 
-.game-stage-icon {
-  font-size: 52px;
-  margin-bottom: 8px;
-}
 
 /* =========================================================
-   KHMER
+   GAME ICON
+========================================================= */
+
+.game-stage-icon {
+  margin-bottom: 0;
+  font-size: 70px;
+}
+
+
+/* =========================================================
+   GAME TITLE — KHMER
+
+   ហ្គេម ១
+   ហ្គេម ២
+   ហ្គេម ៣
+   ...
+
+   → Vàng 24K
+   → Viền trắng nhẹ
+   → Đổ bóng nhẹ
 ========================================================= */
 
 .game-stage-khmer {
+  margin: 0 0 4px;
+
   font-family:
     "Khmer OS Muol",
     "Khmer OS",
     sans-serif;
 
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: 60px;
+  font-weight: 900;
+  line-height: 1.45;
 
-  margin-bottom: 8px;
+  color: #d4af37;
 
-  color: var(--stage-main);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.9);
+
+  text-shadow:
+    0 2px 4px rgba(80, 60, 0, 0.18),
+    0 0 8px rgba(212, 175, 55, 0.15);
 }
 
+
 /* =========================================================
-   TITLE
+   GAME / STAGE TITLE — ENGLISH
+
+   GAME 1
+   GAME 2
+
+   hoặc
+
+   STAGE 1
+   STAGE 2
+   STAGE 3
+   STAGE 4
+
+   → Tự động lấy màu Stage hiện tại
+   → Không viền
 ========================================================= */
 
 .game-stage-content h1 {
@@ -213,16 +285,30 @@
     Helvetica,
     sans-serif;
 
-  font-size: 42px;
+  font-size: 29px;
   font-weight: 900;
+  line-height: 1.2;
   letter-spacing: 1px;
 
-  color: var(--stage-dark);
+  color: var(--stage-main);
+
+  text-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.08);
 }
 
+
+/* =========================================================
+   GAME DESCRIPTION
+
+   Hành trình thứ hai chinh phục tiếng Khmer.
+
+   → Xám đen
+   → Không viền
+========================================================= */
+
 .game-stage-content > p {
-  margin: 12px auto 30px;
   max-width: 650px;
+  margin: 12px auto 30px;
 
   font-family:
     "Segoe UI",
@@ -231,11 +317,14 @@
     sans-serif;
 
   font-size: 17px;
+  font-weight: 600;
   line-height: 1.6;
 
-  color: var(--stage-dark);
-  opacity: 0.78;
+  color: var(--text-dark);
+
+  text-shadow: none;
 }
+
 
 /* =========================================================
    STAGE LIST
@@ -244,12 +333,14 @@
 .stage-list {
   display: grid;
   gap: 16px;
+
   width: 100%;
   margin: 0 auto;
 }
 
+
 /* =========================================================
-   STAGE CARD
+   STAGE CARD — BASE
 ========================================================= */
 
 .stage-card {
@@ -266,7 +357,7 @@
   border: 2px solid transparent;
   border-radius: 18px;
 
-  background: #ffffff;
+  background: var(--white);
 
   text-align: left;
 
@@ -285,73 +376,70 @@
     background 0.2s ease;
 }
 
+
 /* =========================================================
-   CARD UNLOCKED
+   STAGE CARD COLORS
 ========================================================= */
 
-.stage-card-unlocked {
-  border-color: var(--stage-border);
+.stage-list .stage-card:nth-child(1) {
+  --card-main: #1dba22;
+  --card-dark: #126817;
+  --card-light: #f2fff3;
+  --card-border: #8be58f;
+  --card-glow: rgba(29, 186, 34, 0.22);
+  --card-soft: rgba(29, 186, 34, 0.08);
+
+  border-color: var(--card-border);
 
   box-shadow:
-    0 6px 18px var(--stage-soft);
+    0 6px 18px var(--card-soft);
 }
 
-.stage-card-unlocked:hover {
-  transform: translateY(-3px);
+.stage-list .stage-card:nth-child(2) {
+  --card-main: #3b82f6;
+  --card-dark: #174a8b;
+  --card-light: #f1f7ff;
+  --card-border: #93c5fd;
+  --card-glow: rgba(59, 130, 246, 0.22);
+  --card-soft: rgba(59, 130, 246, 0.08);
 
-  border-color: var(--stage-main);
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff 0%,
-      var(--stage-light) 100%
-    );
+  border-color: var(--card-border);
 
   box-shadow:
-    0 8px 26px var(--stage-glow);
+    0 6px 18px var(--card-soft);
 }
 
-/* =========================================================
-   CARD LOCKED
-========================================================= */
+.stage-list .stage-card:nth-child(3) {
+  --card-main: #8b5cf6;
+  --card-dark: #54269a;
+  --card-light: #f7f4ff;
+  --card-border: #c4b5fd;
+  --card-glow: rgba(139, 92, 246, 0.22);
+  --card-soft: rgba(139, 92, 246, 0.08);
 
-.stage-card-locked {
-  opacity: 0.55;
-  cursor: not-allowed;
-  background: #f1f5f9;
-}
-
-.stage-card-locked .stage-card-number {
-  background: #cbd5e1 !important;
-  box-shadow: none !important;
-}
-
-.stage-card-locked .stage-card-arrow {
-  color: #94a3b8 !important;
-  text-shadow: none !important;
-}
-
-/* =========================================================
-   CARD COMPLETED
-========================================================= */
-
-.stage-card-completed {
-  border-color: var(--stage-main);
-
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      var(--stage-light)
-    );
+  border-color: var(--card-border);
 
   box-shadow:
-    0 0 18px var(--stage-glow);
+    0 6px 18px var(--card-soft);
 }
 
+.stage-list .stage-card:nth-child(4) {
+  --card-main: #ef4444;
+  --card-dark: #a51d1d;
+  --card-light: #fff5f5;
+  --card-border: #fca5a5;
+  --card-glow: rgba(239, 68, 68, 0.22);
+  --card-soft: rgba(239, 68, 68, 0.08);
+
+  border-color: var(--card-border);
+
+  box-shadow:
+    0 6px 18px var(--card-soft);
+}
+
+
 /* =========================================================
-   NUMBER
+   STAGE NUMBER
 ========================================================= */
 
 .stage-card-number {
@@ -366,8 +454,7 @@
 
   border-radius: 15px;
 
-  background: var(--stage-main);
-  color: #ffffff;
+  color: var(--white);
 
   font-family:
     "Segoe UI",
@@ -377,13 +464,44 @@
 
   font-size: 20px;
   font-weight: 900;
-
-  box-shadow:
-    0 4px 12px var(--stage-glow);
 }
 
+
 /* =========================================================
-   INFO
+   STAGE NUMBER — COLORS
+========================================================= */
+
+.stage-list .stage-card:nth-child(1) .stage-card-number {
+  background: #1dba22;
+
+  box-shadow:
+    0 4px 12px rgba(29, 186, 34, 0.22);
+}
+
+.stage-list .stage-card:nth-child(2) .stage-card-number {
+  background: #3b82f6;
+
+  box-shadow:
+    0 4px 12px rgba(59, 130, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(3) .stage-card-number {
+  background: #8b5cf6;
+
+  box-shadow:
+    0 4px 12px rgba(139, 92, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(4) .stage-card-number {
+  background: #ef4444;
+
+  box-shadow:
+    0 4px 12px rgba(239, 68, 68, 0.22);
+}
+
+
+/* =========================================================
+   STAGE INFO
 ========================================================= */
 
 .stage-card-info {
@@ -402,12 +520,12 @@
 
   font-size: 20px;
   font-weight: 900;
-
-  color: var(--stage-dark);
 }
 
 .stage-card-info p {
   margin: 0;
+
+  color: var(--text-muted);
 
   font-family:
     "Segoe UI",
@@ -415,11 +533,35 @@
     Helvetica,
     sans-serif;
 
-  color: #64748b;
-
   font-size: 14px;
   line-height: 1.5;
 }
+
+
+/* =========================================================
+   STAGE INFO — COLORS
+========================================================= */
+
+.stage-list .stage-card:nth-child(1) .stage-card-info h3 {
+  color: #126817;
+}
+
+.stage-list .stage-card:nth-child(2) .stage-card-info h3 {
+  color: #174a8b;
+}
+
+.stage-list .stage-card:nth-child(3) .stage-card-info h3 {
+  color: #54269a;
+}
+
+.stage-list .stage-card:nth-child(4) .stage-card-info h3 {
+  color: #a51d1d;
+}
+
+
+/* =========================================================
+   STAGE STATS
+========================================================= */
 
 .stage-card-stats {
   display: flex;
@@ -438,12 +580,24 @@
   font-weight: 800;
 }
 
-/* =========================================================
-   STATS
-========================================================= */
-
+.stage-list .stage-card:nth-child(1)
 .stage-card-stats span:nth-child(1) {
-  color: var(--stage-main);
+  color: #1dba22;
+}
+
+.stage-list .stage-card:nth-child(2)
+.stage-card-stats span:nth-child(1) {
+  color: #3b82f6;
+}
+
+.stage-list .stage-card:nth-child(3)
+.stage-card-stats span:nth-child(1) {
+  color: #8b5cf6;
+}
+
+.stage-list .stage-card:nth-child(4)
+.stage-card-stats span:nth-child(1) {
+  color: #ef4444;
 }
 
 .stage-card-stats span:nth-child(2) {
@@ -454,8 +608,9 @@
   color: #64748b;
 }
 
+
 /* =========================================================
-   ARROW / ✓
+   STAGE ARROW / CHECK
 ========================================================= */
 
 .stage-card-arrow {
@@ -469,12 +624,192 @@
 
   font-size: 20px;
   font-weight: 900;
+}
 
-  color: var(--stage-main);
+
+/* =========================================================
+   STAGE ARROW — COLORS
+========================================================= */
+
+.stage-list .stage-card:nth-child(1) .stage-card-arrow {
+  color: #1dba22;
 
   text-shadow:
-    0 0 8px var(--stage-glow);
+    0 0 8px rgba(29, 186, 34, 0.22);
 }
+
+.stage-list .stage-card:nth-child(2) .stage-card-arrow {
+  color: #3b82f6;
+
+  text-shadow:
+    0 0 8px rgba(59, 130, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(3) .stage-card-arrow {
+  color: #8b5cf6;
+
+  text-shadow:
+    0 0 8px rgba(139, 92, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(4) .stage-card-arrow {
+  color: #ef4444;
+
+  text-shadow:
+    0 0 8px rgba(239, 68, 68, 0.22);
+}
+
+
+/* =========================================================
+   STAGE CARD — HOVER
+========================================================= */
+
+.stage-list .stage-card:nth-child(1):not(.stage-card-locked):hover {
+  transform: translateY(-3px);
+
+  border-color: #1dba22;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f2fff3
+    );
+
+  box-shadow:
+    0 8px 26px rgba(29, 186, 34, 0.22);
+}
+
+.stage-list .stage-card:nth-child(2):not(.stage-card-locked):hover {
+  transform: translateY(-3px);
+
+  border-color: #3b82f6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f1f7ff
+    );
+
+  box-shadow:
+    0 8px 26px rgba(59, 130, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(3):not(.stage-card-locked):hover {
+  transform: translateY(-3px);
+
+  border-color: #8b5cf6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f7f4ff
+    );
+
+  box-shadow:
+    0 8px 26px rgba(139, 92, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(4):not(.stage-card-locked):hover {
+  transform: translateY(-3px);
+
+  border-color: #ef4444;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #fff5f5
+    );
+
+  box-shadow:
+    0 8px 26px rgba(239, 68, 68, 0.22);
+}
+
+
+/* =========================================================
+   STAGE CARD — LOCKED
+========================================================= */
+
+.stage-card-locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+.stage-card-locked .stage-card-number {
+  background: #cbd5e1 !important;
+  box-shadow: none !important;
+}
+
+.stage-card-locked .stage-card-arrow {
+  color: #94a3b8 !important;
+  text-shadow: none !important;
+}
+
+
+/* =========================================================
+   STAGE CARD — COMPLETED
+========================================================= */
+
+.stage-list .stage-card:nth-child(1).stage-card-completed {
+  border-color: #1dba22;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f2fff3
+    );
+
+  box-shadow:
+    0 0 18px rgba(29, 186, 34, 0.22);
+}
+
+.stage-list .stage-card:nth-child(2).stage-card-completed {
+  border-color: #3b82f6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f1f7ff
+    );
+
+  box-shadow:
+    0 0 18px rgba(59, 130, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(3).stage-card-completed {
+  border-color: #8b5cf6;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f7f4ff
+    );
+
+  box-shadow:
+    0 0 18px rgba(139, 92, 246, 0.22);
+}
+
+.stage-list .stage-card:nth-child(4).stage-card-completed {
+  border-color: #ef4444;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #fff5f5
+    );
+
+  box-shadow:
+    0 0 18px rgba(239, 68, 68, 0.22);
+}
+
 
 /* =========================================================
    PLAY INFO
@@ -493,10 +828,9 @@
   padding: 10px 16px;
 
   border-radius: 12px;
-
-  background: #ffffff;
-
   border: 1px solid var(--stage-border);
+
+  background: var(--white);
 
   font-family:
     "Segoe UI",
@@ -513,6 +847,7 @@
     0 4px 12px var(--stage-soft);
 }
 
+
 /* =========================================================
    GAME PLACEHOLDER
 ========================================================= */
@@ -522,8 +857,8 @@
   max-width: 700px;
 
   margin: 30px auto;
-
   padding: 40px 24px;
+
   box-sizing: border-box;
 
   border: 2px dashed var(--stage-border);
@@ -536,8 +871,8 @@
 }
 
 .stage-placeholder-icon {
-  font-size: 52px;
   margin-bottom: 12px;
+  font-size: 52px;
 }
 
 .stage-game-placeholder h2 {
@@ -557,18 +892,12 @@
 
 .stage-game-placeholder p {
   margin: 0 0 24px;
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  color: #64748b;
+  color: var(--text-muted);
 }
 
+
 /* =========================================================
-   BUTTONS
+   TEST BUTTONS
 ========================================================= */
 
 .stage-test-buttons {
@@ -586,7 +915,7 @@
   padding: 12px 20px;
 
   background: var(--stage-main);
-  color: #ffffff;
+  color: var(--white);
 
   font-family:
     "Segoe UI",
@@ -611,12 +940,12 @@
 .stage-test-buttons button:hover,
 .stage-game-placeholder > button:hover {
   transform: translateY(-2px);
-
   filter: brightness(0.92);
 
   box-shadow:
     0 7px 20px var(--stage-glow);
 }
+
 
 /* =========================================================
    RESULT CARD
@@ -626,15 +955,14 @@
   max-width: 650px;
 
   margin: 60px auto;
-
   padding: 42px 28px;
+
   box-sizing: border-box;
 
   border-radius: 24px;
-
-  background: #ffffff;
-
   border: 2px solid var(--stage-border);
+
+  background: var(--white);
 
   box-shadow:
     0 10px 35px var(--stage-soft),
@@ -643,34 +971,35 @@
   text-align: center;
 }
 
+
 /* =========================================================
    RESULT ICON
 ========================================================= */
 
 .stage-result-icon {
-  font-size: 64px;
   margin-bottom: 10px;
+  font-size: 64px;
 }
 
+
 /* =========================================================
-   KHMER RESULT
-   DÙNG KHMER OS
+   RESULT KHMER
 ========================================================= */
 
 .stage-result-khmer {
+  margin-bottom: 8px;
+
   font-family:
     "Khmer OS",
     sans-serif;
 
-  color: var(--stage-main);
-
   font-size: 25px;
   font-weight: 400;
-
   line-height: 1.8;
 
-  margin-bottom: 8px;
+  color: var(--stage-main);
 }
+
 
 /* =========================================================
    RESULT TITLE
@@ -691,6 +1020,7 @@
   color: var(--stage-dark);
 }
 
+
 /* =========================================================
    RESULT DESCRIPTION
 ========================================================= */
@@ -704,10 +1034,11 @@
     Helvetica,
     sans-serif;
 
-  color: #64748b;
+  color: var(--text-muted);
 
   line-height: 1.6;
 }
+
 
 /* =========================================================
    RESULT BUTTON
@@ -719,14 +1050,13 @@
   width: min(100%, 320px);
 
   margin: 10px auto;
-
   padding: 13px 20px;
 
   border: none;
   border-radius: 12px;
 
   background: var(--stage-main);
-  color: #ffffff;
+  color: var(--white);
 
   font-family:
     "Segoe UI",
@@ -750,16 +1080,15 @@
 
 .stage-result button:hover {
   transform: translateY(-2px);
-
   filter: brightness(0.92);
 
   box-shadow:
     0 7px 20px var(--stage-glow);
 }
 
+
 /* =========================================================
    RESULT — LOSE
-   VẪN THEO MÀU CỦA STAGE
 ========================================================= */
 
 .stage-result-lose {
@@ -773,8 +1102,9 @@
   color: var(--stage-main);
 }
 
+
 /* =========================================================
-   FINAL RESULT
+   RESULT — FINAL
 ========================================================= */
 
 .stage-result-final {
@@ -789,6 +1119,7 @@
   color: var(--stage-main);
 }
 
+
 /* =========================================================
    REWARD
 ========================================================= */
@@ -798,10 +1129,10 @@
   gap: 10px;
 
   margin: 24px auto;
-
   padding: 18px;
 
   border-radius: 16px;
+  border: 1px solid #e8c84a;
 
   background:
     linear-gradient(
@@ -809,8 +1140,6 @@
       var(--stage-light),
       #fffbea
     );
-
-  border: 1px solid #e8c84a;
 
   font-family:
     "Segoe UI",
@@ -821,7 +1150,6 @@
 
 .stage-reward strong {
   font-size: 28px;
-
   color: #d99a00;
 
   text-shadow:
@@ -833,8 +1161,9 @@
   color: var(--stage-main);
 }
 
+
 /* =========================================================
-   STAGE-SPECIFIC RESULT COLORS
+   RESULT — STAGE COLORS
 ========================================================= */
 
 .game-stage-1 .stage-result-khmer {
@@ -853,6 +1182,7 @@
   color: #ef4444;
 }
 
+
 /* =========================================================
    MOBILE
 ========================================================= */
@@ -862,12 +1192,17 @@
     padding: 16px;
   }
 
-  .game-stage-content h1 {
-    font-size: 32px;
+  .game-stage-khmer {
+    font-size: 34px;
   }
 
-  .game-stage-khmer {
-    font-size: 23px;
+  .game-stage-content h1 {
+    font-size: 25px;
+  }
+
+  .game-stage-content > p {
+    font-size: 15px;
+    margin-bottom: 24px;
   }
 
   .stage-card {

@@ -1,24 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 
 import StageResult from "../../components/StageResult";
 
 import {
-  startStage,
   isStageCompleted,
+  startStage,
   recordStagePlay,
   recordStageScore,
   completeStage,
+  hasClaimedGameExp,
+  hasClaimedBadge,
+  claimGameExp,
+  claimBadge,
 } from "../../data/gameProgress";
 
 import "../../shared/GameStage.css";
-import "./Stage2.css";
+import "./Stage4.css";
+
+/* =========================================================
+   GAME 4 — STAGE 4
+
+   KHUNG SƯỜN GAMEPLAY
+
+   Gameplay thật sẽ được cắm vào:
+
+   .stage-game-area
+
+   Không chứa gameplay riêng của Game 2.
+========================================================= */
 
 /* =========================================================
    CẤU HÌNH
 ========================================================= */
 
-const GAME_ID = 3;
-const STAGE_ID = 2;
+const GAME_ID = 4;
+const STAGE_ID = 4;
 
 const MAX_ATTEMPTS = 3;
 const TOTAL_QUESTIONS = 10;
@@ -51,69 +70,28 @@ const playSound = (src) => {
     audio.currentTime = 0;
     audio.volume = 0.9;
 
-    audio.play().catch((error) => {
-      console.warn(
-        "Không thể phát âm thanh:",
-        src,
-        error
-      );
-    });
-  } catch (error) {
-    console.warn(
-      "Lỗi tạo âm thanh:",
-      src,
-      error
-    );
+    audio.play().catch(() => {});
+  } catch {
+    /* Không làm game lỗi */
   }
 };
 
 /* =========================================================
-   STAGE 2 — GAME 3
-
-   SƯỜN GAMEPLAY
-
-   Gameplay của Game 2 đã được loại bỏ.
-
-   GIỮ NGUYÊN:
-   - Kiểm tra Stage 1
-   - Khóa / mở Stage
-   - startStage
-   - recordStagePlay
-   - recordStageScore
-   - completeStage
-   - Lượt chơi
-   - Điểm
-   - Combo
-   - Số câu
-   - Thắng / thua
-   - Retry
-   - Continue
-   - StageResult
-
-   LOẠI BỎ:
-   - stage2Data
-   - createOptions()
-   - createQuestion()
-   - getRandomQuestion()
-   - createInitialQuestions()
-   - currentQuestion
-   - selectedAnswer
-   - answered
-   - handleAnswer()
-   - replaceCurrentQuestion()
-   - Gameplay ghép phụ âm + nguyên âm
+   STAGE 4
 ========================================================= */
 
-const Stage2 = ({ navigate }) => {
+const Stage4 = ({
+  navigate,
+}) => {
 
   /* =======================================================
-     KIỂM TRA STAGE 1
+     KIỂM TRA STAGE 3
   ======================================================= */
 
-  const stage1Completed =
+  const stage3Completed =
     isStageCompleted(
       GAME_ID,
-      1
+      3
     );
 
   /* =======================================================
@@ -150,7 +128,7 @@ const Stage2 = ({ navigate }) => {
 
      Giữ questionIndex để bảo toàn
      cơ chế 10 câu của Stage.
-  ======================================================= */
+========================================================= */
 
   const [
     questionIndex,
@@ -172,18 +150,22 @@ const Stage2 = ({ navigate }) => {
   ] = useState(false);
 
   /* =======================================================
-     KIỂM TRA + START STAGE
+     REWARD
+  ======================================================= */
 
-     Stage 2 chỉ được vào khi Stage 1
-     đã hoàn thành.
+  const [
+    rewardClaimed,
+    setRewardClaimed,
+  ] = useState(false);
 
-     Vào Stage / reload / retry
-     → KHÔNG tăng playCount.
+  /* =======================================================
+     START STAGE
   ======================================================= */
 
   useEffect(() => {
-    if (!stage1Completed) {
-      navigate("/game/3");
+
+    if (!stage3Completed) {
+      navigate("/game/4");
       return;
     }
 
@@ -191,8 +173,9 @@ const Stage2 = ({ navigate }) => {
       GAME_ID,
       STAGE_ID
     );
+
   }, [
-    stage1Completed,
+    stage3Completed,
     navigate,
   ]);
 
@@ -229,15 +212,57 @@ const Stage2 = ({ navigate }) => {
         STAGE_ID
       );
 
+    const firstWin =
+      completed.isFirstWin;
+
     setScore(
       finalScore
     );
 
     setIsFirstWin(
-      completed.isFirstWin
+      firstWin
     );
 
-    setResult("win");
+    /* =====================================================
+       CLAIM EXP + BADGE
+    ===================================================== */
+
+    if (firstWin) {
+
+      if (
+        !hasClaimedGameExp(
+          GAME_ID
+        )
+      ) {
+        claimGameExp(
+          GAME_ID
+        );
+      }
+
+      if (
+        !hasClaimedBadge(
+          GAME_ID
+        )
+      ) {
+        claimBadge(
+          GAME_ID
+        );
+      }
+
+      setRewardClaimed(
+        false
+      );
+
+    } else {
+
+      setRewardClaimed(
+        true
+      );
+    }
+
+    setResult(
+      "win"
+    );
   };
 
   /* =======================================================
@@ -265,7 +290,9 @@ const Stage2 = ({ navigate }) => {
       score
     );
 
-    setResult("lose");
+    setResult(
+      "lose"
+    );
   };
 
   /* =======================================================
@@ -288,6 +315,8 @@ const Stage2 = ({ navigate }) => {
 
     setIsFirstWin(false);
 
+    setRewardClaimed(false);
+
     startStage(
       GAME_ID,
       STAGE_ID
@@ -295,13 +324,24 @@ const Stage2 = ({ navigate }) => {
   };
 
   /* =======================================================
-     TIẾP TỤC STAGE 3
+     HOÀN THÀNH GAME
   ======================================================= */
 
-  const handleContinue = () => {
+  const handleComplete = () => {
 
     navigate(
-      "/game/3/stage/3"
+      "/game"
+    );
+  };
+
+  /* =======================================================
+     QUAY VỀ DANH SÁCH STAGE
+  ======================================================= */
+
+  const handleBackToStageList = () => {
+
+    navigate(
+      "/game/4"
     );
   };
 
@@ -309,7 +349,7 @@ const Stage2 = ({ navigate }) => {
      STAGE CHƯA MỞ
   ======================================================= */
 
-  if (!stage1Completed) {
+  if (!stage3Completed) {
     return null;
   }
 
@@ -320,19 +360,45 @@ const Stage2 = ({ navigate }) => {
   if (result) {
 
     return (
-      <div className="game-stage-page game-stage-2">
+      <div className="game-stage-page game-stage-4">
 
         <main className="game-stage-content">
 
           <StageResult
-            gameId={GAME_ID}
-            result={result}
-            stageId={STAGE_ID}
-            isFirstWin={isFirstWin}
-            onRetry={handleRetry}
-            onContinue={handleContinue}
-            onBack={() =>
-              navigate("/game/3")
+            gameId={
+              GAME_ID
+            }
+
+            result={
+              result
+            }
+
+            stageId={
+              STAGE_ID
+            }
+
+            isFirstWin={
+              isFirstWin
+            }
+
+            isFinalStage={
+              true
+            }
+
+            rewardClaimed={
+              rewardClaimed
+            }
+
+            onRetry={
+              handleRetry
+            }
+
+            onComplete={
+              handleComplete
+            }
+
+            onBack={
+              handleBackToStageList
             }
           />
 
@@ -344,10 +410,13 @@ const Stage2 = ({ navigate }) => {
 
   /* =======================================================
      GAMEPLAY PLACEHOLDER
+
+     Gameplay thật của Game 4 Stage 4
+     sẽ được cắm vào đây.
   ======================================================= */
 
   return (
-    <div className="game-stage-page game-stage-2">
+    <div className="game-stage-page game-stage-4">
 
       {/* =================================================
           HEADER
@@ -357,8 +426,8 @@ const Stage2 = ({ navigate }) => {
 
         <button
           type="button"
-          onClick={() =>
-            navigate("/game/3")
+          onClick={
+            handleBackToStageList
           }
         >
           ← DANH SÁCH STAGE
@@ -385,7 +454,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <div className="game-stage-khmer">
-          ហ្គេម ៣
+          ហ្គេម ៤
         </div>
 
         {/* =================================================
@@ -393,7 +462,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <h1>
-          STAGE 2
+          STAGE 4
         </h1>
 
         <p>
@@ -402,8 +471,6 @@ const Stage2 = ({ navigate }) => {
 
         {/* =================================================
             THÔNG TIN GAME
-
-            Giữ nguyên cơ chế hiển thị.
         ================================================= */}
 
         <div className="stage-play-info">
@@ -434,10 +501,10 @@ const Stage2 = ({ navigate }) => {
         </div>
 
         {/* =================================================
-            GAMEPLAY PLACEHOLDER
+            GAMEPLAY AREA
 
-            Gameplay mới của Game 3 Stage 2
-            sẽ được thêm vào đây.
+            CHỈ LÀ KHUNG.
+            KHÔNG CÓ GAMEPLAY GAME 2.
         ================================================= */}
 
         <section className="stage-game-area">
@@ -453,7 +520,7 @@ const Stage2 = ({ navigate }) => {
             </h2>
 
             <p>
-              Gameplay của Stage 2 Game 3
+              Gameplay của Stage 4 Game 4
               sẽ được thêm vào đây.
             </p>
 
@@ -467,4 +534,4 @@ const Stage2 = ({ navigate }) => {
   );
 };
 
-export default Stage2;
+export default Stage4;

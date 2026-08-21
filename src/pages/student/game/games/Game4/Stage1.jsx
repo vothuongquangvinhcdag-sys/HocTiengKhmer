@@ -4,21 +4,20 @@ import StageResult from "../../components/StageResult";
 
 import {
   startStage,
-  isStageCompleted,
   recordStagePlay,
   recordStageScore,
   completeStage,
 } from "../../data/gameProgress";
 
 import "../../shared/GameStage.css";
-import "./Stage2.css";
+import "./Stage1.css";
 
 /* =========================================================
    CẤU HÌNH
 ========================================================= */
 
-const GAME_ID = 3;
-const STAGE_ID = 2;
+const GAME_ID = 4;
+const STAGE_ID = 1;
 
 const MAX_ATTEMPTS = 3;
 const TOTAL_QUESTIONS = 10;
@@ -68,19 +67,14 @@ const playSound = (src) => {
 };
 
 /* =========================================================
-   STAGE 2 — GAME 3
+   STAGE 1 — GAME 4
 
    SƯỜN GAMEPLAY
 
    Gameplay của Game 2 đã được loại bỏ.
 
-   GIỮ NGUYÊN:
-   - Kiểm tra Stage 1
-   - Khóa / mở Stage
-   - startStage
-   - recordStagePlay
-   - recordStageScore
-   - completeStage
+   Giữ nguyên:
+   - Cơ chế Stage
    - Lượt chơi
    - Điểm
    - Combo
@@ -89,32 +83,15 @@ const playSound = (src) => {
    - Retry
    - Continue
    - StageResult
+   - recordStagePlay
+   - recordStageScore
+   - completeStage
 
-   LOẠI BỎ:
-   - stage2Data
-   - createOptions()
-   - createQuestion()
-   - getRandomQuestion()
-   - createInitialQuestions()
-   - currentQuestion
-   - selectedAnswer
-   - answered
-   - handleAnswer()
-   - replaceCurrentQuestion()
-   - Gameplay ghép phụ âm + nguyên âm
+   Gameplay mới sẽ được thêm vào phần
+   "GAMEPLAY PLACEHOLDER" sau này.
 ========================================================= */
 
-const Stage2 = ({ navigate }) => {
-
-  /* =======================================================
-     KIỂM TRA STAGE 1
-  ======================================================= */
-
-  const stage1Completed =
-    isStageCompleted(
-      GAME_ID,
-      1
-    );
+const Stage1 = ({ navigate }) => {
 
   /* =======================================================
      LƯỢT CHƠI
@@ -147,9 +124,6 @@ const Stage2 = ({ navigate }) => {
 
   /* =======================================================
      CÂU HỎI
-
-     Giữ questionIndex để bảo toàn
-     cơ chế 10 câu của Stage.
   ======================================================= */
 
   const [
@@ -172,32 +146,23 @@ const Stage2 = ({ navigate }) => {
   ] = useState(false);
 
   /* =======================================================
-     KIỂM TRA + START STAGE
-
-     Stage 2 chỉ được vào khi Stage 1
-     đã hoàn thành.
+     START STAGE
 
      Vào Stage / reload / retry
-     → KHÔNG tăng playCount.
+     → KHÔNG tăng playCount
   ======================================================= */
 
   useEffect(() => {
-    if (!stage1Completed) {
-      navigate("/game/3");
-      return;
-    }
-
     startStage(
       GAME_ID,
       STAGE_ID
     );
-  }, [
-    stage1Completed,
-    navigate,
-  ]);
+  }, []);
 
   /* =======================================================
      THẮNG
+
+     Giữ nguyên cơ chế Game 2.
   ======================================================= */
 
   const handleWin = (
@@ -209,7 +174,7 @@ const Stage2 = ({ navigate }) => {
     );
 
     /*
-     * Kết thúc đúng 1 lượt chơi.
+     * Chỉ kết thúc 1 lượt chơi ở đây.
      */
 
     recordStagePlay(
@@ -242,16 +207,20 @@ const Stage2 = ({ navigate }) => {
 
   /* =======================================================
      THUA
+
+     Giữ nguyên cơ chế Game 2.
   ======================================================= */
 
-  const handleLose = () => {
+  const handleLose = (
+    finalScore
+  ) => {
 
     playSound(
       SOUND_STAGE_FAIL
     );
 
     /*
-     * Kết thúc đúng 1 lượt chơi.
+     * Chỉ kết thúc 1 lượt chơi ở đây.
      */
 
     recordStagePlay(
@@ -262,7 +231,7 @@ const Stage2 = ({ navigate }) => {
     recordStageScore(
       GAME_ID,
       STAGE_ID,
-      score
+      finalScore
     );
 
     setResult("lose");
@@ -270,6 +239,13 @@ const Stage2 = ({ navigate }) => {
 
   /* =======================================================
      CHƠI LẠI
+
+     Retry:
+     - Reset lượt
+     - Reset điểm
+     - Reset combo
+     - Reset câu
+     - Không tăng playCount
   ======================================================= */
 
   const handleRetry = () => {
@@ -295,23 +271,15 @@ const Stage2 = ({ navigate }) => {
   };
 
   /* =======================================================
-     TIẾP TỤC STAGE 3
+     TIẾP TỤC STAGE 2
   ======================================================= */
 
   const handleContinue = () => {
 
     navigate(
-      "/game/3/stage/3"
+      "/game/4/stage/2"
     );
   };
-
-  /* =======================================================
-     STAGE CHƯA MỞ
-  ======================================================= */
-
-  if (!stage1Completed) {
-    return null;
-  }
 
   /* =======================================================
      RESULT
@@ -320,19 +288,33 @@ const Stage2 = ({ navigate }) => {
   if (result) {
 
     return (
-      <div className="game-stage-page game-stage-2">
+      <div className="game-stage-page game-stage-1">
 
         <main className="game-stage-content">
 
           <StageResult
-            gameId={GAME_ID}
-            result={result}
-            stageId={STAGE_ID}
-            isFirstWin={isFirstWin}
-            onRetry={handleRetry}
-            onContinue={handleContinue}
+            gameId={
+              GAME_ID
+            }
+            result={
+              result
+            }
+            stageId={
+              STAGE_ID
+            }
+            isFirstWin={
+              isFirstWin
+            }
+            onRetry={
+              handleRetry
+            }
+            onContinue={
+              handleContinue
+            }
             onBack={() =>
-              navigate("/game/3")
+              navigate(
+                "/game/4"
+              )
             }
           />
 
@@ -343,11 +325,27 @@ const Stage2 = ({ navigate }) => {
   }
 
   /* =======================================================
-     GAMEPLAY PLACEHOLDER
+     SƯỜN GAMEPLAY
+
+     Không chứa gameplay của Game 2.
+
+     Sau này gameplay Game 4 Stage 1 sẽ được
+     đưa vào khu vực này.
+
+     Các biến cơ chế vẫn được giữ nguyên:
+     - attemptsLeft
+     - score
+     - combo
+     - questionIndex
+     - TOTAL_QUESTIONS
+     - MAX_ATTEMPTS
+     - BASE_SCORE
+     - handleWin()
+     - handleLose()
   ======================================================= */
 
   return (
-    <div className="game-stage-page game-stage-2">
+    <div className="game-stage-page game-stage-1">
 
       {/* =================================================
           HEADER
@@ -358,7 +356,9 @@ const Stage2 = ({ navigate }) => {
         <button
           type="button"
           onClick={() =>
-            navigate("/game/3")
+            navigate(
+              "/game/4"
+            )
           }
         >
           ← DANH SÁCH STAGE
@@ -385,7 +385,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <div className="game-stage-khmer">
-          ហ្គេម ៣
+          ហ្គេម ៤
         </div>
 
         {/* =================================================
@@ -393,7 +393,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <h1>
-          STAGE 2
+          STAGE 1
         </h1>
 
         <p>
@@ -403,7 +403,7 @@ const Stage2 = ({ navigate }) => {
         {/* =================================================
             THÔNG TIN GAME
 
-            Giữ nguyên cơ chế hiển thị.
+            Giữ nguyên cơ chế hiển thị của Game 2.
         ================================================= */}
 
         <div className="stage-play-info">
@@ -436,8 +436,16 @@ const Stage2 = ({ navigate }) => {
         {/* =================================================
             GAMEPLAY PLACEHOLDER
 
-            Gameplay mới của Game 3 Stage 2
-            sẽ được thêm vào đây.
+            Đây là vị trí để thêm gameplay Game 4
+            sau này.
+
+            Không còn:
+            - Câu hỏi Game 2
+            - Đáp án Game 2
+            - createQuestion()
+            - createOptions()
+            - stage1Data
+            - logic kiểm tra đáp án Game 2
         ================================================= */}
 
         <section className="stage-game-area">
@@ -453,7 +461,7 @@ const Stage2 = ({ navigate }) => {
             </h2>
 
             <p>
-              Gameplay của Stage 2 Game 3
+              Gameplay của Stage 1 Game 4
               sẽ được thêm vào đây.
             </p>
 
@@ -467,4 +475,4 @@ const Stage2 = ({ navigate }) => {
   );
 };
 
-export default Stage2;
+export default Stage1;

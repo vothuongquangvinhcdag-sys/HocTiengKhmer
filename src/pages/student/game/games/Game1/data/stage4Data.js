@@ -43,14 +43,14 @@ const consonants = [
 ========================================================= */
 
 const vowels = [
-  { symbol: "◌ា", romanO: "a", romanOh: "ia" },
-  { symbol: "◌ិ", romanO: "ế", romanOh: "í" },
-  { symbol: "◌ី", romanO: "ây", romanOh: "i" },
-  { symbol: "◌ឹ", romanO: "ấ", romanOh: "ứ" },
-  { symbol: "◌ឺ", romanO: "ơ", romanOh: "ư" },
-  { symbol: "◌ុ", romanO: "ố", romanOh: "ú" },
-  { symbol: "◌ូ", romanO: "ô", romanOh: "u" },
-  { symbol: "◌ួ", romanO: "ua", romanOh: "ua" },
+  { symbol: "ា", romanO: "a", romanOh: "ia" },
+  { symbol: "ិ", romanO: "ế", romanOh: "í" },
+  { symbol: "ី", romanO: "ây", romanOh: "i" },
+  { symbol: "ឹ", romanO: "ấ", romanOh: "ứ" },
+  { symbol: "ឺ", romanO: "ơ", romanOh: "ư" },
+  { symbol: "ុ", romanO: "ố", romanOh: "ú" },
+  { symbol: "ូ", romanO: "ô", romanOh: "u" },
+  { symbol: "ួ", romanO: "ua", romanOh: "ua" },
   { symbol: "ើ", romanO: "ờ", romanOh: "ơ" },
   { symbol: "ឿ", romanO: "ưa", romanOh: "ưa" },
   { symbol: "ៀ", romanO: "ia", romanOh: "ia" },

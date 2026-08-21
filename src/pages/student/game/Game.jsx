@@ -6,6 +6,8 @@ import GameCard from "./components/GameCard";
 import Game1 from "./games/Game1/Game1";
 import Game2 from "./games/Game2/Game2";
 import Game3 from "./games/Game3/Game3";
+import Game4 from "./games/Game4/Game4";
+import Game5 from "./games/Game5/Game5";
 
 import { GAME_DATA } from "./data/gameData";
 
@@ -76,6 +78,44 @@ const Game = ({
   ) {
     return (
       <Game3
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
+      />
+    );
+  }
+
+  /* =======================================================
+     ĐIỀU HƯỚNG GAME 4
+  ======================================================= */
+
+  if (
+    path === "/game/4" ||
+    path.startsWith("/game/4/")
+  ) {
+    return (
+      <Game4
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
+      />
+    );
+  }
+
+  /* =======================================================
+     ĐIỀU HƯỚNG GAME 5
+  ======================================================= */
+
+  if (
+    path === "/game/5" ||
+    path.startsWith("/game/5/")
+  ) {
+    return (
+      <Game5
         profile={profile}
         session={session}
         navigate={navigate}

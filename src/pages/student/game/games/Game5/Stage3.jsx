@@ -11,14 +11,14 @@ import {
 } from "../../data/gameProgress";
 
 import "../../shared/GameStage.css";
-import "./Stage2.css";
+import "./Stage3.css";
 
 /* =========================================================
    CẤU HÌNH
 ========================================================= */
 
-const GAME_ID = 3;
-const STAGE_ID = 2;
+const GAME_ID = 5;
+const STAGE_ID = 3;
 
 const MAX_ATTEMPTS = 3;
 const TOTAL_QUESTIONS = 10;
@@ -68,14 +68,12 @@ const playSound = (src) => {
 };
 
 /* =========================================================
-   STAGE 2 — GAME 3
+   STAGE 3 — GAME 5
 
-   SƯỜN GAMEPLAY
+   BỘ KHUNG GAMEPLAY
 
-   Gameplay của Game 2 đã được loại bỏ.
-
-   GIỮ NGUYÊN:
-   - Kiểm tra Stage 1
+   Giữ:
+   - Kiểm tra Stage 2
    - Khóa / mở Stage
    - startStage
    - recordStagePlay
@@ -89,31 +87,32 @@ const playSound = (src) => {
    - Retry
    - Continue
    - StageResult
+   - Âm thanh
 
-   LOẠI BỎ:
-   - stage2Data
+   Loại bỏ:
+   - stage3Data
+   - createQuestions()
    - createOptions()
-   - createQuestion()
-   - getRandomQuestion()
-   - createInitialQuestions()
    - currentQuestion
    - selectedAnswer
    - answered
    - handleAnswer()
-   - replaceCurrentQuestion()
-   - Gameplay ghép phụ âm + nguyên âm
+   - Gameplay riêng của Game 2
+
+   Gameplay thật của Game 5 sẽ được cắm
+   vào .stage-game-area sau.
 ========================================================= */
 
-const Stage2 = ({ navigate }) => {
+const Stage3 = ({ navigate }) => {
 
   /* =======================================================
-     KIỂM TRA STAGE 1
+     KIỂM TRA STAGE 2
   ======================================================= */
 
-  const stage1Completed =
+  const stage2Completed =
     isStageCompleted(
       GAME_ID,
-      1
+      2
     );
 
   /* =======================================================
@@ -172,18 +171,13 @@ const Stage2 = ({ navigate }) => {
   ] = useState(false);
 
   /* =======================================================
-     KIỂM TRA + START STAGE
-
-     Stage 2 chỉ được vào khi Stage 1
-     đã hoàn thành.
-
-     Vào Stage / reload / retry
-     → KHÔNG tăng playCount.
+     START STAGE
   ======================================================= */
 
   useEffect(() => {
-    if (!stage1Completed) {
-      navigate("/game/3");
+
+    if (!stage2Completed) {
+      navigate("/game/5");
       return;
     }
 
@@ -191,8 +185,9 @@ const Stage2 = ({ navigate }) => {
       GAME_ID,
       STAGE_ID
     );
+
   }, [
-    stage1Completed,
+    stage2Completed,
     navigate,
   ]);
 
@@ -295,13 +290,13 @@ const Stage2 = ({ navigate }) => {
   };
 
   /* =======================================================
-     TIẾP TỤC STAGE 3
+     TIẾP TỤC STAGE 4
   ======================================================= */
 
   const handleContinue = () => {
 
     navigate(
-      "/game/3/stage/3"
+      "/game/5/stage/4"
     );
   };
 
@@ -309,7 +304,7 @@ const Stage2 = ({ navigate }) => {
      STAGE CHƯA MỞ
   ======================================================= */
 
-  if (!stage1Completed) {
+  if (!stage2Completed) {
     return null;
   }
 
@@ -320,19 +315,33 @@ const Stage2 = ({ navigate }) => {
   if (result) {
 
     return (
-      <div className="game-stage-page game-stage-2">
+      <div className="game-stage-page game-stage-3">
 
         <main className="game-stage-content">
 
           <StageResult
-            gameId={GAME_ID}
-            result={result}
-            stageId={STAGE_ID}
-            isFirstWin={isFirstWin}
-            onRetry={handleRetry}
-            onContinue={handleContinue}
+            gameId={
+              GAME_ID
+            }
+            result={
+              result
+            }
+            stageId={
+              STAGE_ID
+            }
+            isFirstWin={
+              isFirstWin
+            }
+            onRetry={
+              handleRetry
+            }
+            onContinue={
+              handleContinue
+            }
             onBack={() =>
-              navigate("/game/3")
+              navigate(
+                "/game/5"
+              )
             }
           />
 
@@ -347,7 +356,7 @@ const Stage2 = ({ navigate }) => {
   ======================================================= */
 
   return (
-    <div className="game-stage-page game-stage-2">
+    <div className="game-stage-page game-stage-3">
 
       {/* =================================================
           HEADER
@@ -358,7 +367,9 @@ const Stage2 = ({ navigate }) => {
         <button
           type="button"
           onClick={() =>
-            navigate("/game/3")
+            navigate(
+              "/game/5"
+            )
           }
         >
           ← DANH SÁCH STAGE
@@ -385,7 +396,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <div className="game-stage-khmer">
-          ហ្គេម ៣
+          ហ្គេម ៥
         </div>
 
         {/* =================================================
@@ -393,7 +404,7 @@ const Stage2 = ({ navigate }) => {
         ================================================= */}
 
         <h1>
-          STAGE 2
+          STAGE 3
         </h1>
 
         <p>
@@ -402,8 +413,6 @@ const Stage2 = ({ navigate }) => {
 
         {/* =================================================
             THÔNG TIN GAME
-
-            Giữ nguyên cơ chế hiển thị.
         ================================================= */}
 
         <div className="stage-play-info">
@@ -436,8 +445,8 @@ const Stage2 = ({ navigate }) => {
         {/* =================================================
             GAMEPLAY PLACEHOLDER
 
-            Gameplay mới của Game 3 Stage 2
-            sẽ được thêm vào đây.
+            Gameplay thật của Game 5
+            sẽ được cắm vào đây.
         ================================================= */}
 
         <section className="stage-game-area">
@@ -453,7 +462,7 @@ const Stage2 = ({ navigate }) => {
             </h2>
 
             <p>
-              Gameplay của Stage 2 Game 3
+              Gameplay của Stage 3 Game 5
               sẽ được thêm vào đây.
             </p>
 
@@ -467,4 +476,4 @@ const Stage2 = ({ navigate }) => {
   );
 };
 
-export default Stage2;
+export default Stage3;

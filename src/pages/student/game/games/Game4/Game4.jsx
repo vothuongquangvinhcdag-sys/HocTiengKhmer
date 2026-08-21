@@ -12,24 +12,24 @@ import {
   getStageState,
 } from "../../data/gameProgress";
 
-const Game3 = ({ navigate, path }) => {
+const Game4 = ({ navigate, path }) => {
   /* =======================================================
      ĐIỀU HƯỚNG STAGE
   ======================================================= */
 
-  if (path === "/game/3/stage/1") {
+  if (path === "/game/4/stage/1") {
     return <Stage1 navigate={navigate} />;
   }
 
-  if (path === "/game/3/stage/2") {
+  if (path === "/game/4/stage/2") {
     return <Stage2 navigate={navigate} />;
   }
 
-  if (path === "/game/3/stage/3") {
+  if (path === "/game/4/stage/3") {
     return <Stage3 navigate={navigate} />;
   }
 
-  if (path === "/game/3/stage/4") {
+  if (path === "/game/4/stage/4") {
     return <Stage4 navigate={navigate} />;
   }
 
@@ -38,16 +38,16 @@ const Game3 = ({ navigate, path }) => {
   ======================================================= */
 
   const stage1Completed =
-    isStageCompleted(3, 1);
+    isStageCompleted(4, 1);
 
   const stage2Completed =
-    isStageCompleted(3, 2);
+    isStageCompleted(4, 2);
 
   const stage3Completed =
-    isStageCompleted(3, 3);
+    isStageCompleted(4, 3);
 
   const stage4Completed =
-    isStageCompleted(3, 4);
+    isStageCompleted(4, 4);
 
   /* =======================================================
      DỮ LIỆU STAGE
@@ -122,12 +122,12 @@ const Game3 = ({ navigate, path }) => {
     }
 
     navigate(
-      `/game/3/stage/${stage.id}`
+      `/game/4/stage/${stage.id}`
     );
   };
 
   /* =======================================================
-     GAME 3 HOME
+     GAME 4 HOME
   ======================================================= */
 
   return (
@@ -151,15 +151,15 @@ const Game3 = ({ navigate, path }) => {
         </div>
 
         <div className="game-stage-khmer">
-          ហ្គេម ៣
+          ហ្គេម ៤
         </div>
 
         <h1>
-          GAME 3
+          GAME 4
         </h1>
 
         <p>
-          Hành trình thứ ba chinh phục
+          Hành trình thứ tư chinh phục
           tiếng Khmer.
         </p>
 
@@ -180,7 +180,7 @@ const Game3 = ({ navigate, path }) => {
 
               const state =
                 getStageState(
-                  3,
+                  4,
                   stage.id
                 );
 
@@ -218,4 +218,4 @@ const Game3 = ({ navigate, path }) => {
   );
 };
 
-export default Game3;
+export default Game4;
