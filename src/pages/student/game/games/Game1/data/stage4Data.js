@@ -67,6 +67,7 @@ const vowels = [
   { symbol: "េះ", romanO: "és", romanOh: "ếs" },
   { symbol: "ុះ", romanO: "ốs", romanOh: "ús" },
   { symbol: "ោះ", romanO: "ós", romanOh: "úas" },
+  { symbol: "ឹះ", romanO: "ấs", romanOh: "ứs" },
 ];
 
 /* =========================================================

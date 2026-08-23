@@ -13,7 +13,7 @@
 
 
 /* =========================================================
-   24 NGUYÊN ÂM KHMER
+   25 NGUYÊN ÂM KHMER
 ========================================================= */
 
 const vowels = [
@@ -41,6 +41,7 @@ const vowels = [
   { stt: 22, symbol: "េះ", romanO: "és", romanOh: "ếs", note: "Ngắt hơi" },
   { stt: 23, symbol: "ុះ", romanO: "ốs", romanOh: "ús", note: "Ngắt hơi" },
   { stt: 24, symbol: "ោះ", romanO: "ós", romanOh: "úas", note: "Ngắt hơi" },
+  { stt: 25, symbol: "ឹះ", romanO: "ấs", romanOh: "ứs", note: "Ngắt hơi" },
 ];
 
 

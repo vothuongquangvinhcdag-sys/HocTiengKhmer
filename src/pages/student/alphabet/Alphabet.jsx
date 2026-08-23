@@ -43,7 +43,7 @@ const consonants = [
 ];
 
 /* =========================================================
-   24 NGUYÊN ÂM KHMER
+   25 NGUYÊN ÂM KHMER
 ========================================================= */
 
 const vowels = [
@@ -71,6 +71,7 @@ const vowels = [
   { stt: 22, symbol: "េះ", romanO: "és", romanOh: "ếs", note: "Ngắt hơi", uppercase: null, handwriting: null },
   { stt: 23, symbol: "ុះ", romanO: "ốs", romanOh: "ús", note: "Ngắt hơi", uppercase: null, handwriting: null },
   { stt: 24, symbol: "ោះ", romanO: "ós", romanOh: "úas", note: "Ngắt hơi", uppercase: null, handwriting: null },
+  { stt: 25, symbol: "ឹះ", romanO: "ấs", romanOh: "ứs", note: "Ngắt hơi", uppercase: null, handwriting: null }
 ];
 
 /* =========================================================
@@ -1149,7 +1150,7 @@ function Alphabet({
           </div>
 
           <div className="alphabet-stat">
-            <strong>24</strong>
+            <strong>25</strong>
             <span>Nguyên âm</span>
           </div>
 
@@ -1200,7 +1201,7 @@ function Alphabet({
           }}
         >
           Nguyên âm
-          <span>24 âm</span>
+          <span>25 âm</span>
         </button>
 
       </div>
@@ -1368,7 +1369,7 @@ function Alphabet({
             <div>
 
               <h2>
-                24 NGUYÊN ÂM KHMER
+                25 NGUYÊN ÂM KHMER
               </h2>
 
               <p>
