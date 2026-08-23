@@ -551,6 +551,7 @@
 
 /* =========================================================
    LETTER
+   CHỈNH NHỎ CHỮ TRÊN CARD
 ========================================================= */
 
 .consonant-letter {
@@ -560,8 +561,8 @@
 
   font-family: "Khmer OS", sans-serif;
 
-  font-size: 64px;
-  line-height: 1.1;
+  font-size: 52px;
+  line-height: 1.05;
 
   font-weight: 400;
 }
@@ -674,12 +675,18 @@
   min-height: 205px;
 }
 
+
+/* =========================================================
+   VOWEL SYMBOL
+   CHỈNH NHỎ CHỮ TRÊN CARD
+========================================================= */
+
 .vowel-symbol {
   margin-bottom: 8px;
 
   font-family: "Khmer OS", sans-serif;
 
-  font-size: 52px;
+  font-size: 44px;
   line-height: 1;
 
   font-weight: 400;
@@ -1554,7 +1561,6 @@
 
 /* =========================================================
    AUDIO AREA
-   KHÔNG CÓ KHUNG NGOÀI
 ========================================================= */
 
 .modal-audio-area {
@@ -1816,10 +1822,6 @@
 
   .alphabet-header {
     padding: 30px 25px;
-  }
-
-  .consonant-letter {
-    font-size: 60px;
   }
 
   .alphabet-modal {
@@ -2091,10 +2093,6 @@
       10px;
   }
 
-  .consonant-letter {
-    font-size: 58px;
-  }
-
   .consonant-roman,
   .consonant-card-roman {
     font-size: 15px;
@@ -2102,11 +2100,6 @@
 
   .vowel-card {
     min-height: 195px;
-  }
-
-  .vowel-symbol {
-    font-size: 48px;
-    margin-bottom: 8px;
   }
 
   .vowel-pronunciation {
@@ -2369,10 +2362,6 @@
     min-height: 185px;
   }
 
-  .consonant-letter {
-    font-size: 52px;
-  }
-
   .alphabet-stat strong {
     font-size: 25px;
   }
@@ -2387,10 +2376,6 @@
 
   .vowel-card {
     min-height: 185px;
-  }
-
-  .vowel-symbol {
-    font-size: 44px;
   }
 
   .vowel-pronunciation {
@@ -2592,7 +2577,7 @@
   }
 
   .custom-audio-button .audio-play-icon.play {
-    padding-left: 0px !important;
+    padding-left: 0 !important;
   }
 
   .custom-audio-button .audio-play-icon.pause {
