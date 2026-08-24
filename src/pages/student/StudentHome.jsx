@@ -299,9 +299,7 @@ function StudentHome({
         break;
 
       case "progress":
-        alert(
-          "📊 Phần Tiến độ học tập đang được phát triển."
-        );
+        navigate("/progress");
         break;
 
       default:

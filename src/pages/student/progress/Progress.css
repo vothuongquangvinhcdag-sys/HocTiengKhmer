@@ -1,0 +1,1411 @@
+/* =========================================================
+   PROGRESS PAGE
+   GIAO DIỆN ĐỒNG BỘ STUDENT HOME
+========================================================= */
+
+
+/* =========================================================
+   FONT KHMER
+   Chỉ dùng cho chữ Khmer
+   Không ảnh hưởng font tiếng Việt
+========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer OS Muol";
+  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer Fasthand";
+  src: url("/fonts/KhmerFasthand.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================================
+   CLASS FONT KHMER
+========================================================= */
+
+.progress-khmer {
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+}
+
+.progress-khmer-muol {
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+}
+
+.progress-khmer-fasthand {
+  font-family:
+    "Khmer Fasthand",
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.progress-app {
+  min-height: 100vh;
+  display: flex;
+
+  background: #fffbeb;
+  color: #1f2937;
+
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   Đồng bộ StudentHome
+========================================================= */
+
+.progress-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 250px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 22px 16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fffdf5 100%
+    );
+
+  color: #1f2937;
+
+  border-right:
+    1px solid #fde68a;
+
+  box-shadow:
+    none;
+
+  z-index: 100;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.progress-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding:
+    4px 8px 22px;
+
+  border-bottom:
+    1px solid #fef3c7;
+}
+
+.progress-logo-symbol {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    0;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d97706,
+      #f59e0b,
+      #fbbf24
+    );
+
+  color: white;
+
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-size: 25px;
+  font-weight: 700;
+
+  box-shadow:
+    0 8px 18px
+    rgba(
+      245,
+      158,
+      11,
+      0.28
+    );
+}
+
+.progress-logo-title {
+  color: #b45309;
+
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.progress-logo-khmer {
+  margin-top: 3px;
+
+  color: #92400e;
+
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.progress-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin: 20px 4px;
+  padding: 12px;
+
+  border-radius: 15px;
+
+  background: #fffbeb;
+
+  border:
+    1px solid #fde68a;
+}
+
+.progress-avatar {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d97706,
+      #f59e0b,
+      #fbbf24
+    );
+
+  color: white;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.progress-profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.progress-profile-info strong {
+  overflow: hidden;
+
+  color: #1e293b;
+
+  font-size: 14px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.progress-profile-info span {
+  color: #d97706;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+.progress-menu {
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding-right: 3px;
+}
+
+.progress-menu-title {
+  margin:
+    6px 10px 9px;
+
+  color: #a16207;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.progress-menu-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 5px;
+
+  padding:
+    11px 12px;
+
+  border: 0;
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: #57534e;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.progress-menu-item:hover {
+  background: #fffbeb;
+
+  color: #b45309;
+
+  transform:
+    translateX(2px);
+}
+
+.progress-menu-item.active {
+  background:
+    linear-gradient(
+      90deg,
+      #fef3c7,
+      #fffbeb
+    );
+
+  color: #b45309;
+
+  font-weight: 800;
+
+  box-shadow:
+    inset 3px 0 0 #f59e0b;
+}
+
+.progress-menu-icon {
+  width: 24px;
+
+  display: inline-flex;
+
+  justify-content: center;
+
+  font-size: 18px;
+}
+
+.progress-sidebar-bottom {
+  padding-top: 12px;
+
+  border-top:
+    1px solid #fef3c7;
+}
+
+.progress-menu-item.logout {
+  color: #dc2626;
+}
+
+.progress-menu-item.logout:hover {
+  background: #fef2f2;
+
+  color: #b91c1c;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.progress-main {
+  width:
+    calc(100% - 250px);
+
+  min-height: 100vh;
+
+  margin-left: 250px;
+
+  padding:
+    30px 38px 60px;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 24px;
+}
+
+.progress-header-khmer {
+  margin:
+    5px 0 0;
+
+  color: #d97706;
+
+  font-family:
+    "Khmer OS",
+    "Noto Sans Khmer",
+    sans-serif;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.progress-header h1 {
+  margin: 0;
+
+  color: #451a03;
+
+  font-size: 29px;
+
+  line-height: 1.25;
+}
+
+.progress-header p {
+  margin:
+    8px 0 0;
+
+  color: #78716c;
+
+  font-size: 14px;
+}
+
+.progress-header-user {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-header-avatar {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    0;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d97706,
+      #f59e0b,
+      #fbbf24
+    );
+
+  color: white;
+
+  font-size: 21px;
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      245,
+      158,
+      11,
+      0.28
+    );
+}
+
+
+/* =========================================================
+   OVERVIEW
+========================================================= */
+
+.progress-overview {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.progress-overview-card {
+  min-height: 118px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 17px;
+
+  border:
+    1px solid #fde68a;
+
+  border-radius: 17px;
+
+  background: white;
+
+  box-shadow:
+    0 5px 16px
+    rgba(
+      120,
+      53,
+      15,
+      0.05
+    );
+
+  text-align: center;
+}
+
+.progress-overview-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 7px;
+
+  border-radius: 13px;
+
+  background: #fffbeb;
+
+  color: #d97706;
+
+  font-size: 21px;
+}
+
+.progress-overview-label {
+  color: #78716c;
+
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.progress-overview-value {
+  margin-top: 2px;
+
+  color: #451a03;
+
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.progress-overview-value.exp-value {
+  font-size: 23px;
+}
+
+.progress-overview-sub {
+  margin-top: 2px;
+
+  color: #a16207;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.progress-overview-sub.max {
+  color: #b45309;
+}
+
+
+/* =========================================================
+   COMMON PANEL
+========================================================= */
+
+.progress-panel {
+  margin-top: 20px;
+
+  padding: 21px;
+
+  border:
+    1px solid #fde68a;
+
+  border-radius: 18px;
+
+  background: white;
+
+  box-shadow:
+    0 5px 16px
+    rgba(
+      120,
+      53,
+      15,
+      0.05
+    );
+}
+
+.progress-panel-heading {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 18px;
+}
+
+.progress-panel-heading h2 {
+  margin: 0;
+
+  color: #451a03;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.progress-panel-heading p {
+  margin:
+    5px 0 0;
+
+  color: #78716c;
+
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   LEVEL PROGRESS
+========================================================= */
+
+.progress-level-target {
+  padding:
+    7px 12px;
+
+  border:
+    1px solid #fcd34d;
+
+  border-radius: 999px;
+
+  background: #fffbeb;
+
+  color: #b45309;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+.progress-level-info {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  color: #451a03;
+}
+
+.progress-level-info > div:first-child {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+.progress-level-info strong {
+  color: #451a03;
+
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.progress-level-info span {
+  color: #d97706;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progress-level-exp {
+  color: #78716c;
+
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.progress-level-track {
+  height: 10px;
+
+  overflow: hidden;
+
+  margin-top: 12px;
+
+  border: 0;
+
+  border-radius: 999px;
+
+  background: #fef3c7;
+}
+
+.progress-level-fill {
+  position: relative;
+
+  height: 100%;
+
+  overflow: hidden;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #d97706,
+      #f59e0b,
+      #fbbf24
+    );
+
+  transition:
+    width 0.5s ease;
+}
+
+.progress-level-shine {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 35%;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        255,
+        255,
+        255,
+        0.55
+      ),
+      transparent
+    );
+
+  animation:
+    progress-shine 2.5s infinite;
+}
+
+@keyframes progress-shine {
+  0% {
+    transform:
+      translateX(-120%);
+  }
+
+  100% {
+    transform:
+      translateX(350%);
+  }
+}
+
+.progress-level-footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 10px;
+
+  color: #a8a29e;
+
+  font-size: 12px;
+}
+
+.progress-level-footer strong {
+  color: #d97706;
+}
+
+.progress-max-text {
+  color: #b45309;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   TOTAL STUDY TIME
+========================================================= */
+
+.progress-time-panel {
+  min-height: 150px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 17px;
+
+  margin-top: 20px;
+
+  padding:
+    19px 22px;
+
+  border:
+    1px solid #fde68a;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #fffbeb,
+      #ffffff
+    );
+
+  box-shadow:
+    0 5px 18px
+    rgba(
+      245,
+      158,
+      11,
+      0.08
+    );
+}
+
+.progress-time-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border: 0;
+
+  border-radius: 15px;
+
+  background: #fef3c7;
+
+  font-size: 25px;
+}
+
+.progress-time-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.progress-time-label {
+  color: #78716c;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.progress-time-value {
+  display: flex;
+
+  align-items: baseline;
+
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin-top: 3px;
+
+  color: #92400e;
+
+  font-size: 25px;
+  font-weight: 800;
+
+  font-variant-numeric:
+    tabular-nums;
+}
+
+.progress-time-value small {
+  margin-right: 7px;
+
+  color: #a8a29e;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badges-panel {
+  overflow: hidden;
+}
+
+.badges-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 15px;
+}
+
+.badge-card {
+  position: relative;
+
+  min-height: 190px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 22px 18px;
+
+  overflow: hidden;
+
+  border:
+    1px solid #fde68a;
+
+  border-radius: 18px;
+
+  background: white;
+
+  text-align: center;
+
+  box-shadow:
+    0 5px 16px
+    rgba(
+      120,
+      53,
+      15,
+      0.05
+    );
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.badge-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 4px;
+
+  background:
+    #f59e0b;
+}
+
+.badge-card:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    #fbbf24;
+
+  box-shadow:
+    0 12px 25px
+    rgba(
+      217,
+      119,
+      6,
+      0.13
+    );
+}
+
+.badge-icon {
+  width: 68px;
+  height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 12px;
+
+  border:
+    1px solid #fde68a;
+
+  border-radius: 15px;
+
+  background: #fffbeb;
+
+  color: #d97706;
+
+  box-shadow:
+    none;
+
+  font-size: 36px;
+}
+
+.badge-card h3 {
+  margin: 0;
+
+  color: #451a03;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.badge-card p {
+  margin:
+    6px 0 0;
+
+  color: #78716c;
+
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.game-badge::before {
+  background:
+    #f59e0b;
+}
+
+.study-badge::before {
+  background:
+    #d97706;
+}
+
+.empty-badge-state {
+  padding:
+    35px 20px;
+
+  border:
+    1px dashed #fcd34d;
+
+  border-radius: 14px;
+
+  background: #fffbeb;
+
+  color: #a8a29e;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   BADGE EARNED LABEL
+   Có thể giữ lại nếu JSX chưa xóa.
+   Khi xóa "✓ Đã đạt được" khỏi JSX,
+   phần này sẽ không còn được sử dụng.
+========================================================= */
+
+.badge-earned-label {
+  margin-top: 10px;
+
+  color: #16a34a;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.progress-menu::-webkit-scrollbar {
+  width: 5px;
+}
+
+.progress-menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.progress-menu::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background: #fcd34d;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  .progress-sidebar {
+    width: 220px;
+  }
+
+  .progress-main {
+    width:
+      calc(100% - 220px);
+
+    margin-left: 220px;
+
+    padding:
+      25px 25px 50px;
+  }
+
+  .progress-overview {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* =========================================================
+   TABLET NHỎ
+========================================================= */
+
+@media (max-width: 850px) {
+
+  .progress-sidebar {
+    width: 220px;
+  }
+
+  .progress-main {
+    width:
+      calc(100% - 220px);
+
+    margin-left: 220px;
+
+    padding:
+      24px;
+  }
+
+  .progress-overview {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .badges-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+  .progress-app {
+    display: block;
+  }
+
+  .progress-sidebar {
+    position: relative;
+
+    width: 100%;
+
+    height: auto;
+
+    min-height: 0;
+
+    padding: 12px;
+
+    border-right: 0;
+
+    border-bottom:
+      1px solid #fde68a;
+  }
+
+  .progress-logo {
+    padding-bottom: 12px;
+  }
+
+  .progress-profile {
+    margin:
+      12px 0;
+  }
+
+  .progress-menu {
+    display: flex;
+
+    gap: 6px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding-bottom: 4px;
+  }
+
+  .progress-menu-title {
+    display: none;
+  }
+
+  .progress-menu-item {
+    width: auto;
+
+    flex-shrink: 0;
+
+    margin-bottom: 0;
+
+    padding:
+      9px 11px;
+  }
+
+  .progress-menu-item span:last-child {
+    display: none;
+  }
+
+  .progress-sidebar-bottom {
+    display: flex;
+
+    gap: 6px;
+
+    padding-top: 8px;
+  }
+
+  .progress-sidebar-bottom
+    .progress-menu-item {
+    flex: 1;
+  }
+
+  .progress-main {
+    width: 100%;
+
+    margin-left: 0;
+
+    padding:
+      20px 15px 40px;
+  }
+
+  .progress-header {
+    align-items:
+      flex-start;
+  }
+
+  .progress-header h1 {
+    font-size: 23px;
+  }
+
+  .progress-header-khmer {
+    font-size: 16px;
+  }
+
+  .progress-header-user {
+    display: none;
+  }
+
+  .progress-overview {
+    grid-template-columns:
+      1fr;
+  }
+
+  .progress-panel {
+    padding:
+      20px;
+  }
+
+  .progress-panel-heading {
+    flex-direction: column;
+  }
+
+  .progress-level-info {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap: 8px;
+  }
+
+  .progress-level-footer {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    gap: 5px;
+  }
+
+  .progress-time-panel {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .progress-time-value {
+    font-size: 25px;
+  }
+
+  .badges-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONE
+========================================================= */
+
+@media (max-width: 430px) {
+
+  .progress-main {
+    padding:
+      16px 11px 30px;
+  }
+
+  .progress-header h1 {
+    font-size: 21px;
+  }
+
+  .progress-header p {
+    font-size: 12px;
+  }
+
+  .progress-panel {
+    padding:
+      18px 15px;
+  }
+
+  .progress-overview-card {
+    min-height: 105px;
+
+    padding: 14px;
+  }
+
+  .progress-overview-value {
+    font-size: 23px;
+  }
+
+  .progress-time-panel {
+    padding:
+      18px;
+  }
+
+  .progress-time-value {
+    font-size: 22px;
+  }
+
+  .badge-card {
+    min-height: 175px;
+
+    padding:
+      20px 15px;
+  }
+
+  .badge-icon {
+    width: 60px;
+    height: 60px;
+
+    font-size: 32px;
+  }
+
+  .badge-card h3 {
+    font-size: 15px;
+  }
+}
