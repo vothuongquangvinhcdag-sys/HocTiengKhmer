@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import StudentHome from "./pages/student/StudentHome";
 import Alphabet from "./pages/student/alphabet/Alphabet";
 import Vocabulary from "./pages/student/vocabulary/vocabulary";
+import Communication from "./pages/student/communication/Communication";
 
 import AdminHome from "./pages/admin/AdminHome";
 
@@ -573,6 +574,22 @@ if (
     />
   );
 }
+/* =======================================================
+   COMMUNICATION
+======================================================= */
+
+if (path === "/communication") {
+  return (
+    <Communication
+      profile={profile}
+      session={session}
+      navigate={navigate}
+      onLogout={handleLogout}
+      onProgressUpdated={refreshProfile}
+    />
+  );
+}
+
   /* =======================================================
      TRANG CHƯA LÀM
   ======================================================= */

@@ -1,0 +1,1853 @@
+/* =========================================================
+   COMMUNICATION
+   HỌC TIẾNG KHMER
+   ========================================================= */
+
+
+/* =========================================================
+   FONT KHMER
+
+   Chỉ dùng cho chữ Khmer
+   ========================================================= */
+
+@font-face {
+  font-family: "Khmer OS";
+  src: url("/fonts/KhmerOS.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Khmer OS Muol";
+  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+.communication-page {
+  min-height: 100vh;
+  padding: 32px;
+
+  background: #fffbeb;
+  color: #1f2937;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  box-sizing: border-box;
+}
+
+.communication-page *,
+.communication-page *::before,
+.communication-page *::after {
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.communication-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+  margin-bottom: 28px;
+  padding: 32px;
+
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #064e3b 0%,
+      #047857 55%,
+      #059669 100%
+    );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 12px 30px rgba(6, 78, 59, 0.16);
+}
+
+.communication-header-content {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.communication-back-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+  margin-bottom: 22px;
+  padding: 10px 16px;
+
+  border: 1px solid rgba(245, 215, 110, 0.7);
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff8dc;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.08);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communication-back-button:hover {
+  background: rgba(212, 175, 55, 0.18);
+  border-color: #f5d76e;
+
+  transform: translateX(-2px);
+
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.communication-back-button:active {
+  transform: translateX(0) scale(0.98);
+}
+
+
+/* =========================================================
+   HEADER LABEL
+   ========================================================= */
+
+.communication-header-label {
+  margin-bottom: 8px;
+
+  color: #f5d76e;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+
+/* =========================================================
+   HEADER TITLE
+   ========================================================= */
+
+.communication-header h1 {
+  margin: 0 0 8px;
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   HEADER KHMER
+   ========================================================= */
+
+.communication-header h2 {
+  margin: 0 0 12px;
+
+  color: #f8f1d0;
+
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 22px;
+  line-height: 1.6;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   HEADER DESCRIPTION
+   ========================================================= */
+
+.communication-header p {
+  margin: 0;
+  max-width: 680px;
+
+  color: rgba(255, 255, 255, 0.9);
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   HEADER SYMBOL
+   ========================================================= */
+
+.communication-header-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 105px;
+  height: 105px;
+
+  flex-shrink: 0;
+
+  border: 2px solid #d4af37;
+  border-radius: 24px;
+
+  background: rgba(212, 175, 55, 0.14);
+  color: #f5d76e;
+
+  font-family:
+    "Khmer OS Muol",
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 60px;
+
+  box-shadow:
+    inset 0 0 20px rgba(255, 255, 255, 0.05),
+    0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   CATEGORY SECTION
+   ========================================================= */
+
+.communication-category-section {
+  margin-bottom: 24px;
+  padding: 22px;
+
+  border: 1px solid #eadfbd;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.communication-category-title {
+  margin-bottom: 16px;
+
+  color: #064e3b;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.communication-category-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(280px, 1fr)
+    );
+
+  gap: 12px;
+}
+
+.communication-category-card {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+
+  padding: 15px;
+
+  border: 1px solid #eee5ca;
+  border-radius: 16px;
+
+  background: #fffdf5;
+  color: #374151;
+
+  text-align: left;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communication-category-card:hover {
+  border-color: #d4af37;
+  background: #fffef8;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(6, 78, 59, 0.07);
+}
+
+.communication-category-card.active {
+  border-color: #d4af37;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ecfdf5,
+      #f7fff9
+    );
+
+  box-shadow:
+    0 6px 18px rgba(6, 78, 59, 0.07);
+}
+
+.communication-category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  margin-right: 13px;
+  flex-shrink: 0;
+
+  border-radius: 14px;
+
+  background: #064e3b;
+
+  font-size: 22px;
+}
+
+.communication-category-card.active
+.communication-category-icon {
+  background: #047857;
+}
+
+.communication-category-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.communication-category-content strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: #064e3b;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.communication-category-content span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #047857;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.communication-category-content p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.communication-category-arrow {
+  margin-left: 10px;
+
+  color: #a07800;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.communication-category-card:hover
+.communication-category-arrow {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.communication-layout {
+  display: grid;
+
+  grid-template-columns:
+    280px minmax(0, 1fr);
+
+  gap: 24px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.communication-sidebar {
+  position: sticky;
+  top: 24px;
+
+  padding: 20px;
+
+  border: 1px solid #eadfbd;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.communication-sidebar-title {
+  color: #047857;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.communication-sidebar-khmer {
+  margin-top: 4px;
+  margin-bottom: 18px;
+
+  color: #6b7280;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.communication-lesson-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+}
+
+.communication-lesson {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+
+  padding: 12px;
+
+  border: 1px solid transparent;
+  border-radius: 14px;
+
+  background: transparent;
+  color: #374151;
+
+  text-align: left;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.communication-lesson:hover {
+  background: #f0fdf4;
+  transform: translateX(2px);
+}
+
+.communication-lesson.active {
+  border-color: #d4af37;
+
+  background: #ecfdf5;
+
+  color: #065f46;
+}
+
+.communication-lesson-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  margin-right: 10px;
+  flex-shrink: 0;
+
+  border-radius: 10px;
+
+  background: #f3f4f6;
+  color: #6b7280;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.communication-lesson.active
+.communication-lesson-number {
+  background: #064e3b;
+  color: #ffffff;
+}
+
+.communication-lesson-info {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+  min-width: 0;
+}
+
+.communication-lesson-info strong {
+  margin-bottom: 3px;
+
+  color: #374151;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.communication-lesson.active
+.communication-lesson-info strong {
+  color: #065f46;
+}
+
+.communication-lesson-info small {
+  overflow: hidden;
+
+  color: #6b7280;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 12px;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.communication-lesson-arrow {
+  margin-left: 8px;
+
+  color: #047857;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 17px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.communication-lesson:hover
+.communication-lesson-arrow {
+  transform: translateX(3px);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.communication-main {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   LESSON HEADER
+   ========================================================= */
+
+.communication-lesson-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 26px;
+
+  border: 1px solid #eadfbd;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+.communication-lesson-label {
+  margin-bottom: 7px;
+
+  color: #a07800;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.communication-lesson-header h2 {
+  margin: 0 0 4px;
+
+  color: #064e3b;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 28px;
+  line-height: 1.3;
+}
+
+.communication-lesson-title-khmer {
+  margin-bottom: 8px;
+
+  color: #047857;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.communication-lesson-header p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.communication-lesson-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 64px;
+  height: 64px;
+
+  flex-shrink: 0;
+
+  border: 1px solid #d4af37;
+  border-radius: 18px;
+
+  background: #ecfdf5;
+
+  font-size: 30px;
+
+  box-shadow:
+    0 5px 14px rgba(6, 78, 59, 0.07);
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+.communication-section {
+  margin-bottom: 24px;
+  padding: 24px;
+
+  border: 1px solid #eadfbd;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.04);
+}
+
+.communication-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+
+  border-bottom: 1px solid #eee5ca;
+}
+
+.communication-section-heading h3 {
+  margin: 0 0 4px;
+
+  color: #064e3b;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 21px;
+}
+
+.communication-section-heading p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.communication-section-heading > span {
+  padding: 7px 12px;
+
+  border-radius: 999px;
+
+  background: #ecfdf5;
+  color: #047857;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DIALOGUE PLAY BUTTON
+   =========================================================
+
+   Trạng thái bình thường:
+   ▶ Phát hội thoại
+   màu xanh.
+
+   Trạng thái đang phát:
+   Ⅱ Dừng hội thoại
+   màu đỏ.
+   ========================================================= */
+
+.communication-dialogue-play-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  margin: 0 0 22px;
+}
+
+.communication-dialogue-play {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 210px;
+  min-height: 48px;
+
+  gap: 10px;
+
+  padding: 11px 22px;
+
+  border: 1px solid #047857;
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #064e3b 0%,
+      #047857 55%,
+      #059669 100%
+    );
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 800;
+
+  letter-spacing: 0.1px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 16px rgba(6, 78, 59, 0.18);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communication-dialogue-play:hover {
+  border-color: #059669;
+
+  background:
+    linear-gradient(
+      135deg,
+      #047857 0%,
+      #059669 55%,
+      #10b981 100%
+    );
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 9px 22px rgba(6, 78, 59, 0.24);
+}
+
+.communication-dialogue-play:active {
+  transform: translateY(0) scale(0.98);
+
+  box-shadow:
+    0 4px 10px rgba(6, 78, 59, 0.16);
+}
+
+
+/* =========================================================
+   PLAY BUTTON - ICON
+   ========================================================= */
+
+.communication-dialogue-play-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 22px;
+  height: 22px;
+
+  flex-shrink: 0;
+
+  font-size: 16px;
+  line-height: 1;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.communication-dialogue-play:hover
+.communication-dialogue-play-icon {
+  transform: scale(1.08);
+}
+
+
+/* =========================================================
+   PLAY BUTTON - ĐANG PHÁT / DỪNG
+   =========================================================
+
+   Khi isPlayingDialogue = true,
+   JSX thêm class:
+
+   communication-dialogue-play playing
+   ========================================================= */
+
+.communication-dialogue-play.playing {
+  border-color: #b91c1c;
+
+  background:
+    linear-gradient(
+      135deg,
+      #991b1b 0%,
+      #dc2626 55%,
+      #ef4444 100%
+    );
+
+  box-shadow:
+    0 6px 16px rgba(185, 28, 28, 0.20);
+}
+
+.communication-dialogue-play.playing:hover {
+  border-color: #dc2626;
+
+  background:
+    linear-gradient(
+      135deg,
+      #b91c1c 0%,
+      #ef4444 55%,
+      #f05252 100%
+    );
+
+  box-shadow:
+    0 9px 22px rgba(185, 28, 28, 0.26);
+}
+
+.communication-dialogue-play.playing:active {
+  box-shadow:
+    0 4px 10px rgba(185, 28, 28, 0.18);
+}
+
+
+/* =========================================================
+   DIALOGUE
+   ========================================================= */
+
+.communication-dialogue {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   DIALOGUE ROW
+   =========================================================
+
+   Dara    -> bên trái
+   Chantra -> bên phải
+   ========================================================= */
+
+.communication-dialogue-row {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   DARA
+   ========================================================= */
+
+.communication-dialogue-row.speaker-dara {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+
+/* =========================================================
+   CHANTRA
+   ========================================================= */
+
+.communication-dialogue-row.speaker-chantra {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+
+/* =========================================================
+   SPEAKER
+   ========================================================= */
+
+.communication-speaker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 52px;
+  height: 52px;
+
+  flex: 0 0 52px;
+
+  border-radius: 50%;
+
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.12);
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+
+/* =========================================================
+   DARA SPEAKER
+   ========================================================= */
+
+.communication-dialogue-row.speaker-dara
+.communication-speaker {
+  background:
+    linear-gradient(
+      135deg,
+      #064e3b,
+      #047857
+    );
+
+  border-color: #047857;
+}
+
+
+/* =========================================================
+   CHANTRA SPEAKER
+   ========================================================= */
+
+.communication-dialogue-row.speaker-chantra
+.communication-speaker {
+  background:
+    linear-gradient(
+      135deg,
+      #b8860b,
+      #d4af37
+    );
+
+  border-color: #d4af37;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   DIALOGUE BUBBLE
+   ========================================================= */
+
+.communication-dialogue-bubble {
+  position: relative;
+
+  width: fit-content;
+
+  max-width:
+    min(78%, 720px);
+
+  padding:
+    15px
+    52px
+    15px
+    17px;
+
+  border: 1px solid #e6dfc8;
+  border-radius: 16px;
+
+  background: #fffdf5;
+
+  box-shadow:
+    0 3px 10px rgba(0, 0, 0, 0.025);
+}
+
+
+/* =========================================================
+   DARA BUBBLE
+   ========================================================= */
+
+.communication-dialogue-row.speaker-dara
+.communication-dialogue-bubble {
+  background: #fffdf5;
+  border-color: #e6dfc8;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   CHANTRA BUBBLE
+   ========================================================= */
+
+.communication-dialogue-row.speaker-chantra
+.communication-dialogue-bubble {
+  background: #fff8dc;
+  border-color: #ead28a;
+
+  text-align: right;
+}
+
+
+/* =========================================================
+   DIALOGUE KHMER
+   ========================================================= */
+
+.communication-dialogue-khmer {
+  color: #064e3b;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 21px;
+  line-height: 1.7;
+}
+
+.communication-dialogue-row.speaker-chantra
+.communication-dialogue-khmer {
+  color: #064e3b;
+}
+
+
+/* =========================================================
+   DIALOGUE PRONUNCIATION
+   ========================================================= */
+
+.communication-dialogue-pronunciation {
+  margin-top: 3px;
+
+  color: #a07800;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 13px;
+  font-style: italic;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   DIALOGUE VIETNAMESE
+   ========================================================= */
+
+.communication-dialogue-vietnamese {
+  margin-top: 4px;
+
+  color: #4b5563;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   DIALOGUE AUDIO - NGHE TỪNG CÂU
+   ========================================================= */
+
+.communication-dialogue-audio {
+  position: absolute;
+
+  top: 50%;
+  right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid #d4af37;
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communication-dialogue-audio:hover {
+  background: #f0fdf4;
+  border-color: #a07800;
+
+  transform:
+    translateY(-50%)
+    scale(1.05);
+
+  box-shadow:
+    0 5px 12px rgba(6, 78, 59, 0.08);
+}
+
+.communication-dialogue-audio:active {
+  transform:
+    translateY(-50%)
+    scale(0.96);
+}
+
+
+/* =========================================================
+   SENTENCE LIST
+   ========================================================= */
+
+.communication-sentence-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.communication-sentence-card {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  border: 1px solid #eee5ca;
+  border-radius: 16px;
+
+  background: #fffdf5;
+
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communication-sentence-card:hover {
+  border-color: #d4af37;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 18px rgba(6, 78, 59, 0.06);
+}
+
+.communication-sentence-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #064e3b;
+  color: #ffffff;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.communication-sentence-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.communication-khmer {
+  margin-bottom: 5px;
+
+  color: #064e3b;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 25px;
+  line-height: 1.7;
+}
+
+.communication-pronunciation {
+  margin-bottom: 4px;
+
+  color: #a07800;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  font-style: italic;
+
+  line-height: 1.5;
+}
+
+.communication-vietnamese {
+  color: #374151;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+.communication-audio-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 46px;
+  height: 46px;
+
+  flex-shrink: 0;
+
+  border: 1px solid #d4af37;
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  font-family:
+    Arial,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 19px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.communication-audio-button:hover {
+  background: #ecfdf5;
+  border-color: #a07800;
+
+  transform: scale(1.05);
+
+  box-shadow:
+    0 5px 12px rgba(6, 78, 59, 0.08);
+}
+
+.communication-audio-button:active {
+  transform: scale(0.96);
+}
+
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
+
+.communication-back-button:focus-visible,
+.communication-category-card:focus-visible,
+.communication-lesson:focus-visible,
+.communication-audio-button:focus-visible,
+.communication-dialogue-audio:focus-visible,
+.communication-dialogue-play:focus-visible {
+  outline: 3px solid rgba(212, 175, 55, 0.4);
+  outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RESPONSIVE - 900px
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .communication-page {
+    padding: 22px;
+  }
+
+  .communication-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .communication-sidebar {
+    position: static;
+  }
+
+  .communication-lesson-list {
+    display: grid;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 8px;
+  }
+}
+
+
+/* =========================================================
+   TABLET - 760px
+   ========================================================= */
+
+@media (max-width: 760px) {
+  .communication-header {
+    align-items: flex-start;
+  }
+
+  .communication-header-symbol {
+    width: 82px;
+    height: 82px;
+
+    border-radius: 20px;
+
+    font-size: 45px;
+  }
+
+  .communication-category-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* =========================================================
+   MOBILE - 650px
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .communication-page {
+    padding: 14px;
+  }
+
+  .communication-header {
+    flex-direction: column;
+
+    padding: 22px;
+
+    gap: 18px;
+  }
+
+  .communication-header-content {
+    width: 100%;
+  }
+
+  .communication-back-button {
+    margin-bottom: 18px;
+  }
+
+  .communication-header h1 {
+    font-size: 25px;
+  }
+
+  .communication-header h2 {
+    font-size: 18px;
+  }
+
+  .communication-header p {
+    font-size: 14px;
+  }
+
+  .communication-header-symbol {
+    width: 72px;
+    height: 72px;
+
+    border-radius: 18px;
+
+    font-size: 40px;
+
+    align-self: flex-end;
+  }
+
+  .communication-category-section {
+    padding: 17px;
+  }
+
+  .communication-lesson-list {
+    grid-template-columns: 1fr;
+  }
+
+  .communication-lesson-header {
+    align-items: flex-start;
+
+    padding: 20px;
+  }
+
+  .communication-lesson-header h2 {
+    font-size: 24px;
+  }
+
+  .communication-lesson-badge {
+    width: 54px;
+    height: 54px;
+
+    border-radius: 15px;
+
+    font-size: 25px;
+  }
+
+  .communication-section {
+    padding: 17px;
+  }
+
+  .communication-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+
+  /* =======================================================
+     DIALOGUE PLAY BUTTON - MOBILE
+     ======================================================= */
+
+  .communication-dialogue-play-wrapper {
+    margin-bottom: 18px;
+  }
+
+  .communication-dialogue-play {
+    width: 100%;
+    min-width: 0;
+
+    min-height: 46px;
+
+    padding: 10px 18px;
+
+    border-radius: 13px;
+
+    font-size: 14px;
+  }
+
+
+  /* =======================================================
+     SENTENCE MOBILE
+     ======================================================= */
+
+  .communication-sentence-card {
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 15px;
+  }
+
+  .communication-sentence-number {
+    width: 30px;
+    height: 30px;
+
+    font-size: 12px;
+  }
+
+  .communication-khmer {
+    font-size: 21px;
+  }
+
+  .communication-pronunciation {
+    font-size: 13px;
+  }
+
+  .communication-vietnamese {
+    font-size: 13px;
+  }
+
+  .communication-audio-button {
+    width: 42px;
+    height: 42px;
+
+    font-size: 17px;
+  }
+
+
+  /* =======================================================
+     DIALOGUE MOBILE
+     ======================================================= */
+
+  .communication-dialogue {
+    gap: 14px;
+  }
+
+  .communication-dialogue-row {
+    gap: 8px;
+  }
+
+  .communication-dialogue-row.speaker-dara {
+    justify-content: flex-start;
+  }
+
+  .communication-dialogue-row.speaker-chantra {
+    justify-content: flex-start;
+  }
+
+  .communication-speaker {
+    width: 46px;
+    height: 46px;
+
+    flex-basis: 46px;
+
+    font-size: 10px;
+  }
+
+  .communication-dialogue-bubble {
+    max-width:
+      calc(100% - 54px);
+
+    padding:
+      13px
+      46px
+      13px
+      14px;
+  }
+
+  .communication-dialogue-khmer {
+    font-size: 18px;
+  }
+
+  .communication-dialogue-pronunciation {
+    font-size: 12px;
+  }
+
+  .communication-dialogue-vietnamese {
+    font-size: 13px;
+  }
+
+  .communication-dialogue-audio {
+    right: 8px;
+
+    width: 32px;
+    height: 32px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE - 420px
+   ========================================================= */
+
+@media (max-width: 420px) {
+  .communication-page {
+    padding: 10px;
+  }
+
+  .communication-header {
+    padding: 18px;
+
+    border-radius: 20px;
+  }
+
+  .communication-header h1 {
+    font-size: 23px;
+  }
+
+  .communication-header h2 {
+    font-size: 17px;
+  }
+
+  .communication-header-symbol {
+    width: 64px;
+    height: 64px;
+
+    font-size: 35px;
+  }
+
+  .communication-category-section,
+  .communication-section,
+  .communication-lesson-header {
+    border-radius: 17px;
+  }
+
+  .communication-section {
+    padding: 14px;
+  }
+
+
+  /* =======================================================
+     PLAY BUTTON - VERY SMALL MOBILE
+     ======================================================= */
+
+  .communication-dialogue-play {
+    min-height: 44px;
+
+    padding: 9px 14px;
+
+    border-radius: 12px;
+
+    font-size: 13px;
+  }
+
+  .communication-dialogue-play-icon {
+    width: 20px;
+    height: 20px;
+
+    font-size: 15px;
+  }
+
+
+  /* =======================================================
+     SENTENCE VERY SMALL MOBILE
+     ======================================================= */
+
+  .communication-sentence-card {
+    padding: 13px;
+  }
+
+  .communication-khmer {
+    font-size: 19px;
+  }
+
+
+  /* =======================================================
+     DIALOGUE VERY SMALL MOBILE
+     ======================================================= */
+
+  .communication-dialogue-row {
+    gap: 6px;
+  }
+
+  .communication-speaker {
+    width: 42px;
+    height: 42px;
+
+    flex-basis: 42px;
+
+    font-size: 9px;
+  }
+
+  .communication-dialogue-bubble {
+    max-width:
+      calc(100% - 48px);
+
+    padding:
+      12px
+      43px
+      12px
+      12px;
+  }
+
+  .communication-dialogue-khmer {
+    font-size: 17px;
+  }
+}
