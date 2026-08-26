@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./StudentHome.css";
+import StudentLayout from "./StudentLayout";
 
 /* =========================================================
    CẤU HÌNH LEVEL
@@ -65,11 +66,15 @@ function getLevelProgress(exp) {
   const requiredExp =
     LEVEL_EXP[nextLevel] - previousExp;
 
-  const currentExp =
-    Math.max(0, safeExp - previousExp);
+  const currentExp = Math.max(
+    0,
+    safeExp - previousExp
+  );
 
-  const remainingExp =
-    Math.max(0, requiredExp - currentExp);
+  const remainingExp = Math.max(
+    0,
+    requiredExp - currentExp
+  );
 
   const percent =
     requiredExp > 0
@@ -111,25 +116,17 @@ function formatTime(seconds) {
   const secs = safeSeconds % 60;
 
   if (hours > 0) {
-    return `${String(hours).padStart(
-      2,
-      "0"
-    )}:${String(minutes).padStart(
-      2,
-      "0"
-    )}:${String(secs).padStart(
+    return `${String(hours).padStart(2, "0")}:${String(
+      minutes
+    ).padStart(2, "0")}:${String(secs).padStart(
       2,
       "0"
     )}`;
   }
 
-  return `${String(minutes).padStart(
-    2,
-    "0"
-  )}:${String(secs).padStart(
-    2,
-    "0"
-  )}`;
+  return `${String(minutes).padStart(2, "0")}:${String(
+    secs
+  ).padStart(2, "0")}`;
 }
 
 /* =========================================================
@@ -140,18 +137,11 @@ function StudentHome({
   profile,
   navigate,
   onLogout,
-
-  /*
-    App.jsx có thể truyền dữ liệu timer toàn hệ thống
-    xuống đây.
-
-    Nếu chưa truyền thì lấy từ profile.
-  */
   totalExp: totalExpFromApp,
   totalStudySeconds: totalStudySecondsFromApp,
 }) {
   /* =======================================================
-     THÔNG TIN USER
+     USER
   ======================================================= */
 
   const username =
@@ -171,11 +161,6 @@ function StudentHome({
     )
   );
 
-  /*
-    Ưu tiên dữ liệu do App quản lý.
-    Nếu App chưa truyền thì dùng profile.
-  */
-
   const totalExp =
     totalExpFromApp !== undefined
       ? Math.max(
@@ -194,23 +179,21 @@ function StudentHome({
         )
       : profileStudySeconds;
 
-  const level =
-    getLevelFromExp(totalExp);
+  const level = getLevelFromExp(totalExp);
 
   /* =======================================================
      LEVEL UP
   ======================================================= */
 
-  const [showLevelUp, setShowLevelUp] =
-    useState(false);
+  const [
+    showLevelUp,
+    setShowLevelUp,
+  ] = useState(false);
 
-  const [levelUpNumber, setLevelUpNumber] =
-    useState(level);
-
-  /*
-    Chỉ hiển thị Level Up nếu App truyền
-    levelUpNumber mới.
-  */
+  const [
+    levelUpNumber,
+    setLevelUpNumber,
+  ] = useState(level);
 
   useEffect(() => {
     if (
@@ -231,52 +214,10 @@ function StudentHome({
   }, [level, levelUpNumber]);
 
   /* =======================================================
-     MENU
-  ======================================================= */
-
-  const [activeMenu, setActiveMenu] =
-    useState("home");
-
-  const menuItems = [
-    {
-      id: "home",
-      icon: "🏠",
-      label: "Trang chủ",
-    },
-    {
-      id: "alphabet",
-      icon: "ក",
-      label: "Bảng chữ cái",
-    },
-    {
-      id: "vocabulary",
-      icon: "📚",
-      label: "Từ vựng",
-    },
-    {
-      id: "games",
-      icon: "🎮",
-      label: "Trò chơi",
-    },
-    {
-      id: "communication",
-      icon: "💬",
-      label: "Giao tiếp",
-    },
-    {
-      id: "progress",
-      icon: "📊",
-      label: "Tiến độ học tập",
-    },
-  ];
-
-  /* =======================================================
      ĐIỀU HƯỚNG
   ======================================================= */
 
   const handleMenu = (id) => {
-    setActiveMenu(id);
-
     switch (id) {
       case "home":
         navigate("/student");
@@ -315,12 +256,9 @@ function StudentHome({
   ======================================================= */
 
   const handleStartLearning = () => {
-    setActiveMenu("home");
-
-    const target =
-      document.querySelector(
-        ".learning-section-target"
-      );
+    const target = document.querySelector(
+      ".learning-section-target"
+    );
 
     if (target) {
       target.scrollIntoView({
@@ -407,639 +345,468 @@ function StudentHome({
       )}
 
       {/* =================================================
-          APP
+          LAYOUT CHUNG
       ================================================= */}
 
-      <div className="student-app">
+      <StudentLayout
+        profile={profile}
+        navigate={navigate}
+        onLogout={onLogout}
+        activeMenu="home"
+      >
 
         {/* =================================================
-            SIDEBAR
+            HEADER
         ================================================= */}
 
-        <aside className="student-sidebar">
+        <header className="student-header">
+          <div>
 
-          <div className="student-logo">
-
-            <div className="student-logo-symbol">
-              ក
-            </div>
-
-            <div>
-              <div className="student-logo-title">
-                HỌC TIẾNG KHMER
-              </div>
-
-              <div className="student-logo-khmer">
-                រៀនភាសាខ្មែរ
-              </div>
-            </div>
-
-          </div>
-
-          {/* PROFILE */}
-
-          <div className="student-profile">
-
-            <div className="student-avatar">
-              {username
-                .charAt(0)
-                .toUpperCase()}
-            </div>
-
-            <div className="student-profile-info">
-
-              <strong>
+            <h1 className="student-header-title">
+              Xin chào,{" "}
+              <span className="student-vietnamese-name">
                 {username}
-              </strong>
-
-              <span>
-                Level {level}
               </span>
+              ! 👋
+            </h1>
 
-            </div>
-
-          </div>
-
-          {/* MENU */}
-
-          <nav className="student-menu">
-
-            <div className="student-menu-title">
-              HỌC TẬP
-            </div>
-
-            {menuItems.map(
-              (item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={
-                    activeMenu === item.id
-                      ? "student-menu-item active"
-                      : "student-menu-item"
-                  }
-                  onClick={() =>
-                    handleMenu(
-                      item.id
-                    )
-                  }
-                >
-
-                  <span className="student-menu-icon">
-                    {item.icon}
-                  </span>
-
-                  <span>
-                    {item.label}
-                  </span>
-
-                </button>
-              )
-            )}
-
-          </nav>
-
-          {/* BOTTOM */}
-
-          <div className="student-sidebar-bottom">
-
-            <button
-              type="button"
-              className="student-menu-item"
-              onClick={() =>
-                navigate(
-                  "/student/profile"
-                )
-              }
-            >
-
-              <span className="student-menu-icon">
-                👤
+            {/* Khmer + tên Việt TÁCH RIÊNG */}
+            <h2 className="student-header-khmer">
+              <span className="khmer-regular">
+                ជំរាបសួរ
               </span>
-
-              <span>
-                Tài khoản
+              <span className="student-vietnamese-name">
+                , {username}
               </span>
-
-            </button>
-
-            <button
-              type="button"
-              className="student-menu-item logout"
-              onClick={onLogout}
-            >
-
-              <span className="student-menu-icon">
-                ➜]
+              <span className="khmer-regular">
+                ! 👋
               </span>
+            </h2>
 
-              <span>
-                Đăng xuất
-              </span>
+            <p>
+              Chào mừng bạn quay trở lại
+              với hành trình học tiếng Khmer.
+            </p>
 
-            </button>
-
-          </div>
-
-        </aside>
-
-        {/* =================================================
-            MAIN
-        ================================================= */}
-
-        <main className="student-main">
-
-          {/* HEADER */}
-
-          <header className="student-header">
-
-            <div>
-
-              <h1>
-                Xin chào, {username}! 👋
-              </h1>
-
-              <h2 className="student-header-khmer">
-                សួស្តី, {username}! 👋
-              </h2>
-
-              <p>
-                Chào mừng bạn quay trở lại
-                với hành trình học tiếng Khmer.
-              </p>
-
-              <p className="student-header-khmer-sub">
+            <p className="student-header-khmer-sub">
+              <span className="khmer-regular">
                 សូមស្វាគមន៍ការត្រឡប់មកវិញ
                 ក្នុងដំណើររៀនភាសាខ្មែរ។
-              </p>
+              </span>
+            </p>
 
+          </div>
+        </header>
+
+        {/* =================================================
+            WELCOME
+        ================================================= */}
+
+        <section className="student-welcome">
+
+          <div className="student-welcome-content">
+
+            {/* Đây là câu tiếng Việt,
+                KHÔNG dùng font Khmer */}
+            <div className="student-welcome-vietnamese">
+              Hãy tiếp tục hành trình học tiếng Khmer
             </div>
 
-            <div className="student-header-user">
+            {/* Khmer Muol / tiêu đề */}
+            <h2 className="student-welcome-khmer-title">
+              បន្តដំណើរនៃការរៀនភាសាខ្មែរ។
+            </h2>
 
-              <div className="student-header-avatar">
-                {username
-                  .charAt(0)
-                  .toUpperCase()}
-              </div>
+            <p>
+              Mỗi ngày một chút, bạn sẽ
+              ngày càng hiểu và sử dụng
+              tiếng Khmer tốt hơn.
+            </p>
 
+            <button
+              type="button"
+              className="student-primary-button"
+              onClick={
+                handleStartLearning
+              }
+            >
+              Bắt đầu học →
+            </button>
+
+          </div>
+
+          <div className="student-welcome-symbol">
+            ក
+          </div>
+
+        </section>
+
+        {/* =================================================
+            STATISTICS
+        ================================================= */}
+
+        <section className="student-stat-grid">
+
+          <div className="student-stat-card">
+
+            <div className="student-stat-icon">
+              ⭐
             </div>
 
-          </header>
+            <div>
+              <span>
+                Cấp độ
+              </span>
 
-          {/* WELCOME */}
-
-          <section className="student-welcome">
-
-            <div className="student-welcome-content">
-
-              <div className="student-welcome-khmer">
-                សួស្តី!
-              </div>
-
-              <h2>
-                Hãy tiếp tục hành trình học
-                tiếng Khmer
-              </h2>
-
-              <p>
-                Mỗi ngày một chút, bạn sẽ
-                ngày càng hiểu và sử dụng
-                tiếng Khmer tốt hơn.
-              </p>
-
-              <button
-                type="button"
-                className="student-primary-button"
-                onClick={
-                  handleStartLearning
-                }
-              >
-                Bắt đầu học →
-              </button>
-
+              <strong>
+                Level {level}
+                {isMaxLevel &&
+                  " • MAX"}
+              </strong>
             </div>
 
-            <div className="student-welcome-symbol">
-              ក
+          </div>
+
+          <div className="student-stat-card exp-stat-card">
+
+            <div className="student-stat-icon exp-icon">
+              ⚡
             </div>
 
-          </section>
+            <div className="exp-stat-content">
 
-          {/* STATISTICS */}
-
-          <section className="student-stat-grid">
-
-            {/* LEVEL */}
-
-            <div className="student-stat-card">
-
-              <div className="student-stat-icon">
-                ⭐
-              </div>
-
-              <div>
+              <div className="exp-stat-header">
 
                 <span>
-                  Cấp độ
+                  Kinh nghiệm
                 </span>
 
                 <strong>
-                  Level {level}
-                  {isMaxLevel &&
-                    " • MAX"}
+                  {isMaxLevel
+                    ? "MAX"
+                    : `${expPercent}%`}
                 </strong>
 
               </div>
 
-            </div>
+              <div className="exp-progress-track">
 
-            {/* EXP */}
-
-            <div className="student-stat-card exp-stat-card">
-
-              <div className="student-stat-icon exp-icon">
-                ⚡
-              </div>
-
-              <div className="exp-stat-content">
-
-                <div className="exp-stat-header">
-
-                  <span>
-                    Kinh nghiệm
-                  </span>
-
-                  <strong>
-                    {isMaxLevel
-                      ? "MAX"
-                      : `${expPercent}%`}
-                  </strong>
-
-                </div>
-
-                <div className="exp-progress-track">
-
-                  <div
-                    className="exp-progress-fill"
-                    style={{
-                      width:
-                        `${expPercent}%`,
-                    }}
-                  >
-                    <div className="exp-progress-shine" />
-                  </div>
-
-                </div>
-
-                <div className="exp-stat-footer">
-
-                  <span>
-                    {isMaxLevel
-                      ? `${totalExp} EXP`
-                      : `${currentLevelExp} / ${requiredLevelExp} EXP`}
-                  </span>
-
-                  <span>
-                    {isMaxLevel
-                      ? "Cấp tối đa"
-                      : `Còn ${nextLevelExp} EXP`}
-                  </span>
-
+                <div
+                  className="exp-progress-fill"
+                  style={{
+                    width:
+                      `${expPercent}%`,
+                  }}
+                >
+                  <div className="exp-progress-shine" />
                 </div>
 
               </div>
 
+              <div className="exp-stat-footer">
+
+                <span>
+                  {isMaxLevel
+                    ? `${totalExp} EXP`
+                    : `${currentLevelExp} / ${requiredLevelExp} EXP`}
+                </span>
+
+                <span>
+                  {isMaxLevel
+                    ? "Cấp tối đa"
+                    : `Còn ${nextLevelExp} EXP`}
+                </span>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div className="student-stat-card">
+
+            <div className="student-stat-icon">
+              🔥
             </div>
 
-            {/* BÀI ĐÃ HỌC */}
+            <div>
 
-            <div className="student-stat-card">
+              <span>
+                Chuỗi ngày học
+              </span>
 
-              <div className="student-stat-icon">
+              <strong>
+                0 ngày
+              </strong>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        {/* =================================================
+            THỜI GIAN HỌC
+        ================================================= */}
+
+        <section className="online-learning-card">
+
+          <div className="online-learning-icon">
+            ⏱️
+          </div>
+
+          <div className="online-learning-content">
+
+            <div className="online-learning-title">
+              Tổng thời gian học
+            </div>
+
+            <div className="online-learning-time">
+              {formatTime(
+                totalStudySeconds
+              )}
+            </div>
+
+            <div className="online-learning-note">
+              Cứ mỗi 1 phút học
+              <strong>
+                +10 EXP
+              </strong>
+            </div>
+
+          </div>
+
+          <div className="online-learning-status">
+
+            <span className="online-dot" />
+
+            Đang học
+
+          </div>
+
+        </section>
+
+        {/* =================================================
+            NỘI DUNG HỌC
+        ================================================= */}
+
+        <section
+          className="student-section learning-section-target"
+        >
+
+          <div className="student-section-heading">
+
+            <div>
+
+              <h2>
+                Nội dung học tập
+              </h2>
+
+              <p>
+                Chọn một nội dung để bắt đầu.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div className="student-learning-grid">
+
+            <button
+              type="button"
+              className="learning-card"
+              onClick={() =>
+                handleMenu("alphabet")
+              }
+            >
+
+              <div className="learning-card-icon">
+                ក
+              </div>
+
+              <div>
+
+                <h3>
+                  Bảng chữ cái
+                </h3>
+
+                <p>
+                  Làm quen với 33 phụ âm,
+                  24 nguyên âm và cách phát âm
+                  tiếng Khmer.
+                </p>
+
+              </div>
+
+              <span className="learning-arrow">
+                →
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              className="learning-card"
+              onClick={() =>
+                handleMenu("vocabulary")
+              }
+            >
+
+              <div className="learning-card-icon">
                 📚
               </div>
 
               <div>
 
-                <span>
-                  Bài đã học
-                </span>
-
-                <strong>
-                  0
-                </strong>
-
-              </div>
-
-            </div>
-
-            {/* CHUỖI NGÀY */}
-
-            <div className="student-stat-card">
-
-              <div className="student-stat-icon">
-                🔥
-              </div>
-
-              <div>
-
-                <span>
-                  Chuỗi ngày học
-                </span>
-
-                <strong>
-                  0 ngày
-                </strong>
-
-              </div>
-
-            </div>
-
-          </section>
-
-          {/* =================================================
-              THỜI GIAN HỌC
-
-              QUAN TRỌNG:
-              StudentHome KHÔNG chạy timer.
-
-              Dữ liệu này chỉ được hiển thị.
-              Timer phải nằm ở App.jsx.
-          ================================================= */}
-
-          <section className="online-learning-card">
-
-            <div className="online-learning-icon">
-              ⏱️
-            </div>
-
-            <div className="online-learning-content">
-
-              <div className="online-learning-title">
-                Tổng thời gian học
-              </div>
-
-              <div className="online-learning-time">
-                {formatTime(
-                  totalStudySeconds
-                )}
-              </div>
-
-              <div className="online-learning-note">
-                Cứ mỗi 1 phút học
-                <strong>
-                  +10 EXP
-                </strong>
-              </div>
-
-            </div>
-
-            <div className="online-learning-status">
-
-              <span className="online-dot" />
-
-              Đang học
-
-            </div>
-
-          </section>
-
-          {/* NỘI DUNG HỌC */}
-
-          <section
-            className="student-section learning-section-target"
-          >
-
-            <div className="student-section-heading">
-
-              <div>
-
-                <h2>
-                  Nội dung học tập
-                </h2>
+                <h3>
+                  Từ vựng
+                </h3>
 
                 <p>
-                  Chọn một nội dung để bắt đầu.
+                  Học các từ Khmer theo
+                  chủ đề.
                 </p>
 
               </div>
 
-            </div>
+              <span className="learning-arrow">
+                →
+              </span>
 
-            <div className="student-learning-grid">
+            </button>
 
-              {/* BẢNG CHỮ CÁI */}
+            <button
+              type="button"
+              className="learning-card"
+              onClick={() =>
+                handleMenu("games")
+              }
+            >
 
-              <button
-                type="button"
-                className="learning-card"
-                onClick={() =>
-                  handleMenu(
-                    "alphabet"
-                  )
-                }
-              >
-
-                <div className="learning-card-icon">
-                  ក
-                </div>
-
-                <div>
-
-                  <h3>
-                    Bảng chữ cái
-                  </h3>
-
-                  <p>
-                    Làm quen với 33 phụ âm,
-                    24 nguyên âm và cách phát âm
-                    tiếng Khmer.
-                  </p>
-
-                </div>
-
-                <span className="learning-arrow">
-                  →
-                </span>
-
-              </button>
-
-              {/* TỪ VỰNG */}
-
-              <button
-                type="button"
-                className="learning-card"
-                onClick={() =>
-                  handleMenu(
-                    "vocabulary"
-                  )
-                }
-              >
-
-                <div className="learning-card-icon">
-                  📚
-                </div>
-
-                <div>
-
-                  <h3>
-                    Từ vựng
-                  </h3>
-
-                  <p>
-                    Học các từ Khmer theo
-                    chủ đề.
-                  </p>
-
-                </div>
-
-                <span className="learning-arrow">
-                  →
-                </span>
-
-              </button>
-
-              {/* TRÒ CHƠI */}
-
-              <button
-                type="button"
-                className="learning-card"
-                onClick={() =>
-                  handleMenu(
-                    "games"
-                  )
-                }
-              >
-
-                <div className="learning-card-icon">
-                  🎮
-                </div>
-
-                <div>
-
-                  <h3>
-                    Trò chơi
-                  </h3>
-
-                  <p>
-                    Vừa chơi vừa củng cố
-                    kiến thức.
-                  </p>
-
-                </div>
-
-                <span className="learning-arrow">
-                  →
-                </span>
-
-              </button>
-
-              {/* GIAO TIẾP */}
-
-              <button
-                type="button"
-                className="learning-card"
-                onClick={() =>
-                  handleMenu(
-                    "communication"
-                  )
-                }
-              >
-
-                <div className="learning-card-icon">
-                  💬
-                </div>
-
-                <div>
-
-                  <h3>
-                    Giao tiếp
-                  </h3>
-
-                  <p>
-                    Học cách giao tiếp và sử dụng
-                    tiếng Khmer trong các tình huống
-                    thực tế.
-                  </p>
-
-                </div>
-
-                <span className="learning-arrow">
-                  →
-                </span>
-
-              </button>
-
-            </div>
-
-          </section>
-
-          {/* MỤC TIÊU */}
-
-          <section className="student-section">
-
-            <div className="student-section-heading">
+              <div className="learning-card-icon">
+                🎮
+              </div>
 
               <div>
 
-                <h2>
-                  🎯 Mục tiêu hôm nay
-                </h2>
+                <h3>
+                  Trò chơi
+                </h3>
 
                 <p>
-                  Duy trì thói quen học mỗi ngày.
+                  Vừa chơi vừa củng cố
+                  kiến thức.
                 </p>
 
               </div>
 
+              <span className="learning-arrow">
+                →
+              </span>
+
+            </button>
+
+            <button
+              type="button"
+              className="learning-card"
+              onClick={() =>
+                handleMenu(
+                  "communication"
+                )
+              }
+            >
+
+              <div className="learning-card-icon">
+                💬
+              </div>
+
+              <div>
+
+                <h3>
+                  Giao tiếp
+                </h3>
+
+                <p>
+                  Học cách giao tiếp và sử dụng
+                  tiếng Khmer trong các tình huống
+                  thực tế.
+                </p>
+
+              </div>
+
+              <span className="learning-arrow">
+                →
+              </span>
+
+            </button>
+
+          </div>
+
+        </section>
+
+        {/* =================================================
+            MỤC TIÊU
+        ================================================= */}
+
+        <section className="student-section">
+
+          <div className="student-section-heading">
+
+            <div>
+
+              <h2>
+                🎯 Mục tiêu hôm nay
+              </h2>
+
+              <p>
+                Duy trì thói quen học mỗi ngày.
+              </p>
+
             </div>
 
-            <div className="daily-goal-card">
+          </div>
 
-              <div className="daily-goal-top">
+          <div className="daily-goal-card">
 
-                <div>
+            <div className="daily-goal-top">
 
-                  <strong>
-                    Hoàn thành bài học hôm nay
-                  </strong>
+              <div>
 
-                  <p>
-                    0 / 3 hoạt động
-                  </p>
+                <strong>
+                  Hoàn thành bài học hôm nay
+                </strong>
 
-                </div>
-
-                <div className="daily-goal-percent">
-                  0%
-                </div>
+                <p>
+                  0 / 3 hoạt động
+                </p>
 
               </div>
 
-              <div className="progress-track">
-
-                <div
-                  className="progress-fill"
-                  style={{
-                    width: "0%",
-                  }}
-                />
-
-              </div>
-
-              <div className="daily-goal-bottom">
-                Hãy bắt đầu bài học đầu tiên!
+              <div className="daily-goal-percent">
+                0%
               </div>
 
             </div>
 
-          </section>
+            <div className="progress-track">
 
-        </main>
+              <div
+                className="progress-fill"
+                style={{
+                  width: "0%",
+                }}
+              />
 
-      </div>
+            </div>
 
+            <div className="daily-goal-bottom">
+              Hãy bắt đầu bài học đầu tiên!
+            </div>
+
+          </div>
+
+        </section>
+
+      </StudentLayout>
     </>
   );
 }

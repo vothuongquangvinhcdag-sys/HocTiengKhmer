@@ -1,8 +1,10 @@
 import { useMemo } from "react";
 import "./Progress.css";
+import StudentLayout from "../StudentLayout";
 
 /* =========================================================
-   LEVEL
+   CẤU HÌNH LEVEL
+   DÙNG Y NGUYÊN LOGIC CỦA STUDENT HOME
 ========================================================= */
 
 const MAX_LEVEL = 10;
@@ -21,126 +23,14 @@ const LEVEL_EXP = {
 };
 
 /* =========================================================
-   DANH HIỆU TRÒ CHƠI
-========================================================= */
+   XÁC ĐỊNH LEVEL TỪ EXP
 
-const GAME_BADGES = [
-  {
-    gameId: 1,
-    icon: "🏆",
-    name: "Người khám phá chữ Khmer",
-    description: "Hoàn thành Game 1",
-  },
-  {
-    gameId: 2,
-    icon: "🏆",
-    name: "Bậc thầy ghép chữ",
-    description: "Hoàn thành Game 2",
-  },
-  {
-    gameId: 3,
-    icon: "🏆",
-    name: "Người chinh phục Khmer",
-    description: "Hoàn thành Game 3",
-  },
-  {
-    gameId: 4,
-    icon: "🏆",
-    name: "Bậc thầy Khmer",
-    description: "Hoàn thành Game 4",
-  },
-  {
-    gameId: 5,
-    icon: "🏆",
-    name: "Huyền thoại chữ Khmer",
-    description: "Hoàn thành Game 5",
-  },
-];
-
-/* =========================================================
-   DANH HIỆU THÀNH TÍCH HỌC TẬP
-
-   HỆ THỐNG THỜI GIAN ONLINE:
-
-   1 giờ   → Người học chăm chỉ
-   2 giờ   → Người học bền bỉ
-   4 giờ   → Người học kiên trì
-   8 giờ   → Người say mê Khmer
-   16 giờ  → Người chinh phục tri thức
-   32 giờ  → Bậc thầy chăm học
-   64 giờ  → Học giả Khmer
-   128 giờ → Huyền thoại Khmer
-
-   requiredSeconds:
-   - Chỉ dùng nội bộ để kiểm tra đạt/chưa đạt.
-   - Điều kiện hiển thị trên thẻ bằng badge.description.
-========================================================= */
-
-const STUDY_BADGES = [
-  {
-    id: "study-1h",
-    icon: "🔥",
-    name: "Người học chăm chỉ",
-    description: "Online 1 giờ",
-    requiredSeconds: 1 * 60 * 60,
-  },
-  {
-    id: "study-2h",
-    icon: "💪",
-    name: "Người học bền bỉ",
-    description: "Online 2 giờ",
-    requiredSeconds: 2 * 60 * 60,
-  },
-  {
-    id: "study-4h",
-    icon: "🏅",
-    name: "Người học kiên trì",
-    description: "Online 4 giờ",
-    requiredSeconds: 4 * 60 * 60,
-  },
-  {
-    id: "study-8h",
-    icon: "🌟",
-    name: "Người say mê Khmer",
-    description: "Online 8 giờ",
-    requiredSeconds: 8 * 60 * 60,
-  },
-  {
-    id: "study-16h",
-    icon: "💎",
-    name: "Người chinh phục tri thức",
-    description: "Online 16 giờ",
-    requiredSeconds: 16 * 60 * 60,
-  },
-  {
-    id: "study-32h",
-    icon: "👑",
-    name: "Bậc thầy chăm học",
-    description: "Online 32 giờ",
-    requiredSeconds: 32 * 60 * 60,
-  },
-  {
-    id: "study-64h",
-    icon: "🏆",
-    name: "Học giả Khmer",
-    description: "Online 64 giờ",
-    requiredSeconds: 64 * 60 * 60,
-  },
-  {
-    id: "study-128h",
-    icon: "👑",
-    name: "Huyền thoại Khmer",
-    description: "Online 128 giờ",
-    requiredSeconds: 128 * 60 * 60,
-  },
-];
-
-/* =========================================================
-   LEVEL TỪ EXP
+   PHẢI GIỐNG 100% STUDENT HOME
 ========================================================= */
 
 function getLevelFromExp(exp) {
-  const safeExp = Math.max(0, Number(exp) || 0);
+  const safeExp =
+    Math.max(0, Number(exp) || 0);
 
   if (safeExp < 100) return 1;
   if (safeExp < 200) return 2;
@@ -156,17 +46,35 @@ function getLevelFromExp(exp) {
 }
 
 /* =========================================================
-   LEVEL PROGRESS
+   TÍNH TIẾN ĐỘ LEVEL
+
+   Ví dụ:
+   1160 EXP
+
+   Level hiện tại = 5
+   Level 5 bắt đầu = 800
+   Level 6 bắt đầu = 1600
+
+   EXP trong Level = 1160 - 800 = 360
+   Cần tổng = 1600 - 800 = 800
+   Còn = 800 - 360 = 440
+   Tiến độ = 360 / 800 = 45%
 ========================================================= */
 
 function getLevelProgress(exp) {
-  const safeExp = Math.max(0, Number(exp) || 0);
+  const safeExp =
+    Math.max(0, Number(exp) || 0);
 
-  const level = getLevelFromExp(safeExp);
+  const currentLevel =
+    getLevelFromExp(safeExp);
 
-  if (level >= MAX_LEVEL) {
+  /* =======================================================
+     MAX LEVEL
+  ======================================================= */
+
+  if (currentLevel >= MAX_LEVEL) {
     return {
-      level,
+      currentLevel,
       currentExp: safeExp,
       requiredExp: 0,
       remainingExp: 0,
@@ -175,34 +83,69 @@ function getLevelProgress(exp) {
     };
   }
 
-  const previousExp = LEVEL_EXP[level];
-  const nextLevel = level + 1;
-  const nextLevelExp = LEVEL_EXP[nextLevel];
+  /* =======================================================
+     MỐC EXP CỦA LEVEL HIỆN TẠI
+  ======================================================= */
 
-  const requiredExp = nextLevelExp - previousExp;
+  const previousExp =
+    LEVEL_EXP[currentLevel];
 
-  const currentExp = Math.max(
-    0,
-    safeExp - previousExp
-  );
+  /* =======================================================
+     LEVEL TIẾP THEO
+  ======================================================= */
 
-  const remainingExp = Math.max(
-    0,
-    requiredExp - currentExp
-  );
+  const nextLevel =
+    currentLevel + 1;
+
+  const nextLevelExp =
+    LEVEL_EXP[nextLevel];
+
+  /* =======================================================
+     EXP CẦN TRONG LEVEL HIỆN TẠI
+  ======================================================= */
+
+  const requiredExp =
+    nextLevelExp -
+    previousExp;
+
+  /* =======================================================
+     EXP ĐÃ ĐẠT TRONG LEVEL HIỆN TẠI
+  ======================================================= */
+
+  const currentExp =
+    Math.max(
+      0,
+      safeExp - previousExp
+    );
+
+  /* =======================================================
+     EXP CÒN THIẾU
+  ======================================================= */
+
+  const remainingExp =
+    Math.max(
+      0,
+      requiredExp - currentExp
+    );
+
+  /* =======================================================
+     PHẦN TRĂM
+  ======================================================= */
 
   const percent =
     requiredExp > 0
       ? Math.min(
           100,
           Math.round(
-            (currentExp / requiredExp) * 100
+            (currentExp /
+              requiredExp) *
+              100
           )
         )
       : 100;
 
   return {
-    level,
+    currentLevel,
     currentExp,
     requiredExp,
     remainingExp,
@@ -216,26 +159,36 @@ function getLevelProgress(exp) {
 ========================================================= */
 
 function formatStudyTime(seconds) {
-  const safeSeconds = Math.max(
-    0,
-    Math.floor(Number(seconds) || 0)
-  );
+  const safeSeconds =
+    Math.max(
+      0,
+      Math.floor(
+        Number(seconds) || 0
+      )
+    );
 
-  const hours = Math.floor(
-    safeSeconds / 3600
-  );
+  const hours =
+    Math.floor(
+      safeSeconds / 3600
+    );
 
-  const minutes = Math.floor(
-    (safeSeconds % 3600) / 60
-  );
+  const minutes =
+    Math.floor(
+      (safeSeconds % 3600) /
+        60
+    );
 
-  const secs = safeSeconds % 60;
+  const secs =
+    safeSeconds % 60;
 
   return {
     hours,
     minutes,
     seconds: secs,
-    text: `${hours} giờ ${minutes} phút ${secs} giây`,
+    text:
+      `${hours} giờ ` +
+      `${minutes} phút ` +
+      `${secs} giây`,
   };
 }
 
@@ -244,11 +197,12 @@ function formatStudyTime(seconds) {
 ========================================================= */
 
 function getStudyStreak(profile) {
-  const value = Number(
-    profile?.study_streak ??
-      profile?.learning_streak ??
-      0
-  );
+  const value =
+    Number(
+      profile?.study_streak ??
+        profile?.learning_streak ??
+        0
+    );
 
   return Math.max(
     0,
@@ -262,9 +216,10 @@ function getStudyStreak(profile) {
 
 function loadGameProgress() {
   try {
-    const raw = localStorage.getItem(
-      "khmer_game_progress"
-    );
+    const raw =
+      localStorage.getItem(
+        "khmer_game_progress"
+      );
 
     if (!raw) {
       return {
@@ -272,7 +227,8 @@ function loadGameProgress() {
       };
     }
 
-    const parsed = JSON.parse(raw);
+    const parsed =
+      JSON.parse(raw);
 
     if (
       !parsed ||
@@ -286,7 +242,8 @@ function loadGameProgress() {
     return {
       games:
         parsed.games &&
-        typeof parsed.games === "object"
+        typeof parsed.games ===
+          "object"
           ? parsed.games
           : {},
     };
@@ -306,19 +263,23 @@ function loadGameProgress() {
    KIỂM TRA GAME HOÀN THÀNH
 ========================================================= */
 
-function isGameCompleted(gameProgress) {
+function isGameCompleted(
+  gameProgress
+) {
   if (!gameProgress) {
     return false;
   }
 
   if (
-    gameProgress.completed === true
+    gameProgress.completed ===
+    true
   ) {
     return true;
   }
 
   if (
-    gameProgress.isCompleted === true
+    gameProgress.isCompleted ===
+    true
   ) {
     return true;
   }
@@ -334,7 +295,8 @@ function isGameCompleted(gameProgress) {
 
   if (
     stages &&
-    typeof stages === "object"
+    typeof stages ===
+      "object"
   ) {
     const stageIds = [
       "stage1",
@@ -353,8 +315,10 @@ function isGameCompleted(gameProgress) {
         }
 
         return (
-          stage.completed === true ||
-          stage.isCompleted === true ||
+          stage.completed ===
+            true ||
+          stage.isCompleted ===
+            true ||
           stage.completedAt
         );
       }
@@ -363,6 +327,127 @@ function isGameCompleted(gameProgress) {
 
   return false;
 }
+
+/* =========================================================
+   DANH HIỆU TRÒ CHƠI
+========================================================= */
+
+const GAME_BADGES = [
+  {
+    gameId: 1,
+    icon: "🏆",
+    name: "Người khám phá chữ Khmer",
+    description:
+      "Hoàn thành Game 1",
+  },
+  {
+    gameId: 2,
+    icon: "🏆",
+    name: "Bậc thầy ghép chữ",
+    description:
+      "Hoàn thành Game 2",
+  },
+  {
+    gameId: 3,
+    icon: "🏆",
+    name: "Người chinh phục Khmer",
+    description:
+      "Hoàn thành Game 3",
+  },
+  {
+    gameId: 4,
+    icon: "🏆",
+    name: "Bậc thầy Khmer",
+    description:
+      "Hoàn thành Game 4",
+  },
+  {
+    gameId: 5,
+    icon: "🏆",
+    name: "Huyền thoại chữ Khmer",
+    description:
+      "Hoàn thành Game 5",
+  },
+];
+
+/* =========================================================
+   DANH HIỆU THÀNH TÍCH HỌC TẬP
+========================================================= */
+
+const STUDY_BADGES = [
+  {
+    id: "study-1h",
+    icon: "🔥",
+    name: "Người học chăm chỉ",
+    description:
+      "Online 1 giờ",
+    requiredSeconds:
+      1 * 60 * 60,
+  },
+  {
+    id: "study-2h",
+    icon: "💪",
+    name: "Người học bền bỉ",
+    description:
+      "Online 2 giờ",
+    requiredSeconds:
+      2 * 60 * 60,
+  },
+  {
+    id: "study-4h",
+    icon: "🏅",
+    name: "Người học kiên trì",
+    description:
+      "Online 4 giờ",
+    requiredSeconds:
+      4 * 60 * 60,
+  },
+  {
+    id: "study-8h",
+    icon: "🌟",
+    name: "Người say mê Khmer",
+    description:
+      "Online 8 giờ",
+    requiredSeconds:
+      8 * 60 * 60,
+  },
+  {
+    id: "study-16h",
+    icon: "💎",
+    name: "Người chinh phục tri thức",
+    description:
+      "Online 16 giờ",
+    requiredSeconds:
+      16 * 60 * 60,
+  },
+  {
+    id: "study-32h",
+    icon: "👑",
+    name: "Bậc thầy chăm học",
+    description:
+      "Online 32 giờ",
+    requiredSeconds:
+      32 * 60 * 60,
+  },
+  {
+    id: "study-64h",
+    icon: "🏆",
+    name: "Học giả Khmer",
+    description:
+      "Online 64 giờ",
+    requiredSeconds:
+      64 * 60 * 60,
+  },
+  {
+    id: "study-128h",
+    icon: "👑",
+    name: "Huyền thoại Khmer",
+    description:
+      "Online 128 giờ",
+    requiredSeconds:
+      128 * 60 * 60,
+  },
+];
 
 /* =========================================================
    COMPONENT
@@ -384,15 +469,29 @@ function Progress({
 
   /* =======================================================
      EXP
+
+     LẤY TRỰC TIẾP TỪ PROFILE
+     GIỐNG STUDENT HOME KHI KHÔNG TRUYỀN totalExp
   ======================================================= */
 
-  const totalExp = Math.max(
-    0,
-    Number(profile?.exp ?? 0)
-  );
+  const totalExp =
+    Math.max(
+      0,
+      Number(
+        profile?.exp ?? 0
+      ) || 0
+    );
+
+  /* =======================================================
+     LEVEL
+
+     DÙNG CHUNG MỘT HÀM VỚI STUDENT HOME
+  ======================================================= */
 
   const levelInfo =
-    getLevelProgress(totalExp);
+    getLevelProgress(
+      totalExp
+    );
 
   /* =======================================================
      STUDY TIME
@@ -402,8 +501,9 @@ function Progress({
     Math.max(
       0,
       Number(
-        profile?.total_study_seconds ?? 0
-      )
+        profile?.total_study_seconds ??
+          0
+      ) || 0
     );
 
   const studyTime =
@@ -416,27 +516,23 @@ function Progress({
   ======================================================= */
 
   const studyStreak =
-    getStudyStreak(profile);
+    getStudyStreak(
+      profile
+    );
 
   /* =======================================================
      GAME PROGRESS
   ======================================================= */
 
-  const gameProgress = useMemo(
-    () => loadGameProgress(),
-    []
-  );
+  const gameProgress =
+    useMemo(
+      () =>
+        loadGameProgress(),
+      []
+    );
 
   /* =======================================================
-     GAME BADGES ĐÃ ĐẠT
-
-     CHỈ HIỂN THỊ DANH HIỆU ĐÃ ĐẠT.
-
-     GAME CHƯA ĐẠT:
-     - Không hiện tên
-     - Không hiện khóa
-     - Không hiện điều kiện
-     - Không hiện ô danh hiệu
+     GAME BADGES
   ======================================================= */
 
   const earnedGameBadges =
@@ -459,15 +555,7 @@ function Progress({
     }, [gameProgress]);
 
   /* =======================================================
-     STUDY BADGES ĐÃ ĐẠT
-
-     CHỈ HIỂN THỊ KHI ĐÃ ĐẠT.
-
-     Mỗi thẻ hiển thị trực tiếp:
-     "Online X giờ"
-
-     KHÔNG hiển thị:
-     "✓ Đã đạt được"
+     STUDY BADGES
   ======================================================= */
 
   const earnedStudyBadges =
@@ -477,602 +565,418 @@ function Progress({
           totalStudySeconds >=
           badge.requiredSeconds
       );
-    }, [totalStudySeconds]);
-
-  /* =======================================================
-     MENU
-  ======================================================= */
-
-  const menuItems = [
-    {
-      id: "home",
-      icon: "🏠",
-      label: "Trang chủ",
-      path: "/student",
-    },
-    {
-      id: "alphabet",
-      icon: "ក",
-      label: "Bảng chữ cái",
-      path: "/alphabet",
-    },
-    {
-      id: "vocabulary",
-      icon: "📚",
-      label: "Từ vựng",
-      path: "/vocabulary",
-    },
-    {
-      id: "games",
-      icon: "🎮",
-      label: "Trò chơi",
-      path: "/game",
-    },
-    {
-      id: "communication",
-      icon: "💬",
-      label: "Giao tiếp",
-      path: "/communication",
-    },
-    {
-      id: "progress",
-      icon: "📊",
-      label: "Tiến độ học tập",
-      path: "/progress",
-    },
-  ];
-
-  const handleMenu = (item) => {
-    navigate(item.path);
-  };
+    }, [
+      totalStudySeconds,
+    ]);
 
   /* =======================================================
      RENDER
   ======================================================= */
 
   return (
-    <div className="progress-app">
+    <StudentLayout
+      profile={profile}
+      navigate={navigate}
+      onLogout={onLogout}
+      activeMenu="progress"
+    >
 
       {/* =================================================
-          SIDEBAR
+          HEADER
       ================================================= */}
 
-      <aside className="progress-sidebar">
+      <header className="progress-header">
 
-        {/* LOGO */}
+        <div>
 
-        <div className="progress-logo">
-
-          <div className="progress-logo-symbol">
-            <span className="khmer-text">
-              ក
-            </span>
+          <div className="progress-header-khmer khmer-text">
+            ការរីកចម្រើនក្នុងការសិក្សា
           </div>
 
-          <div>
-            <div className="progress-logo-title">
-              HỌC TIẾNG KHMER
-            </div>
+          <h1>
+            📊 Tiến độ học tập
+          </h1>
 
-            <div className="progress-logo-khmer khmer-text">
-              រៀនភាសាខ្មែរ
-            </div>
-          </div>
+          <p>
+            Theo dõi hành trình chinh phục
+            tiếng Khmer
+          </p>
 
         </div>
 
-        {/* PROFILE */}
+      </header>
 
-        <div className="progress-profile">
+      {/* =================================================
+          OVERVIEW
+      ================================================= */}
 
-          <div className="progress-avatar">
-            {username
-              .charAt(0)
-              .toUpperCase()}
+      <section className="progress-overview">
+
+        <div className="progress-overview-card">
+
+          <div className="progress-overview-icon">
+            ⭐
           </div>
 
-          <div className="progress-profile-info">
-
-            <strong>
-              {username}
-            </strong>
-
-            <span>
-              Level {levelInfo.level}
-            </span>
-
+          <div className="progress-overview-label">
+            CẤP ĐỘ
           </div>
 
-        </div>
-
-        {/* MENU */}
-
-        <nav className="progress-menu">
-
-          <div className="progress-menu-title">
-            HỌC TẬP
+          <div className="progress-overview-value">
+            {levelInfo.currentLevel}
           </div>
 
-          {menuItems.map(
-            (item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={
-                  item.id === "progress"
-                    ? "progress-menu-item active"
-                    : "progress-menu-item"
-                }
-                onClick={() =>
-                  handleMenu(item)
-                }
-              >
-
-                <span className="progress-menu-icon">
-
-                  {item.id === "alphabet" ? (
-                    <span className="khmer-text">
-                      {item.icon}
-                    </span>
-                  ) : (
-                    item.icon
-                  )}
-
-                </span>
-
-                <span>
-                  {item.label}
-                </span>
-
-              </button>
-            )
+          {levelInfo.isMaxLevel && (
+            <div className="progress-overview-sub max">
+              CẤP ĐỘ TỐI ĐA
+            </div>
           )}
 
-        </nav>
+        </div>
 
-        {/* BOTTOM */}
+        <div className="progress-overview-card">
 
-        <div className="progress-sidebar-bottom">
+          <div className="progress-overview-icon">
+            ⚡
+          </div>
 
-          <button
-            type="button"
-            className="progress-menu-item"
-            onClick={() =>
-              navigate(
-                "/student/profile"
-              )
-            }
-          >
+          <div className="progress-overview-label">
+            TỔNG KINH NGHIỆM
+          </div>
 
-            <span className="progress-menu-icon">
-              👤
-            </span>
+          <div className="progress-overview-value exp-value">
+            {totalExp.toLocaleString(
+              "vi-VN"
+            )}
+          </div>
 
-            <span>
-              Tài khoản
-            </span>
-
-          </button>
-
-          <button
-            type="button"
-            className="progress-menu-item logout"
-            onClick={onLogout}
-          >
-
-            <span className="progress-menu-icon">
-              ➜]
-            </span>
-
-            <span>
-              Đăng xuất
-            </span>
-
-          </button>
+          <div className="progress-overview-sub">
+           EXP
+          </div>
 
         </div>
 
-      </aside>
+        <div className="progress-overview-card">
+
+          <div className="progress-overview-icon">
+            🔥
+          </div>
+
+          <div className="progress-overview-label">
+            CHUỖI NGÀY HỌC
+          </div>
+
+          <div className="progress-overview-value">
+            {studyStreak}
+          </div>
+
+          <div className="progress-overview-sub">
+            ngày
+          </div>
+
+        </div>
+
+      </section>
 
       {/* =================================================
-          MAIN
+          LEVEL PROGRESS
       ================================================= */}
 
-      <main className="progress-main">
+      <section className="progress-panel">
 
-        {/* HEADER */}
-
-        <header className="progress-header">
+        <div className="progress-panel-heading">
 
           <div>
 
-            <div className="progress-header-khmer khmer-text">
-              ការរីកចម្រើនក្នុងការសិក្សា
-            </div>
-
-            <h1>
-              📊 Tiến độ học tập
-            </h1>
+            <h2>
+              ⚡ Tiến độ Level
+            </h2>
 
             <p>
-              Theo dõi hành trình chinh phục
-              tiếng Khmer
+              Tiếp tục học để chinh phục
+              cấp độ tiếp theo.
             </p>
 
           </div>
 
-          <div className="progress-header-user">
-
-            <div className="progress-header-avatar">
-              {username
-                .charAt(0)
-                .toUpperCase()}
-            </div>
-
-          </div>
-
-        </header>
+        </div>
 
         {/* =================================================
-            OVERVIEW
+            LEVEL HIỆN TẠI
+
+            CHỈ HIỂN THỊ MỘT LEVEL
+            KHÔNG HIỂN THỊ LEVEL 6 → LEVEL 7
         ================================================= */}
 
-        <section className="progress-overview">
+        <div className="progress-level-info">
 
-          {/* LEVEL */}
+          <div>
 
-          <div className="progress-overview-card">
-
-            <div className="progress-overview-icon">
-              ⭐
-            </div>
-
-            <div className="progress-overview-label">
-              LEVEL
-            </div>
-
-            <div className="progress-overview-value">
-              {levelInfo.level}
-            </div>
-
-            {levelInfo.isMaxLevel && (
-              <div className="progress-overview-sub max">
-                MAX LEVEL
-              </div>
-            )}
+            <strong>
+              Level{" "}
+              {levelInfo.currentLevel}
+            </strong>
 
           </div>
 
-          {/* EXP */}
+          <div className="progress-level-exp">
 
-          <div className="progress-overview-card">
-
-            <div className="progress-overview-icon">
-              ⚡
-            </div>
-
-            <div className="progress-overview-label">
-              EXP
-            </div>
-
-            <div className="progress-overview-value exp-value">
-              {totalExp.toLocaleString(
-                "vi-VN"
-              )}
-            </div>
-
-            <div className="progress-overview-sub">
-              Kinh nghiệm
-            </div>
+            {levelInfo.isMaxLevel
+              ? `${totalExp.toLocaleString(
+                  "vi-VN"
+                )} EXP`
+              : `${levelInfo.currentExp.toLocaleString(
+                  "vi-VN"
+                )} / ${levelInfo.requiredExp.toLocaleString(
+                  "vi-VN"
+                )} EXP`}
 
           </div>
 
-          {/* STREAK */}
-
-          <div className="progress-overview-card">
-
-            <div className="progress-overview-icon">
-              🔥
-            </div>
-
-            <div className="progress-overview-label">
-              CHUỖI NGÀY HỌC
-            </div>
-
-            <div className="progress-overview-value">
-              {studyStreak}
-            </div>
-
-            <div className="progress-overview-sub">
-              ngày
-            </div>
-
-          </div>
-
-        </section>
+        </div>
 
         {/* =================================================
-            LEVEL PROGRESS
+            THANH TIẾN ĐỘ
         ================================================= */}
 
-        <section className="progress-panel">
+        <div className="progress-level-track">
 
-          <div className="progress-panel-heading">
+          <div
+            className="progress-level-fill"
+            style={{
+              width:
+                `${levelInfo.percent}%`,
+            }}
+          >
 
-            <div>
-
-              <h2>
-                ⚡ Tiến độ Level
-              </h2>
-
-              <p>
-                Tiếp tục học để chinh phục
-                cấp độ tiếp theo.
-              </p>
-
-            </div>
-
-            {!levelInfo.isMaxLevel && (
-              <div className="progress-level-target">
-                Level {levelInfo.level + 1}
-              </div>
-            )}
+            <div className="progress-level-shine" />
 
           </div>
 
-          <div className="progress-level-info">
-
-            <div>
-
-              <strong>
-                Level {levelInfo.level}
-              </strong>
-
-              {!levelInfo.isMaxLevel && (
-                <span>
-                  Level {levelInfo.level + 1}
-                </span>
-              )}
-
-            </div>
-
-            <div className="progress-level-exp">
-              {levelInfo.isMaxLevel
-                ? `${totalExp.toLocaleString(
-                    "vi-VN"
-                  )} EXP`
-                : `${levelInfo.currentExp.toLocaleString(
-                    "vi-VN"
-                  )} / ${levelInfo.requiredExp.toLocaleString(
-                    "vi-VN"
-                  )} EXP`}
-            </div>
-
-          </div>
-
-          <div className="progress-level-track">
-
-            <div
-              className="progress-level-fill"
-              style={{
-                width:
-                  `${levelInfo.percent}%`,
-              }}
-            >
-              <div className="progress-level-shine" />
-            </div>
-
-          </div>
-
-          <div className="progress-level-footer">
-
-            {levelInfo.isMaxLevel ? (
-              <span className="progress-max-text">
-                👑 Bạn đã đạt cấp độ tối đa
-              </span>
-            ) : (
-              <>
-                <span>
-                  {levelInfo.percent}% hoàn thành
-                </span>
-
-                <span>
-                  Còn{" "}
-                  <strong>
-                    {levelInfo.remainingExp.toLocaleString(
-                      "vi-VN"
-                    )}{" "}
-                    EXP
-                  </strong>{" "}
-                  để đạt Level{" "}
-                  {levelInfo.level + 1}
-                </span>
-              </>
-            )}
-
-          </div>
-
-        </section>
+        </div>
 
         {/* =================================================
-            TOTAL STUDY TIME
+            FOOTER
         ================================================= */}
 
-        <section className="progress-time-panel">
+        <div className="progress-level-footer">
 
-          <div className="progress-time-icon">
-            ⏱️
-          </div>
+          {levelInfo.isMaxLevel ? (
 
-          <div className="progress-time-content">
-
-            <div className="progress-time-label">
-              TỔNG THỜI GIAN HỌC
-            </div>
-
-            <div className="progress-time-value">
-
-              <span>
-                {studyTime.hours}
-              </span>
-
-              <small>
-                giờ
-              </small>
-
-              <span>
-                {studyTime.minutes}
-              </span>
-
-              <small>
-                phút
-              </small>
-
-              <span>
-                {studyTime.seconds}
-              </span>
-
-              <small>
-                giây
-              </small>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* =================================================
-            GAME BADGES
-        ================================================= */}
-
-        <section className="progress-panel badges-panel">
-
-          <div className="progress-panel-heading">
-
-            <div>
-
-              <h2>
-                🏆 Danh hiệu trò chơi
-              </h2>
-
-              <p>
-                Những danh hiệu bạn đã đạt được
-                qua hành trình chinh phục các Game.
-              </p>
-
-            </div>
-
-          </div>
-
-          {earnedGameBadges.length > 0 ? (
-
-            <div className="badges-grid">
-
-              {earnedGameBadges.map(
-                (badge) => (
-                  <div
-                    key={badge.gameId}
-                    className="badge-card game-badge"
-                  >
-
-                    <div className="badge-icon">
-                      {badge.icon}
-                    </div>
-
-                    <h3>
-                      {badge.name}
-                    </h3>
-
-                    <p>
-                      {badge.description}
-                    </p>
-
-                  </div>
-                )
-              )}
-
-            </div>
+            <span className="progress-max-text">
+              👑 Bạn đã đạt cấp độ tối đa
+            </span>
 
           ) : (
 
-            <div className="empty-badge-state">
-              Chưa có danh hiệu trò chơi.
-              <br />
-              Hãy tiếp tục chinh phục các Game!
-            </div>
+            <>
+
+              <span>
+                {levelInfo.percent}%
+                {" "}hoàn thành
+              </span>
+
+              <span>
+                Còn{" "}
+                <strong>
+                  {levelInfo.remainingExp.toLocaleString(
+                    "vi-VN"
+                  )}{" "}
+                  EXP
+                </strong>{" "}
+                để đạt Level{" "}
+                {levelInfo.currentLevel + 1}
+              </span>
+
+            </>
 
           )}
 
-        </section>
+        </div>
 
-        {/* =================================================
-            STUDY BADGES
-        ================================================= */}
+      </section>
 
-        <section className="progress-panel badges-panel">
+      {/* =================================================
+          TOTAL STUDY TIME
+      ================================================= */}
 
-          <div className="progress-panel-heading">
+      <section className="progress-time-panel">
 
-            <div>
+        <div className="progress-time-icon">
+          ⏱️
+        </div>
 
-              <h2>
-                🌟 Danh hiệu thành tích học tập
-              </h2>
+        <div className="progress-time-content">
 
-              <p>
-                Những danh hiệu bạn đã khám phá
-                trong hành trình học tập.
-              </p>
+          <div className="progress-time-label">
+            TỔNG THỜI GIAN HỌC
+          </div>
 
-            </div>
+          <div className="progress-time-value">
+
+            <span>
+              {studyTime.hours}
+            </span>
+
+            <small>
+              giờ
+            </small>
+
+            <span>
+              {studyTime.minutes}
+            </span>
+
+            <small>
+              phút
+            </small>
+
+            <span>
+              {studyTime.seconds}
+            </span>
+
+            <small>
+              giây
+            </small>
 
           </div>
 
-          {earnedStudyBadges.length > 0 ? (
+        </div>
 
-            <div className="badges-grid">
+      </section>
 
-              {earnedStudyBadges.map(
-                (badge) => (
-                  <div
-                    key={badge.id}
-                    className="badge-card study-badge"
-                  >
+      {/* =================================================
+          GAME BADGES
+      ================================================= */}
 
-                    <div className="badge-icon">
-                      {badge.icon}
-                    </div>
+      <section className="progress-panel badges-panel">
 
-                    <h3>
-                      {badge.name}
-                    </h3>
+        <div className="progress-panel-heading">
 
-                    <p>
-                      {badge.description}
-                    </p>
+          <div>
 
+            <h2>
+              🏆 Danh hiệu trò chơi
+            </h2>
+
+            <p>
+              Những danh hiệu bạn đã đạt được
+              qua hành trình chinh phục các Game.
+            </p>
+
+          </div>
+
+        </div>
+
+        {earnedGameBadges.length > 0 ? (
+
+          <div className="badges-grid">
+
+            {earnedGameBadges.map(
+              (badge) => (
+
+                <div
+                  key={badge.gameId}
+                  className="badge-card game-badge"
+                >
+
+                  <div className="badge-icon">
+                    {badge.icon}
                   </div>
-                )
-              )}
 
-            </div>
+                  <h3>
+                    {badge.name}
+                  </h3>
 
-          ) : (
+                  <p>
+                    {badge.description}
+                  </p>
 
-            <div className="empty-badge-state">
-              Chưa có danh hiệu thành tích học tập.
-              <br />
-              Hãy tiếp tục học tập để khám phá!
-            </div>
+                </div>
 
-          )}
+              )
+            )}
 
-        </section>
+          </div>
 
-      </main>
+        ) : (
 
-    </div>
+          <div className="empty-badge-state">
+            Chưa có danh hiệu trò chơi.
+            <br />
+            Hãy tiếp tục chinh phục các Game!
+          </div>
+
+        )}
+
+      </section>
+
+      {/* =================================================
+          STUDY BADGES
+      ================================================= */}
+
+      <section className="progress-panel badges-panel">
+
+        <div className="progress-panel-heading">
+
+          <div>
+
+            <h2>
+              🌟 Danh hiệu thành tích học tập
+            </h2>
+
+            <p>
+              Những danh hiệu bạn đã khám phá
+              trong hành trình học tập.
+            </p>
+
+          </div>
+
+        </div>
+
+        {earnedStudyBadges.length > 0 ? (
+
+          <div className="badges-grid">
+
+            {earnedStudyBadges.map(
+              (badge) => (
+
+                <div
+                  key={badge.id}
+                  className="badge-card study-badge"
+                >
+
+                  <div className="badge-icon">
+                    {badge.icon}
+                  </div>
+
+                  <h3>
+                    {badge.name}
+                  </h3>
+
+                  <p>
+                    {badge.description}
+                  </p>
+
+                </div>
+
+              )
+            )}
+
+          </div>
+
+        ) : (
+
+          <div className="empty-badge-state">
+            Chưa có danh hiệu thành tích học tập.
+            <br />
+            Hãy tiếp tục học tập để khám phá!
+          </div>
+
+        )}
+
+      </section>
+
+    </StudentLayout>
   );
 }
 

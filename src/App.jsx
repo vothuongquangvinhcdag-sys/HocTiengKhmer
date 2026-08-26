@@ -8,12 +8,12 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import StudentHome from "./pages/student/StudentHome";
 import Alphabet from "./pages/student/alphabet/Alphabet";
 import Vocabulary from "./pages/student/vocabulary/vocabulary";
+import Game from "./pages/student/game/Game";
 import Communication from "./pages/student/communication/Communication";
 import Progress from "./pages/student/progress/Progress";
+import Profile from "./pages/student/profile/Profile";
 
 import AdminHome from "./pages/admin/AdminHome";
-
-import Game from "./pages/student/game/Game";
 
 /* =========================================================
    CẤU HÌNH LEVEL
@@ -114,7 +114,7 @@ function App() {
     } = await supabase
       .from("profiles")
       .select(
-        "id, username, account, email, role, exp, level, total_study_seconds"
+        "id, username, account, email, role, exp, level, total_study_seconds,avatar_url"
       )
       .eq("id", userId)
       .single();
@@ -602,6 +602,20 @@ if (path === "/progress") {
       navigate={navigate}
       onLogout={handleLogout}
       onProgressUpdated={refreshProfile}
+    />
+  );
+}
+  /* =======================================================
+   PROFILE / TÀI KHOẢN
+======================================================= */
+
+if (path === "/student/profile") {
+  return (
+    <Profile
+      profile={profile}
+      session={session}
+      navigate={navigate}
+      onProfileUpdated={refreshProfile}
     />
   );
 }
