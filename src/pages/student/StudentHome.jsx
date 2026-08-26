@@ -375,9 +375,11 @@ function StudentHome({
               <span className="khmer-regular">
                 ជំរាបសួរ
               </span>
+
               <span className="student-vietnamese-name">
                 , {username}
               </span>
+
               <span className="khmer-regular">
                 ! 👋
               </span>
@@ -611,6 +613,10 @@ function StudentHome({
 
           <div className="student-learning-grid">
 
+            {/* =================================================
+                BẢNG CHỮ CÁI
+            ================================================= */}
+
             <button
               type="button"
               className="learning-card"
@@ -620,18 +626,18 @@ function StudentHome({
             >
 
               <div className="learning-card-icon">
-                ក
+                📖
               </div>
 
               <div>
 
                 <h3>
-                  Bảng chữ cái
+                  Học bảng chữ cái
                 </h3>
 
                 <p>
                   Làm quen với 33 phụ âm,
-                  24 nguyên âm và cách phát âm
+                  25 nguyên âm và cách phát âm
                   tiếng Khmer.
                 </p>
 
@@ -642,6 +648,10 @@ function StudentHome({
               </span>
 
             </button>
+
+            {/* =================================================
+                TỪ VỰNG
+            ================================================= */}
 
             <button
               type="button"
@@ -658,7 +668,7 @@ function StudentHome({
               <div>
 
                 <h3>
-                  Từ vựng
+                  Học từ vựng
                 </h3>
 
                 <p>
@@ -673,6 +683,49 @@ function StudentHome({
               </span>
 
             </button>
+
+            {/* =================================================
+                LUYỆN GIAO TIẾP
+                ĐƯỢC ĐƯA LÊN TRƯỚC TRÒ CHƠI
+            ================================================= */}
+
+            <button
+              type="button"
+              className="learning-card"
+              onClick={() =>
+                handleMenu(
+                  "communication"
+                )
+              }
+            >
+
+              <div className="learning-card-icon">
+                💬
+              </div>
+
+              <div>
+
+                <h3>
+                  Luyện giao tiếp
+                </h3>
+
+                <p>
+                  Học cách giao tiếp và sử dụng
+                  tiếng Khmer trong các tình huống
+                  thực tế.
+                </p>
+
+              </div>
+
+              <span className="learning-arrow">
+                →
+              </span>
+
+            </button>
+
+            {/* =================================================
+                TRÒ CHƠI
+            ================================================= */}
 
             <button
               type="button"
@@ -695,40 +748,6 @@ function StudentHome({
                 <p>
                   Vừa chơi vừa củng cố
                   kiến thức.
-                </p>
-
-              </div>
-
-              <span className="learning-arrow">
-                →
-              </span>
-
-            </button>
-
-            <button
-              type="button"
-              className="learning-card"
-              onClick={() =>
-                handleMenu(
-                  "communication"
-                )
-              }
-            >
-
-              <div className="learning-card-icon">
-                💬
-              </div>
-
-              <div>
-
-                <h3>
-                  Giao tiếp
-                </h3>
-
-                <p>
-                  Học cách giao tiếp và sử dụng
-                  tiếng Khmer trong các tình huống
-                  thực tế.
                 </p>
 
               </div>

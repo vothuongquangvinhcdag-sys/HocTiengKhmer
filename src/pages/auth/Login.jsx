@@ -1,5 +1,11 @@
+/* =========================================================
+   LOGIN PAGE
+   KHMER GOLD
+========================================================= */
+
 import { useState } from "react";
 import { supabase } from "../../supabase";
+import "./Login.css";
 
 function Login() {
   const [account, setAccount] = useState("");
@@ -7,39 +13,32 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // =========================
+  // =========================================================
   // ĐĂNG NHẬP
-  // =========================
+  // =========================================================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const finalAccount = account.trim();
 
     if (!finalAccount || !password.trim()) {
-      alert(
-        "Vui lòng nhập đầy đủ tài khoản và mật khẩu."
-      );
+      alert("Vui lòng nhập đầy đủ tài khoản và mật khẩu.");
       return;
     }
 
     try {
       setLoading(true);
 
-      // =========================
+      // =====================================================
       // 1. TÌM EMAIL THEO TÀI KHOẢN
-      // =========================
-      const {
-        data: loginEmail,
-        error: emailError,
-      } = await supabase.rpc("get_login_email", {
-        p_account: finalAccount,
-      });
+      // =====================================================
+      const { data: loginEmail, error: emailError } =
+        await supabase.rpc("get_login_email", {
+          p_account: finalAccount,
+        });
 
       if (emailError) {
-        console.error(
-          "Get login email error:",
-          emailError
-        );
+        console.error("Get login email error:", emailError);
 
         alert(
           "Không thể kiểm tra tài khoản.\n\n" +
@@ -49,7 +48,6 @@ function Login() {
         return;
       }
 
-      // Không tìm thấy tài khoản
       if (!loginEmail) {
         alert(
           "Tài khoản không tồn tại.\n\n" +
@@ -59,22 +57,17 @@ function Login() {
         return;
       }
 
-      // =========================
+      // =====================================================
       // 2. ĐĂNG NHẬP SUPABASE
-      // =========================
-      const {
-        data,
-        error,
-      } = await supabase.auth.signInWithPassword({
-        email: loginEmail,
-        password: password,
-      });
+      // =====================================================
+      const { data, error } =
+        await supabase.auth.signInWithPassword({
+          email: loginEmail,
+          password,
+        });
 
       if (error) {
-        console.error(
-          "Supabase login error:",
-          error
-        );
+        console.error("Supabase login error:", error);
 
         alert(
           "ĐĂNG NHẬP THẤT BẠI!\n\n" +
@@ -85,16 +78,13 @@ function Login() {
       }
 
       if (!data?.user) {
-        alert(
-          "Không thể đăng nhập tài khoản."
-        );
-
+        alert("Không thể đăng nhập tài khoản.");
         return;
       }
 
-      // =========================
+      // =====================================================
       // 3. ĐĂNG NHẬP THÀNH CÔNG
-      // =========================
+      // =====================================================
       alert(
         "ĐĂNG NHẬP THÀNH CÔNG! 🎉\n\n" +
           "Xin chào " +
@@ -102,48 +92,40 @@ function Login() {
           "!"
       );
 
-      // =========================
+      // =====================================================
       // 4. VỀ TRANG CHỦ
-      // =========================
+      // =====================================================
       window.history.pushState({}, "", "/");
 
       window.dispatchEvent(
         new PopStateEvent("popstate")
       );
     } catch (error) {
-      console.error(
-        "Login error:",
-        error
-      );
+      console.error("Login error:", error);
 
       alert(
         "ĐĂNG NHẬP THẤT BẠI!\n\n" +
-          (error?.message ||
-            "Lỗi không xác định.")
+          (error?.message || "Lỗi không xác định.")
       );
     } finally {
       setLoading(false);
     }
   };
 
-  // =========================
-  // ĐI ĐẾN ĐĂNG KÝ
-  // =========================
+  // =========================================================
+  // ĐĂNG KÝ
+  // =========================================================
   const goToRegister = () => {
-    window.history.pushState(
-      {},
-      "",
-      "/register"
-    );
+    window.history.pushState({}, "", "/register");
 
     window.dispatchEvent(
       new PopStateEvent("popstate")
     );
   };
 
-  // =========================
+  // =========================================================
   // QUÊN MẬT KHẨU
-  // =========================
+  // =========================================================
   const goToForgotPassword = () => {
     window.history.pushState(
       {},
@@ -159,47 +141,83 @@ function Login() {
   return (
     <div className="login-page">
 
-      {/* Trang trí */}
-      <div className="login-decoration decoration-left">
-        ◈
+      {/* =====================================================
+          TRANG TRÍ
+      ===================================================== */}
+      <div className="login-decoration login-decoration-left">
+        ✦
       </div>
 
-      <div className="login-decoration decoration-right">
-        ◇
+      <div className="login-decoration login-decoration-right">
+        ✦
       </div>
 
-      {/* CARD */}
-      <div className="login-card">
 
-        {/* Logo */}
+      {/* =====================================================
+          LOGIN CARD
+      ===================================================== */}
+      <main className="login-card">
+
+        {/* ===================================================
+            LOGO
+        =================================================== */}
         <div className="login-logo">
-          <div className="khmer-symbol">
+          <div className="login-logo-symbol login-khmer">
             ក
           </div>
         </div>
 
-        {/* Tiêu đề */}
-        <h1>HỌC TIẾNG KHMER</h1>
 
-        <p className="login-khmer">
+        {/* ===================================================
+            KHMER MAIN TITLE
+            រៀនភាសាខ្មែរ
+
+            DÙNG KHMER OS THƯỜNG
+        =================================================== */}
+        <h1 className="login-title-khmer">
           រៀនភាសាខ្មែរ
-        </p>
+        </h1>
 
+
+        {/* ===================================================
+            VIETNAMESE TITLE
+        =================================================== */}
+        <h2 className="login-title">
+          HỌC TIẾNG KHMER
+        </h2>
+
+
+        {/* ===================================================
+            SUBTITLE
+        =================================================== */}
         <p className="login-subtitle">
           Cùng học tiếng Khmer mỗi ngày
         </p>
 
-        <form onSubmit={handleSubmit}>
 
-          {/* TÀI KHOẢN */}
-          <div className="form-group">
+        {/* ===================================================
+            FORM
+        =================================================== */}
+        <form
+          className="login-form"
+          onSubmit={handleSubmit}
+        >
 
-            <label htmlFor="account">
+          {/* =================================================
+              TÀI KHOẢN
+          ================================================= */}
+          <div className="login-form-group">
+
+            <label
+              htmlFor="account"
+              className="login-label"
+            >
               Tài khoản
             </label>
 
             <input
               id="account"
+              className="login-input"
               type="text"
               value={account}
               onChange={(e) =>
@@ -212,17 +230,24 @@ function Login() {
 
           </div>
 
-          {/* MẬT KHẨU */}
-          <div className="form-group">
 
-            <label htmlFor="login-password">
+          {/* =================================================
+              MẬT KHẨU
+          ================================================= */}
+          <div className="login-form-group">
+
+            <label
+              htmlFor="login-password"
+              className="login-label"
+            >
               Mật khẩu
             </label>
 
-            <div className="password-input-wrapper">
+            <div className="login-password-wrapper">
 
               <input
                 id="login-password"
+                className="login-input login-password-input"
                 type={
                   showPassword
                     ? "text"
@@ -239,10 +264,10 @@ function Login() {
 
               <button
                 type="button"
-                className="password-toggle"
+                className="login-password-toggle"
                 onClick={() =>
                   setShowPassword(
-                    !showPassword
+                    (previous) => !previous
                   )
                 }
                 aria-label={
@@ -251,16 +276,17 @@ function Login() {
                     : "Hiện mật khẩu"
                 }
               >
-                {showPassword
-                  ? "🙈"
-                  : "👁️"}
+                {showPassword ? "🙈" : "👁"}
               </button>
 
             </div>
 
           </div>
 
-          {/* ĐĂNG NHẬP */}
+
+          {/* =================================================
+              ĐĂNG NHẬP
+          ================================================= */}
           <button
             type="submit"
             className="login-button"
@@ -273,37 +299,55 @@ function Login() {
 
         </form>
 
-        {/* LIÊN KẾT */}
+
+        {/* ===================================================
+            LINKS
+        =================================================== */}
         <div className="login-links">
 
           <button
             type="button"
-            className="link-button"
+            className="login-link-button"
             onClick={goToRegister}
           >
             Đăng ký ngay
           </button>
 
-          <span className="link-separator">
+          <span className="login-link-separator">
             •
           </span>
 
           <button
             type="button"
-            className="link-button"
+            className="login-link-button"
             onClick={goToForgotPassword}
           >
-            Quên mật khẩu?
+            Quên mật khẩu
           </button>
 
         </div>
 
-      </div>
+      </main>
 
-      {/* FOOTER */}
-      <div className="login-footer">
-        HỌC TIẾNG KHMER • រៀនភាសាខ្មែរ
-      </div>
+
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
+      <footer className="login-footer">
+
+        <span>
+          HỌC TIẾNG KHMER
+        </span>
+
+        <span className="login-footer-dot">
+          •
+        </span>
+
+        <span className="login-footer-khmer">
+          រៀនភាសាខ្មែរ
+        </span>
+
+      </footer>
 
     </div>
   );

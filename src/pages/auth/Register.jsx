@@ -1,27 +1,50 @@
 import { useState } from "react";
 import { supabase } from "../../supabase";
+import "./Register.css";
 
 function Register() {
   const [username, setUsername] = useState("");
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
   const [loading, setLoading] = useState(false);
+
+  /* =========================================================
+     VỀ TRANG LOGIN
+  ========================================================= */
 
   const goToLogin = () => {
     window.history.pushState({}, "", "/");
-    window.dispatchEvent(new PopStateEvent("popstate"));
+
+    window.dispatchEvent(
+      new PopStateEvent("popstate")
+    );
   };
+
+  /* =========================================================
+     ĐĂNG KÝ
+  ========================================================= */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const finalAccount = account.trim();
+
     const finalUsername =
       username.trim() || finalAccount;
+
     const finalEmail =
       email.trim().toLowerCase();
+
+    /* =====================================================
+       KIỂM TRA DỮ LIỆU
+    ===================================================== */
 
     if (!finalAccount) {
       alert("Vui lòng nhập tài khoản.");
@@ -29,7 +52,16 @@ function Register() {
     }
 
     if (password.length < 6) {
-      alert("Mật khẩu phải có ít nhất 6 ký tự.");
+      alert(
+        "Mật khẩu phải có ít nhất 6 ký tự."
+      );
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert(
+        "Mật khẩu xác nhận không trùng khớp."
+      );
       return;
     }
 
@@ -38,16 +70,18 @@ function Register() {
       return;
     }
 
+    /* =====================================================
+       SUPABASE
+    ===================================================== */
+
     try {
       setLoading(true);
 
-      // Tạo tài khoản Supabase
-      // Thông tin username và account
-      // sẽ được Trigger dùng để tạo profiles
       const { data, error } =
         await supabase.auth.signUp({
           email: finalEmail,
           password: password,
+
           options: {
             data: {
               username: finalUsername,
@@ -78,6 +112,10 @@ function Register() {
         return;
       }
 
+      /* ===================================================
+         THÀNH CÔNG
+      =================================================== */
+
       alert(
         "ĐĂNG KÝ THÀNH CÔNG! 🎉\n\n" +
           "Tên người dùng: " +
@@ -90,10 +128,18 @@ function Register() {
           finalEmail
       );
 
+      /* ===================================================
+         RESET FORM
+      =================================================== */
+
       setUsername("");
       setAccount("");
       setPassword("");
+      setConfirmPassword("");
       setEmail("");
+
+      setShowPassword(false);
+      setShowConfirmPassword(false);
 
       goToLogin();
     } catch (error) {
@@ -112,44 +158,82 @@ function Register() {
     }
   };
 
-  return (
-    <div className="login-page">
+  /* =========================================================
+     UI
+  ========================================================= */
 
-      <div className="login-decoration decoration-left">
+  return (
+    <div className="register-page">
+
+      {/* =====================================================
+          DECORATION
+      ===================================================== */}
+
+      <div className="register-decoration register-decoration-left">
         ◈
       </div>
 
-      <div className="login-decoration decoration-right">
+      <div className="register-decoration register-decoration-right">
         ◇
       </div>
 
-      <div className="login-card register-card">
+      {/* =====================================================
+          REGISTER CARD
+      ===================================================== */}
 
-        <div className="login-logo">
-          <div className="khmer-symbol">
+      <main className="register-card">
+
+        {/* ===================================================
+            LOGO
+        =================================================== */}
+
+        <div className="register-logo">
+          <div className="register-logo-symbol register-khmer">
             ក
           </div>
         </div>
 
-        <h1>ĐĂNG KÝ</h1>
+        {/* ===================================================
+            TITLE
+        =================================================== */}
 
-        <p className="login-khmer">
+        <h1 className="register-title-khmer">
           ចុះឈ្មោះ
+        </h1>
+
+        <p className="register-title">
+          ĐĂNG KÝ
         </p>
 
-        <p className="login-subtitle">
+        <p className="register-subtitle">
           Tạo tài khoản học tiếng Khmer
         </p>
 
-        <form onSubmit={handleSubmit}>
+        {/* ===================================================
+            FORM
+        =================================================== */}
 
-          <div className="form-group">
-            <label htmlFor="username">
+        <form
+          className="register-form"
+          onSubmit={handleSubmit}
+        >
+
+          {/* =================================================
+              TÊN NGƯỜI DÙNG
+          ================================================= */}
+
+          <div className="register-form-group">
+
+            <label
+              htmlFor="register-username"
+              className="register-label"
+            >
               Tên người dùng
             </label>
 
             <input
-              id="username"
+              id="register-username"
+              className="register-input"
               type="text"
               value={username}
               onChange={(e) =>
@@ -159,21 +243,31 @@ function Register() {
               autoComplete="name"
             />
 
-            <small className="form-note">
+            <small className="register-form-note">
               Nếu bỏ trống, tên tài khoản sẽ được sử dụng.
             </small>
+
           </div>
 
-          <div className="form-group">
-            <label htmlFor="account">
-              Tài khoản{" "}
-              <span className="required">
+          {/* =================================================
+              TÀI KHOẢN
+          ================================================= */}
+
+          <div className="register-form-group">
+
+            <label
+              htmlFor="register-account"
+              className="register-label"
+            >
+              Tài khoản
+              <span className="register-required">
                 *
               </span>
             </label>
 
             <input
-              id="account"
+              id="register-account"
+              className="register-input"
               type="text"
               value={account}
               onChange={(e) =>
@@ -183,20 +277,30 @@ function Register() {
               autoComplete="username"
               required
             />
+
           </div>
 
-          <div className="form-group">
-            <label htmlFor="password">
-              Mật khẩu{" "}
-              <span className="required">
+          {/* =================================================
+              MẬT KHẨU
+          ================================================= */}
+
+          <div className="register-form-group">
+
+            <label
+              htmlFor="register-password"
+              className="register-label"
+            >
+              Mật khẩu
+              <span className="register-required">
                 *
               </span>
             </label>
 
-            <div className="password-input-wrapper">
+            <div className="register-password-wrapper">
 
               <input
-                id="password"
+                id="register-password"
+                className="register-input register-password-input"
                 type={
                   showPassword
                     ? "text"
@@ -214,10 +318,10 @@ function Register() {
 
               <button
                 type="button"
-                className="password-toggle"
+                className="register-password-toggle"
                 onClick={() =>
                   setShowPassword(
-                    !showPassword
+                    (previous) => !previous
                   )
                 }
                 aria-label={
@@ -226,24 +330,93 @@ function Register() {
                     : "Hiện mật khẩu"
                 }
               >
-                {showPassword
-                  ? "🙈"
-                  : "👁️"}
+                {showPassword ? "🙈" : "👁"}
               </button>
 
             </div>
+
           </div>
 
-          <div className="form-group">
-            <label htmlFor="email">
-              Email{" "}
-              <span className="required">
+          {/* =================================================
+              XÁC NHẬN MẬT KHẨU
+          ================================================= */}
+
+          <div className="register-form-group">
+
+            <label
+              htmlFor="register-confirm-password"
+              className="register-label"
+            >
+              Xác nhận mật khẩu
+              <span className="register-required">
+                *
+              </span>
+            </label>
+
+            <div className="register-password-wrapper">
+
+              <input
+                id="register-confirm-password"
+                className="register-input register-password-input"
+                type={
+                  showConfirmPassword
+                    ? "text"
+                    : "password"
+                }
+                value={confirmPassword}
+                onChange={(e) =>
+                  setConfirmPassword(
+                    e.target.value
+                  )
+                }
+                placeholder="Nhập lại mật khẩu"
+                autoComplete="new-password"
+                minLength={6}
+                required
+              />
+
+              <button
+                type="button"
+                className="register-password-toggle"
+                onClick={() =>
+                  setShowConfirmPassword(
+                    (previous) => !previous
+                  )
+                }
+                aria-label={
+                  showConfirmPassword
+                    ? "Ẩn mật khẩu xác nhận"
+                    : "Hiện mật khẩu xác nhận"
+                }
+              >
+                {showConfirmPassword
+                  ? "🙈"
+                  : "👁"}
+              </button>
+
+            </div>
+
+          </div>
+
+          {/* =================================================
+              EMAIL
+          ================================================= */}
+
+          <div className="register-form-group">
+
+            <label
+              htmlFor="register-email"
+              className="register-label"
+            >
+              Email
+              <span className="register-required">
                 *
               </span>
             </label>
 
             <input
-              id="email"
+              id="register-email"
+              className="register-input"
               type="email"
               value={email}
               onChange={(e) =>
@@ -253,11 +426,16 @@ function Register() {
               autoComplete="email"
               required
             />
+
           </div>
+
+          {/* =================================================
+              BUTTON
+          ================================================= */}
 
           <button
             type="submit"
-            className="login-button"
+            className="register-button"
             disabled={loading}
           >
             {loading
@@ -267,11 +445,15 @@ function Register() {
 
         </form>
 
-        <div className="login-links">
+        {/* ===================================================
+            LOGIN LINK
+        =================================================== */}
+
+        <div className="register-links">
 
           <button
             type="button"
-            className="link-button"
+            className="register-link-button"
             onClick={goToLogin}
           >
             ← Quay lại đăng nhập
@@ -279,11 +461,27 @@ function Register() {
 
         </div>
 
-      </div>
+      </main>
 
-      <div className="login-footer">
-        HỌC TIẾNG KHMER • រៀនភាសាខ្មែរ
-      </div>
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
+
+      <footer className="register-footer">
+
+        <span>
+          HỌC TIẾNG KHMER
+        </span>
+
+        <span className="register-footer-dot">
+          •
+        </span>
+
+        <span className="register-footer-khmer">
+          រៀនភាសាខ្មែរ
+        </span>
+
+      </footer>
 
     </div>
   );

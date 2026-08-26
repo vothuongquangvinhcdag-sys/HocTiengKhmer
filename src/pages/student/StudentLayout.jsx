@@ -62,28 +62,28 @@ function StudentLayout({
     },
     {
       id: "alphabet",
-      icon: "ក",
-      label: "Bảng chữ cái",
+      icon: "📖",
+      label: "Học bảng chữ cái",
       path: "/alphabet",
       khmer: true,
     },
     {
       id: "vocabulary",
       icon: "📚",
-      label: "Từ vựng",
+      label: "Học từ vựng",
       path: "/vocabulary",
+    },
+    {
+      id: "communication",
+      icon: "💬",
+      label: "Luyện giao tiếp",
+      path: "/communication",
     },
     {
       id: "games",
       icon: "🎮",
       label: "Trò chơi",
       path: "/game",
-    },
-    {
-      id: "communication",
-      icon: "💬",
-      label: "Giao tiếp",
-      path: "/communication",
     },
     {
       id: "progress",
