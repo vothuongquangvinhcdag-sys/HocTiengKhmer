@@ -65,7 +65,6 @@ function StudentLayout({
       icon: "📖",
       label: "Học bảng chữ cái",
       path: "/alphabet",
-      khmer: true,
     },
     {
       id: "vocabulary",
