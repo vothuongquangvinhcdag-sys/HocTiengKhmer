@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
+import * as XLSX from "xlsx";
 import { supabase } from "../../supabase";
+import "./AdminHome.css";
 
 /* =========================================================
    CẤU HÌNH LEVEL
@@ -18,6 +20,18 @@ const LEVEL_EXP = {
   10: 25600,
 };
 
+const TOTAL_GAMES = 5;
+
+/* =========================================================
+   CẤU HÌNH PHÂN TRANG
+========================================================= */
+
+const PAGE_SIZE_OPTIONS = [10, 15, 20, 30];
+
+/* =========================================================
+   LEVEL TỪ EXP
+========================================================= */
+
 function getLevelFromExp(exp) {
   const safeExp = Math.max(0, Number(exp) || 0);
 
@@ -35,6 +49,164 @@ function getLevelFromExp(exp) {
 }
 
 /* =========================================================
+   LẤY SỐ GAME ĐÃ HOÀN THÀNH
+
+   Hỗ trợ:
+   - completed_games: 3
+   - games_completed: 3
+   - game_completed: 3
+   - completedGames: 3
+   - gamesCompleted: 3
+
+   Hoặc:
+   - [1,2,3]
+   - ["1","2","3"]
+
+   Hoặc:
+   - { 1: true, 2: true, 3: true }
+========================================================= */
+
+function getCompletedGameCount(student) {
+  if (!student) return 0;
+
+  const possibleValues = [
+    student.completed_games,
+    student.games_completed,
+    student.game_completed,
+    student.completedGames,
+    student.gamesCompleted,
+  ];
+
+  for (const value of possibleValues) {
+    if (value === null || value === undefined) {
+      continue;
+    }
+
+    /* =====================================================
+       SỐ
+    ===================================================== */
+
+    if (typeof value === "number") {
+      return Math.min(
+        TOTAL_GAMES,
+        Math.max(0, Math.floor(value))
+      );
+    }
+
+    /* =====================================================
+       CHUỖI
+    ===================================================== */
+
+    if (
+      typeof value === "string" &&
+      value.trim() !== ""
+    ) {
+      const numericValue = Number(value);
+
+      if (Number.isFinite(numericValue)) {
+        return Math.min(
+          TOTAL_GAMES,
+          Math.max(0, Math.floor(numericValue))
+        );
+      }
+
+      try {
+        const parsed = JSON.parse(value);
+
+        if (Array.isArray(parsed)) {
+          return Math.min(
+            TOTAL_GAMES,
+            parsed.length
+          );
+        }
+
+        if (
+          parsed &&
+          typeof parsed === "object"
+        ) {
+          return Math.min(
+            TOTAL_GAMES,
+            Object.values(parsed).filter(Boolean).length
+          );
+        }
+      } catch {
+        // Không phải JSON
+      }
+    }
+
+    /* =====================================================
+       MẢNG
+    ===================================================== */
+
+    if (Array.isArray(value)) {
+      return Math.min(
+        TOTAL_GAMES,
+        value.length
+      );
+    }
+
+    /* =====================================================
+       OBJECT
+    ===================================================== */
+
+    if (
+      typeof value === "object" &&
+      value !== null
+    ) {
+      return Math.min(
+        TOTAL_GAMES,
+        Object.values(value).filter(Boolean).length
+      );
+    }
+  }
+
+  return 0;
+}
+
+/* =========================================================
+   FORMAT GAME
+========================================================= */
+
+function formatGameProgress(student) {
+  const completed =
+    getCompletedGameCount(student);
+
+  return `${completed}/${TOTAL_GAMES}`;
+}
+
+/* =========================================================
+   FORMAT THỜI GIAN
+========================================================= */
+
+function formatStudyTime(seconds) {
+  const safeSeconds = Math.max(
+    0,
+    Number(seconds) || 0
+  );
+
+  const hours = Math.floor(
+    safeSeconds / 3600
+  );
+
+  const minutes = Math.floor(
+    (safeSeconds % 3600) / 60
+  );
+
+  const remainingSeconds =
+    safeSeconds % 60;
+
+  if (hours > 0) {
+    return `${hours} giờ ${minutes} phút`;
+  }
+
+  if (minutes > 0) {
+    return `${minutes} phút ${remainingSeconds} giây`;
+  }
+
+  return `${remainingSeconds} giây`;
+}
+
+/* =========================================================
    ADMIN HOME
 ========================================================= */
 
@@ -43,24 +215,93 @@ function AdminHome({
   navigate,
   onLogout,
 }) {
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [error, setError] = useState("");
+  const [students, setStudents] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [search, setSearch] =
+    useState("");
+
+  const [error, setError] =
+    useState("");
+
+  /* =======================================================
+     PHÂN TRANG
+  ======================================================= */
+
+  const [currentPage, setCurrentPage] =
+    useState(1);
+
+  const [pageSize, setPageSize] =
+    useState(10);
 
   /* =======================================================
      ĐỔI MẬT KHẨU
   ======================================================= */
 
-  const [passwordModal, setPasswordModal] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [passwordModal, setPasswordModal] =
+    useState(false);
 
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [selectedStudent, setSelectedStudent] =
+    useState(null);
 
-  const [resetLoading, setResetLoading] = useState(false);
-  const [resetError, setResetError] = useState("");
-  const [resetSuccess, setResetSuccess] = useState("");
+  const [newPassword, setNewPassword] =
+    useState("");
+
+  const [confirmPassword, setConfirmPassword] =
+    useState("");
+
+  const [resetLoading, setResetLoading] =
+    useState(false);
+
+  const [resetError, setResetError] =
+    useState("");
+
+  const [resetSuccess, setResetSuccess] =
+    useState("");
+
+  /* =======================================================
+     TẠO TÀI KHOẢN
+  ======================================================= */
+
+  const [createModal, setCreateModal] =
+    useState(false);
+
+  const [createUsername, setCreateUsername] =
+    useState("");
+
+  const [createAccount, setCreateAccount] =
+    useState("");
+
+  const [createPassword, setCreatePassword] =
+    useState("");
+
+  const [createLoading, setCreateLoading] =
+    useState(false);
+
+  const [createError, setCreateError] =
+    useState("");
+
+  const [createSuccess, setCreateSuccess] =
+    useState("");
+
+  /* =======================================================
+     XÓA TÀI KHOẢN
+  ======================================================= */
+
+  const [deleteModal, setDeleteModal] =
+    useState(false);
+
+  const [deleteStudent, setDeleteStudent] =
+    useState(null);
+
+  const [deleteLoading, setDeleteLoading] =
+    useState(false);
+
+  const [deleteError, setDeleteError] =
+    useState("");
 
   /* =======================================================
      TẢI DANH SÁCH PROFILE
@@ -75,9 +316,7 @@ function AdminHome({
       error: profileError,
     } = await supabase
       .from("profiles")
-      .select(
-        "id, username, account, email, role, level, exp, total_study_seconds, created_at, updated_at"
-      )
+      .select("*")
       .order("exp", {
         ascending: false,
       });
@@ -94,10 +333,12 @@ function AdminHome({
 
       setStudents([]);
       setLoading(false);
+
       return;
     }
 
     setStudents(data || []);
+    setCurrentPage(1);
     setLoading(false);
   };
 
@@ -130,20 +371,17 @@ function AdminHome({
 
     return studentList.filter(
       (student) => {
-        const username =
-          String(
-            student.username || ""
-          ).toLowerCase();
+        const username = String(
+          student.username || ""
+        ).toLowerCase();
 
-        const account =
-          String(
-            student.account || ""
-          ).toLowerCase();
+        const account = String(
+          student.account || ""
+        ).toLowerCase();
 
-        const email =
-          String(
-            student.email || ""
-          ).toLowerCase();
+        const email = String(
+          student.email || ""
+        ).toLowerCase();
 
         return (
           username.includes(keyword) ||
@@ -153,6 +391,14 @@ function AdminHome({
       }
     );
   }, [studentList, search]);
+
+  /* =======================================================
+     TỰ ĐỘNG VỀ TRANG 1 KHI TÌM KIẾM
+  ======================================================= */
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, pageSize]);
 
   /* =======================================================
      THỐNG KÊ
@@ -179,50 +425,604 @@ function AdminHome({
       0
     );
 
-  const averageExp =
-    totalStudents > 0
-      ? Math.round(
-          totalExp / totalStudents
-        )
-      : 0;
-
   /* =======================================================
-     FORMAT THỜI GIAN
+     THỐNG KÊ GAME
+
+     Tổng số game hoàn thành của toàn bộ
+     học sinh.
   ======================================================= */
 
-  const formatStudyTime = (seconds) => {
-    const safeSeconds = Math.max(
-      0,
-      Number(seconds) || 0
+  const totalCompletedGames =
+    studentList.reduce(
+      (total, student) =>
+        total +
+        getCompletedGameCount(student),
+      0
     );
 
-    const hours = Math.floor(
-      safeSeconds / 3600
+  /* =======================================================
+     PHÂN TRANG DANH SÁCH
+  ======================================================= */
+
+  const totalFilteredStudents =
+    filteredStudents.length;
+
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        totalFilteredStudents /
+          pageSize
+      )
     );
 
-    const minutes = Math.floor(
-      (safeSeconds % 3600) / 60
+  /* =======================================================
+     ĐẢM BẢO CURRENT PAGE HỢP LỆ
+  ======================================================= */
+
+  useEffect(() => {
+    if (
+      currentPage >
+      totalPages
+    ) {
+      setCurrentPage(totalPages);
+    }
+  }, [
+    currentPage,
+    totalPages,
+  ]);
+
+  /* =======================================================
+     DANH SÁCH ĐANG HIỂN THỊ
+  ======================================================= */
+
+  const paginatedStudents =
+    useMemo(() => {
+      const startIndex =
+        (currentPage - 1) *
+        pageSize;
+
+      const endIndex =
+        startIndex + pageSize;
+
+      return filteredStudents.slice(
+        startIndex,
+        endIndex
+      );
+    }, [
+      filteredStudents,
+      currentPage,
+      pageSize,
+    ]);
+
+  /* =======================================================
+     CHỈ SỐ STT TRANG HIỆN TẠI
+  ======================================================= */
+
+  const pageStartIndex =
+    totalFilteredStudents === 0
+      ? 0
+      : (currentPage - 1) *
+          pageSize +
+        1;
+
+  const pageEndIndex =
+    Math.min(
+      currentPage * pageSize,
+      totalFilteredStudents
     );
 
-    const remainingSeconds =
-      safeSeconds % 60;
+  /* =======================================================
+     DANH SÁCH SỐ TRANG
+  ======================================================= */
 
-    if (hours > 0) {
-      return `${hours} giờ ${minutes} phút`;
+  const pageNumbers = useMemo(() => {
+    const pages = [];
+
+    if (totalPages <= 7) {
+      for (
+        let page = 1;
+        page <= totalPages;
+        page++
+      ) {
+        pages.push(page);
+      }
+
+      return pages;
     }
 
-    if (minutes > 0) {
-      return `${minutes} phút ${remainingSeconds} giây`;
+    pages.push(1);
+
+    if (currentPage > 4) {
+      pages.push("...");
     }
 
-    return `${remainingSeconds} giây`;
+    const start = Math.max(
+      2,
+      currentPage - 1
+    );
+
+    const end = Math.min(
+      totalPages - 1,
+      currentPage + 1
+    );
+
+    for (
+      let page = start;
+      page <= end;
+      page++
+    ) {
+      pages.push(page);
+    }
+
+    if (
+      currentPage <
+      totalPages - 3
+    ) {
+      pages.push("...");
+    }
+
+    pages.push(totalPages);
+
+    return pages;
+  }, [
+    currentPage,
+    totalPages,
+  ]);
+
+  /* =======================================================
+     ĐỌC LỖI EDGE FUNCTION
+  ======================================================= */
+
+  const getFunctionErrorMessage =
+    async (
+      functionError,
+      defaultMessage
+    ) => {
+      let message =
+        defaultMessage;
+
+      try {
+        if (
+          functionError?.context &&
+          typeof functionError.context
+            .json === "function"
+        ) {
+          const responseData =
+            await functionError.context.json();
+
+          if (
+            responseData?.error
+          ) {
+            message =
+              responseData.error;
+          }
+        }
+      } catch {
+        // Không đọc được response JSON
+      }
+
+      return message;
+    };
+
+  /* =======================================================
+     MỞ POPUP TẠO TÀI KHOẢN
+  ======================================================= */
+
+  const openCreateModal = () => {
+    setCreateUsername("");
+    setCreateAccount("");
+    setCreatePassword("");
+
+    setCreateError("");
+    setCreateSuccess("");
+
+    setCreateModal(true);
+  };
+
+  /* =======================================================
+     ĐÓNG POPUP TẠO TÀI KHOẢN
+  ======================================================= */
+
+  const closeCreateModal = () => {
+    if (createLoading) return;
+
+    setCreateModal(false);
+
+    setCreateUsername("");
+    setCreateAccount("");
+    setCreatePassword("");
+
+    setCreateError("");
+    setCreateSuccess("");
+  };
+
+  /* =======================================================
+     TẠO TÀI KHOẢN
+  ======================================================= */
+
+  const handleCreateAccount =
+    async (event) => {
+      event.preventDefault();
+
+      setCreateError("");
+      setCreateSuccess("");
+
+      const username =
+        createUsername.trim();
+
+      const account =
+        createAccount.trim();
+
+      if (!username) {
+        setCreateError(
+          "Vui lòng nhập tên học sinh."
+        );
+        return;
+      }
+
+      if (!account) {
+        setCreateError(
+          "Vui lòng nhập tài khoản."
+        );
+        return;
+      }
+
+      if (!createPassword) {
+        setCreateError(
+          "Vui lòng nhập mật khẩu."
+        );
+        return;
+      }
+
+      if (
+        createPassword.length < 6
+      ) {
+        setCreateError(
+          "Mật khẩu phải có ít nhất 6 ký tự."
+        );
+        return;
+      }
+
+      const duplicated =
+        students.some(
+          (student) =>
+            String(
+              student.account || ""
+            )
+              .trim()
+              .toLowerCase() ===
+            account.toLowerCase()
+        );
+
+      if (duplicated) {
+        setCreateError(
+          "Tài khoản này đã tồn tại."
+        );
+        return;
+      }
+
+      setCreateLoading(true);
+
+      try {
+        const {
+          data,
+          error: functionError,
+        } =
+          await supabase.functions.invoke(
+            "admin-create-user",
+            {
+              body: {
+                username,
+                account,
+                password:
+                  createPassword,
+              },
+            }
+          );
+
+        if (functionError) {
+          console.error(
+            "Admin create user error:",
+            functionError
+          );
+
+          const message =
+            await getFunctionErrorMessage(
+              functionError,
+              "Không thể tạo tài khoản."
+            );
+
+          throw new Error(
+            message
+          );
+        }
+
+        if (!data?.success) {
+          throw new Error(
+            data?.error ||
+              "Không thể tạo tài khoản."
+          );
+        }
+
+        setCreateSuccess(
+          "Đã tạo tài khoản học sinh thành công."
+        );
+
+        setCreateUsername("");
+        setCreateAccount("");
+        setCreatePassword("");
+
+        await loadStudents();
+      } catch (error) {
+        console.error(
+          "Create account:",
+          error
+        );
+
+        setCreateError(
+          error instanceof Error
+            ? error.message
+            : "Có lỗi xảy ra khi tạo tài khoản."
+        );
+      } finally {
+        setCreateLoading(false);
+      }
+    };
+
+  /* =======================================================
+     MỞ POPUP XÓA
+  ======================================================= */
+
+  const openDeleteModal = (
+    student
+  ) => {
+    if (!student) return;
+
+    if (
+      student.id === profile?.id
+    ) {
+      setError(
+        "Không thể xóa tài khoản quản trị viên đang đăng nhập."
+      );
+
+      return;
+    }
+
+    setDeleteStudent(student);
+    setDeleteError("");
+    setDeleteModal(true);
+  };
+
+  /* =======================================================
+     ĐÓNG POPUP XÓA
+  ======================================================= */
+
+  const closeDeleteModal = () => {
+    if (deleteLoading) return;
+
+    setDeleteModal(false);
+    setDeleteStudent(null);
+    setDeleteError("");
+  };
+
+  /* =======================================================
+     XÓA TÀI KHOẢN
+  ======================================================= */
+
+  const handleDeleteAccount =
+    async () => {
+      if (!deleteStudent) {
+        setDeleteError(
+          "Chưa chọn tài khoản cần xóa."
+        );
+
+        return;
+      }
+
+      if (
+        deleteStudent.id ===
+        profile?.id
+      ) {
+        setDeleteError(
+          "Không thể xóa tài khoản quản trị viên đang đăng nhập."
+        );
+
+        return;
+      }
+
+      setDeleteLoading(true);
+      setDeleteError("");
+
+      try {
+        const {
+          data,
+          error: functionError,
+        } =
+          await supabase.functions.invoke(
+            "admin-delete-user",
+            {
+              body: {
+                userId:
+                  deleteStudent.id,
+              },
+            }
+          );
+
+        if (functionError) {
+          console.error(
+            "Admin delete user error:",
+            functionError
+          );
+
+          const message =
+            await getFunctionErrorMessage(
+              functionError,
+              "Không thể xóa tài khoản."
+            );
+
+          throw new Error(
+            message
+          );
+        }
+
+        if (!data?.success) {
+          throw new Error(
+            data?.error ||
+              "Không thể xóa tài khoản."
+          );
+        }
+
+        setDeleteModal(false);
+        setDeleteStudent(null);
+        setDeleteError("");
+
+        await loadStudents();
+      } catch (error) {
+        console.error(
+          "Delete account:",
+          error
+        );
+
+        setDeleteError(
+          error instanceof Error
+            ? error.message
+            : "Có lỗi xảy ra khi xóa tài khoản."
+        );
+      } finally {
+        setDeleteLoading(false);
+      }
+    };
+
+  /* =======================================================
+     XUẤT EXCEL
+
+     Luôn xuất TOÀN BỘ studentList,
+     không phụ thuộc currentPage.
+  ======================================================= */
+
+  const exportExcel = () => {
+    if (
+      studentList.length === 0
+    ) {
+      setError(
+        "Không có dữ liệu học sinh để xuất Excel."
+      );
+
+      return;
+    }
+
+    const now = new Date();
+
+    const day = String(
+      now.getDate()
+    ).padStart(2, "0");
+
+    const month = String(
+      now.getMonth() + 1
+    ).padStart(2, "0");
+
+    const year =
+      now.getFullYear();
+
+    const fileName =
+      `THONG KE HOC VIEN NGAY ${day}-${month}-${year}.xlsx`;
+
+    /* =====================================================
+       XUẤT TOÀN BỘ HỌC SINH
+    ===================================================== */
+
+    const exportData =
+      studentList.map(
+        (student, index) => ({
+          STT: index + 1,
+
+          "Họ tên":
+            student.username || "",
+
+          "Tài khoản":
+            student.account || "",
+
+          Email:
+            student.email || "",
+
+          Level:
+            getLevelFromExp(
+              student.exp
+            ),
+
+          EXP:
+            Number(
+              student.exp || 0
+            ),
+
+          "Game hoàn thành":
+            formatGameProgress(
+              student
+            ),
+
+          "Thời gian học":
+            formatStudyTime(
+              student.total_study_seconds
+            ),
+
+          "Thời gian học (giây)":
+            Number(
+              student.total_study_seconds ||
+                0
+            ),
+
+          "Ngày tạo":
+            student.created_at
+              ? new Date(
+                  student.created_at
+                ).toLocaleString(
+                  "vi-VN"
+                )
+              : "",
+        })
+      );
+
+    const worksheet =
+      XLSX.utils.json_to_sheet(
+        exportData
+      );
+
+    worksheet["!cols"] = [
+      { wch: 7 },
+      { wch: 28 },
+      { wch: 22 },
+      { wch: 32 },
+      { wch: 10 },
+      { wch: 15 },
+      { wch: 18 },
+      { wch: 25 },
+      { wch: 22 },
+      { wch: 22 },
+    ];
+
+    const workbook =
+      XLSX.utils.book_new();
+
+    XLSX.utils.book_append_sheet(
+      workbook,
+      worksheet,
+      "THỐNG KÊ HỌC VIÊN"
+    );
+
+    XLSX.writeFile(
+      workbook,
+      fileName
+    );
   };
 
   /* =======================================================
      MỞ POPUP ĐỔI MẬT KHẨU
   ======================================================= */
 
-  const openPasswordModal = (student) => {
+  const openPasswordModal = (
+    student
+  ) => {
     setSelectedStudent(student);
 
     setNewPassword("");
@@ -235,13 +1035,11 @@ function AdminHome({
   };
 
   /* =======================================================
-     ĐÓNG POPUP
+     ĐÓNG POPUP ĐỔI MẬT KHẨU
   ======================================================= */
 
   const closePasswordModal = () => {
-    if (resetLoading) {
-      return;
-    }
+    if (resetLoading) return;
 
     setPasswordModal(false);
     setSelectedStudent(null);
@@ -257,122 +1055,113 @@ function AdminHome({
      RESET MẬT KHẨU
   ======================================================= */
 
-  const handleResetPassword = async (event) => {
-    event.preventDefault();
+  const handleResetPassword =
+    async (event) => {
+      event.preventDefault();
 
-    setResetError("");
-    setResetSuccess("");
+      setResetError("");
+      setResetSuccess("");
 
-    if (!selectedStudent) {
-      setResetError(
-        "Chưa chọn học sinh."
-      );
-      return;
-    }
+      if (!selectedStudent) {
+        setResetError(
+          "Chưa chọn học sinh."
+        );
 
-    if (!newPassword) {
-      setResetError(
-        "Vui lòng nhập mật khẩu mới."
-      );
-      return;
-    }
+        return;
+      }
 
-    if (newPassword.length < 6) {
-      setResetError(
-        "Mật khẩu phải có ít nhất 6 ký tự."
-      );
-      return;
-    }
+      if (!newPassword) {
+        setResetError(
+          "Vui lòng nhập mật khẩu mới."
+        );
 
-    if (
-      newPassword !==
-      confirmPassword
-    ) {
-      setResetError(
-        "Mật khẩu xác nhận không khớp."
-      );
-      return;
-    }
+        return;
+      }
 
-    setResetLoading(true);
+      if (
+        newPassword.length < 6
+      ) {
+        setResetError(
+          "Mật khẩu phải có ít nhất 6 ký tự."
+        );
 
-    try {
-      const {
-        data,
-        error: functionError,
-      } =
-        await supabase.functions.invoke(
-          "admin-reset-password",
-          {
-            body: {
-              userId:
-                selectedStudent.id,
-              newPassword:
+        return;
+      }
+
+      if (
+        newPassword !==
+        confirmPassword
+      ) {
+        setResetError(
+          "Mật khẩu xác nhận không khớp."
+        );
+
+        return;
+      }
+
+      setResetLoading(true);
+
+      try {
+        const {
+          data,
+          error: functionError,
+        } =
+          await supabase.functions.invoke(
+            "admin-reset-password",
+            {
+              body: {
+                userId:
+                  selectedStudent.id,
                 newPassword,
-            },
-          }
-        );
-
-      if (functionError) {
-        console.error(
-          "Admin reset password error:",
-          functionError
-        );
-
-        let message =
-          "Không thể đổi mật khẩu.";
-
-        try {
-          if (
-            functionError.context &&
-            typeof functionError.context
-              .json === "function"
-          ) {
-            const responseData =
-              await functionError.context.json();
-
-            if (
-              responseData?.error
-            ) {
-              message =
-                responseData.error;
+              },
             }
-          }
-        } catch {
-          // Bỏ qua lỗi đọc response
+          );
+
+        if (functionError) {
+          console.error(
+            "Admin reset password error:",
+            functionError
+          );
+
+          const message =
+            await getFunctionErrorMessage(
+              functionError,
+              "Không thể đổi mật khẩu."
+            );
+
+          throw new Error(
+            message
+          );
         }
 
-        throw new Error(message);
-      }
+        if (!data?.success) {
+          throw new Error(
+            data?.error ||
+              "Không thể đổi mật khẩu."
+          );
+        }
 
-      if (!data?.success) {
-        throw new Error(
-          data?.error ||
-            "Không thể đổi mật khẩu."
+        setResetSuccess(
+          "Đã đổi mật khẩu thành công."
         );
+
+        setNewPassword("");
+        setConfirmPassword("");
+      } catch (error) {
+        console.error(
+          "Reset password:",
+          error
+        );
+
+        setResetError(
+          error instanceof Error
+            ? error.message
+            : "Có lỗi xảy ra khi đổi mật khẩu."
+        );
+      } finally {
+        setResetLoading(false);
       }
-
-      setResetSuccess(
-        "Đã đổi mật khẩu thành công."
-      );
-
-      setNewPassword("");
-      setConfirmPassword("");
-    } catch (error) {
-      console.error(
-        "Reset password:",
-        error
-      );
-
-      setResetError(
-        error instanceof Error
-          ? error.message
-          : "Có lỗi xảy ra khi đổi mật khẩu."
-      );
-    } finally {
-      setResetLoading(false);
-    }
-  };
+    };
 
   /* =======================================================
      KIỂM TRA ADMIN
@@ -383,56 +1172,21 @@ function AdminHome({
     profile.role !== "admin"
   ) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#f1f5f9",
-          fontFamily:
-            "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        }}
-      >
-        <div
-          style={{
-            background: "#ffffff",
-            padding: "45px",
-            borderRadius: "22px",
-            textAlign: "center",
-            boxShadow:
-              "0 15px 40px rgba(15,23,42,0.12)",
-            border:
-              "1px solid #e2e8f0",
-          }}
-        >
-          <div
-            style={{
-              fontSize: "55px",
-              marginBottom: "15px",
-            }}
-          >
+      <div className="admin-access-denied">
+
+        <div className="admin-access-card">
+
+          <div className="admin-access-icon">
             🚫
           </div>
 
-          <h2
-            style={{
-              margin:
-                "0 0 10px",
-              color: "#111827",
-            }}
-          >
+          <h2>
             Không có quyền truy cập
           </h2>
 
-          <p
-            style={{
-              color: "#64748b",
-              marginBottom: "25px",
-            }}
-          >
-            Tài khoản của bạn không
-            có quyền quản trị hệ thống.
+          <p>
+            Tài khoản của bạn không có
+            quyền quản trị hệ thống.
           </p>
 
           <button
@@ -440,13 +1194,13 @@ function AdminHome({
             onClick={() =>
               navigate("/student")
             }
-            style={
-              buttonPrimaryStyle
-            }
+            className="admin-primary-button"
           >
             🏠 Về trang học
           </button>
+
         </div>
+
       </div>
     );
   }
@@ -456,429 +1210,249 @@ function AdminHome({
   ======================================================= */
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#f3f4f6",
-        fontFamily:
-          "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        color: "#111827",
-      }}
-    >
-      {/* =================================================
+    <div className="admin-page">
+
+      {/* =====================================================
           HEADER
-      ================================================= */}
+      ===================================================== */}
 
-      <header
-        style={{
-          background:
-            "linear-gradient(135deg, #111827 0%, #1f2937 100%)",
-          color: "#ffffff",
-          padding:
-            "24px 40px",
-          boxShadow:
-            "0 5px 20px rgba(0,0,0,0.18)",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1500px",
-            margin: "0 auto",
-            display: "flex",
-            alignItems: "center",
-            justifyContent:
-              "space-between",
-            gap: "25px",
-            flexWrap: "wrap",
-          }}
-        >
-          {/* LOGO */}
+      <header className="admin-header">
 
-          <div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "14px",
-                fontSize: "30px",
-                fontWeight: "900",
-                letterSpacing:
-                  "-0.5px",
-              }}
-            >
-              <span
-                style={{
-                  width: "54px",
-                  height: "54px",
-                  borderRadius: "15px",
-                  background:
-                    "linear-gradient(135deg, #2563eb, #1d4ed8)",
-                  display: "flex",
-                  alignItems:
-                    "center",
-                  justifyContent:
-                    "center",
-                  fontSize: "28px",
-                  boxShadow:
-                    "0 7px 20px rgba(37,99,235,0.35)",
-                }}
-              >
+        <div className="admin-header-inner">
+
+          <div className="admin-brand">
+
+            <div className="admin-brand-title">
+
+              <span className="admin-brand-logo">
                 👑
               </span>
 
               Quản trị hệ thống
+
             </div>
 
-            <div
-              style={{
-                marginTop: "8px",
-                marginLeft: "68px",
-                color: "#cbd5e1",
-                fontSize: "15px",
-              }}
-            >
+            <div className="admin-greeting">
+
               Xin chào{" "}
-              <strong
-                style={{
-                  color: "#ffffff",
-                }}
-              >
+
+              <strong>
                 {profile.username}
               </strong>{" "}
+
               — Học Tiếng Khmer
+
             </div>
+
           </div>
 
-          {/* =================================================
-              NÚT HEADER
-          ================================================= */}
-
-          <div
-            style={{
-              display: "flex",
-              gap: "12px",
-              flexWrap: "wrap",
-            }}
-          >
-            {/* TRANG CHỦ - ĐÃ LÀM SÁNG HƠN */}
+          <div className="admin-header-actions">
 
             <button
               type="button"
               onClick={() =>
                 navigate("/student")
               }
-              style={
-                buttonHomeStyle
-              }
-              onMouseEnter={(event) => {
-                Object.assign(
-                  event.currentTarget.style,
-                  buttonHomeHoverStyle
-                );
-              }}
-              onMouseLeave={(event) => {
-                Object.assign(
-                  event.currentTarget.style,
-                  buttonHomeStyle
-                );
-              }}
+              className="admin-header-button admin-home-button"
             >
               🏠 Trang chủ
             </button>
 
-            {/* LÀM MỚI */}
-
             <button
               type="button"
-              onClick={
-                loadStudents
-              }
-              style={
-                buttonRefreshStyle
-              }
+              onClick={loadStudents}
+              className="admin-header-button admin-refresh-button"
             >
               🔄 Làm mới
             </button>
 
-            {/* ĐĂNG XUẤT */}
-
             <button
               type="button"
               onClick={onLogout}
-              style={
-                buttonLogoutStyle
-              }
+              className="admin-header-button admin-logout-button"
             >
-              ➜] Đăng xuất
+              ➜ Đăng xuất
             </button>
+
           </div>
+
         </div>
+
       </header>
 
-      {/* =================================================
+      {/* =====================================================
           CONTENT
-      ================================================= */}
+      ===================================================== */}
 
-      <main
-        style={{
-          width: "100%",
-          maxWidth: "1500px",
-          margin: "0 auto",
-          padding:
-            "38px 30px 60px",
-          boxSizing: "border-box",
-        }}
-      >
-        {/* TIÊU ĐỀ */}
+      <main className="admin-main">
 
-        <div
-          style={{
-            marginBottom: "28px",
-          }}
-        >
-          <div
-            style={{
-              display: "inline-flex",
-              padding:
-                "6px 11px",
-              borderRadius: "8px",
-              background: "#e0e7ff",
-              color: "#3730a3",
-              fontSize: "12px",
-              fontWeight: "900",
-              letterSpacing: "1px",
-            }}
-          >
+        {/* ===================================================
+            TIÊU ĐỀ
+        =================================================== */}
+
+        <div className="admin-page-heading">
+
+          <div className="admin-dashboard-label">
             ADMIN DASHBOARD
           </div>
 
-          <h1
-            style={{
-              margin:
-                "12px 0 5px",
-              fontSize: "32px",
-              fontWeight: "900",
-              color: "#111827",
-            }}
-          >
+          <h1>
             Tổng quan hệ thống
           </h1>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#64748b",
-              fontSize: "15px",
-            }}
-          >
+          <p>
             Theo dõi tình hình học tập
             và tài khoản học sinh.
           </p>
+
         </div>
 
-        {/* =================================================
+        {/* ===================================================
             THỐNG KÊ
-        ================================================= */}
+        =================================================== */}
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "18px",
-            marginBottom: "30px",
-          }}
-        >
+        <div className="admin-stats-grid">
+
           <StatCard
+            variant="students"
             icon="👨‍🎓"
-            title="Học sinh"
+            title="Học viên"
             value={totalStudents}
-            description="Tài khoản học sinh"
-            iconBackground="#dbeafe"
-            iconColor="#2563eb"
-            accent="#2563eb"
+            description="Tài khoản học viên"
           />
 
           <StatCard
+            variant="total-exp"
             icon="⭐"
             title="Tổng EXP"
             value={totalExp.toLocaleString(
               "vi-VN"
             )}
             description="EXP toàn bộ học sinh"
-            iconBackground="#fef3c7"
-            iconColor="#d97706"
-            accent="#f59e0b"
           />
 
           <StatCard
-            icon="🏆"
-            title="EXP trung bình"
-            value={averageExp.toLocaleString(
-              "vi-VN"
-            )}
-            description="EXP trung bình mỗi học sinh"
-            iconBackground="#ede9fe"
-            iconColor="#7c3aed"
-            accent="#8b5cf6"
+            variant="completed-games"
+            icon="🎮"
+            title="Game hoàn thành"
+            value={totalCompletedGames}
+            description="Tổng số game học sinh đã hoàn thành"
           />
 
           <StatCard
+            variant="study-time"
             icon="⏱️"
             title="Tổng thời gian"
             value={formatStudyTime(
               totalStudySeconds
             )}
             description="Thời gian học tích lũy"
-            iconBackground="#dcfce7"
-            iconColor="#16a34a"
-            accent="#22c55e"
           />
+
         </div>
 
-        {/* ERROR */}
+        {/* ===================================================
+            ERROR
+        =================================================== */}
 
         {error && (
-          <div
-            style={{
-              background: "#fef2f2",
-              border:
-                "1px solid #fecaca",
-              color: "#991b1b",
-              padding:
-                "16px 18px",
-              borderRadius: "14px",
-              marginBottom: "20px",
-              fontWeight: "700",
-            }}
-          >
+
+          <div className="admin-error">
             ⚠️ {error}
           </div>
+
         )}
 
-        {/* =================================================
+        {/* ===================================================
             DANH SÁCH HỌC SINH
-        ================================================= */}
+        =================================================== */}
 
-        <section
-          style={{
-            background: "#ffffff",
-            borderRadius: "20px",
-            overflow: "hidden",
-            border:
-              "1px solid #e2e8f0",
-            boxShadow:
-              "0 10px 30px rgba(15,23,42,0.07)",
-          }}
-        >
-          {/* TITLE */}
+        <section className="student-list-card">
 
-          <div
-            style={{
-              padding:
-                "27px 28px",
-              borderBottom:
-                "1px solid #e5e7eb",
-              background:
-                "linear-gradient(to bottom, #ffffff, #f8fafc)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent:
-                  "space-between",
-                gap: "15px",
-                flexWrap: "wrap",
-              }}
-            >
+          <div className="student-list-header">
+
+            <div className="student-list-heading-row">
+
               <div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "11px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "44px",
-                      height: "44px",
-                      borderRadius: "13px",
-                      background:
-                        "#dbeafe",
-                      display: "flex",
-                      alignItems:
-                        "center",
-                      justifyContent:
-                        "center",
-                      fontSize: "22px",
-                    }}
-                  >
+
+                <div className="student-list-title-row">
+
+                  <div className="student-list-icon">
                     👨‍🎓
                   </div>
 
-                  <h2
-                    style={{
-                      margin: 0,
-                      color: "#111827",
-                      fontSize: "23px",
-                      fontWeight: "900",
-                    }}
-                  >
-                    Danh sách học sinh
+                  <h2>
+                    Danh sách học viên
                   </h2>
+
                 </div>
 
-                <p
-                  style={{
-                    margin:
-                      "9px 0 0 55px",
-                    color: "#64748b",
-                    fontSize: "14px",
-                  }}
-                >
+                <p className="student-list-description">
+
                   Có{" "}
-                  <strong
-                    style={{
-                      color: "#2563eb",
-                    }}
-                  >
+
+                  <strong>
                     {totalStudents}
                   </strong>{" "}
-                  tài khoản học sinh
+
+                  tài khoản học viên
+
                 </p>
+
               </div>
 
-              <div
-                style={{
-                  padding:
-                    "9px 14px",
-                  borderRadius: "10px",
-                  background:
-                    "#eff6ff",
-                  color: "#1d4ed8",
-                  fontSize: "14px",
-                  fontWeight: "800",
-                  border:
-                    "1px solid #dbeafe",
-                }}
-              >
-                Hiển thị{" "}
-                {filteredStudents.length}
-                /
-                {totalStudents}
+              <div className="student-list-count">
+
+                {totalFilteredStudents > 0 ? (
+                  <>
+                    Hiển thị{" "}
+                    {pageStartIndex}–
+                    {pageEndIndex}/
+                    {totalFilteredStudents}
+                  </>
+                ) : (
+                  <>
+                    Hiển thị 0/
+                    {totalStudents}
+                  </>
+                )}
+
               </div>
+
             </div>
 
-            {/* SEARCH */}
+            {/* =================================================
+                CÔNG CỤ ADMIN
+            ================================================= */}
 
-            <div
-              style={{
-                marginTop: "20px",
-              }}
-            >
+            <div className="admin-toolbar">
+
+              <button
+                type="button"
+                onClick={
+                  openCreateModal
+                }
+                className="admin-action-button admin-create-button"
+              >
+                ➕ Thêm tài khoản
+              </button>
+
+              <button
+                type="button"
+                onClick={exportExcel}
+                className="admin-action-button admin-export-button"
+              >
+                📊 Xuất Excel
+              </button>
+
+            </div>
+
+            {/* =================================================
+                TÌM KIẾM
+            ================================================= */}
+
+            <div className="student-search-wrapper">
+
               <input
                 type="text"
                 value={search}
@@ -887,394 +1461,761 @@ function AdminHome({
                     event.target.value
                   )
                 }
-                placeholder="🔎  Tìm học sinh, tài khoản hoặc email..."
-                style={{
-                  width: "100%",
-                  padding:
-                    "15px 18px",
-                  border:
-                    "1px solid #cbd5e1",
-                  borderRadius: "12px",
-                  fontSize: "15px",
-                  outline: "none",
-                  boxSizing:
-                    "border-box",
-                  fontFamily:
-                    "inherit",
-                  color: "#111827",
-                  background:
-                    "#ffffff",
-                  boxShadow:
-                    "0 2px 5px rgba(15,23,42,0.04)",
-                }}
+                placeholder="🔎  Tìm học viên, tài khoản hoặc email..."
+                className="student-search-input"
               />
+
             </div>
+
+            {/* =================================================
+                ĐIỀU KHIỂN SỐ DÒNG / TRANG
+            ================================================= */}
+
+            <div className="student-pagination-top">
+
+              <div className="student-page-size">
+
+                <span>
+                  Hiển thị
+                </span>
+
+                <select
+                  value={pageSize}
+                  onChange={(event) =>
+                    setPageSize(
+                      Number(
+                        event.target.value
+                      )
+                    )
+                  }
+                  className="student-page-size-select"
+                >
+
+                  {PAGE_SIZE_OPTIONS.map(
+                    (size) => (
+                      <option
+                        key={size}
+                        value={size}
+                      >
+                        {size}
+                      </option>
+                    )
+                  )}
+
+                </select>
+
+                <span>
+                  tài khoản / trang
+                </span>
+
+              </div>
+
+            </div>
+
           </div>
 
-          {/* LOADING */}
+          {/* =================================================
+              LOADING
+          ================================================= */}
 
           {loading ? (
-            <div
-              style={{
-                padding:
-                  "70px 20px",
-                textAlign:
-                  "center",
-                color: "#64748b",
-                fontWeight: "700",
-                fontSize: "16px",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "35px",
-                  marginBottom:
-                    "10px",
-                }}
-              >
+
+            <div className="admin-loading">
+
+              <div className="admin-loading-icon">
                 ⏳
               </div>
 
-              Đang tải danh sách
-              học sinh...
-            </div>
-          ) : (
-            <>
-              {/* TABLE */}
+              Đang tải danh sách học sinh...
 
-              <div
-                style={{
-                  width: "100%",
-                  overflowX:
-                    "auto",
-                }}
-              >
-                <table
-                  style={{
-                    width: "100%",
-                    minWidth:
-                      "1200px",
-                    borderCollapse:
-                      "collapse",
-                    tableLayout:
-                      "auto",
-                  }}
-                >
+            </div>
+
+          ) : (
+
+            <>
+
+              <div className="student-table-wrapper">
+
+                <table className="student-table">
+
                   <thead>
-                    <tr
-                      style={{
-                        background:
-                          "#f8fafc",
-                      }}
-                    >
-                      <th
-                        style={
-                          thStyle
-                        }
-                      >
+
+                    <tr>
+
+                      <th>
                         STT
                       </th>
 
-                      <th
-                        style={
-                          thStyle
-                        }
-                      >
-                        Học sinh
+                      <th>
+                        Tên học viên  
                       </th>
 
-                      <th
-                        style={
-                          thStyle
-                        }
-                      >
+                      <th>
                         Tài khoản
                       </th>
 
-                      <th
-                        style={
-                          thStyle
-                        }
-                      >
+                      <th>
                         Email
                       </th>
 
-                      <th
-                        style={{
-                          ...thStyle,
-                          textAlign:
-                            "center",
-                        }}
-                      >
+                      <th className="text-center">
                         Level
                       </th>
 
-                      <th
-                        style={{
-                          ...thStyle,
-                          textAlign:
-                            "right",
-                        }}
-                      >
+                      <th className="text-right">
                         EXP
                       </th>
 
-                      <th
-                        style={{
-                          ...thStyle,
-                          textAlign:
-                            "right",
-                        }}
-                      >
+                      <th className="text-center">
+                        Game
+                      </th>
+
+                      <th className="text-right">
                         Thời gian học
                       </th>
 
-                      <th
-                        style={{
-                          ...thStyle,
-                          textAlign:
-                            "center",
-                        }}
-                      >
+                      <th className="text-center">
                         Thao tác
                       </th>
+
                     </tr>
+
                   </thead>
 
                   <tbody>
-                    {filteredStudents.map(
+
+                    {paginatedStudents.map(
                       (
                         student,
                         index
-                      ) => (
-                        <tr
-                          key={
-                            student.id
-                          }
-                          style={{
-                            borderTop:
-                              "1px solid #e5e7eb",
-                          }}
-                        >
-                          <td
-                            style={
-                              tdStyle
-                            }
-                          >
-                            <span
-                              style={{
-                                color:
-                                  "#64748b",
-                                fontWeight:
-                                  "800",
-                              }}
-                            >
-                              {index + 1}
-                            </span>
-                          </td>
+                      ) => {
 
-                          <td
-                            style={
-                              tdStyle
+                        const completedGames =
+                          getCompletedGameCount(
+                            student
+                          );
+
+                        const globalIndex =
+                          (currentPage - 1) *
+                            pageSize +
+                          index +
+                          1;
+
+                        return (
+
+                          <tr
+                            key={
+                              student.id
                             }
                           >
-                            <strong
-                              style={{
-                                color:
-                                  "#111827",
-                                fontSize:
-                                  "15px",
-                              }}
-                            >
+
+                            <td>
+
+                              <span className="student-index">
+                                {globalIndex}
+                              </span>
+
+                            </td>
+
+                            <td>
+
+                              <strong className="student-name">
+                                {
+                                  student.username
+                                }
+                              </strong>
+
+                            </td>
+
+                            <td className="student-account">
+
                               {
-                                student.username
+                                student.account
                               }
-                            </strong>
-                          </td>
 
-                          <td
-                            style={{
-                              ...tdStyle,
-                              color:
-                                "#475569",
-                            }}
-                          >
-                            {
-                              student.account
-                            }
-                          </td>
+                            </td>
 
-                          <td
-                            style={{
-                              ...tdStyle,
-                              color:
-                                "#475569",
-                            }}
-                          >
-                            {
-                              student.email ||
-                              "—"
-                            }
-                          </td>
+                            <td className="student-email">
 
-                          <td
-                            style={{
-                              ...tdStyle,
-                              textAlign:
-                                "center",
-                            }}
-                          >
-                            <span
-                              style={{
-                                display:
-                                  "inline-block",
-                                padding:
-                                  "6px 12px",
-                                borderRadius:
-                                  "999px",
-                                background:
-                                  "#fef3c7",
-                                color:
-                                  "#92400e",
-                                fontWeight:
-                                  "900",
-                                fontSize:
-                                  "13px",
-                                border:
-                                  "1px solid #fde68a",
-                              }}
-                            >
-                              Lv.{" "}
-                              {getLevelFromExp(
-                                student.exp
+                              {
+                                student.email ||
+                                "—"
+                              }
+
+                            </td>
+
+                            <td className="text-center">
+
+                              <span className="student-level">
+
+                                Lv.{" "}
+
+                                {getLevelFromExp(
+                                  student.exp
+                                )}
+
+                              </span>
+
+                            </td>
+
+                            <td className="student-exp text-right">
+
+                              ⭐{" "}
+
+                              {Number(
+                                student.exp ||
+                                  0
+                              ).toLocaleString(
+                                "vi-VN"
                               )}
-                            </span>
-                          </td>
 
-                          <td
-                            style={{
-                              ...tdStyle,
-                              textAlign:
-                                "right",
-                              fontWeight:
-                                "900",
-                              color:
-                                "#b45309",
-                              fontSize:
-                                "15px",
-                            }}
-                          >
-                            ⭐{" "}
-                            {Number(
-                              student.exp ||
-                                0
-                            ).toLocaleString(
-                              "vi-VN"
-                            )}
-                          </td>
+                            </td>
 
-                          <td
-                            style={{
-                              ...tdStyle,
-                              textAlign:
-                                "right",
-                              fontWeight:
-                                "700",
-                              color:
-                                "#15803d",
-                            }}
-                          >
-                            ⏱️{" "}
-                            {formatStudyTime(
-                              student.total_study_seconds
-                            )}
-                          </td>
+                            {/* =================================
+                                GAME
+                            ================================= */}
 
-                          <td
-                            style={{
-                              ...tdStyle,
-                              textAlign:
-                                "center",
-                            }}
-                          >
-                            <button
-                              type="button"
-                              onClick={() =>
-                                openPasswordModal(
-                                  student
-                                )
-                              }
-                              style={
-                                buttonPasswordStyle
-                              }
-                            >
-                              🔑 Đổi mật khẩu
-                            </button>
-                          </td>
-                        </tr>
-                      )
+                            <td className="student-game text-center">
+
+                              <span
+                                className={`student-game-progress ${
+                                  completedGames ===
+                                  TOTAL_GAMES
+                                    ? "game-complete"
+                                    : completedGames >
+                                      0
+                                    ? "game-learning"
+                                    : "game-not-started"
+                                }`}
+                              >
+
+                                🎮{" "}
+
+                                {completedGames}/
+                                {TOTAL_GAMES}
+
+                              </span>
+
+                            </td>
+
+                            <td className="student-study-time text-right">
+
+                              ⏱️{" "}
+
+                              {formatStudyTime(
+                                student.total_study_seconds
+                              )}
+
+                            </td>
+
+                            <td className="text-center">
+
+                              <div className="student-action-buttons">
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    openPasswordModal(
+                                      student
+                                    )
+                                  }
+                                  className="password-button"
+                                >
+                                  🔑 Đổi mật khẩu
+                                </button>
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    openDeleteModal(
+                                      student
+                                    )
+                                  }
+                                  className="delete-button"
+                                >
+                                  🗑️ Xóa
+                                </button>
+
+                              </div>
+
+                            </td>
+
+                          </tr>
+
+                        );
+
+                      }
                     )}
+
                   </tbody>
+
                 </table>
+
               </div>
 
-              {/* EMPTY */}
+              {/* =================================================
+                  EMPTY
+              ================================================= */}
 
               {filteredStudents.length ===
                 0 && (
-                <div
-                  style={{
-                    padding:
-                      "65px 20px",
-                    textAlign:
-                      "center",
-                    color:
-                      "#64748b",
-                    fontSize:
-                      "15px",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize:
-                        "42px",
-                      marginBottom:
-                        "10px",
-                    }}
-                  >
+
+                <div className="admin-empty">
+
+                  <div className="admin-empty-icon">
                     🔎
                   </div>
 
-                  <strong
-                    style={{
-                      color:
-                        "#334155",
-                    }}
-                  >
+                  <strong>
                     Không tìm thấy học sinh
                   </strong>
 
-                  <div
-                    style={{
-                      marginTop:
-                        "5px",
-                    }}
-                  >
-                    Hãy thử lại với từ khóa khác.
+                  <div className="admin-empty-text">
+                    Hãy thử lại với từ khóa
+                    khác.
                   </div>
+
                 </div>
+
               )}
+
+              {/* =================================================
+                  PHÂN TRANG
+              ================================================= */}
+
+              {totalFilteredStudents > 0 &&
+                totalPages > 1 && (
+
+                <div className="student-pagination">
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentPage(
+                        (page) =>
+                          Math.max(
+                            1,
+                            page - 1
+                          )
+                      )
+                    }
+                    disabled={
+                      currentPage === 1
+                    }
+                    className="student-pagination-button student-pagination-prev"
+                  >
+                    ‹ Trước
+                  </button>
+
+                  <div className="student-pagination-pages">
+
+                    {pageNumbers.map(
+                      (
+                        page,
+                        index
+                      ) => {
+
+                        if (
+                          page ===
+                          "..."
+                        ) {
+                          return (
+                            <span
+                              key={`ellipsis-${index}`}
+                              className="student-pagination-ellipsis"
+                            >
+                              …
+                            </span>
+                          );
+                        }
+
+                        return (
+                          <button
+                            type="button"
+                            key={page}
+                            onClick={() =>
+                              setCurrentPage(
+                                page
+                              )
+                            }
+                            className={`student-pagination-page ${
+                              currentPage ===
+                              page
+                                ? "active"
+                                : ""
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+
+                      }
+                    )}
+
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCurrentPage(
+                        (page) =>
+                          Math.min(
+                            totalPages,
+                            page + 1
+                          )
+                      )
+                    }
+                    disabled={
+                      currentPage ===
+                      totalPages
+                    }
+                    className="student-pagination-button student-pagination-next"
+                  >
+                    Sau ›
+                  </button>
+
+                </div>
+
+              )}
+
             </>
+
           )}
+
         </section>
+
       </main>
 
-      {/* =================================================
+      {/* =====================================================
+          POPUP TẠO TÀI KHOẢN
+      ===================================================== */}
+
+      {createModal && (
+
+        <div
+          className="password-modal-overlay"
+          onMouseDown={(event) => {
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              closeCreateModal();
+            }
+          }}
+        >
+
+          <div className="password-modal">
+
+            <div className="password-modal-header">
+
+              <div>
+
+                <div className="password-modal-title">
+                  ➕ Tạo tài khoản
+                </div>
+
+                <div className="password-modal-subtitle">
+                  Quản trị viên
+                </div>
+
+              </div>
+
+              <button
+                type="button"
+                onClick={
+                  closeCreateModal
+                }
+                disabled={
+                  createLoading
+                }
+                className="password-modal-close"
+              >
+                ×
+              </button>
+
+            </div>
+
+            <form
+              onSubmit={
+                handleCreateAccount
+              }
+              className="password-form"
+            >
+
+              {createSuccess && (
+
+                <div className="reset-success">
+                  ✅ {createSuccess}
+                </div>
+
+              )}
+
+              {createError && (
+
+                <div className="reset-error">
+                  ⚠️ {createError}
+                </div>
+
+              )}
+
+              <label className="password-label">
+                Tên học sinh
+              </label>
+
+              <input
+                type="text"
+                value={
+                  createUsername
+                }
+                onChange={(event) =>
+                  setCreateUsername(
+                    event.target.value
+                  )
+                }
+                placeholder="Nhập tên học sinh..."
+                disabled={
+                  createLoading
+                }
+                autoComplete="name"
+                className="password-input"
+              />
+
+              <label className="password-label">
+                Tài khoản
+              </label>
+
+              <input
+                type="text"
+                value={
+                  createAccount
+                }
+                onChange={(event) =>
+                  setCreateAccount(
+                    event.target.value
+                  )
+                }
+                placeholder="Nhập tài khoản..."
+                disabled={
+                  createLoading
+                }
+                autoComplete="username"
+                className="password-input"
+              />
+
+              <label className="password-label">
+                Mật khẩu
+              </label>
+
+              <input
+                type="password"
+                value={
+                  createPassword
+                }
+                onChange={(event) =>
+                  setCreatePassword(
+                    event.target.value
+                  )
+                }
+                placeholder="Nhập mật khẩu..."
+                minLength={6}
+                disabled={
+                  createLoading
+                }
+                autoComplete="new-password"
+                className="password-input"
+              />
+
+              <div className="password-help">
+                Mật khẩu phải có ít nhất
+                6 ký tự. Không cần xác
+                nhận mật khẩu.
+              </div>
+
+              <div className="password-form-actions">
+
+                <button
+                  type="button"
+                  onClick={
+                    closeCreateModal
+                  }
+                  disabled={
+                    createLoading
+                  }
+                  className="modal-cancel-button"
+                >
+                  Hủy
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={
+                    createLoading
+                  }
+                  className={`modal-submit-button ${
+                    createLoading
+                      ? "is-loading"
+                      : ""
+                  }`}
+                >
+                  {createLoading
+                    ? "⏳ Đang tạo..."
+                    : "➕ Tạo tài khoản"}
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* =====================================================
+          POPUP XÓA TÀI KHOẢN
+      ===================================================== */}
+
+      {deleteModal && (
+
+        <div
+          className="password-modal-overlay"
+          onMouseDown={(event) => {
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              closeDeleteModal();
+            }
+          }}
+        >
+
+          <div className="password-modal delete-confirm-modal">
+
+            <div className="password-modal-header">
+
+              <div>
+
+                <div className="password-modal-title">
+                  🗑️ Xóa tài khoản
+                </div>
+
+                <div className="password-modal-subtitle">
+                  Quản trị viên
+                </div>
+
+              </div>
+
+              <button
+                type="button"
+                onClick={
+                  closeDeleteModal
+                }
+                disabled={
+                  deleteLoading
+                }
+                className="password-modal-close"
+              >
+                ×
+              </button>
+
+            </div>
+
+            <div className="delete-confirm-body">
+
+              <div className="delete-warning-icon">
+                ⚠️
+              </div>
+
+              <h3>
+                Bạn có chắc muốn xóa?
+              </h3>
+
+              <p>
+
+                Tài khoản{" "}
+
+                <strong>
+                  {deleteStudent?.account ||
+                    "—"}
+                </strong>{" "}
+
+                của học sinh{" "}
+
+                <strong>
+                  {deleteStudent?.username ||
+                    "—"}
+                </strong>{" "}
+
+                sẽ bị xóa khỏi hệ thống.
+
+              </p>
+
+              <div className="delete-warning-note">
+                ⚠️ Hành động này không thể
+                hoàn tác.
+              </div>
+
+              {deleteError && (
+
+                <div className="reset-error">
+                  ⚠️ {deleteError}
+                </div>
+
+              )}
+
+            </div>
+
+            <div className="password-form-actions delete-actions">
+
+              <button
+                type="button"
+                onClick={
+                  closeDeleteModal
+                }
+                disabled={
+                  deleteLoading
+                }
+                className="modal-cancel-button"
+              >
+                Hủy
+              </button>
+
+              <button
+                type="button"
+                onClick={
+                  handleDeleteAccount
+                }
+                disabled={
+                  deleteLoading
+                }
+                className={`modal-delete-button ${
+                  deleteLoading
+                    ? "is-loading"
+                    : ""
+                }`}
+              >
+                {deleteLoading
+                  ? "⏳ Đang xóa..."
+                  : "🗑️ Xóa tài khoản"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+      {/* =====================================================
           POPUP ĐỔI MẬT KHẨU
-      ================================================= */}
+      ===================================================== */}
 
       {passwordModal && (
+
         <div
+          className="password-modal-overlay"
           onMouseDown={(event) => {
             if (
               event.target ===
@@ -1283,72 +2224,22 @@ function AdminHome({
               closePasswordModal();
             }
           }}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 9999,
-            background:
-              "rgba(15,23,42,0.62)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "20px",
-            boxSizing:
-              "border-box",
-          }}
         >
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "500px",
-              background: "#ffffff",
-              borderRadius: "22px",
-              boxShadow:
-                "0 25px 70px rgba(0,0,0,0.30)",
-              overflow: "hidden",
-            }}
-          >
-            {/* MODAL HEADER */}
 
-            <div
-              style={{
-                background:
-                  "linear-gradient(135deg, #111827, #1f2937)",
-                color: "#ffffff",
-                padding:
-                  "22px 25px",
-                display: "flex",
-                alignItems:
-                  "center",
-                justifyContent:
-                  "space-between",
-                gap: "15px",
-              }}
-            >
+          <div className="password-modal">
+
+            <div className="password-modal-header">
+
               <div>
-                <div
-                  style={{
-                    fontSize:
-                      "20px",
-                    fontWeight:
-                      "900",
-                  }}
-                >
+
+                <div className="password-modal-title">
                   🔑 Đổi mật khẩu
                 </div>
 
-                <div
-                  style={{
-                    marginTop:
-                      "5px",
-                    color:
-                      "#cbd5e1",
-                    fontSize:
-                      "13px",
-                  }}
-                >
+                <div className="password-modal-subtitle">
                   Quản trị viên
                 </div>
+
               </div>
 
               <button
@@ -1359,174 +2250,62 @@ function AdminHome({
                 disabled={
                   resetLoading
                 }
-                style={{
-                  width: "38px",
-                  height: "38px",
-                  border: "none",
-                  borderRadius:
-                    "10px",
-                  background:
-                    "rgba(255,255,255,0.10)",
-                  color:
-                    "#ffffff",
-                  fontSize:
-                    "22px",
-                  cursor:
-                    resetLoading
-                      ? "not-allowed"
-                      : "pointer",
-                }}
+                className="password-modal-close"
               >
                 ×
               </button>
-            </div>
 
-            {/* MODAL BODY */}
+            </div>
 
             <form
               onSubmit={
                 handleResetPassword
               }
-              style={{
-                padding: "27px",
-              }}
+              className="password-form"
             >
-              {/* USER */}
 
-              <div
-                style={{
-                  background:
-                    "#f8fafc",
-                  border:
-                    "1px solid #e2e8f0",
-                  borderRadius:
-                    "14px",
-                  padding:
-                    "15px 17px",
-                  marginBottom:
-                    "20px",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize:
-                      "12px",
-                    fontWeight:
-                      "800",
-                    color:
-                      "#64748b",
-                    textTransform:
-                      "uppercase",
-                    letterSpacing:
-                      "0.5px",
-                  }}
-                >
+              <div className="selected-student">
+
+                <div className="selected-student-label">
                   Tài khoản học sinh
                 </div>
 
-                <div
-                  style={{
-                    marginTop:
-                      "5px",
-                    fontSize:
-                      "17px",
-                    fontWeight:
-                      "900",
-                    color:
-                      "#111827",
-                  }}
-                >
+                <div className="selected-student-name">
+
                   👨‍🎓{" "}
+
                   {selectedStudent?.username ||
                     "—"}
+
                 </div>
 
-                <div
-                  style={{
-                    marginTop:
-                      "3px",
-                    fontSize:
-                      "13px",
-                    color:
-                      "#64748b",
-                  }}
-                >
+                <div className="selected-student-account">
+
                   {selectedStudent?.account ||
                     selectedStudent?.email ||
                     ""}
+
                 </div>
+
               </div>
 
-              {/* SUCCESS */}
-
               {resetSuccess && (
-                <div
-                  style={{
-                    background:
-                      "#f0fdf4",
-                    border:
-                      "1px solid #bbf7d0",
-                    color:
-                      "#166534",
-                    padding:
-                      "13px 15px",
-                    borderRadius:
-                      "12px",
-                    marginBottom:
-                      "17px",
-                    fontWeight:
-                      "700",
-                    fontSize:
-                      "14px",
-                  }}
-                >
+
+                <div className="reset-success">
                   ✅ {resetSuccess}
                 </div>
-              )}
 
-              {/* ERROR */}
+              )}
 
               {resetError && (
-                <div
-                  style={{
-                    background:
-                      "#fef2f2",
-                    border:
-                      "1px solid #fecaca",
-                    color:
-                      "#991b1b",
-                    padding:
-                      "13px 15px",
-                    borderRadius:
-                      "12px",
-                    marginBottom:
-                      "17px",
-                    fontWeight:
-                      "700",
-                    fontSize:
-                      "14px",
-                  }}
-                >
+
+                <div className="reset-error">
                   ⚠️ {resetError}
                 </div>
+
               )}
 
-              {/* PASSWORD */}
-
-              <label
-                style={{
-                  display:
-                    "block",
-                  marginBottom:
-                    "7px",
-                  color:
-                    "#334155",
-                  fontSize:
-                    "14px",
-                  fontWeight:
-                    "800",
-                }}
-              >
+              <label className="password-label">
                 Mật khẩu mới
               </label>
 
@@ -1546,43 +2325,15 @@ function AdminHome({
                   resetLoading
                 }
                 autoComplete="new-password"
-                style={
-                  inputStyle
-                }
+                className="password-input"
               />
 
-              <div
-                style={{
-                  marginTop:
-                    "7px",
-                  marginBottom:
-                    "18px",
-                  color:
-                    "#94a3b8",
-                  fontSize:
-                    "12px",
-                }}
-              >
+              <div className="password-help">
                 Mật khẩu phải có ít nhất
                 6 ký tự.
               </div>
 
-              {/* CONFIRM */}
-
-              <label
-                style={{
-                  display:
-                    "block",
-                  marginBottom:
-                    "7px",
-                  color:
-                    "#334155",
-                  fontSize:
-                    "14px",
-                  fontWeight:
-                    "800",
-                }}
-              >
+              <label className="password-label">
                 Xác nhận mật khẩu
               </label>
 
@@ -1602,21 +2353,11 @@ function AdminHome({
                   resetLoading
                 }
                 autoComplete="new-password"
-                style={
-                  inputStyle
-                }
+                className="password-input"
               />
 
-              {/* BUTTONS */}
+              <div className="password-form-actions">
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: "11px",
-                  marginTop:
-                    "25px",
-                }}
-              >
                 <button
                   type="button"
                   onClick={
@@ -1625,27 +2366,7 @@ function AdminHome({
                   disabled={
                     resetLoading
                   }
-                  style={{
-                    flex: 1,
-                    padding:
-                      "14px 18px",
-                    border:
-                      "1px solid #cbd5e1",
-                    borderRadius:
-                      "12px",
-                    background:
-                      "#ffffff",
-                    color:
-                      "#475569",
-                    fontWeight:
-                      "800",
-                    fontSize:
-                      "14px",
-                    cursor:
-                      resetLoading
-                        ? "not-allowed"
-                        : "pointer",
-                  }}
+                  className="modal-cancel-button"
                 >
                   Hủy
                 </button>
@@ -1655,40 +2376,27 @@ function AdminHome({
                   disabled={
                     resetLoading
                   }
-                  style={{
-                    flex: 1.4,
-                    padding:
-                      "14px 18px",
-                    border: "none",
-                    borderRadius:
-                      "12px",
-                    background:
-                      resetLoading
-                        ? "#94a3b8"
-                        : "linear-gradient(135deg, #2563eb, #1d4ed8)",
-                    color:
-                      "#ffffff",
-                    fontWeight:
-                      "900",
-                    fontSize:
-                      "14px",
-                    cursor:
-                      resetLoading
-                        ? "not-allowed"
-                        : "pointer",
-                    boxShadow:
-                      "0 5px 15px rgba(37,99,235,0.25)",
-                  }}
+                  className={`modal-submit-button ${
+                    resetLoading
+                      ? "is-loading"
+                      : ""
+                  }`}
                 >
                   {resetLoading
                     ? "⏳ Đang xử lý..."
                     : "🔑 Đổi mật khẩu"}
                 </button>
+
               </div>
+
             </form>
+
           </div>
+
         </div>
+
       )}
+
     </div>
   );
 }
@@ -1698,231 +2406,37 @@ function AdminHome({
 ========================================================= */
 
 function StatCard({
+  variant,
   icon,
   title,
   value,
   description,
-  iconBackground,
-  iconColor,
-  accent,
 }) {
   return (
     <div
-      style={{
-        position: "relative",
-        overflow: "hidden",
-        background: "#ffffff",
-        borderRadius: "18px",
-        padding: "23px",
-        border:
-          "1px solid #e2e8f0",
-        boxShadow:
-          "0 8px 25px rgba(15,23,42,0.06)",
-      }}
+      className={`stat-card stat-card-${variant}`}
     >
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: "3px",
-          background: accent,
-        }}
-      />
 
-      <div
-        style={{
-          width: "52px",
-          height: "52px",
-          borderRadius: "15px",
-          background:
-            iconBackground,
-          color: iconColor,
-          display: "flex",
-          alignItems: "center",
-          justifyContent:
-            "center",
-          fontSize: "27px",
-        }}
-      >
+      <div className="stat-card-accent" />
+
+      <div className="stat-card-icon">
         {icon}
       </div>
 
-      <div
-        style={{
-          marginTop: "15px",
-          color: "#64748b",
-          fontSize: "14px",
-          fontWeight: "800",
-        }}
-      >
+      <div className="stat-card-title">
         {title}
       </div>
 
-      <div
-        style={{
-          marginTop: "4px",
-          color: "#111827",
-          fontSize: "28px",
-          fontWeight: "900",
-        }}
-      >
+      <div className="stat-card-value">
         {value}
       </div>
 
-      <div
-        style={{
-          marginTop: "5px",
-          color: "#94a3b8",
-          fontSize: "13px",
-        }}
-      >
+      <div className="stat-card-description">
         {description}
       </div>
+
     </div>
   );
 }
-
-/* =========================================================
-   TABLE STYLE
-========================================================= */
-
-const thStyle = {
-  padding: "16px 14px",
-  textAlign: "left",
-  fontSize: "13px",
-  color: "#475569",
-  fontWeight: "900",
-  whiteSpace: "nowrap",
-  textTransform: "uppercase",
-  letterSpacing: "0.3px",
-};
-
-const tdStyle = {
-  padding: "16px 14px",
-  fontSize: "14px",
-  color: "#334155",
-  whiteSpace: "nowrap",
-};
-
-/* =========================================================
-   INPUT STYLE
-========================================================= */
-
-const inputStyle = {
-  width: "100%",
-  padding: "14px 15px",
-  border:
-    "1px solid #cbd5e1",
-  borderRadius: "11px",
-  fontSize: "15px",
-  outline: "none",
-  boxSizing: "border-box",
-  fontFamily: "inherit",
-  color: "#111827",
-  background: "#ffffff",
-};
-
-/* =========================================================
-   BUTTON STYLE
-========================================================= */
-
-/* NÚT TRANG CHỦ - SÁNG HƠN */
-
-const buttonHomeStyle = {
-  padding: "15px 23px",
-  border:
-    "1px solid rgba(255,255,255,0.28)",
-  borderRadius: "12px",
-  background:
-    "linear-gradient(135deg, #3b82f6, #2563eb)",
-  color: "#ffffff",
-  fontWeight: "900",
-  fontSize: "15px",
-  cursor: "pointer",
-  fontFamily: "inherit",
-  minHeight: "50px",
-  boxShadow:
-    "0 6px 18px rgba(37,99,235,0.35)",
-  transition:
-    "all 0.2s ease",
-};
-
-const buttonHomeHoverStyle = {
-  background:
-    "linear-gradient(135deg, #60a5fa, #3b82f6)",
-  transform:
-    "translateY(-2px)",
-  boxShadow:
-    "0 9px 24px rgba(37,99,235,0.48)",
-};
-
-/* LÀM MỚI */
-
-const buttonRefreshStyle = {
-  padding: "15px 23px",
-  border: "none",
-  borderRadius: "12px",
-  background:
-    "linear-gradient(135deg, #ffffff, #f1f5f9)",
-  color: "#1d4ed8",
-  fontWeight: "900",
-  fontSize: "15px",
-  cursor: "pointer",
-  fontFamily: "inherit",
-  minHeight: "50px",
-  boxShadow:
-    "0 5px 15px rgba(0,0,0,0.18)",
-};
-
-/* ĐĂNG XUẤT */
-
-const buttonLogoutStyle = {
-  padding: "15px 23px",
-  border: "none",
-  borderRadius: "12px",
-  background:
-    "linear-gradient(135deg, #dc2626, #b91c1c)",
-  color: "#ffffff",
-  fontWeight: "900",
-  fontSize: "15px",
-  cursor: "pointer",
-  fontFamily: "inherit",
-  minHeight: "50px",
-  boxShadow:
-    "0 5px 15px rgba(127,29,29,0.25)",
-};
-
-/* ĐỔI MẬT KHẨU */
-
-const buttonPasswordStyle = {
-  padding: "9px 13px",
-  border:
-    "1px solid #bfdbfe",
-  borderRadius: "9px",
-  background: "#eff6ff",
-  color: "#1d4ed8",
-  fontWeight: "900",
-  fontSize: "13px",
-  cursor: "pointer",
-  fontFamily: "inherit",
-  whiteSpace: "nowrap",
-};
-
-/* NÚT VỀ TRANG HỌC */
-
-const buttonPrimaryStyle = {
-  padding: "13px 22px",
-  border: "none",
-  borderRadius: "11px",
-  background:
-    "linear-gradient(135deg, #2563eb, #1d4ed8)",
-  color: "#ffffff",
-  fontWeight: "800",
-  fontSize: "15px",
-  cursor: "pointer",
-  fontFamily: "inherit",
-};
 
 export default AdminHome;
