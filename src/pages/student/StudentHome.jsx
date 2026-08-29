@@ -26,7 +26,10 @@ const LEVEL_EXP = {
 ========================================================= */
 
 function getLevelFromExp(exp) {
-  const safeExp = Math.max(0, Number(exp) || 0);
+  const safeExp = Math.max(
+    0,
+    Number(exp) || 0
+  );
 
   if (safeExp < 100) return 1;
   if (safeExp < 200) return 2;
@@ -46,9 +49,13 @@ function getLevelFromExp(exp) {
 ========================================================= */
 
 function getLevelProgress(exp) {
-  const safeExp = Math.max(0, Number(exp) || 0);
+  const safeExp = Math.max(
+    0,
+    Number(exp) || 0
+  );
 
-  const currentLevel = getLevelFromExp(safeExp);
+  const currentLevel =
+    getLevelFromExp(safeExp);
 
   if (currentLevel >= MAX_LEVEL) {
     return {
@@ -60,11 +67,15 @@ function getLevelProgress(exp) {
     };
   }
 
-  const previousExp = LEVEL_EXP[currentLevel];
-  const nextLevel = currentLevel + 1;
+  const previousExp =
+    LEVEL_EXP[currentLevel];
+
+  const nextLevel =
+    currentLevel + 1;
 
   const requiredExp =
-    LEVEL_EXP[nextLevel] - previousExp;
+    LEVEL_EXP[nextLevel] -
+    previousExp;
 
   const currentExp = Math.max(
     0,
@@ -81,7 +92,9 @@ function getLevelProgress(exp) {
       ? Math.min(
           100,
           Math.round(
-            (currentExp / requiredExp) * 100
+            (currentExp /
+              requiredExp) *
+              100
           )
         )
       : 100;
@@ -116,17 +129,25 @@ function formatTime(seconds) {
   const secs = safeSeconds % 60;
 
   if (hours > 0) {
-    return `${String(hours).padStart(2, "0")}:${String(
-      minutes
-    ).padStart(2, "0")}:${String(secs).padStart(
+    return `${String(hours).padStart(
+      2,
+      "0"
+    )}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(secs).padStart(
       2,
       "0"
     )}`;
   }
 
-  return `${String(minutes).padStart(2, "0")}:${String(
-    secs
-  ).padStart(2, "0")}`;
+  return `${String(minutes).padStart(
+    2,
+    "0"
+  )}:${String(secs).padStart(
+    2,
+    "0"
+  )}`;
 }
 
 /* =========================================================
@@ -138,7 +159,8 @@ function StudentHome({
   navigate,
   onLogout,
   totalExp: totalExpFromApp,
-  totalStudySeconds: totalStudySecondsFromApp,
+  totalStudySeconds:
+    totalStudySecondsFromApp,
 }) {
   /* =======================================================
      USER
@@ -154,12 +176,14 @@ function StudentHome({
     Number(profile?.exp ?? 0)
   );
 
-  const profileStudySeconds = Math.max(
-    0,
-    Number(
-      profile?.total_study_seconds ?? 0
-    )
-  );
+  const profileStudySeconds =
+    Math.max(
+      0,
+      Number(
+        profile?.total_study_seconds ??
+          0
+      )
+    );
 
   const totalExp =
     totalExpFromApp !== undefined
@@ -170,7 +194,8 @@ function StudentHome({
       : profileExp;
 
   const totalStudySeconds =
-    totalStudySecondsFromApp !== undefined
+    totalStudySecondsFromApp !==
+    undefined
       ? Math.max(
           0,
           Number(
@@ -179,7 +204,73 @@ function StudentHome({
         )
       : profileStudySeconds;
 
-  const level = getLevelFromExp(totalExp);
+  const level =
+    getLevelFromExp(totalExp);
+
+  /* =======================================================
+     THÔNG BÁO ĐĂNG KÝ THÀNH CÔNG
+  ======================================================= */
+
+  const [
+    showRegistrationSuccess,
+    setShowRegistrationSuccess,
+  ] = useState(false);
+
+  const [
+    registrationAccount,
+    setRegistrationAccount,
+  ] = useState("");
+
+  useEffect(() => {
+    try {
+      const stored =
+        sessionStorage.getItem(
+          "registration_success"
+        );
+
+      if (!stored) {
+        return;
+      }
+
+      const registrationData =
+        JSON.parse(stored);
+
+      setRegistrationAccount(
+        registrationData?.account ||
+          ""
+      );
+
+      setShowRegistrationSuccess(true);
+
+      /*
+        Xóa ngay sau khi đọc để:
+        - F5 không hiện lại
+        - quay lại StudentHome không hiện lại
+        - thông báo chỉ xuất hiện một lần
+      */
+
+      sessionStorage.removeItem(
+        "registration_success"
+      );
+
+      const timer = setTimeout(() => {
+        setShowRegistrationSuccess(false);
+      }, 4000);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    } catch (error) {
+      console.warn(
+        "Không thể đọc thông báo đăng ký:",
+        error
+      );
+
+      sessionStorage.removeItem(
+        "registration_success"
+      );
+    }
+  }, []);
 
   /* =======================================================
      LEVEL UP
@@ -256,9 +347,10 @@ function StudentHome({
   ======================================================= */
 
   const handleStartLearning = () => {
-    const target = document.querySelector(
-      ".learning-section-target"
-    );
+    const target =
+      document.querySelector(
+        ".learning-section-target"
+      );
 
     if (target) {
       target.scrollIntoView({
@@ -297,16 +389,168 @@ function StudentHome({
   return (
     <>
       {/* =================================================
+          THÔNG BÁO ĐĂNG KÝ THÀNH CÔNG
+      ================================================= */}
+
+      {showRegistrationSuccess && (
+        <div
+          role="status"
+          aria-live="polite"
+          style={{
+            position: "fixed",
+            top: "28px",
+            left: "50%",
+            transform:
+              "translateX(-50%)",
+            zIndex: 9999,
+
+            width: "min(430px, calc(100vw - 32px))",
+
+            background:
+              "rgba(255, 255, 255, 0.98)",
+
+            border:
+              "2px solid #065f46",
+
+            borderRadius: "16px",
+
+            boxShadow:
+              "0 12px 35px rgba(6, 95, 70, 0.18)",
+
+            padding:
+              "16px 20px",
+
+            display: "flex",
+            alignItems: "center",
+            gap: "14px",
+
+            boxSizing: "border-box",
+
+            animation:
+              "registrationSuccessSlideDown 0.35s ease-out",
+          }}
+        >
+
+          {/* DẤU TÍCH */}
+
+          <div
+            style={{
+              flexShrink: 0,
+
+              width: "42px",
+              height: "42px",
+
+              borderRadius: "50%",
+
+              background:
+                "#dcfce7",
+
+              border:
+                "2px solid #22c55e",
+
+              color: "#16a34a",
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+
+              fontSize: "24px",
+              fontWeight: "900",
+
+              lineHeight: 1,
+            }}
+          >
+            ✓
+          </div>
+
+          {/* NỘI DUNG */}
+
+          <div
+            style={{
+              minWidth: 0,
+              flex: 1,
+            }}
+          >
+            <div
+              style={{
+                color: "#16a34a",
+                fontSize: "16px",
+                fontWeight: "800",
+                lineHeight: 1.35,
+                marginBottom: "3px",
+              }}
+            >
+              Đăng ký thành công!
+            </div>
+
+            <div
+              style={{
+                color: "#15803d",
+                fontSize: "13px",
+                lineHeight: 1.45,
+              }}
+            >
+              Chào mừng bạn đến với
+              hành trình học tiếng Khmer
+              {registrationAccount
+                ? `, ${registrationAccount}`
+                : ""}
+              .
+            </div>
+          </div>
+
+          {/* NÚT ĐÓNG */}
+
+          <button
+            type="button"
+            onClick={() =>
+              setShowRegistrationSuccess(
+                false
+              )
+            }
+            aria-label="Đóng thông báo"
+            style={{
+              flexShrink: 0,
+
+              width: "28px",
+              height: "28px",
+
+              border: "none",
+              background: "transparent",
+
+              color: "#86a98f",
+
+              fontSize: "20px",
+              lineHeight: 1,
+
+              cursor: "pointer",
+
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+
+              padding: 0,
+            }}
+          >
+            ×
+          </button>
+
+        </div>
+      )}
+
+      {/* =================================================
           LEVEL UP
       ================================================= */}
 
       {showLevelUp && (
         <div className="level-up-overlay">
+
           <div className="level-up-confetti">
             🎉 ✨ ⭐ 🏆 ✨ 🎉
           </div>
 
           <div className="level-up-card">
+
             <div className="level-up-icon">
               🏆
             </div>
@@ -340,6 +584,7 @@ function StudentHome({
             >
               Tuyệt vời! 🎉
             </button>
+
           </div>
         </div>
       )}
@@ -360,6 +605,7 @@ function StudentHome({
         ================================================= */}
 
         <header className="student-header">
+
           <div>
 
             <h1 className="student-header-title">
@@ -370,8 +616,8 @@ function StudentHome({
               ! 👋
             </h1>
 
-            {/* Khmer + tên Việt TÁCH RIÊNG */}
             <h2 className="student-header-khmer">
+
               <span className="khmer-regular">
                 ជំរាបសួរ
               </span>
@@ -383,6 +629,7 @@ function StudentHome({
               <span className="khmer-regular">
                 ! 👋
               </span>
+
             </h2>
 
             <p>
@@ -391,13 +638,16 @@ function StudentHome({
             </p>
 
             <p className="student-header-khmer-sub">
+
               <span className="khmer-regular">
                 សូមស្វាគមន៍ការត្រឡប់មកវិញ
                 ក្នុងដំណើររៀនភាសាខ្មែរ។
               </span>
+
             </p>
 
           </div>
+
         </header>
 
         {/* =================================================
@@ -408,13 +658,10 @@ function StudentHome({
 
           <div className="student-welcome-content">
 
-            {/* Đây là câu tiếng Việt,
-                KHÔNG dùng font Khmer */}
             <div className="student-welcome-vietnamese">
               Hãy tiếp tục hành trình học tiếng Khmer
             </div>
 
-            {/* Khmer Muol / tiêu đề */}
             <h2 className="student-welcome-khmer-title">
               បន្តដំណើរនៃការរៀនភាសាខ្មែរ។
             </h2>
@@ -456,6 +703,7 @@ function StudentHome({
             </div>
 
             <div>
+
               <span>
                 Cấp độ
               </span>
@@ -465,6 +713,7 @@ function StudentHome({
                 {isMaxLevel &&
                   " • MAX"}
               </strong>
+
             </div>
 
           </div>
@@ -522,6 +771,7 @@ function StudentHome({
               </div>
 
             </div>
+
           </div>
 
           <div className="student-stat-card">
@@ -613,9 +863,7 @@ function StudentHome({
 
           <div className="student-learning-grid">
 
-            {/* =================================================
-                BẢNG CHỮ CÁI
-            ================================================= */}
+            {/* BẢNG CHỮ CÁI */}
 
             <button
               type="button"
@@ -649,9 +897,7 @@ function StudentHome({
 
             </button>
 
-            {/* =================================================
-                TỪ VỰNG
-            ================================================= */}
+            {/* TỪ VỰNG */}
 
             <button
               type="button"
@@ -684,10 +930,7 @@ function StudentHome({
 
             </button>
 
-            {/* =================================================
-                LUYỆN GIAO TIẾP
-                ĐƯỢC ĐƯA LÊN TRƯỚC TRÒ CHƠI
-            ================================================= */}
+            {/* LUYỆN GIAO TIẾP */}
 
             <button
               type="button"
@@ -723,9 +966,7 @@ function StudentHome({
 
             </button>
 
-            {/* =================================================
-                TRÒ CHƠI
-            ================================================= */}
+            {/* TRÒ CHƠI */}
 
             <button
               type="button"

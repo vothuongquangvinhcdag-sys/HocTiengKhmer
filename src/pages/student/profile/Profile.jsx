@@ -9,7 +9,7 @@ import "./Profile.css";
 
 /* =========================================================
    NGÂN HÀNG ẢNH ĐẠI DIỆN
-   ---------------------------------------------------------
+
    Ảnh được đặt trong:
 
    public/avatars/
@@ -124,7 +124,14 @@ function Profile({
     useState(false);
 
   /* =======================================================
-     PROFILE DATA
+     NOTIFICATION
+  ======================================================= */
+
+  const [notification, setNotification] =
+    useState(null);
+
+  /* =======================================================
+     USERNAME / ACCOUNT / EMAIL / AVATAR
   ======================================================= */
 
   const username =
@@ -142,6 +149,40 @@ function Profile({
 
   const avatarUrl =
     profile?.avatar_url || "";
+
+  /* =======================================================
+     HIỂN THỊ THÔNG BÁO
+  ======================================================= */
+
+  const showNotification = (
+    type,
+    title,
+    message
+  ) => {
+    setNotification({
+      type,
+      title,
+      message,
+    });
+  };
+
+  /* =======================================================
+     TỰ ĐỘNG ẨN THÔNG BÁO
+  ======================================================= */
+
+  useEffect(() => {
+    if (!notification) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setNotification(null);
+    }, 4000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [notification]);
 
   /* =======================================================
      ĐỒNG BỘ PROFILE
@@ -186,7 +227,9 @@ function Profile({
       usernameInput.trim();
 
     if (!finalUsername) {
-      alert(
+      showNotification(
+        "warning",
+        "Chưa thể đổi tên",
         "Tên người dùng không được để trống."
       );
 
@@ -199,7 +242,9 @@ function Profile({
     }
 
     if (!session?.user?.id) {
-      alert(
+      showNotification(
+        "error",
+        "Đổi tên thất bại",
         "Không xác định được tài khoản."
       );
 
@@ -227,11 +272,13 @@ function Profile({
         throw error;
       }
 
-      alert(
-        "Đổi tên người dùng thành công!"
-      );
-
       setEditingUsername(false);
+
+      showNotification(
+        "success",
+        "Đổi tên thành công!",
+        "Tên người dùng của bạn đã được cập nhật."
+      );
 
       if (onProfileUpdated) {
         await onProfileUpdated();
@@ -242,12 +289,11 @@ function Profile({
         error
       );
 
-      alert(
-        "ĐỔI TÊN THẤT BẠI!\n\n" +
-          (
-            error?.message ||
-            "Lỗi không xác định."
-          )
+      showNotification(
+        "error",
+        "Đổi tên thất bại!",
+        error?.message ||
+          "Đã xảy ra lỗi không xác định."
       );
     } finally {
       setUsernameLoading(false);
@@ -280,7 +326,9 @@ function Profile({
 
   const handleSavePassword = async () => {
     if (!oldPassword) {
-      alert(
+      showNotification(
+        "warning",
+        "Thiếu thông tin",
         "Vui lòng nhập mật khẩu cũ."
       );
 
@@ -288,7 +336,9 @@ function Profile({
     }
 
     if (!newPassword) {
-      alert(
+      showNotification(
+        "warning",
+        "Thiếu thông tin",
         "Vui lòng nhập mật khẩu mới."
       );
 
@@ -296,7 +346,9 @@ function Profile({
     }
 
     if (newPassword.length < 6) {
-      alert(
+      showNotification(
+        "warning",
+        "Mật khẩu chưa hợp lệ",
         "Mật khẩu mới phải có ít nhất 6 ký tự."
       );
 
@@ -304,7 +356,9 @@ function Profile({
     }
 
     if (!confirmPassword) {
-      alert(
+      showNotification(
+        "warning",
+        "Thiếu xác nhận",
         "Vui lòng xác nhận mật khẩu mới."
       );
 
@@ -315,7 +369,9 @@ function Profile({
       newPassword !==
       confirmPassword
     ) {
-      alert(
+      showNotification(
+        "warning",
+        "Mật khẩu không khớp",
         "Mật khẩu mới và xác nhận mật khẩu không giống nhau."
       );
 
@@ -326,7 +382,9 @@ function Profile({
       oldPassword ===
       newPassword
     ) {
-      alert(
+      showNotification(
+        "warning",
+        "Mật khẩu chưa hợp lệ",
         "Mật khẩu mới phải khác mật khẩu cũ."
       );
 
@@ -334,7 +392,9 @@ function Profile({
     }
 
     if (!email) {
-      alert(
+      showNotification(
+        "error",
+        "Không thể đổi mật khẩu",
         "Không xác định được email tài khoản."
       );
 
@@ -357,8 +417,10 @@ function Profile({
         });
 
       if (verifyError) {
-        alert(
-          "Mật khẩu cũ không chính xác."
+        showNotification(
+          "error",
+          "Mật khẩu cũ không chính xác",
+          "Vui lòng kiểm tra lại mật khẩu hiện tại."
         );
 
         return;
@@ -370,33 +432,33 @@ function Profile({
 
       const {
         error: updateError,
-      } =
-        await supabase.auth.updateUser({
-          password: newPassword,
-        });
+      } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
 
       if (updateError) {
         throw updateError;
       }
 
-      alert(
-        "Đổi mật khẩu thành công!"
-      );
-
       resetPasswordForm();
       setEditingPassword(false);
+
+      showNotification(
+        "success",
+        "Đổi mật khẩu thành công!",
+        "Mật khẩu tài khoản của bạn đã được cập nhật."
+      );
     } catch (error) {
       console.error(
         "❌ Lỗi đổi mật khẩu:",
         error
       );
 
-      alert(
-        "ĐỔI MẬT KHẨU THẤT BẠI!\n\n" +
-          (
-            error?.message ||
-            "Lỗi không xác định."
-          )
+      showNotification(
+        "error",
+        "Đổi mật khẩu thất bại!",
+        error?.message ||
+          "Đã xảy ra lỗi không xác định."
       );
     } finally {
       setPasswordLoading(false);
@@ -458,15 +520,19 @@ function Profile({
 
   const handleSaveAvatar = async () => {
     if (!selectedAvatar) {
-      alert(
-        "Vui lòng chọn một ảnh đại diện."
+      showNotification(
+        "warning",
+        "Chưa chọn ảnh đại diện",
+        "Vui lòng chọn một ảnh đại diện trước khi xác nhận."
       );
 
       return;
     }
 
     if (!session?.user?.id) {
-      alert(
+      showNotification(
+        "error",
+        "Đổi ảnh thất bại",
         "Không xác định được tài khoản."
       );
 
@@ -515,8 +581,10 @@ function Profile({
 
       setAvatarModalOpen(false);
 
-      alert(
-        "Đổi ảnh đại diện thành công!"
+      showNotification(
+        "success",
+        "Đổi ảnh đại diện thành công!",
+        "Ảnh đại diện của bạn đã được cập nhật."
       );
 
       if (onProfileUpdated) {
@@ -528,12 +596,11 @@ function Profile({
         error
       );
 
-      alert(
-        "ĐỔI ẢNH ĐẠI DIỆN THẤT BẠI!\n\n" +
-          (
-            error?.message ||
-            "Lỗi không xác định."
-          )
+      showNotification(
+        "error",
+        "Đổi ảnh đại diện thất bại!",
+        error?.message ||
+          "Đã xảy ra lỗi không xác định."
       );
     } finally {
       setAvatarLoading(false);
@@ -556,6 +623,68 @@ function Profile({
 
   return (
     <div className="profile-page">
+
+      {/* =================================================
+          NOTIFICATION
+      ================================================= */}
+
+      {notification && (
+        <div
+          className={
+            `profile-notification ` +
+            `profile-notification-${notification.type}`
+          }
+          role="status"
+          aria-live="polite"
+        >
+
+          {/* ICON */}
+
+          <div className="profile-notification-icon">
+
+            {notification.type ===
+              "success" && "✓"}
+
+            {notification.type ===
+              "error" && "!"}
+
+            {notification.type ===
+              "warning" && "!"}
+
+            {notification.type ===
+              "info" && "i"}
+
+          </div>
+
+          {/* CONTENT */}
+
+          <div className="profile-notification-content">
+
+            <div className="profile-notification-title">
+              {notification.title}
+            </div>
+
+            <div className="profile-notification-message">
+              {notification.message}
+            </div>
+
+          </div>
+
+          {/* CLOSE */}
+
+          <button
+            type="button"
+            className="profile-notification-close"
+            onClick={() =>
+              setNotification(null)
+            }
+            aria-label="Đóng thông báo"
+          >
+            ×
+          </button>
+
+        </div>
+      )}
 
       {/* =================================================
           HEADER

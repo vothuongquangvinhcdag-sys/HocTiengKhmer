@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { supabase } from "../../supabase";
+
 import "./Register.css";
 
 function Register() {
@@ -10,13 +12,34 @@ function Register() {
   const [email, setEmail] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] =
-    useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   /* =========================================================
-     VỀ TRANG LOGIN
+     VALIDATION ERROR
+  ========================================================= */
+
+  const [accountError, setAccountError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  /* =========================================================
+     EMAIL DOMAIN ĐƯỢC CHẤP NHẬN
+  ========================================================= */
+
+  const allowedEmailDomains = [
+    "gmail.com",
+    "angiang.edu.vn",
+    "yahoo.com",
+    "outlook.com",
+    "hotmail.com",
+    "icloud.com",
+  ];
+
+  /* =========================================================
+     ĐIỀU HƯỚNG
   ========================================================= */
 
   const goToLogin = () => {
@@ -27,6 +50,282 @@ function Register() {
     );
   };
 
+  const goToStudentHome = () => {
+    window.history.pushState({}, "", "/student");
+
+    window.dispatchEvent(
+      new PopStateEvent("popstate")
+    );
+  };
+
+  /* =========================================================
+     KIỂM TRA TÀI KHOẢN
+
+     Dùng RPC check_account_exists
+
+     Chạy khi:
+     - Người dùng rời khỏi ô tài khoản
+     - Người dùng bấm ĐĂNG KÝ
+
+     Yêu cầu:
+     - Không được để trống
+     - Tối thiểu 6 ký tự
+     - Không được trùng tài khoản
+  ========================================================= */
+
+  const checkAccount = async () => {
+    const finalAccount = account.trim();
+
+    /* -------------------------------------------------------
+       TÀI KHOẢN TRỐNG
+    ------------------------------------------------------- */
+
+    if (!finalAccount) {
+      setAccountError(
+        "Vui lòng nhập tài khoản."
+      );
+
+      return false;
+    }
+
+    /* -------------------------------------------------------
+       TÀI KHOẢN DƯỚI 6 KÝ TỰ
+    ------------------------------------------------------- */
+
+    if (finalAccount.length < 6) {
+      setAccountError(
+        "Tài khoản phải có ít nhất 6 ký tự."
+      );
+
+      return false;
+    }
+
+    /* -------------------------------------------------------
+       KIỂM TRA TÀI KHOẢN TRONG SUPABASE
+    ------------------------------------------------------- */
+
+    try {
+      const { data, error } =
+        await supabase.rpc(
+          "check_account_exists",
+          {
+            p_account: finalAccount,
+          }
+        );
+
+      if (error) {
+        console.error(
+          "Check account error:",
+          error
+        );
+
+        /*
+          Nếu RPC bị lỗi thì không báo sai
+          rằng tài khoản đã tồn tại.
+        */
+
+        return true;
+      }
+
+      /* -----------------------------------------------------
+         TÀI KHOẢN ĐÃ TỒN TẠI
+      ----------------------------------------------------- */
+
+      if (data === true) {
+        setAccountError(
+          "Tên tài khoản đã tồn tại."
+        );
+
+        return false;
+      }
+
+      /* -----------------------------------------------------
+         TÀI KHOẢN HỢP LỆ
+      ----------------------------------------------------- */
+
+      setAccountError("");
+
+      return true;
+    } catch (error) {
+      console.error(
+        "Account validation error:",
+        error
+      );
+
+      return true;
+    }
+  };
+
+  /* =========================================================
+     KIỂM TRA MẬT KHẨU
+  ========================================================= */
+
+  const checkPassword = () => {
+    if (!password) {
+      setPasswordError(
+        "Vui lòng nhập mật khẩu."
+      );
+
+      return false;
+    }
+
+    if (password.length < 6) {
+      setPasswordError(
+        "Mật khẩu phải có ít nhất 6 ký tự."
+      );
+
+      return false;
+    }
+
+    setPasswordError("");
+
+    return true;
+  };
+
+  /* =========================================================
+     KIỂM TRA XÁC NHẬN MẬT KHẨU
+  ========================================================= */
+
+  const checkConfirmPassword = () => {
+    if (!confirmPassword) {
+      setConfirmPasswordError(
+        "Vui lòng xác nhận mật khẩu."
+      );
+
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError(
+        "Mật khẩu không trùng khớp."
+      );
+
+      return false;
+    }
+
+    setConfirmPasswordError("");
+
+    return true;
+  };
+
+  /* =========================================================
+     KIỂM TRA EMAIL
+
+     Dùng RPC:
+       check_email_exists
+
+     Chạy khi:
+       - Rời khỏi ô Email
+       - Bấm ĐĂNG KÝ
+  ========================================================= */
+
+  const checkEmail = async () => {
+    const finalEmail =
+      email.trim().toLowerCase();
+
+    /* -------------------------------------------------------
+       EMAIL TRỐNG
+    ------------------------------------------------------- */
+
+    if (!finalEmail) {
+      setEmailError(
+        "Vui lòng nhập email."
+      );
+
+      return false;
+    }
+
+    /* -------------------------------------------------------
+       KIỂM TRA ĐỊNH DẠNG
+    ------------------------------------------------------- */
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(finalEmail)) {
+      setEmailError(
+        "Email phải có dạng @gmail.com, @angiang.edu.vn,..."
+      );
+
+      return false;
+    }
+
+    /* -------------------------------------------------------
+       KIỂM TRA DOMAIN
+    ------------------------------------------------------- */
+
+    const domain =
+      finalEmail.split("@")[1];
+
+    if (
+      !allowedEmailDomains.includes(domain)
+    ) {
+      setEmailError(
+        "Email phải có dạng @gmail.com, @angiang.edu.vn,..."
+      );
+
+      return false;
+    }
+
+    /* -------------------------------------------------------
+       KIỂM TRA EMAIL TRONG SUPABASE AUTH
+
+       Gọi RPC:
+         check_email_exists
+    ------------------------------------------------------- */
+
+    try {
+      const { data, error } =
+        await supabase.rpc(
+          "check_email_exists",
+          {
+            p_email: finalEmail,
+          }
+        );
+
+      if (error) {
+        console.error(
+          "Check email error:",
+          error
+        );
+
+        /*
+          RPC lỗi thì không báo sai
+          "Email đã tồn tại".
+        */
+
+        return true;
+      }
+
+      /* -----------------------------------------------------
+         EMAIL ĐÃ TỒN TẠI
+      ----------------------------------------------------- */
+
+      if (data === true) {
+        setEmailError(
+          "Email đã tồn tại."
+        );
+
+        return false;
+      }
+
+      /* -----------------------------------------------------
+         EMAIL CHƯA TỒN TẠI
+      ----------------------------------------------------- */
+
+      setEmailError("");
+
+      return true;
+    } catch (error) {
+      console.error(
+        "Email validation error:",
+        error
+      );
+
+      return true;
+    }
+  };
+
   /* =========================================================
      ĐĂNG KÝ
   ========================================================= */
@@ -34,45 +333,50 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const finalAccount = account.trim();
+    if (loading) return;
+
+    const finalAccount =
+      account.trim();
 
     const finalUsername =
-      username.trim() || finalAccount;
+      username.trim() ||
+      finalAccount;
 
     const finalEmail =
       email.trim().toLowerCase();
 
-    /* =====================================================
-       KIỂM TRA DỮ LIỆU
-    ===================================================== */
+    /* =======================================================
+       KIỂM TRA TOÀN BỘ FORM
+    ======================================================= */
 
-    if (!finalAccount) {
-      alert("Vui lòng nhập tài khoản.");
+    const accountValid =
+      await checkAccount();
+
+    const passwordValid =
+      checkPassword();
+
+    const confirmPasswordValid =
+      checkConfirmPassword();
+
+    const emailValid =
+      await checkEmail();
+
+    /* -------------------------------------------------------
+       CÓ LỖI → DỪNG
+    ------------------------------------------------------- */
+
+    if (
+      !accountValid ||
+      !passwordValid ||
+      !confirmPasswordValid ||
+      !emailValid
+    ) {
       return;
     }
 
-    if (password.length < 6) {
-      alert(
-        "Mật khẩu phải có ít nhất 6 ký tự."
-      );
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert(
-        "Mật khẩu xác nhận không trùng khớp."
-      );
-      return;
-    }
-
-    if (!finalEmail) {
-      alert("Vui lòng nhập email.");
-      return;
-    }
-
-    /* =====================================================
-       SUPABASE
-    ===================================================== */
+    /* =======================================================
+       BẮT ĐẦU ĐĂNG KÝ SUPABASE AUTH
+    ======================================================= */
 
     try {
       setLoading(true);
@@ -90,19 +394,66 @@ function Register() {
           },
         });
 
+      /* =====================================================
+         SUPABASE AUTH ERROR
+      ===================================================== */
+
       if (error) {
         console.error(
           "Supabase Auth Error:",
           error
         );
 
+        const errorMessage =
+          error.message?.toLowerCase() ||
+          "";
+
+        /* ---------------------------------------------------
+           EMAIL ĐÃ TỒN TẠI
+
+           Không alert.
+           Hiện lỗi dưới ô Email.
+        --------------------------------------------------- */
+
+        if (
+          errorMessage.includes(
+            "already registered"
+          ) ||
+          errorMessage.includes(
+            "already exists"
+          ) ||
+          errorMessage.includes(
+            "user already registered"
+          ) ||
+          errorMessage.includes(
+            "email already"
+          ) ||
+          errorMessage.includes(
+            "email address already"
+          )
+        ) {
+          setEmailError(
+            "Email đã tồn tại."
+          );
+
+          return;
+        }
+
+        /* ---------------------------------------------------
+           LỖI KHÁC
+        --------------------------------------------------- */
+
         alert(
-          "ĐĂNG KÝ THẤT BẠI!\n\n" +
+          "ĐĂNG KÝ THẤT BẠI\n\n" +
             error.message
         );
 
         return;
       }
+
+      /* =====================================================
+         KHÔNG TẠO ĐƯỢC USER
+      ===================================================== */
 
       if (!data?.user) {
         alert(
@@ -112,25 +463,31 @@ function Register() {
         return;
       }
 
-      /* ===================================================
-         THÀNH CÔNG
-      =================================================== */
+      /* =====================================================
+         ĐĂNG KÝ THÀNH CÔNG
 
-      alert(
-        "ĐĂNG KÝ THÀNH CÔNG! 🎉\n\n" +
-          "Tên người dùng: " +
-          finalUsername +
-          "\n" +
-          "Tài khoản: " +
-          finalAccount +
-          "\n" +
-          "Email: " +
-          finalEmail
-      );
+         Lưu thông tin để StudentHome
+         hiển thị bảng thông báo.
+      ===================================================== */
 
-      /* ===================================================
+      try {
+        sessionStorage.setItem(
+          "registration_success",
+          JSON.stringify({
+            username: finalUsername,
+            account: finalAccount,
+          })
+        );
+      } catch (storageError) {
+        console.warn(
+          "Không thể lưu thông báo đăng ký:",
+          storageError
+        );
+      }
+
+      /* =====================================================
          RESET FORM
-      =================================================== */
+      ===================================================== */
 
       setUsername("");
       setAccount("");
@@ -138,10 +495,20 @@ function Register() {
       setConfirmPassword("");
       setEmail("");
 
+      setAccountError("");
+      setPasswordError("");
+      setConfirmPasswordError("");
+      setEmailError("");
+
       setShowPassword(false);
       setShowConfirmPassword(false);
 
-      goToLogin();
+      /* =====================================================
+         ĐIỀU HƯỚNG STUDENT HOME
+      ===================================================== */
+
+      goToStudentHome();
+
     } catch (error) {
       console.error(
         "Register Error:",
@@ -150,9 +517,12 @@ function Register() {
 
       alert(
         "ĐĂNG KÝ THẤT BẠI!\n\n" +
-          (error?.message ||
-            "Lỗi không xác định.")
+          (
+            error?.message ||
+            "Lỗi không xác định."
+          )
       );
+
     } finally {
       setLoading(false);
     }
@@ -165,9 +535,7 @@ function Register() {
   return (
     <div className="register-page">
 
-      {/* =====================================================
-          DECORATION
-      ===================================================== */}
+      {/* DECORATION */}
 
       <div className="register-decoration register-decoration-left">
         ◈
@@ -177,15 +545,11 @@ function Register() {
         ◇
       </div>
 
-      {/* =====================================================
-          REGISTER CARD
-      ===================================================== */}
+      {/* REGISTER CARD */}
 
       <main className="register-card">
 
-        {/* ===================================================
-            LOGO
-        =================================================== */}
+        {/* LOGO */}
 
         <div className="register-logo">
           <div className="register-logo-symbol register-khmer">
@@ -193,9 +557,7 @@ function Register() {
           </div>
         </div>
 
-        {/* ===================================================
-            TITLE
-        =================================================== */}
+        {/* TITLE */}
 
         <h1 className="register-title-khmer">
           ចុះឈ្មោះ
@@ -209,9 +571,7 @@ function Register() {
           Tạo tài khoản học tiếng Khmer
         </p>
 
-        {/* ===================================================
-            FORM
-        =================================================== */}
+        {/* FORM */}
 
         <form
           className="register-form"
@@ -237,7 +597,9 @@ function Register() {
               type="text"
               value={username}
               onChange={(e) =>
-                setUsername(e.target.value)
+                setUsername(
+                  e.target.value
+                )
               }
               placeholder="Có thể bỏ trống"
               autoComplete="name"
@@ -260,6 +622,7 @@ function Register() {
               className="register-label"
             >
               Tài khoản
+
               <span className="register-required">
                 *
               </span>
@@ -267,16 +630,34 @@ function Register() {
 
             <input
               id="register-account"
-              className="register-input"
+              className={
+                `register-input ${
+                  accountError
+                    ? "register-input-error"
+                    : ""
+                }`
+              }
               type="text"
               value={account}
-              onChange={(e) =>
-                setAccount(e.target.value)
-              }
-              placeholder="Nhập tài khoản"
+              onChange={(e) => {
+                setAccount(
+                  e.target.value
+                );
+
+                setAccountError("");
+              }}
+              onBlur={checkAccount}
+              placeholder="Tối thiểu 6 ký tự"
               autoComplete="username"
+              minLength={6}
               required
             />
+
+            {accountError && (
+              <small className="register-error-message">
+                {accountError}
+              </small>
+            )}
 
           </div>
 
@@ -291,6 +672,7 @@ function Register() {
               className="register-label"
             >
               Mật khẩu
+
               <span className="register-required">
                 *
               </span>
@@ -300,16 +682,42 @@ function Register() {
 
               <input
                 id="register-password"
-                className="register-input register-password-input"
+                className={
+                  `register-input register-password-input ${
+                    passwordError
+                      ? "register-input-error"
+                      : ""
+                  }`
+                }
                 type={
                   showPassword
                     ? "text"
                     : "password"
                 }
                 value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
+                onChange={(e) => {
+                  const value =
+                    e.target.value;
+
+                  setPassword(value);
+                  setPasswordError("");
+
+                  if (confirmPassword) {
+                    if (
+                      value !==
+                      confirmPassword
+                    ) {
+                      setConfirmPasswordError(
+                        "! Mật khẩu không trùng khớp."
+                      );
+                    } else {
+                      setConfirmPasswordError(
+                        ""
+                      );
+                    }
+                  }
+                }}
+                onBlur={checkPassword}
                 placeholder="Tối thiểu 6 ký tự"
                 autoComplete="new-password"
                 minLength={6}
@@ -321,7 +729,8 @@ function Register() {
                 className="register-password-toggle"
                 onClick={() =>
                   setShowPassword(
-                    (previous) => !previous
+                    (previous) =>
+                      !previous
                   )
                 }
                 aria-label={
@@ -330,10 +739,18 @@ function Register() {
                     : "Hiện mật khẩu"
                 }
               >
-                {showPassword ? "🙈" : "👁"}
+                {showPassword
+                  ? "🙈"
+                  : "👁"}
               </button>
 
             </div>
+
+            {passwordError && (
+              <small className="register-error-message">
+                {passwordError}
+              </small>
+            )}
 
           </div>
 
@@ -348,6 +765,7 @@ function Register() {
               className="register-label"
             >
               Xác nhận mật khẩu
+
               <span className="register-required">
                 *
               </span>
@@ -357,17 +775,32 @@ function Register() {
 
               <input
                 id="register-confirm-password"
-                className="register-input register-password-input"
+                className={
+                  `register-input register-password-input ${
+                    confirmPasswordError
+                      ? "register-input-error"
+                      : ""
+                  }`
+                }
                 type={
                   showConfirmPassword
                     ? "text"
                     : "password"
                 }
-                value={confirmPassword}
-                onChange={(e) =>
+                value={
+                  confirmPassword
+                }
+                onChange={(e) => {
                   setConfirmPassword(
                     e.target.value
-                  )
+                  );
+
+                  setConfirmPasswordError(
+                    ""
+                  );
+                }}
+                onBlur={
+                  checkConfirmPassword
                 }
                 placeholder="Nhập lại mật khẩu"
                 autoComplete="new-password"
@@ -380,7 +813,8 @@ function Register() {
                 className="register-password-toggle"
                 onClick={() =>
                   setShowConfirmPassword(
-                    (previous) => !previous
+                    (previous) =>
+                      !previous
                   )
                 }
                 aria-label={
@@ -396,6 +830,14 @@ function Register() {
 
             </div>
 
+            {confirmPasswordError && (
+              <small className="register-error-message">
+                {
+                  confirmPasswordError
+                }
+              </small>
+            )}
+
           </div>
 
           {/* =================================================
@@ -409,6 +851,7 @@ function Register() {
               className="register-label"
             >
               Email
+
               <span className="register-required">
                 *
               </span>
@@ -416,16 +859,33 @@ function Register() {
 
             <input
               id="register-email"
-              className="register-input"
+              className={
+                `register-input ${
+                  emailError
+                    ? "register-input-error"
+                    : ""
+                }`
+              }
               type="email"
               value={email}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
+              onChange={(e) => {
+                setEmail(
+                  e.target.value
+                );
+
+                setEmailError("");
+              }}
+              onBlur={checkEmail}
               placeholder="Nhập email"
               autoComplete="email"
               required
             />
+
+            {emailError && (
+              <small className="register-error-message">
+                {emailError}
+              </small>
+            )}
 
           </div>
 
@@ -445,9 +905,9 @@ function Register() {
 
         </form>
 
-        {/* ===================================================
+        {/* =================================================
             LOGIN LINK
-        =================================================== */}
+        ================================================= */}
 
         <div className="register-links">
 

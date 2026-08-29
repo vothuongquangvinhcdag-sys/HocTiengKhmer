@@ -37,7 +37,10 @@ const LEVEL_EXP = {
 ========================================================= */
 
 function getLevelFromExp(exp) {
-  const safeExp = Math.max(0, Number(exp) || 0);
+  const safeExp = Math.max(
+    0,
+    Number(exp) || 0
+  );
 
   if (safeExp < 100) return 1;
   if (safeExp < 200) return 2;
@@ -71,7 +74,12 @@ function App() {
       return;
     }
 
-    window.history.pushState({}, "", newPath);
+    window.history.pushState(
+      {},
+      "",
+      newPath
+    );
+
     setPath(newPath);
   };
 
@@ -80,10 +88,16 @@ function App() {
       setPath(window.location.pathname);
     };
 
-    window.addEventListener("popstate", handlePopState);
+    window.addEventListener(
+      "popstate",
+      handlePopState
+    );
 
     return () => {
-      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener(
+        "popstate",
+        handlePopState
+      );
     };
   }, []);
 
@@ -97,9 +111,6 @@ function App() {
 
   /* =======================================================
      LOAD PROFILE
-     
-     QUAN TRỌNG:
-     Đã thêm role.
   ======================================================= */
 
   const loadProfile = async (userId) => {
@@ -139,13 +150,14 @@ function App() {
       Number(data.exp ?? 0)
     );
 
-    const safeLevel = getLevelFromExp(
-      safeExp
-    );
+    const safeLevel =
+      getLevelFromExp(safeExp);
 
     const safeStudySeconds = Math.max(
       0,
-      Number(data.total_study_seconds ?? 0)
+      Number(
+        data.total_study_seconds ?? 0
+      )
     );
 
     const normalizedProfile = {
@@ -153,7 +165,8 @@ function App() {
       role: data.role || "student",
       exp: safeExp,
       level: safeLevel,
-      total_study_seconds: safeStudySeconds,
+      total_study_seconds:
+        safeStudySeconds,
     };
 
     setProfile(normalizedProfile);
@@ -199,11 +212,6 @@ function App() {
         if (!mounted) {
           return;
         }
-
-        /* =================================================
-           NẾU ĐÃ ĐĂNG NHẬP
-           TỰ ĐỘNG ĐƯA ĐẾN TRANG ĐÚNG ROLE
-        ================================================= */
 
         if (
           loadedProfile &&
@@ -322,8 +330,6 @@ function App() {
 
   /* =======================================================
      REFRESH PROFILE
-
-     Alphabet / Vocabulary gọi hàm này sau khi lưu Supabase.
   ======================================================= */
 
   const refreshProfile = async () => {
@@ -338,10 +344,6 @@ function App() {
 
   /* =======================================================
      ĐĂNG XUẤT
-
-     Không có timer ở đây.
-
-     Chỉ xóa timer tạm của Alphabet khi logout.
   ======================================================= */
 
   const handleLogout = async () => {
@@ -393,7 +395,8 @@ function App() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: "Arial, sans-serif",
+          fontFamily:
+            "Arial, sans-serif",
           background: "#fffbeb",
           color: "#92400e",
           fontSize: "18px",
@@ -447,7 +450,8 @@ function App() {
           justifyContent: "center",
           background: "#fffbeb",
           color: "#92400e",
-          fontFamily: "Arial, sans-serif",
+          fontFamily:
+            "Arial, sans-serif",
           fontWeight: "700",
         }}
       >
@@ -457,37 +461,34 @@ function App() {
   }
 
   /* =======================================================
-   ADMIN
-======================================================= */
+     ADMIN
+  ======================================================= */
 
-if (profile.role === "admin") {
-  if (path === "/admin") {
-    return (
-      <AdminHome
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
-      />
+  if (profile.role === "admin") {
+    if (path === "/admin") {
+      return (
+        <AdminHome
+          profile={profile}
+          session={session}
+          navigate={navigate}
+          onLogout={handleLogout}
+        />
+      );
+    }
+
+    window.history.replaceState(
+      {},
+      "",
+      "/admin"
     );
+
+    setPath("/admin");
+
+    return null;
   }
-
-  window.history.replaceState(
-    {},
-    "",
-    "/admin"
-  );
-
-  setPath("/admin");
-
-  return null;
-}
 
   /* =======================================================
      STUDENT HOME
-
-     QUAN TRỌNG:
-     Không có timer ở đây.
   ======================================================= */
 
   if (
@@ -509,8 +510,6 @@ if (profile.role === "admin") {
 
   /* =======================================================
      ALPHABET
-
-     ĐÂY LÀ TRANG CÓ TIMER
   ======================================================= */
 
   if (path === "/alphabet") {
@@ -557,68 +556,79 @@ if (profile.role === "admin") {
 
     return null;
   }
-/* =======================================================
-   GAME
-======================================================= */
 
-if (
-  path === "/game" ||
-  path.startsWith("/game/")
-) {
-  return (
-    <Game
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onLogout={handleLogout}
-      path={path}
-    />
-  );
-}
-/* =======================================================
-   COMMUNICATION
-======================================================= */
-
-if (path === "/communication") {
-  return (
-    <Communication
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onLogout={handleLogout}
-      onProgressUpdated={refreshProfile}
-    />
-  );
-}
-/* =======================================================
-   PROGRESS
-======================================================= */
-
-if (path === "/progress") {
-  return (
-    <Progress
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onLogout={handleLogout}
-      onProgressUpdated={refreshProfile}
-    />
-  );
-}
   /* =======================================================
-   PROFILE / TÀI KHOẢN
-======================================================= */
+     GAME
+  ======================================================= */
 
-if (path === "/student/profile") {
-  return (
-    <Profile
-      profile={profile}
-      session={session}
-      navigate={navigate}
-      onProfileUpdated={refreshProfile}
-    />
-  );
-}
+  if (
+    path === "/game" ||
+    path.startsWith("/game/")
+  ) {
+    return (
+      <Game
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={handleLogout}
+        path={path}
+      />
+    );
+  }
+
+  /* =======================================================
+     COMMUNICATION
+  ======================================================= */
+
+  if (path === "/communication") {
+    return (
+      <Communication
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={handleLogout}
+        onProgressUpdated={
+          refreshProfile
+        }
+      />
+    );
+  }
+
+  /* =======================================================
+     PROGRESS
+  ======================================================= */
+
+  if (path === "/progress") {
+    return (
+      <Progress
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={handleLogout}
+        onProgressUpdated={
+          refreshProfile
+        }
+      />
+    );
+  }
+
+  /* =======================================================
+     PROFILE
+  ======================================================= */
+
+  if (path === "/student/profile") {
+    return (
+      <Profile
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onProfileUpdated={
+          refreshProfile
+        }
+      />
+    );
+  }
+
   /* =======================================================
      TRANG CHƯA LÀM
   ======================================================= */
@@ -628,7 +638,8 @@ if (path === "/student/profile") {
       style={{
         minHeight: "100vh",
         padding: "40px",
-        fontFamily: "Arial, sans-serif",
+        fontFamily:
+          "Arial, sans-serif",
         background: "#fffbeb",
       }}
     >
