@@ -20,8 +20,9 @@ import Profile from "./pages/student/profile/Profile";
 
 import AdminHome from "./pages/admin/AdminHome";
 
+
 /* =========================================================
-   CẤU HÌNH LEVEL
+   LEVEL EXP
 ========================================================= */
 
 const LEVEL_EXP = {
@@ -37,34 +38,91 @@ const LEVEL_EXP = {
   10: 25600,
 };
 
+
 /* =========================================================
-   XÁC ĐỊNH LEVEL TỪ EXP
+   LEVEL TỪ EXP
 ========================================================= */
 
 function getLevelFromExp(exp) {
-  const safeExp = Math.max(
-    0,
-    Number(exp) || 0
-  );
+  const safeExp =
+    Math.max(
+      0,
+      Number(exp) || 0
+    );
 
-  if (safeExp < LEVEL_EXP[2]) return 1;
-  if (safeExp < LEVEL_EXP[3]) return 2;
-  if (safeExp < LEVEL_EXP[4]) return 3;
-  if (safeExp < LEVEL_EXP[5]) return 4;
-  if (safeExp < LEVEL_EXP[6]) return 5;
-  if (safeExp < LEVEL_EXP[7]) return 6;
-  if (safeExp < LEVEL_EXP[8]) return 7;
-  if (safeExp < LEVEL_EXP[9]) return 8;
-  if (safeExp < LEVEL_EXP[10]) return 9;
+  if (
+    safeExp <
+    LEVEL_EXP[2]
+  ) {
+    return 1;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[3]
+  ) {
+    return 2;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[4]
+  ) {
+    return 3;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[5]
+  ) {
+    return 4;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[6]
+  ) {
+    return 5;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[7]
+  ) {
+    return 6;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[8]
+  ) {
+    return 7;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[9]
+  ) {
+    return 8;
+  }
+
+  if (
+    safeExp <
+    LEVEL_EXP[10]
+  ) {
+    return 9;
+  }
 
   return 10;
 }
+
 
 /* =========================================================
    APP
 ========================================================= */
 
 function App() {
+
   /* =======================================================
      ROUTE
   ======================================================= */
@@ -73,8 +131,13 @@ function App() {
     window.location.pathname || "/"
   );
 
-  const navigate = (newPath) => {
-    if (newPath === window.location.pathname) {
+  const navigate = (
+    newPath
+  ) => {
+    if (
+      newPath ===
+      window.location.pathname
+    ) {
       setPath(newPath);
       return;
     }
@@ -87,6 +150,7 @@ function App() {
 
     setPath(newPath);
   };
+
 
   useEffect(() => {
     const handlePopState = () => {
@@ -108,19 +172,34 @@ function App() {
     };
   }, []);
 
+
   /* =======================================================
      AUTH / PROFILE
   ======================================================= */
 
-  const [loading, setLoading] = useState(true);
-  const [session, setSession] = useState(null);
-  const [profile, setProfile] = useState(null);
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
+
+  const [
+    session,
+    setSession,
+  ] = useState(null);
+
+  const [
+    profile,
+    setProfile,
+  ] = useState(null);
+
 
   /* =======================================================
      LOAD PROFILE
   ======================================================= */
 
-  const loadProfile = async (userId) => {
+  const loadProfile = async (
+    userId
+  ) => {
     if (!userId) {
       setProfile(null);
       return null;
@@ -134,7 +213,10 @@ function App() {
       .select(
         "id, username, account, email, role, exp, level, total_study_seconds, avatar_url"
       )
-      .eq("id", userId)
+      .eq(
+        "id",
+        userId
+      )
       .single();
 
     if (error) {
@@ -154,10 +236,13 @@ function App() {
       return null;
     }
 
-    const safeExp = Math.max(
-      0,
-      Number(data.exp ?? 0)
-    );
+    const safeExp =
+      Math.max(
+        0,
+        Number(
+          data.exp ?? 0
+        )
+      );
 
     const safeLevel =
       getLevelFromExp(
@@ -196,6 +281,7 @@ function App() {
     return normalizedProfile;
   };
 
+
   /* =======================================================
      KHỞI ĐỘNG AUTH
   ======================================================= */
@@ -203,143 +289,178 @@ function App() {
   useEffect(() => {
     let mounted = true;
 
-    const initialize = async () => {
-      const {
-        data,
-        error,
-      } = await supabase.auth.getSession();
+    const initialize =
+      async () => {
 
-      if (error) {
-        console.error(
-          "❌ Lỗi lấy session:",
-          error
-        );
-      }
+        const {
+          data,
+          error,
+        } =
+          await supabase.auth.getSession();
 
-      if (!mounted) {
-        return;
-      }
-
-      const currentSession =
-        data?.session || null;
-
-      setSession(
-        currentSession
-      );
-
-      /* ===================================================
-         CÓ USER ĐANG ĐĂNG NHẬP
-         
-         QUAN TRỌNG:
-         Gán user.id cho Game Progress.
-         
-         Mỗi tài khoản có một storage riêng:
-         
-         khmer_game_progress_<USER_ID>
-      =================================================== */
-
-      if (
-        currentSession?.user?.id
-      ) {
-        const userId =
-          currentSession.user.id;
-
-        setGameProgressUser(
-          userId
-        );
-
-        const loadedProfile =
-          await loadProfile(
-            userId
+        if (error) {
+          console.error(
+            "❌ Lỗi lấy session:",
+            error
           );
+        }
 
         if (!mounted) {
           return;
         }
 
-        if (
-          loadedProfile &&
-          (
-            window.location.pathname === "/" ||
-            window.location.pathname === "/login" ||
-            window.location.pathname === "/register"
-          )
-        ) {
-          const target =
-            loadedProfile.role === "admin"
-              ? "/admin"
-              : "/student";
+        const currentSession =
+          data?.session ||
+          null;
 
-          window.history.replaceState(
-            {},
-            "",
-            target
-          );
+        setSession(
+          currentSession
+        );
 
-          setPath(
-            target
-          );
-        }
-      }
 
-      /* ===================================================
-         CHƯA ĐĂNG NHẬP
-      =================================================== */
-
-      if (!currentSession) {
-        /*
-          Xóa user context của Game Progress.
-
-          KHÔNG xóa dữ liệu progress trong localStorage.
-          Chỉ xóa user hiện tại khỏi bộ nhớ.
-        */
-        clearGameProgressUser();
+        /* =================================================
+           CÓ USER
+        ================================================= */
 
         if (
-          window.location.pathname !== "/login" &&
-          window.location.pathname !== "/register" &&
-          window.location.pathname !== "/forgot-password"
+          currentSession?.user?.id
         ) {
-          window.history.replaceState(
-            {},
-            "",
-            "/login"
-          );
+          const userId =
+            currentSession.user.id;
 
-          setPath(
-            "/login"
-          );
+          /*
+            QUAN TRỌNG:
+
+            Gán đúng Supabase user.id
+            cho Game Progress.
+
+            Hàm này đồng thời bắt đầu
+            hydrate progress từ Supabase.
+          */
+
+          const progressPromise =
+            setGameProgressUser(
+              userId
+            );
+
+          /*
+            Tải profile.
+          */
+
+          const loadedProfile =
+            await loadProfile(
+              userId
+            );
+
+          /*
+            Đảm bảo Game Progress đã
+            được hydrate trước khi
+            kết thúc initialization.
+          */
+
+          if (
+            progressPromise
+          ) {
+            await progressPromise;
+          }
+
+          if (!mounted) {
+            return;
+          }
+
+          if (
+            loadedProfile &&
+            (
+              window.location.pathname === "/" ||
+              window.location.pathname === "/login" ||
+              window.location.pathname === "/register"
+            )
+          ) {
+            const target =
+              loadedProfile.role ===
+              "admin"
+                ? "/admin"
+                : "/student";
+
+            window.history.replaceState(
+              {},
+              "",
+              target
+            );
+
+            setPath(
+              target
+            );
+          }
         }
-      }
 
-      setLoading(false);
-    };
+
+        /* =================================================
+           CHƯA ĐĂNG NHẬP
+        ================================================= */
+
+        if (!currentSession) {
+
+          /*
+            Chỉ xóa context.
+
+            KHÔNG xóa dữ liệu
+            trên Supabase.
+          */
+
+          clearGameProgressUser();
+
+          if (
+            window.location.pathname !== "/login" &&
+            window.location.pathname !== "/register" &&
+            window.location.pathname !== "/forgot-password"
+          ) {
+            window.history.replaceState(
+              {},
+              "",
+              "/login"
+            );
+
+            setPath(
+              "/login"
+            );
+          }
+        }
+
+        setLoading(false);
+      };
+
 
     initialize();
+
 
     /* =====================================================
        AUTH STATE CHANGE
     ===================================================== */
 
     const {
-      data: authListener,
+      data:
+        authListener,
     } =
       supabase.auth.onAuthStateChange(
         async (
           event,
           newSession
         ) => {
+
           if (!mounted) {
             return;
           }
 
           setSession(
-            newSession || null
+            newSession ||
+            null
           );
 
-          /* =================================================
+
+          /* ===============================================
              CÓ USER
-          ================================================= */
+          =============================================== */
 
           if (
             newSession?.user?.id
@@ -348,17 +469,25 @@ function App() {
               newSession.user.id;
 
             /*
-              Mỗi lần đăng nhập / khôi phục session,
-              chuyển Game Progress sang đúng user.
+              Chuyển Game Progress
+              sang đúng tài khoản.
             */
-            setGameProgressUser(
-              userId
-            );
+
+            const progressPromise =
+              setGameProgressUser(
+                userId
+              );
 
             const loadedProfile =
               await loadProfile(
                 userId
               );
+
+            if (
+              progressPromise
+            ) {
+              await progressPromise;
+            }
 
             if (!mounted) {
               return;
@@ -377,7 +506,8 @@ function App() {
                 window.location.pathname === "/register"
               ) {
                 const target =
-                  loadedProfile.role === "admin"
+                  loadedProfile.role ===
+                  "admin"
                     ? "/admin"
                     : "/student";
 
@@ -394,25 +524,20 @@ function App() {
             }
           }
 
-          /* =================================================
+
+          /* ===============================================
              KHÔNG CÓ USER
-             
-             SIGNED_OUT
-          ================================================= */
+          =============================================== */
 
           else {
-            /*
-              Xóa Game Progress user context.
 
-              Dữ liệu progress vẫn còn trong localStorage
-              để lần sau user đăng nhập lại có thể tiếp tục.
-            */
             clearGameProgressUser();
 
             setProfile(null);
           }
         }
       );
+
 
     return () => {
       mounted = false;
@@ -421,80 +546,93 @@ function App() {
     };
   }, []);
 
+
   /* =======================================================
      REFRESH PROFILE
   ======================================================= */
 
-  const refreshProfile = async () => {
-    if (!session?.user?.id) {
-      return;
-    }
+  const refreshProfile =
+    async () => {
+      if (
+        !session?.user?.id
+      ) {
+        return;
+      }
 
-    await loadProfile(
-      session.user.id
-    );
-  };
+      await loadProfile(
+        session.user.id
+      );
+    };
+
 
   /* =======================================================
-     ĐĂNG XUẤT
+     LOGOUT
   ======================================================= */
 
-  const handleLogout = async () => {
-    /*
-      Xóa dữ liệu timer tạm của Alphabet
-      cho user hiện tại.
+  const handleLogout =
+    async () => {
 
-      Không xóa Game Progress.
-    */
-    if (session?.user?.id) {
-      try {
-        localStorage.removeItem(
-          `alphabet_study_${session.user.id}`
-        );
-      } catch (error) {
-        console.warn(
-          "Không thể xóa dữ liệu timer tạm:",
+      /*
+        Xóa timer tạm Alphabet.
+      */
+
+      if (
+        session?.user?.id
+      ) {
+        try {
+          localStorage.removeItem(
+            `alphabet_study_${session.user.id}`
+          );
+        } catch (error) {
+          console.warn(
+            "Không thể xóa dữ liệu timer tạm:",
+            error
+          );
+        }
+      }
+
+
+      /*
+        QUAN TRỌNG:
+
+        Chỉ clear user context.
+
+        KHÔNG xóa:
+        game_progress trên Supabase.
+      */
+
+      clearGameProgressUser();
+
+
+      const {
+        error,
+      } =
+        await supabase.auth.signOut();
+
+      if (error) {
+        console.error(
+          "❌ Lỗi đăng xuất:",
           error
         );
       }
-    }
 
-    /*
-      QUAN TRỌNG:
 
-      Xóa Game Progress user context
-      trước khi đăng xuất.
+      setProfile(null);
 
-      Không xóa:
-      khmer_game_progress_<USER_ID>
-    */
-    clearGameProgressUser();
+      setSession(null);
 
-    const {
-      error,
-    } =
-      await supabase.auth.signOut();
 
-    if (error) {
-      console.error(
-        "❌ Lỗi đăng xuất:",
-        error
+      window.history.replaceState(
+        {},
+        "",
+        "/login"
       );
-    }
 
-    setProfile(null);
-    setSession(null);
+      setPath(
+        "/login"
+      );
+    };
 
-    window.history.replaceState(
-      {},
-      "",
-      "/login"
-    );
-
-    setPath(
-      "/login"
-    );
-  };
 
   /* =======================================================
      LOADING
@@ -504,16 +642,32 @@ function App() {
     return (
       <div
         style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          minHeight:
+            "100vh",
+
+          display:
+            "flex",
+
+          alignItems:
+            "center",
+
+          justifyContent:
+            "center",
+
           fontFamily:
             "Arial, sans-serif",
-          background: "#fffbeb",
-          color: "#92400e",
-          fontSize: "18px",
-          fontWeight: "700",
+
+          background:
+            "#fffbeb",
+
+          color:
+            "#92400e",
+
+          fontSize:
+            "18px",
+
+          fontWeight:
+            "700",
         }}
       >
         Đang tải hệ thống...
@@ -521,37 +675,48 @@ function App() {
     );
   }
 
+
   /* =======================================================
      CHƯA ĐĂNG NHẬP
   ======================================================= */
 
   if (!session) {
+
     if (
-      path === "/register"
+      path ===
+      "/register"
     ) {
       return (
         <Register
-          navigate={navigate}
+          navigate={
+            navigate
+          }
         />
       );
     }
 
     if (
-      path === "/forgot-password"
+      path ===
+      "/forgot-password"
     ) {
       return (
         <ForgotPassword
-          navigate={navigate}
+          navigate={
+            navigate
+          }
         />
       );
     }
 
     return (
       <Login
-        navigate={navigate}
+        navigate={
+          navigate
+        }
       />
     );
   }
+
 
   /* =======================================================
      CHƯA CÓ PROFILE
@@ -561,15 +726,29 @@ function App() {
     return (
       <div
         style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#fffbeb",
-          color: "#92400e",
+          minHeight:
+            "100vh",
+
+          display:
+            "flex",
+
+          alignItems:
+            "center",
+
+          justifyContent:
+            "center",
+
+          background:
+            "#fffbeb",
+
+          color:
+            "#92400e",
+
           fontFamily:
             "Arial, sans-serif",
-          fontWeight: "700",
+
+          fontWeight:
+            "700",
         }}
       >
         Đang tải thông tin tài khoản...
@@ -577,22 +756,33 @@ function App() {
     );
   }
 
+
   /* =======================================================
      ADMIN
   ======================================================= */
 
   if (
-    profile.role === "admin"
+    profile.role ===
+    "admin"
   ) {
     if (
-      path === "/admin"
+      path ===
+      "/admin"
     ) {
       return (
         <AdminHome
-          profile={profile}
-          session={session}
-          navigate={navigate}
-          onLogout={handleLogout}
+          profile={
+            profile
+          }
+          session={
+            session
+          }
+          navigate={
+            navigate
+          }
+          onLogout={
+            handleLogout
+          }
         />
       );
     }
@@ -609,6 +799,7 @@ function App() {
 
     return null;
   }
+
 
   /* =======================================================
      STUDENT HOME
@@ -620,50 +811,78 @@ function App() {
   ) {
     return (
       <StudentHome
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
+        onLogout={
+          handleLogout
+        }
         onProgressUpdated={
           refreshProfile
         }
       />
     );
   }
+
 
   /* =======================================================
      ALPHABET
   ======================================================= */
 
   if (
-    path === "/alphabet"
+    path ===
+    "/alphabet"
   ) {
     return (
       <Alphabet
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
+        onLogout={
+          handleLogout
+        }
         onProgressUpdated={
           refreshProfile
         }
       />
     );
   }
+
 
   /* =======================================================
      VOCABULARY
   ======================================================= */
 
   if (
-    path === "/vocabulary"
+    path ===
+    "/vocabulary"
   ) {
     return (
       <Vocabulary
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
+        onLogout={
+          handleLogout
+        }
         onProgressUpdated={
           refreshProfile
         }
@@ -671,13 +890,16 @@ function App() {
     );
   }
 
+
   /* =======================================================
-     STUDENT KHÔNG ĐƯỢC VÀO ADMIN
+     ADMIN BLOCK
   ======================================================= */
 
   if (
-    path === "/admin" &&
-    profile.role !== "admin"
+    path ===
+      "/admin" &&
+    profile.role !==
+      "admin"
   ) {
     navigate(
       "/student"
@@ -686,58 +908,91 @@ function App() {
     return null;
   }
 
+
   /* =======================================================
      GAME
   ======================================================= */
 
   if (
     path === "/game" ||
-    path.startsWith("/game/")
+    path.startsWith(
+      "/game/"
+    )
   ) {
     return (
       <Game
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
-        path={path}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
+        onLogout={
+          handleLogout
+        }
+        path={
+          path
+        }
       />
     );
   }
+
 
   /* =======================================================
      COMMUNICATION
   ======================================================= */
 
   if (
-    path === "/communication"
+    path ===
+    "/communication"
   ) {
     return (
       <Communication
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
+        onLogout={
+          handleLogout
+        }
         onProgressUpdated={
           refreshProfile
         }
       />
     );
   }
+
 
   /* =======================================================
      PROGRESS
   ======================================================= */
 
   if (
-    path === "/progress"
+    path ===
+    "/progress"
   ) {
     return (
       <Progress
-        profile={profile}
-        session={session}
-        navigate={navigate}
-        onLogout={handleLogout}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
+        onLogout={
+          handleLogout
+        }
         onProgressUpdated={
           refreshProfile
         }
@@ -745,24 +1000,33 @@ function App() {
     );
   }
 
+
   /* =======================================================
-     PROFILE / TÀI KHOẢN
+     PROFILE
   ======================================================= */
 
   if (
-    path === "/student/profile"
+    path ===
+    "/student/profile"
   ) {
     return (
       <Profile
-        profile={profile}
-        session={session}
-        navigate={navigate}
+        profile={
+          profile
+        }
+        session={
+          session
+        }
+        navigate={
+          navigate
+        }
         onProfileUpdated={
           refreshProfile
         }
       />
     );
   }
+
 
   /* =======================================================
      TRANG CHƯA LÀM
@@ -771,11 +1035,17 @@ function App() {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        padding: "40px",
+        minHeight:
+          "100vh",
+
+        padding:
+          "40px",
+
         fontFamily:
           "Arial, sans-serif",
-        background: "#fffbeb",
+
+        background:
+          "#fffbeb",
       }}
     >
       <h2>
@@ -802,5 +1072,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

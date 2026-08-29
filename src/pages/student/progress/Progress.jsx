@@ -1,13 +1,25 @@
-import { useMemo } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import "./Progress.css";
 import StudentLayout from "../StudentLayout";
 
-/* =========================================================
-   CẤU HÌNH LEVEL
-   DÙNG Y NGUYÊN LOGIC CỦA STUDENT HOME
-========================================================= */
+import { supabase } from "../../../supabase";
 
-const MAX_LEVEL = 10;
+import {
+  subscribeGameProgress,
+  GAME_EXP,
+  getGameBadge,
+} from "../game/data/gameProgress";
+
+
+/* =========================================================
+   LEVEL
+========================================================= */
 
 const LEVEL_EXP = {
   1: 0,
@@ -22,962 +34,1342 @@ const LEVEL_EXP = {
   10: 25600,
 };
 
-/* =========================================================
-   XÁC ĐỊNH LEVEL TỪ EXP
 
-   PHẢI GIỐNG 100% STUDENT HOME
+/* =========================================================
+   EXP / PHÚT
 ========================================================= */
 
-function getLevelFromExp(exp) {
-  const safeExp =
-    Math.max(0, Number(exp) || 0);
+const EXP_PER_MINUTE = 10;
 
-  if (safeExp < 100) return 1;
-  if (safeExp < 200) return 2;
-  if (safeExp < 400) return 3;
-  if (safeExp < 800) return 4;
-  if (safeExp < 1600) return 5;
-  if (safeExp < 3200) return 6;
-  if (safeExp < 6400) return 7;
-  if (safeExp < 12800) return 8;
-  if (safeExp < 25600) return 9;
+
+/* =========================================================
+   GAME TỐI ĐA
+========================================================= */
+
+const MAX_GAME = 10;
+
+
+/* =========================================================
+   CẤP CUP GAME
+========================================================= */
+
+const GAME_ACHIEVEMENTS = {
+  1: {
+    icon: "🏆",
+    tier: "ĐỒNG",
+    className: "bronze",
+    title: "Người khám phá chữ Khmer",
+  },
+
+  2: {
+    icon: "🏆",
+    tier: "BẠC",
+    className: "silver",
+    title: "Người ghép chữ",
+  },
+
+  3: {
+    icon: "🏆",
+    tier: "VÀNG",
+    className: "gold",
+    title: "Người thông thạo từ vựng cơ bản",
+  },
+
+  4: {
+    icon: "🏆",
+    tier: "BẠCH KIM",
+    className: "platinum",
+    title: "Làm chủ phụ âm bổ sung và chân chữ",
+  },
+
+  5: {
+    icon: "🏆",
+    tier: "KIM CƯƠNG",
+    className: "diamond",
+    title: "Bậc thầy từ vựng",
+  },
+};
+
+
+/* =========================================================
+   THÀNH TÍCH THỜI GIAN
+========================================================= */
+
+const TIME_ACHIEVEMENTS = [
+  {
+    id: "time-1",
+    hours: 1,
+    icon: "🕐",
+    tier: "ĐỒNG",
+    className: "bronze",
+    title: "Khởi Đầu Hành Trình",
+    description: "Tổng thời gian học đạt 1 giờ",
+  },
+
+  {
+    id: "time-2",
+    hours: 2,
+    icon: "🕐",
+    tier: "BẠC",
+    className: "silver",
+    title: "Người Bền Bỉ",
+    description: "Tổng thời gian học đạt 2 giờ",
+  },
+
+  {
+    id: "time-4",
+    hours: 4,
+    icon: "🕐",
+    tier: "VÀNG",
+    className: "gold",
+    title: "Kẻ Chinh Phục Thời Gian",
+    description: "Tổng thời gian học đạt 4 giờ",
+  },
+
+  {
+    id: "time-8",
+    hours: 8,
+    icon: "🕐",
+    tier: "BẠCH KIM",
+    className: "platinum",
+    title: "Bậc Thầy Kiên Trì",
+    description: "Tổng thời gian học đạt 8 giờ",
+  },
+
+  {
+    id: "time-16",
+    hours: 16,
+    icon: "🕐",
+    tier: "KIM CƯƠNG",
+    className: "diamond",
+    title: "Huyền Thoại Thời Gian",
+    description: "Tổng thời gian học đạt 16 giờ",
+  },
+];
+
+
+/* =========================================================
+   THÀNH TÍCH ĐIỂM STAGE
+========================================================= */
+
+const SCORE_ACHIEVEMENTS = [
+  {
+    id: "score-3",
+    required: 3,
+    icon: "★★★",
+    tier: "ĐỒNG",
+    className: "bronze",
+    title: "Tay Chơi Triển Vọng",
+    description: "Có 3 Stage đạt 550 điểm",
+  },
+
+  {
+    id: "score-5",
+    required: 5,
+    icon: "★★★★★",
+    tier: "BẠC",
+    className: "silver",
+    title: "Bậc Thầy Combo",
+    description: "Có 5 Stage đạt 550 điểm",
+  },
+
+  {
+    id: "score-10",
+    required: 10,
+    icon: "★★★★★★★★★★",
+    tier: "VÀNG",
+    className: "gold",
+    title: "Chiến Binh Điểm Số",
+    description: "Có 10 Stage đạt 550 điểm",
+  },
+
+  {
+    id: "score-20",
+    required: 20,
+    icon: "★★★★★★★★★★★★★★★★★★★★",
+    tier: "BẠCH KIM",
+    className: "platinum",
+    title: "Huyền Thoại 550",
+    description: "Có 20 Stage đạt 550 điểm",
+  },
+];
+
+
+/* =========================================================
+   LEVEL TỪ EXP
+========================================================= */
+
+const getLevelFromExp = (exp) => {
+  const safeExp = Math.max(0, Number(exp) || 0);
+
+  if (safeExp < LEVEL_EXP[2]) return 1;
+  if (safeExp < LEVEL_EXP[3]) return 2;
+  if (safeExp < LEVEL_EXP[4]) return 3;
+  if (safeExp < LEVEL_EXP[5]) return 4;
+  if (safeExp < LEVEL_EXP[6]) return 5;
+  if (safeExp < LEVEL_EXP[7]) return 6;
+  if (safeExp < LEVEL_EXP[8]) return 7;
+  if (safeExp < LEVEL_EXP[9]) return 8;
+  if (safeExp < LEVEL_EXP[10]) return 9;
 
   return 10;
-}
+};
+
 
 /* =========================================================
-   TÍNH TIẾN ĐỘ LEVEL
-
-   Ví dụ:
-   1160 EXP
-
-   Level hiện tại = 5
-   Level 5 bắt đầu = 800
-   Level 6 bắt đầu = 1600
-
-   EXP trong Level = 1160 - 800 = 360
-   Cần tổng = 1600 - 800 = 800
-   Còn = 800 - 360 = 440
-   Tiến độ = 360 / 800 = 45%
+   LEVEL PROGRESS
 ========================================================= */
 
-function getLevelProgress(exp) {
-  const safeExp =
-    Math.max(0, Number(exp) || 0);
+const getLevelProgress = (exp) => {
+  const safeExp = Math.max(0, Number(exp) || 0);
 
-  const currentLevel =
-    getLevelFromExp(safeExp);
+  const level = getLevelFromExp(safeExp);
 
-  /* =======================================================
-     MAX LEVEL
-  ======================================================= */
-
-  if (currentLevel >= MAX_LEVEL) {
+  if (level >= 10) {
     return {
-      currentLevel,
+      level: 10,
       currentExp: safeExp,
-      requiredExp: 0,
-      remainingExp: 0,
-      percent: 100,
-      isMaxLevel: true,
+      nextExp: LEVEL_EXP[10],
+      progress: 100,
+      remaining: 0,
     };
   }
 
-  /* =======================================================
-     MỐC EXP CỦA LEVEL HIỆN TẠI
-  ======================================================= */
+  const currentLevelExp = LEVEL_EXP[level];
+  const nextLevelExp = LEVEL_EXP[level + 1];
 
-  const previousExp =
-    LEVEL_EXP[currentLevel];
+  const range = nextLevelExp - currentLevelExp;
+  const current = safeExp - currentLevelExp;
 
-  /* =======================================================
-     LEVEL TIẾP THEO
-  ======================================================= */
-
-  const nextLevel =
-    currentLevel + 1;
-
-  const nextLevelExp =
-    LEVEL_EXP[nextLevel];
-
-  /* =======================================================
-     EXP CẦN TRONG LEVEL HIỆN TẠI
-  ======================================================= */
-
-  const requiredExp =
-    nextLevelExp -
-    previousExp;
-
-  /* =======================================================
-     EXP ĐÃ ĐẠT TRONG LEVEL HIỆN TẠI
-  ======================================================= */
-
-  const currentExp =
-    Math.max(
-      0,
-      safeExp - previousExp
-    );
-
-  /* =======================================================
-     EXP CÒN THIẾU
-  ======================================================= */
-
-  const remainingExp =
-    Math.max(
-      0,
-      requiredExp - currentExp
-    );
-
-  /* =======================================================
-     PHẦN TRĂM
-  ======================================================= */
-
-  const percent =
-    requiredExp > 0
+  const progress =
+    range > 0
       ? Math.min(
           100,
-          Math.round(
-            (currentExp /
-              requiredExp) *
-              100
-          )
+          Math.max(0, (current / range) * 100)
         )
       : 100;
 
   return {
-    currentLevel,
-    currentExp,
-    requiredExp,
-    remainingExp,
-    percent,
-    isMaxLevel: false,
+    level,
+    currentExp: safeExp,
+    nextExp: nextLevelExp,
+    progress,
+    remaining: Math.max(
+      0,
+      nextLevelExp - safeExp
+    ),
   };
-}
+};
+
 
 /* =========================================================
    FORMAT THỜI GIAN
 ========================================================= */
 
-function formatStudyTime(seconds) {
-  const safeSeconds =
-    Math.max(
-      0,
-      Math.floor(
-        Number(seconds) || 0
-      )
-    );
-
-  const hours =
-    Math.floor(
-      safeSeconds / 3600
-    );
-
-  const minutes =
-    Math.floor(
-      (safeSeconds % 3600) /
-        60
-    );
-
-  const secs =
-    safeSeconds % 60;
-
-  return {
-    hours,
-    minutes,
-    seconds: secs,
-    text:
-      `${hours} giờ ` +
-      `${minutes} phút ` +
-      `${secs} giây`,
-  };
-}
-
-/* =========================================================
-   CHUỖI NGÀY HỌC
-========================================================= */
-
-function getStudyStreak(profile) {
-  const value =
-    Number(
-      profile?.study_streak ??
-        profile?.learning_streak ??
-        0
-    );
-
-  return Math.max(
+const formatStudyTime = (seconds) => {
+  const safeSeconds = Math.max(
     0,
-    Math.floor(value)
+    Number(seconds) || 0
   );
-}
+
+  const hours = Math.floor(
+    safeSeconds / 3600
+  );
+
+  const minutes = Math.floor(
+    (safeSeconds % 3600) / 60
+  );
+
+  if (hours > 0) {
+    return `${hours} giờ ${minutes} phút`;
+  }
+
+  return `${minutes} phút`;
+};
+
 
 /* =========================================================
-   GAME PROGRESS
+   DEFAULT GAME
 ========================================================= */
 
-function loadGameProgress() {
+const createDefaultGame = (gameId) => ({
+  game_id: Number(gameId),
+
+  completed: false,
+  exp_claimed: false,
+  badge_claimed: false,
+
+  stage1_completed: false,
+  stage2_completed: false,
+  stage3_completed: false,
+  stage4_completed: false,
+
+  stage1_play_count: 0,
+  stage2_play_count: 0,
+  stage3_play_count: 0,
+  stage4_play_count: 0,
+
+  stage1_high_score: 0,
+  stage2_high_score: 0,
+  stage3_high_score: 0,
+  stage4_high_score: 0,
+});
+
+
+/* =========================================================
+   GAME TITLE
+========================================================= */
+
+const getGameTitle = (gameId) => {
+  const achievement =
+    GAME_ACHIEVEMENTS[gameId];
+
+  if (achievement) {
+    return achievement.title;
+  }
+
   try {
-    const raw =
-      localStorage.getItem(
-        "khmer_game_progress"
-      );
+    const badge = getGameBadge(gameId);
 
-    if (!raw) {
-      return {
-        games: {},
-      };
+    if (badge?.name) {
+      return badge.name;
     }
-
-    const parsed =
-      JSON.parse(raw);
-
-    if (
-      !parsed ||
-      typeof parsed !== "object"
-    ) {
-      return {
-        games: {},
-      };
-    }
-
-    return {
-      games:
-        parsed.games &&
-        typeof parsed.games ===
-          "object"
-          ? parsed.games
-          : {},
-    };
-  } catch (error) {
-    console.warn(
-      "Không thể đọc tiến độ Game:",
-      error
-    );
-
-    return {
-      games: {},
-    };
+  } catch {
+    // Không để Progress crash
   }
-}
+
+  return `Thành tích Game ${gameId}`;
+};
+
 
 /* =========================================================
-   KIỂM TRA GAME HOÀN THÀNH
-========================================================= */
-
-function isGameCompleted(
-  gameProgress
-) {
-  if (!gameProgress) {
-    return false;
-  }
-
-  if (
-    gameProgress.completed ===
-    true
-  ) {
-    return true;
-  }
-
-  if (
-    gameProgress.isCompleted ===
-    true
-  ) {
-    return true;
-  }
-
-  if (
-    gameProgress.completedAt
-  ) {
-    return true;
-  }
-
-  const stages =
-    gameProgress.stages;
-
-  if (
-    stages &&
-    typeof stages ===
-      "object"
-  ) {
-    const stageIds = [
-      "stage1",
-      "stage2",
-      "stage3",
-      "stage4",
-    ];
-
-    return stageIds.every(
-      (stageId) => {
-        const stage =
-          stages[stageId];
-
-        if (!stage) {
-          return false;
-        }
-
-        return (
-          stage.completed ===
-            true ||
-          stage.isCompleted ===
-            true ||
-          stage.completedAt
-        );
-      }
-    );
-  }
-
-  return false;
-}
-
-/* =========================================================
-   DANH HIỆU TRÒ CHƠI
-========================================================= */
-
-const GAME_BADGES = [
-  {
-    gameId: 1,
-    icon: "🏆",
-    name: "Người khám phá chữ Khmer",
-    description:
-      "Hoàn thành Game 1",
-  },
-  {
-    gameId: 2,
-    icon: "🏆",
-    name: "Bậc thầy ghép chữ",
-    description:
-      "Hoàn thành Game 2",
-  },
-  {
-    gameId: 3,
-    icon: "🏆",
-    name: "Người chinh phục Khmer",
-    description:
-      "Hoàn thành Game 3",
-  },
-  {
-    gameId: 4,
-    icon: "🏆",
-    name: "Bậc thầy Khmer",
-    description:
-      "Hoàn thành Game 4",
-  },
-  {
-    gameId: 5,
-    icon: "🏆",
-    name: "Huyền thoại chữ Khmer",
-    description:
-      "Hoàn thành Game 5",
-  },
-];
-
-/* =========================================================
-   DANH HIỆU THÀNH TÍCH HỌC TẬP
-========================================================= */
-
-const STUDY_BADGES = [
-  {
-    id: "study-1h",
-    icon: "🔥",
-    name: "Người học chăm chỉ",
-    description:
-      "Online 1 giờ",
-    requiredSeconds:
-      1 * 60 * 60,
-  },
-  {
-    id: "study-2h",
-    icon: "💪",
-    name: "Người học bền bỉ",
-    description:
-      "Online 2 giờ",
-    requiredSeconds:
-      2 * 60 * 60,
-  },
-  {
-    id: "study-4h",
-    icon: "🏅",
-    name: "Người học kiên trì",
-    description:
-      "Online 4 giờ",
-    requiredSeconds:
-      4 * 60 * 60,
-  },
-  {
-    id: "study-8h",
-    icon: "🌟",
-    name: "Người say mê Khmer",
-    description:
-      "Online 8 giờ",
-    requiredSeconds:
-      8 * 60 * 60,
-  },
-  {
-    id: "study-16h",
-    icon: "💎",
-    name: "Người chinh phục tri thức",
-    description:
-      "Online 16 giờ",
-    requiredSeconds:
-      16 * 60 * 60,
-  },
-  {
-    id: "study-32h",
-    icon: "👑",
-    name: "Bậc thầy chăm học",
-    description:
-      "Online 32 giờ",
-    requiredSeconds:
-      32 * 60 * 60,
-  },
-  {
-    id: "study-64h",
-    icon: "🏆",
-    name: "Học giả Khmer",
-    description:
-      "Online 64 giờ",
-    requiredSeconds:
-      64 * 60 * 60,
-  },
-  {
-    id: "study-128h",
-    icon: "👑",
-    name: "Huyền thoại Khmer",
-    description:
-      "Online 128 giờ",
-    requiredSeconds:
-      128 * 60 * 60,
-  },
-];
-
-/* =========================================================
-   COMPONENT
+   PROGRESS
 ========================================================= */
 
 function Progress({
   profile,
+  session,
   navigate,
   onLogout,
 }) {
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  const [profileData, setProfileData] =
+    useState(null);
+
+  const [games, setGames] =
+    useState([]);
+
+
   /* =======================================================
-     USER
+     USER ID
   ======================================================= */
 
-  const username =
-    profile?.username ||
-    profile?.account ||
-    "Học sinh";
+  const userId =
+    session?.user?.id ||
+    profile?.id ||
+    null;
+
 
   /* =======================================================
-     EXP
-
-     LẤY TRỰC TIẾP TỪ PROFILE
-     GIỐNG STUDENT HOME KHI KHÔNG TRUYỀN totalExp
+     LOAD DATA
   ======================================================= */
+
+  const loadProgress = useCallback(
+    async ({ showLoading = false } = {}) => {
+      if (!userId) {
+        setLoading(false);
+        return;
+      }
+
+      if (showLoading) {
+        setLoading(true);
+      }
+
+      setError("");
+
+      try {
+        /* ================================================
+           PROFILE
+        ================================================= */
+
+        const {
+          data: profileRow,
+          error: profileError,
+        } = await supabase
+          .from("profiles")
+          .select(`
+            id,
+            username,
+            account,
+            email,
+            role,
+            level,
+            exp,
+            total_study_seconds,
+            avatar_url
+          `)
+          .eq("id", userId)
+          .maybeSingle();
+
+        if (profileError) {
+          throw profileError;
+        }
+
+
+        /* ================================================
+           GAME PROGRESS
+        ================================================= */
+
+        const {
+          data: gameRows,
+          error: gameError,
+        } = await supabase
+          .from("game_progress")
+          .select(`
+            id,
+            user_id,
+            game_id,
+
+            stage1_completed,
+            stage1_play_count,
+            stage1_high_score,
+
+            stage2_completed,
+            stage2_play_count,
+            stage2_high_score,
+
+            stage3_completed,
+            stage3_play_count,
+            stage3_high_score,
+
+            stage4_completed,
+            stage4_play_count,
+            stage4_high_score,
+
+            completed,
+            exp_claimed,
+            badge_claimed,
+            updated_at
+          `)
+          .eq("user_id", userId)
+          .order("game_id", {
+            ascending: true,
+          });
+
+        if (gameError) {
+          throw gameError;
+        }
+
+
+        /* ================================================
+           NORMALIZE PROFILE
+        ================================================= */
+
+        const safeStudySeconds =
+          Math.max(
+            0,
+            Number(
+              profileRow?.total_study_seconds
+            ) || 0
+          );
+
+        const profileExp =
+          Math.max(
+            0,
+            Number(
+              profileRow?.exp
+            ) || 0
+          );
+
+
+        /* ================================================
+           EXP THỜI GIAN
+        ================================================= */
+
+        const studyMinutes =
+          Math.floor(
+            safeStudySeconds / 60
+          );
+
+        const studyExp =
+          studyMinutes *
+          EXP_PER_MINUTE;
+
+
+        /* ================================================
+           NORMALIZE GAMES
+        ================================================= */
+
+        const normalizedGames = [];
+
+        for (
+          let gameId = 1;
+          gameId <= MAX_GAME;
+          gameId++
+        ) {
+          const row =
+            (gameRows || []).find(
+              (item) =>
+                Number(item.game_id) ===
+                gameId
+            );
+
+          normalizedGames.push(
+            row
+              ? {
+                  ...createDefaultGame(
+                    gameId
+                  ),
+                  ...row,
+                }
+              : createDefaultGame(
+                  gameId
+                )
+          );
+        }
+
+
+        /* ================================================
+           EXP GAME
+        ================================================= */
+
+        const gameExp =
+          normalizedGames.reduce(
+            (total, game) => {
+              if (!game.exp_claimed) {
+                return total;
+              }
+
+              return (
+                total +
+                GAME_EXP(
+                  game.game_id
+                )
+              );
+            },
+            0
+          );
+
+
+        /* ================================================
+           TỔNG EXP
+        ================================================= */
+
+        const calculatedTotalExp =
+          studyExp + gameExp;
+
+
+        /* ================================================
+           LEVEL
+        ================================================= */
+
+        const level =
+          getLevelFromExp(
+            calculatedTotalExp
+          );
+
+
+        /* ================================================
+           SET PROFILE
+        ================================================= */
+
+        setProfileData({
+          ...(profileRow || profile),
+
+          exp: profileExp,
+
+          calculated_exp:
+            calculatedTotalExp,
+
+          study_exp:
+            studyExp,
+
+          game_exp:
+            gameExp,
+
+          total_study_seconds:
+            safeStudySeconds,
+
+          level,
+        });
+
+
+        /* ================================================
+           SET GAME
+        ================================================= */
+
+        setGames(
+          normalizedGames
+        );
+      } catch (err) {
+        console.error(
+          "❌ Không thể tải Progress:",
+          err
+        );
+
+        setError(
+          "Không thể tải dữ liệu tiến độ học tập."
+        );
+      } finally {
+        setLoading(false);
+      }
+    },
+    [userId, profile]
+  );
+
+
+  /* =======================================================
+     LOAD LẦN ĐẦU
+  ======================================================= */
+
+  useEffect(() => {
+    loadProgress({
+      showLoading: true,
+    });
+  }, [loadProgress]);
+
+
+  /* =======================================================
+     SUBSCRIBE GAME PROGRESS
+  ======================================================= */
+
+  useEffect(() => {
+    if (!userId) {
+      return undefined;
+    }
+
+    const unsubscribe =
+      subscribeGameProgress(() => {
+        loadProgress();
+      });
+
+    return unsubscribe;
+  }, [
+    userId,
+    loadProgress,
+  ]);
+
+
+  /* =======================================================
+     REALTIME GAME
+  ======================================================= */
+
+  useEffect(() => {
+    if (!userId) {
+      return undefined;
+    }
+
+    const channel =
+      supabase
+        .channel(
+          `progress-game-${userId}`
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "game_progress",
+            filter:
+              `user_id=eq.${userId}`,
+          },
+          () => {
+            loadProgress();
+          }
+        )
+        .subscribe();
+
+    return () => {
+      supabase.removeChannel(
+        channel
+      );
+    };
+  }, [
+    userId,
+    loadProgress,
+  ]);
+
+
+  /* =======================================================
+     REALTIME PROFILE
+  ======================================================= */
+
+  useEffect(() => {
+    if (!userId) {
+      return undefined;
+    }
+
+    const channel =
+      supabase
+        .channel(
+          `progress-profile-${userId}`
+        )
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "profiles",
+            filter:
+              `id=eq.${userId}`,
+          },
+          () => {
+            loadProgress();
+          }
+        )
+        .subscribe();
+
+    return () => {
+      supabase.removeChannel(
+        channel
+      );
+    };
+  }, [
+    userId,
+    loadProgress,
+  ]);
+
+
+  /* =======================================================
+     DERIVED DATA
+  ======================================================= */
+
+  const studyExp =
+    Math.max(
+      0,
+      Number(
+        profileData?.study_exp
+      ) || 0
+    );
+
+  const gameExp =
+    Math.max(
+      0,
+      Number(
+        profileData?.game_exp
+      ) || 0
+    );
 
   const totalExp =
-    Math.max(
-      0,
-      Number(
-        profile?.exp ?? 0
-      ) || 0
-    );
-
-  /* =======================================================
-     LEVEL
-
-     DÙNG CHUNG MỘT HÀM VỚI STUDENT HOME
-  ======================================================= */
+    studyExp + gameExp;
 
   const levelInfo =
-    getLevelProgress(
-      totalExp
-    );
-
-  /* =======================================================
-     STUDY TIME
-  ======================================================= */
-
-  const totalStudySeconds =
-    Math.max(
-      0,
-      Number(
-        profile?.total_study_seconds ??
-          0
-      ) || 0
-    );
-
-  const studyTime =
-    formatStudyTime(
-      totalStudySeconds
-    );
-
-  /* =======================================================
-     STUDY STREAK
-  ======================================================= */
-
-  const studyStreak =
-    getStudyStreak(
-      profile
-    );
-
-  /* =======================================================
-     GAME PROGRESS
-  ======================================================= */
-
-  const gameProgress =
     useMemo(
       () =>
-        loadGameProgress(),
-      []
+        getLevelProgress(
+          totalExp
+        ),
+      [totalExp]
     );
 
-  /* =======================================================
-     GAME BADGES
-  ======================================================= */
-
-  const earnedGameBadges =
-    useMemo(() => {
-      return GAME_BADGES.filter(
-        (badge) =>
-          isGameCompleted(
-            gameProgress.games?.[
-              badge.gameId
-            ]
-          ) ||
-          isGameCompleted(
-            gameProgress.games?.[
-              String(
-                badge.gameId
-              )
-            ]
-          )
-      );
-    }, [gameProgress]);
 
   /* =======================================================
-     STUDY BADGES
+     GAME ACHIEVEMENTS
   ======================================================= */
 
-  const earnedStudyBadges =
+  const completedGameAchievements =
     useMemo(() => {
-      return STUDY_BADGES.filter(
-        (badge) =>
-          totalStudySeconds >=
-          badge.requiredSeconds
+      return games
+        .filter(
+          (game) =>
+            game.game_id <= 5 &&
+            Boolean(game.completed)
+        )
+        .map((game) => {
+          const achievement =
+            GAME_ACHIEVEMENTS[
+              game.game_id
+            ];
+
+          return {
+            ...game,
+            ...achievement,
+          };
+        });
+    }, [games]);
+
+
+  /* =======================================================
+     STAGE 550
+  ======================================================= */
+
+  const perfect550Stages =
+    useMemo(() => {
+      let count = 0;
+
+      games.forEach((game) => {
+        const scores = [
+          game.stage1_high_score,
+          game.stage2_high_score,
+          game.stage3_high_score,
+          game.stage4_high_score,
+        ];
+
+        scores.forEach((score) => {
+          if (Number(score) >= 550) {
+            count++;
+          }
+        });
+      });
+
+      return count;
+    }, [games]);
+
+
+  /* =======================================================
+     TIME ACHIEVEMENTS
+  ======================================================= */
+
+  const earnedTimeAchievements =
+    useMemo(() => {
+      const hours =
+        (
+          Number(
+            profileData?.total_study_seconds
+          ) || 0
+        ) / 3600;
+
+      return TIME_ACHIEVEMENTS.filter(
+        (achievement) =>
+          hours >= achievement.hours
       );
     }, [
-      totalStudySeconds,
+      profileData?.total_study_seconds,
     ]);
 
+
   /* =======================================================
-     RENDER
+     SCORE ACHIEVEMENTS
+  ======================================================= */
+
+  const earnedScoreAchievements =
+    useMemo(
+      () =>
+        SCORE_ACHIEVEMENTS.filter(
+          (achievement) =>
+            perfect550Stages >=
+            achievement.required
+        ),
+      [perfect550Stages]
+    );
+
+
+  /* =======================================================
+     SPECIAL COUNT
+  ======================================================= */
+
+  const specialAchievementsCount =
+    earnedTimeAchievements.length +
+    earnedScoreAchievements.length;
+
+
+  /* =======================================================
+     LOADING
+  ======================================================= */
+
+  if (loading) {
+    return (
+      <StudentLayout
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+      >
+        <div className="progress-page">
+          <div className="progress-loading">
+            <div className="progress-loading-icon">
+              ⏳
+            </div>
+
+            <div>
+              Đang tải tiến độ học tập...
+            </div>
+          </div>
+        </div>
+      </StudentLayout>
+    );
+  }
+
+
+  /* =======================================================
+     ERROR
+  ======================================================= */
+
+  if (error) {
+    return (
+      <StudentLayout
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+      >
+        <div className="progress-page">
+          <div className="progress-error">
+            <div className="progress-error-icon">
+              ⚠️
+            </div>
+
+            <h2>
+              Không thể tải dữ liệu
+            </h2>
+
+            <p>{error}</p>
+
+            <button
+              type="button"
+              onClick={() =>
+                loadProgress({
+                  showLoading: true,
+                })
+              }
+            >
+              Thử lại
+            </button>
+          </div>
+        </div>
+      </StudentLayout>
+    );
+  }
+
+
+  /* =======================================================
+     UI
   ======================================================= */
 
   return (
     <StudentLayout
       profile={profile}
+      session={session}
       navigate={navigate}
       onLogout={onLogout}
-      activeMenu="progress"
     >
+      <div className="progress-page">
 
-      {/* =================================================
-          HEADER
-      ================================================= */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
-      <header className="progress-header">
+        <div className="progress-header">
+          <div className="progress-header-content">
+            <div className="progress-kicker">
+              TIẾN ĐỘ HỌC TẬP
+            </div>
 
-        <div>
+            <div className="progress-khmer-title">
+              វឌ្ឍនភាពការសិក្សា
+            </div>
 
-          <div className="progress-header-khmer khmer-text">
-            ការរីកចម្រើនក្នុងការសិក្សា
+            <p className="progress-subtitle">
+              Theo dõi kinh nghiệm, thời gian học
+              và thành tích của bạn.
+            </p>
           </div>
-
-          <h1>
-            📊 Tiến độ học tập
-          </h1>
-
-          <p>
-            Theo dõi hành trình chinh phục
-            tiếng Khmer
-          </p>
-
         </div>
 
-      </header>
 
-      {/* =================================================
-          OVERVIEW
-      ================================================= */}
+        {/* =================================================
+            LEVEL
+        ================================================= */}
 
-      <section className="progress-overview">
+        <section className="progress-level-card">
 
-        <div className="progress-overview-card">
+          <div className="progress-level-top">
+            <div>
+              <span className="progress-level-label">
+                CẤP ĐỘ
+              </span>
 
-          <div className="progress-overview-icon">
-            ⭐
+              <div className="progress-level-number">
+                Level {levelInfo.level}
+              </div>
+            </div>
+
+            <div className="progress-level-exp">
+              <strong>
+                {totalExp.toLocaleString()}
+              </strong>
+
+              <span>EXP</span>
+            </div>
           </div>
 
-          <div className="progress-overview-label">
-            CẤP ĐỘ
+
+          <div className="progress-level-bar">
+            <div
+              className="progress-level-fill"
+              style={{
+                width:
+                  `${levelInfo.progress}%`,
+              }}
+            />
           </div>
 
-          <div className="progress-overview-value">
-            {levelInfo.currentLevel}
+
+          <div className="progress-level-bottom">
+            <span>
+              {levelInfo.level >= 10
+                ? "Đã đạt cấp độ tối đa"
+                : `Còn ${levelInfo.remaining.toLocaleString()} EXP để lên Level ${levelInfo.level + 1}`}
+            </span>
+
+            <span>
+              {Math.round(
+                levelInfo.progress
+              )}%
+            </span>
           </div>
 
-          {levelInfo.isMaxLevel && (
-            <div className="progress-overview-sub max">
-              CẤP ĐỘ TỐI ĐA
+        </section>
+
+
+        {/* =================================================
+            KINH NGHIỆM
+        ================================================= */}
+
+        <section className="progress-section">
+
+          <div className="progress-section-heading">
+            <div>
+              <span className="progress-section-kicker">
+                KINH NGHIỆM
+              </span>
+
+              <h2>
+                {totalExp.toLocaleString()} EXP
+              </h2>
+            </div>
+          </div>
+
+
+          <div className="progress-exp-grid">
+
+            <div className="progress-exp-card">
+              <div className="progress-exp-icon">
+                ⏱️
+              </div>
+
+              <div className="progress-exp-content">
+                <div className="progress-exp-label">
+                  Kinh nghiệm đạt được từ
+                  <br />
+                  thời gian học
+                </div>
+
+                <div className="progress-exp-value">
+                  {studyExp.toLocaleString()}
+                  <span>EXP</span>
+                </div>
+
+                <div className="progress-exp-note">
+                  {formatStudyTime(
+                    profileData?.total_study_seconds
+                  )}
+                </div>
+              </div>
+            </div>
+
+
+            <div className="progress-exp-card">
+              <div className="progress-exp-icon">
+                🎮
+              </div>
+
+              <div className="progress-exp-content">
+                <div className="progress-exp-label">
+                  Kinh nghiệm đạt được từ
+                  <br />
+                  trò chơi
+                </div>
+
+                <div className="progress-exp-value">
+                  {gameExp.toLocaleString()}
+                  <span>EXP</span>
+                </div>
+
+                <div className="progress-exp-note">
+                  {
+                    games.filter(
+                      (game) =>
+                        Boolean(
+                          game.exp_claimed
+                        )
+                    ).length
+                  }{" "}
+                  game
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+
+        {/* =================================================
+            GAME ACHIEVEMENT
+        ================================================= */}
+
+        <section className="progress-section">
+
+          <div className="progress-section-heading">
+            <div>
+              <span className="progress-section-kicker">
+                THÀNH TÍCH
+              </span>
+
+              <h2>
+                Thành tích Game
+              </h2>
+            </div>
+          </div>
+
+
+          {completedGameAchievements.length > 0 ? (
+            <div className="progress-achievement-game-grid">
+
+              {completedGameAchievements.map(
+                (achievement) => (
+                  <div
+                    key={
+                      achievement.game_id
+                    }
+                    className={
+                      `progress-achievement-game-card ${achievement.className}`
+                    }
+                  >
+
+                    <div className="progress-achievement-game-icon-wrap">
+                      <div className="progress-achievement-game-icon">
+                        {achievement.icon}
+                      </div>
+                    </div>
+
+
+                    <div className="progress-achievement-game-info">
+
+                      <div className="progress-achievement-game-number">
+                        GAME{" "}
+                        {achievement.game_id}
+                      </div>
+
+                      <div className="progress-achievement-game-tier">
+                        {achievement.tier}
+                      </div>
+
+                      <div className="progress-achievement-game-title">
+                        {achievement.title ||
+                          getGameTitle(
+                            achievement.game_id
+                          )}
+                      </div>
+
+                    </div>
+
+
+                    <div className="progress-achievement-game-check">
+                      ✓
+                    </div>
+
+                  </div>
+                )
+              )}
+
+            </div>
+          ) : (
+            <div className="progress-empty-achievement">
+              <span className="progress-empty-icon">
+                🏆
+              </span>
+
+              <span>
+                Hoàn thành Game để mở khóa
+                thành tích đầu tiên.
+              </span>
             </div>
           )}
 
-        </div>
+        </section>
 
-        <div className="progress-overview-card">
 
-          <div className="progress-overview-icon">
-            ⚡
-          </div>
+        {/* =================================================
+            SPECIAL ACHIEVEMENT
+        ================================================= */}
 
-          <div className="progress-overview-label">
-            TỔNG KINH NGHIỆM
-          </div>
+        <section className="progress-section">
 
-          <div className="progress-overview-value exp-value">
-            {totalExp.toLocaleString(
-              "vi-VN"
+          <div className="progress-section-heading">
+            <div>
+              <span className="progress-section-kicker">
+                THÀNH TÍCH
+              </span>
+
+              <h2>
+                Thành tích đặc biệt
+              </h2>
+            </div>
+
+            {specialAchievementsCount > 0 && (
+              <div className="progress-achievement-count">
+                {specialAchievementsCount} đã đạt
+              </div>
             )}
           </div>
 
-          <div className="progress-overview-sub">
-           EXP
-          </div>
 
-        </div>
+          {/* =================================================
+              TIME
+          ================================================= */}
 
-        <div className="progress-overview-card">
+          {earnedTimeAchievements.length > 0 && (
+            <div className="progress-special-group">
 
-          <div className="progress-overview-icon">
-            🔥
-          </div>
+              <div className="progress-special-group-title">
+                ⏱️ HÀNH TRÌNH THỜI GIAN
+              </div>
 
-          <div className="progress-overview-label">
-            CHUỖI NGÀY HỌC
-          </div>
 
-          <div className="progress-overview-value">
-            {studyStreak}
-          </div>
+              <div className="progress-special-grid">
 
-          <div className="progress-overview-sub">
-            ngày
-          </div>
+                {earnedTimeAchievements.map(
+                  (achievement) => (
+                    <div
+                      key={achievement.id}
+                      className={
+                        `progress-special-card ${achievement.className}`
+                      }
+                    >
 
-        </div>
+                      <div className="progress-special-icon-wrap">
+                        <div className="progress-special-icon">
+                          {achievement.icon}
+                        </div>
+                      </div>
 
-      </section>
 
-      {/* =================================================
-          LEVEL PROGRESS
-      ================================================= */}
+                      <div className="progress-special-info">
 
-      <section className="progress-panel">
+                        <div className="progress-special-tier">
+                          {achievement.tier}
+                        </div>
 
-        <div className="progress-panel-heading">
+                        <div className="progress-special-title">
+                          {achievement.title}
+                        </div>
 
-          <div>
+                        <div className="progress-special-description">
+                          {achievement.description}
+                        </div>
 
-            <h2>
-              ⚡ Tiến độ Level
-            </h2>
+                      </div>
 
-            <p>
-              Tiếp tục học để chinh phục
-              cấp độ tiếp theo.
-            </p>
 
-          </div>
+                      <div className="progress-special-check">
+                        ✓
+                      </div>
 
-        </div>
+                    </div>
+                  )
+                )}
 
-        {/* =================================================
-            LEVEL HIỆN TẠI
+              </div>
 
-            CHỈ HIỂN THỊ MỘT LEVEL
-            KHÔNG HIỂN THỊ LEVEL 6 → LEVEL 7
-        ================================================= */}
-
-        <div className="progress-level-info">
-
-          <div>
-
-            <strong>
-              Level{" "}
-              {levelInfo.currentLevel}
-            </strong>
-
-          </div>
-
-          <div className="progress-level-exp">
-
-            {levelInfo.isMaxLevel
-              ? `${totalExp.toLocaleString(
-                  "vi-VN"
-                )} EXP`
-              : `${levelInfo.currentExp.toLocaleString(
-                  "vi-VN"
-                )} / ${levelInfo.requiredExp.toLocaleString(
-                  "vi-VN"
-                )} EXP`}
-
-          </div>
-
-        </div>
-
-        {/* =================================================
-            THANH TIẾN ĐỘ
-        ================================================= */}
-
-        <div className="progress-level-track">
-
-          <div
-            className="progress-level-fill"
-            style={{
-              width:
-                `${levelInfo.percent}%`,
-            }}
-          >
-
-            <div className="progress-level-shine" />
-
-          </div>
-
-        </div>
-
-        {/* =================================================
-            FOOTER
-        ================================================= */}
-
-        <div className="progress-level-footer">
-
-          {levelInfo.isMaxLevel ? (
-
-            <span className="progress-max-text">
-              👑 Bạn đã đạt cấp độ tối đa
-            </span>
-
-          ) : (
-
-            <>
-
-              <span>
-                {levelInfo.percent}%
-                {" "}hoàn thành
-              </span>
-
-              <span>
-                Còn{" "}
-                <strong>
-                  {levelInfo.remainingExp.toLocaleString(
-                    "vi-VN"
-                  )}{" "}
-                  EXP
-                </strong>{" "}
-                để đạt Level{" "}
-                {levelInfo.currentLevel + 1}
-              </span>
-
-            </>
-
+            </div>
           )}
 
-        </div>
 
-      </section>
+          {/* =================================================
+              SCORE
+          ================================================= */}
 
-      {/* =================================================
-          TOTAL STUDY TIME
-      ================================================= */}
+          {earnedScoreAchievements.length > 0 && (
+            <div className="progress-special-group">
 
-      <section className="progress-time-panel">
+              <div className="progress-special-group-title">
+                ⭐ CHINH PHỤC ĐIỂM SỐ
+              </div>
 
-        <div className="progress-time-icon">
-          ⏱️
-        </div>
 
-        <div className="progress-time-content">
+              <div className="progress-special-grid">
 
-          <div className="progress-time-label">
-            TỔNG THỜI GIAN HỌC
-          </div>
+                {earnedScoreAchievements.map(
+                  (achievement) => (
+                    <div
+                      key={achievement.id}
+                      className={
+                        `progress-special-card score-achievement ${achievement.className}`
+                      }
+                    >
 
-          <div className="progress-time-value">
+                      <div className="progress-special-icon-wrap score-stars-wrap">
+                        <div className="progress-special-icon score-stars">
+                          {achievement.icon}
+                        </div>
+                      </div>
 
-            <span>
-              {studyTime.hours}
-            </span>
 
-            <small>
-              giờ
-            </small>
+                      <div className="progress-special-info">
 
-            <span>
-              {studyTime.minutes}
-            </span>
+                        <div className="progress-special-tier">
+                          {achievement.tier}
+                        </div>
 
-            <small>
-              phút
-            </small>
+                        <div className="progress-special-title">
+                          {achievement.title}
+                        </div>
 
-            <span>
-              {studyTime.seconds}
-            </span>
+                        <div className="progress-special-description">
+                          {achievement.description}
+                        </div>
 
-            <small>
-              giây
-            </small>
+                      </div>
 
-          </div>
 
-        </div>
+                      <div className="progress-special-check">
+                        ✓
+                      </div>
 
-      </section>
+                    </div>
+                  )
+                )}
 
-      {/* =================================================
-          GAME BADGES
-      ================================================= */}
+              </div>
 
-      <section className="progress-panel badges-panel">
+            </div>
+          )}
 
-        <div className="progress-panel-heading">
 
-          <div>
+          {/* =================================================
+              EMPTY
+          ================================================= */}
 
-            <h2>
-              🏆 Danh hiệu trò chơi
-            </h2>
+          {specialAchievementsCount === 0 && (
+            <div className="progress-empty-achievement">
 
-            <p>
-              Những danh hiệu bạn đã đạt được
-              qua hành trình chinh phục các Game.
-            </p>
+              <span className="progress-empty-icon">
+                🏅
+              </span>
 
-          </div>
+              <span>
+                Hãy tiếp tục học tập và chơi game.
+                <br />
+                Những thành tích đặc biệt đang chờ
+                bạn khám phá.
+              </span>
 
-        </div>
+            </div>
+          )}
 
-        {earnedGameBadges.length > 0 ? (
+        </section>
 
-          <div className="badges-grid">
-
-            {earnedGameBadges.map(
-              (badge) => (
-
-                <div
-                  key={badge.gameId}
-                  className="badge-card game-badge"
-                >
-
-                  <div className="badge-icon">
-                    {badge.icon}
-                  </div>
-
-                  <h3>
-                    {badge.name}
-                  </h3>
-
-                  <p>
-                    {badge.description}
-                  </p>
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        ) : (
-
-          <div className="empty-badge-state">
-            Chưa có danh hiệu trò chơi.
-            <br />
-            Hãy tiếp tục chinh phục các Game!
-          </div>
-
-        )}
-
-      </section>
-
-      {/* =================================================
-          STUDY BADGES
-      ================================================= */}
-
-      <section className="progress-panel badges-panel">
-
-        <div className="progress-panel-heading">
-
-          <div>
-
-            <h2>
-              🌟 Danh hiệu thành tích học tập
-            </h2>
-
-            <p>
-              Những danh hiệu bạn đã khám phá
-              trong hành trình học tập.
-            </p>
-
-          </div>
-
-        </div>
-
-        {earnedStudyBadges.length > 0 ? (
-
-          <div className="badges-grid">
-
-            {earnedStudyBadges.map(
-              (badge) => (
-
-                <div
-                  key={badge.id}
-                  className="badge-card study-badge"
-                >
-
-                  <div className="badge-icon">
-                    {badge.icon}
-                  </div>
-
-                  <h3>
-                    {badge.name}
-                  </h3>
-
-                  <p>
-                    {badge.description}
-                  </p>
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-        ) : (
-
-          <div className="empty-badge-state">
-            Chưa có danh hiệu thành tích học tập.
-            <br />
-            Hãy tiếp tục học tập để khám phá!
-          </div>
-
-        )}
-
-      </section>
-
+      </div>
     </StudentLayout>
   );
 }
+
 
 export default Progress;

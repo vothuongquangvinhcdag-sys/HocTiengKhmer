@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import { supabase } from "../../supabase";
-
 import "./Register.css";
 
 function Register() {
@@ -13,7 +11,6 @@ function Register() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [loading, setLoading] = useState(false);
 
   /* =========================================================
@@ -44,18 +41,12 @@ function Register() {
 
   const goToLogin = () => {
     window.history.pushState({}, "", "/");
-
-    window.dispatchEvent(
-      new PopStateEvent("popstate")
-    );
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   const goToStudentHome = () => {
     window.history.pushState({}, "", "/student");
-
-    window.dispatchEvent(
-      new PopStateEvent("popstate")
-    );
+    window.dispatchEvent(new PopStateEvent("popstate"));
   };
 
   /* =========================================================
@@ -69,7 +60,7 @@ function Register() {
 
      Yêu cầu:
      - Không được để trống
-     - Tối thiểu 6 ký tự
+     - Từ 6 đến 20 ký tự
      - Không được trùng tài khoản
   ========================================================= */
 
@@ -81,10 +72,7 @@ function Register() {
     ------------------------------------------------------- */
 
     if (!finalAccount) {
-      setAccountError(
-        "Vui lòng nhập tài khoản."
-      );
-
+      setAccountError("Vui lòng nhập tài khoản.");
       return false;
     }
 
@@ -94,9 +82,22 @@ function Register() {
 
     if (finalAccount.length < 6) {
       setAccountError(
-        "Tài khoản phải có ít nhất 6 ký tự."
+        "Tài khoản phải có từ 6 đến 20 ký tự."
       );
+      return false;
+    }
 
+    /* -------------------------------------------------------
+       TÀI KHOẢN TRÊN 20 KÝ TỰ
+
+       maxLength={20} đã chặn trên giao diện,
+       nhưng vẫn kiểm tra ở JavaScript để đảm bảo validation.
+    ------------------------------------------------------- */
+
+    if (finalAccount.length > 20) {
+      setAccountError(
+        "Tài khoản phải có từ 6 đến 20 ký tự."
+      );
       return false;
     }
 
@@ -105,13 +106,12 @@ function Register() {
     ------------------------------------------------------- */
 
     try {
-      const { data, error } =
-        await supabase.rpc(
-          "check_account_exists",
-          {
-            p_account: finalAccount,
-          }
-        );
+      const { data, error } = await supabase.rpc(
+        "check_account_exists",
+        {
+          p_account: finalAccount,
+        }
+      );
 
       if (error) {
         console.error(
@@ -135,7 +135,6 @@ function Register() {
         setAccountError(
           "Tên tài khoản đã tồn tại."
         );
-
         return false;
       }
 
@@ -144,7 +143,6 @@ function Register() {
       ----------------------------------------------------- */
 
       setAccountError("");
-
       return true;
     } catch (error) {
       console.error(
@@ -165,7 +163,6 @@ function Register() {
       setPasswordError(
         "Vui lòng nhập mật khẩu."
       );
-
       return false;
     }
 
@@ -173,12 +170,10 @@ function Register() {
       setPasswordError(
         "Mật khẩu phải có ít nhất 6 ký tự."
       );
-
       return false;
     }
 
     setPasswordError("");
-
     return true;
   };
 
@@ -191,7 +186,6 @@ function Register() {
       setConfirmPasswordError(
         "Vui lòng xác nhận mật khẩu."
       );
-
       return false;
     }
 
@@ -199,12 +193,10 @@ function Register() {
       setConfirmPasswordError(
         "Mật khẩu không trùng khớp."
       );
-
       return false;
     }
 
     setConfirmPasswordError("");
-
     return true;
   };
 
@@ -231,7 +223,6 @@ function Register() {
       setEmailError(
         "Vui lòng nhập email."
       );
-
       return false;
     }
 
@@ -246,7 +237,6 @@ function Register() {
       setEmailError(
         "Email phải có dạng @gmail.com, @angiang.edu.vn,..."
       );
-
       return false;
     }
 
@@ -263,7 +253,6 @@ function Register() {
       setEmailError(
         "Email phải có dạng @gmail.com, @angiang.edu.vn,..."
       );
-
       return false;
     }
 
@@ -305,7 +294,6 @@ function Register() {
         setEmailError(
           "Email đã tồn tại."
         );
-
         return false;
       }
 
@@ -314,7 +302,6 @@ function Register() {
       ----------------------------------------------------- */
 
       setEmailError("");
-
       return true;
     } catch (error) {
       console.error(
@@ -385,7 +372,6 @@ function Register() {
         await supabase.auth.signUp({
           email: finalEmail,
           password: password,
-
           options: {
             data: {
               username: finalUsername,
@@ -508,7 +494,6 @@ function Register() {
       ===================================================== */
 
       goToStudentHome();
-
     } catch (error) {
       console.error(
         "Register Error:",
@@ -522,7 +507,6 @@ function Register() {
             "Lỗi không xác định."
           )
       );
-
     } finally {
       setLoading(false);
     }
@@ -622,7 +606,6 @@ function Register() {
               className="register-label"
             >
               Tài khoản
-
               <span className="register-required">
                 *
               </span>
@@ -643,13 +626,13 @@ function Register() {
                 setAccount(
                   e.target.value
                 );
-
                 setAccountError("");
               }}
               onBlur={checkAccount}
-              placeholder="Tối thiểu 6 ký tự"
+              placeholder="Tài khoản phải có từ 6 đến 20 ký tự"
               autoComplete="username"
               minLength={6}
+              maxLength={20}
               required
             />
 
@@ -672,7 +655,6 @@ function Register() {
               className="register-label"
             >
               Mật khẩu
-
               <span className="register-required">
                 *
               </span>
@@ -718,7 +700,7 @@ function Register() {
                   }
                 }}
                 onBlur={checkPassword}
-                placeholder="Tối thiểu 6 ký tự"
+                placeholder="Mật khẩu phải có tối thiểu 6 ký tự"
                 autoComplete="new-password"
                 minLength={6}
                 required
@@ -765,7 +747,6 @@ function Register() {
               className="register-label"
             >
               Xác nhận mật khẩu
-
               <span className="register-required">
                 *
               </span>
@@ -851,7 +832,6 @@ function Register() {
               className="register-label"
             >
               Email
-
               <span className="register-required">
                 *
               </span>
@@ -872,7 +852,6 @@ function Register() {
                 setEmail(
                   e.target.value
                 );
-
                 setEmailError("");
               }}
               onBlur={checkEmail}

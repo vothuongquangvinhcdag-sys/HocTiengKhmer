@@ -1,36 +1,124 @@
 /* =========================================================
    ADMIN HOME — KHMER ROYAL
    ---------------------------------------------------------
-   Chủ đạo:
+   PALETTE CHUẨN:
 
    Khmer Deep Green : #063f32
    Royal Green      : #075c48
    Jade             : #087f62
-
    Khmer Yellow     : #d4af37
    Royal Gold       : #f0c75e
-
-   Royal Blue       : #2563eb
    Cream            : #fffdf5
    Dark Brown       : #3f2d18
-========================================================= */
+   Royal Blue       : #2563eb
+
+   ---------------------------------------------------------
+   GIỮ TỈ LỆ KHUNG THÔNG TIN HỌC VIÊN
+   THEO BẢN CSS GỐC CỦA NGƯỜI DÙNG.
+
+   CHỈ TĂNG:
+   - FONT BẢNG
+   - FONT TRƯỜNG THÔNG TIN
+   - FONT BUTTON
+   - FONT POPUP
+   - KÍCH THƯỚC INPUT / LABEL POPUP
+   ========================================================= */
 
 
 /* =========================================================
-   FONT
-   ---------------------------------------------------------
-   KhmerOS chỉ được sử dụng cho ký tự Khmer.
-   Tiếng Việt / Latin sử dụng Segoe UI để tránh lỗi font.
-========================================================= */
+   ROOT / RESET
+   ========================================================= */
+
+.admin-page,
+.admin-page *,
+.admin-access-denied,
+.admin-access-denied * {
+  box-sizing: border-box;
+}
+
+.admin-page {
+  --admin-deep-green: #063f32;
+  --admin-bg-deep: #042f27;
+  --admin-green: #075c48;
+  --admin-jade: #087f62;
+  --admin-jade-light: #059669;
+
+  --admin-gold: #d4af37;
+  --admin-gold-light: #f0c75e;
+  --admin-gold-soft: #f7e7a9;
+  --admin-gold-pale: #fff6d6;
+  --admin-gold-dark: #a78318;
+
+  --admin-royal-blue: #2563eb;
+  --admin-royal-blue-dark: #1d4ed8;
+  --admin-royal-blue-light: #eff6ff;
+
+  --admin-cream: #fffdf5;
+  --admin-cream-dark: #f7f0dd;
+  --admin-white: #ffffff;
+
+  --admin-brown: #3f2d18;
+  --admin-text: #26342f;
+  --admin-text-soft: #78837e;
+  --admin-text-muted: #9a9287;
+
+  --admin-border: #e4dcc9;
+  --admin-border-soft: #eee8da;
+
+  --admin-danger: #b4232d;
+  --admin-danger-dark: #8f1821;
+  --admin-danger-light: #fff0f0;
+
+  --admin-shadow-sm:
+    0 4px 14px rgba(3, 43, 34, 0.08);
+
+  --admin-shadow:
+    0 12px 30px rgba(3, 43, 34, 0.12);
+
+  --admin-shadow-lg:
+    0 20px 50px rgba(3, 43, 34, 0.18);
+
+  min-height: 100vh;
+  width: 100%;
+
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(212, 175, 55, 0.08),
+      transparent 28%
+    ),
+    linear-gradient(
+      180deg,
+      #fffdf5 0%,
+      #fffdf5 42%,
+      #ffffff 100%
+    );
+
+  color: var(--admin-text);
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =========================================================
+   FONT KHMER
+   ========================================================= */
 
 @font-face {
   font-family: "KhmerOS";
+
   src: url("/fonts/KhmerOS.ttf") format("truetype");
+
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 
-  /* Khmer Unicode */
   unicode-range:
     U+1780-17FF,
     U+19E0-19FF,
@@ -39,7 +127,9 @@
 
 @font-face {
   font-family: "KhmerOS";
+
   src: url("/fonts/KhmerOS.ttf") format("truetype");
+
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -52,7 +142,9 @@
 
 @font-face {
   font-family: "KhmerOSMuol";
+
   src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -65,104 +157,198 @@
 
 
 /* =========================================================
-   ROOT
-========================================================= */
+   ACCESS DENIED
+   ========================================================= */
 
-.admin-page {
-  --admin-bg: #063f32;
-  --admin-bg-deep: #042f27;
-
-  --admin-green: #075c48;
-  --admin-green-light: #087f62;
-
-  --admin-green-soft: #e8f3ee;
-
-  --gold: #d4af37;
-  --gold-light: #f0c75e;
-  --gold-pale: #fff6d6;
-  --gold-dark: #a78318;
-
-  --royal-blue: #2563eb;
-  --royal-blue-dark: #1d4ed8;
-  --royal-blue-light: #eff6ff;
-
-  --cream: #fffdf5;
-  --cream-dark: #f7f0dd;
-
-  --brown: #5c421f;
-
-  --text: #26342f;
-  --muted: #78837e;
-
-  --border: #e4dcc9;
-
-  --danger: #b4232d;
-  --danger-dark: #8f1821;
-  --danger-light: #fff0f0;
-
-  --shadow-sm:
-    0 4px 14px rgba(3, 43, 34, 0.08);
-
-  --shadow-md:
-    0 12px 30px rgba(3, 43, 34, 0.12);
-
-  --shadow-lg:
-    0 20px 50px rgba(3, 43, 34, 0.18);
-
+.admin-access-denied {
   min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 32px;
 
   background:
     radial-gradient(
-      circle at 85% 0%,
-      rgba(212, 175, 55, 0.08),
-      transparent 28%
+      circle at 50% 0%,
+      rgba(212, 175, 55, 0.10),
+      transparent 35%
     ),
     linear-gradient(
       145deg,
-      #042f27 0%,
-      #063f32 45%,
+      #042f27,
+      #063f32 55%,
       #075443 100%
     );
 
-  color: var(--text);
-
-  /*
-     Quan trọng:
-     Segoe UI xử lý tiếng Việt.
-     KhmerOS chỉ cung cấp glyph Khmer nhờ unicode-range.
-  */
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
+}
 
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+.admin-access-card {
+  width: min(440px, 100%);
+
+  padding: 42px 36px;
+
+  background: #fffdf7;
+
+  border:
+    1px solid rgba(212, 175, 55, 0.28);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.28);
+
+  text-align: center;
+}
+
+.admin-access-icon {
+  width: 76px;
+  height: 76px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff8dc,
+      #f7e7a9
+    );
+
+  border:
+    1px solid #e6cc78;
+
+  font-size: 34px;
+
+  box-shadow:
+    0 8px 22px rgba(212, 175, 55, 0.18);
+}
+
+.admin-access-card h2 {
+  margin: 0 0 10px;
+
+  color: var(--admin-deep-green);
+
+  font-size: 24px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.admin-access-card p {
+  margin: 0 auto 26px;
+
+  max-width: 330px;
+
+  color: var(--admin-text-soft);
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+   ========================================================= */
+
+.admin-primary-button {
+  min-height: 44px;
+
+  padding: 0 20px;
+
+  border: 1px solid var(--admin-green);
+
+  border-radius: 10px;
+
+  color: #fffdf5;
+
+  background:
+    linear-gradient(
+      135deg,
+      #087f62,
+      #075c48
+    );
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 13px rgba(7, 92, 72, 0.20);
+
+  transition:
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease;
+}
+
+.admin-primary-button:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 7px 17px rgba(7, 92, 72, 0.27);
 }
 
 
 /* =========================================================
    HEADER
-========================================================= */
+   ========================================================= */
 
 .admin-header {
   position: sticky;
   top: 0;
   z-index: 100;
 
+  width: 100%;
+
   background:
     linear-gradient(
       135deg,
       #042f27 0%,
-      #063f32 55%,
-      #075443 100%
+      #063f32 50%,
+      #075c48 100%
     );
 
   border-bottom:
-    1px solid rgba(240, 199, 94, 0.22);
+    1px solid rgba(240, 199, 94, 0.30);
 
   box-shadow:
     0 8px 28px rgba(0, 0, 0, 0.18);
+}
+
+.admin-header::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #d4af37 20%,
+      #f0c75e 50%,
+      #d4af37 80%,
+      transparent
+    );
 }
 
 .admin-header-inner {
@@ -179,11 +365,6 @@
   gap: 30px;
 }
 
-
-/* =========================================================
-   BRAND
-========================================================= */
-
 .admin-brand {
   min-width: 0;
 }
@@ -197,18 +378,21 @@
   color: #fffdf5;
 
   font-size: 22px;
-  font-weight: 700;
+  line-height: 1.2;
+  font-weight: 800;
 
-  letter-spacing: 0.1px;
+  letter-spacing: -0.2px;
 }
 
 .admin-brand-logo {
   width: 40px;
   height: 40px;
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  flex: 0 0 auto;
 
   border-radius: 12px;
 
@@ -226,56 +410,85 @@
 }
 
 .admin-greeting {
-  margin-top: 4px;
+  margin-top: 5px;
   margin-left: 51px;
 
-  color: rgba(255, 253, 245, 0.66);
+  color:
+    rgba(255, 253, 245, 0.68);
 
   font-size: 13px;
+  line-height: 1.5;
 }
 
 .admin-greeting strong {
-  color: var(--gold-light);
+  color: var(--admin-gold-light);
   font-weight: 700;
 }
-
-
-/* =========================================================
-   HEADER BUTTONS
-========================================================= */
 
 .admin-header-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 
   gap: 9px;
+
+  flex-shrink: 0;
 }
 
 .admin-header-button {
-  height: 40px;
+  min-height: 40px;
 
   padding: 0 15px;
 
-  border-radius: 9px;
-  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  font-family: inherit;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  border-radius: 10px;
+
+  color: #ffffff;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  font: inherit;
+
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
 
   cursor: pointer;
 
   transition:
     transform 0.18s ease,
-    box-shadow 0.18s ease,
     background 0.18s ease,
-    border-color 0.18s ease;
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
+.admin-header-button:hover {
+  transform: translateY(-1px);
 
-/* =========================================================
-   TRANG CHỦ — GOLD
-========================================================= */
+  background:
+    rgba(255, 255, 255, 0.15);
+
+  border-color:
+    rgba(240, 199, 94, 0.55);
+
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.12);
+}
+
+.admin-header-button:active {
+  transform: translateY(0);
+}
+
+.admin-header-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
 
 .admin-home-button {
   color: #4c3813;
@@ -287,10 +500,8 @@
       #f0c75e
     );
 
-  border-color: #f7df8d;
-
-  box-shadow:
-    0 4px 12px rgba(212, 175, 55, 0.18);
+  border-color:
+    #f7df8d;
 }
 
 .admin-home-button:hover {
@@ -300,17 +511,7 @@
       #f9e494,
       #f3d56b
     );
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 7px 16px rgba(212, 175, 55, 0.25);
 }
-
-
-/* =========================================================
-   LÀM MỚI — ROYAL BLUE
-========================================================= */
 
 .admin-refresh-button {
   color: #ffffff;
@@ -322,10 +523,8 @@
       #2563eb
     );
 
-  border-color: #60a5fa;
-
-  box-shadow:
-    0 4px 12px rgba(37, 99, 235, 0.22);
+  border-color:
+    #60a5fa;
 }
 
 .admin-refresh-button:hover {
@@ -335,17 +534,7 @@
       #4b8df8,
       #1d4ed8
     );
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 7px 16px rgba(37, 99, 235, 0.30);
 }
-
-
-/* =========================================================
-   ĐĂNG XUẤT — RED
-========================================================= */
 
 .admin-logout-button {
   color: #fff5f5;
@@ -357,10 +546,8 @@
       #9e2730
     );
 
-  border-color: #bc3a43;
-
-  box-shadow:
-    0 4px 12px rgba(120, 20, 28, 0.20);
+  border-color:
+    #bc3a43;
 }
 
 .admin-logout-button:hover {
@@ -370,21 +557,12 @@
       #c63842,
       #a7232d
     );
-
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 7px 16px rgba(120, 20, 28, 0.28);
-}
-
-.admin-header-button:active {
-  transform: translateY(0);
 }
 
 
 /* =========================================================
    MAIN
-========================================================= */
+   ========================================================= */
 
 .admin-main {
   width: min(1480px, calc(100% - 48px));
@@ -392,66 +570,78 @@
   margin: 0 auto;
 
   padding:
-    42px 0 70px;
+    40px 0 60px;
 }
 
 
 /* =========================================================
    PAGE HEADING
-========================================================= */
+   ========================================================= */
 
 .admin-page-heading {
-  margin-bottom: 28px;
+  margin-bottom: 26px;
 }
 
 .admin-dashboard-label {
   display: inline-flex;
   align-items: center;
 
-  margin-bottom: 8px;
+  min-height: 28px;
 
-  padding: 5px 11px;
+  padding: 0 11px;
 
-  border:
-    1px solid rgba(240, 199, 94, 0.38);
-
-  border-radius: 999px;
-
-  color: var(--gold-light);
+  border-radius: 8px;
 
   background:
-    rgba(212, 175, 55, 0.08);
+    linear-gradient(
+      135deg,
+      #e5f5ef,
+      #d1fae5
+    );
 
-  font-size: 10px;
+  border:
+    1px solid #b8e5d3;
+
+  color:
+    var(--admin-green);
+
+  font-size: 11px;
   font-weight: 800;
 
-  letter-spacing: 1.8px;
+  letter-spacing: 1.4px;
 }
 
 .admin-page-heading h1 {
-  margin: 0;
+  margin:
+    10px 0 5px;
 
-  color: #fffdf5;
+  color:
+    var(--admin-deep-green);
 
-  font-size: 31px;
-  line-height: 1.25;
-  font-weight: 700;
+  font-size:
+    clamp(28px, 3vw, 36px);
 
-  letter-spacing: -0.3px;
+  line-height: 1.2;
+
+  font-weight: 800;
+
+  letter-spacing: -0.7px;
 }
 
 .admin-page-heading p {
-  margin: 7px 0 0;
+  margin: 0;
 
-  color: rgba(255, 253, 245, 0.65);
+  color:
+    var(--admin-text-soft);
 
   font-size: 14px;
+  line-height: 1.65;
 }
 
 
 /* =========================================================
    STATISTICS GRID
-========================================================= */
+   ========================================================= */
 
 .admin-stats-grid {
   display: grid;
@@ -459,7 +649,7 @@
   grid-template-columns:
     repeat(4, minmax(0, 1fr));
 
-  gap: 17px;
+  gap: 18px;
 
   margin-bottom: 24px;
 }
@@ -467,24 +657,17 @@
 
 /* =========================================================
    STAT CARD
-   ---------------------------------------------------------
-   ĐỒNG NHẤT MÀU
-========================================================= */
+   ========================================================= */
 
 .stat-card {
   position: relative;
 
-  min-height: 176px;
-
-  padding:
-    22px 21px 20px;
+  min-height: 174px;
 
   overflow: hidden;
 
-  border:
-    1px solid rgba(212, 175, 55, 0.20);
-
-  border-radius: 16px;
+  padding:
+    22px 22px 20px;
 
   background:
     linear-gradient(
@@ -493,8 +676,13 @@
       #fffaf0 100%
     );
 
+  border:
+    1px solid rgba(212, 175, 55, 0.20);
+
+  border-radius: 18px;
+
   box-shadow:
-    var(--shadow-md);
+    var(--admin-shadow-sm);
 
   transition:
     transform 0.2s ease,
@@ -503,28 +691,24 @@
 }
 
 .stat-card:hover {
-  transform: translateY(-3px);
-
-  border-color:
-    rgba(212, 175, 55, 0.38);
+  transform:
+    translateY(-3px);
 
   box-shadow:
     0 17px 38px rgba(2, 42, 33, 0.19);
+
+  border-color:
+    rgba(212, 175, 55, 0.38);
 }
-
-
-/* =========================================================
-   GOLD ACCENT LEFT
-========================================================= */
 
 .stat-card-accent {
   position: absolute;
 
-  top: 0;
   left: 0;
+  top: 0;
+  bottom: 0;
 
   width: 5px;
-  height: 100%;
 
   background:
     linear-gradient(
@@ -534,26 +718,17 @@
     );
 }
 
-
-/* =========================================================
-   ICON
-   ---------------------------------------------------------
-   Tất cả icon đồng nhất.
-========================================================= */
-
 .stat-card-icon {
-  width: 45px;
-  height: 45px;
+  width: 48px;
+  height: 48px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 
-  border-radius: 12px;
-
-  color: #8b6d15;
+  border-radius: 14px;
 
   background:
     linear-gradient(
@@ -565,93 +740,52 @@
   border:
     1px solid rgba(212, 175, 55, 0.18);
 
-  font-size: 22px;
+  color:
+    #8b6d15;
+
+  font-size: 23px;
 }
-
-
-/* =========================================================
-   TITLE
-========================================================= */
 
 .stat-card-title {
-  color: #b50309;
+  margin-bottom: 4px;
+
+  color:
+    var(--admin-text-soft);
 
   font-size: 12px;
+  line-height: 1.4;
+
   font-weight: 700;
-
-  text-transform: uppercase;
-
-  letter-spacing: 0.45px;
 }
 
-
-/* =========================================================
-   VALUE
-   ---------------------------------------------------------
-   KHMER YELLOW / ROYAL GOLD
-   → Làm nổi bật số liệu.
-========================================================= */
-
 .stat-card-value {
-  margin-top: 2px;
-
-  color:#b8860b !important;
+  color:
+    #b8860b !important;
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
 
-  font-size: 30px;
-
-  line-height: 1.15;
+  font-size: 29px;
+  line-height: 1.2;
 
   font-weight: 800;
 
-  letter-spacing: -0.7px;
-
-  text-shadow:
-    0 1px 0 rgba(242, 240, 240, 0.8);
+  letter-spacing: -0.5px;
 }
-
-
-/* =========================================================
-   DESCRIPTION
-========================================================= */
 
 .stat-card-description {
-  margin-top: 7px;
+  margin-top: 5px;
 
-  color: #000000;
+  color:
+    var(--admin-text-muted);
 
-  font-size: 11.5px;
-
-  line-height: 1.45;
+  font-size: 11px;
+  line-height: 1.4;
 }
 
-
-/* =========================================================
-   4 CARD — GIỮ CÙNG HỆ MÀU
-   ---------------------------------------------------------
-   Chỉ khác rất nhẹ ở accent để vẫn có nhận diện.
-========================================================= */
-
-.stat-card-students .stat-card-accent,
-.stat-card-total-exp .stat-card-accent,
-.stat-card-completed-games .stat-card-accent,
-.stat-card-study-time .stat-card-accent {
-  background:
-    linear-gradient(
-      180deg,
-      #f7d875,
-      #d4af37
-    );
-}
-
-.stat-card-students .stat-card-icon,
-.stat-card-total-exp .stat-card-icon,
-.stat-card-completed-games .stat-card-icon,
-.stat-card-study-time .stat-card-icon {
+.stat-card-total-exp .stat-card-icon {
   background:
     linear-gradient(
       145deg,
@@ -660,62 +794,104 @@
     );
 }
 
+.stat-card-total-exp .stat-card-value {
+  color:
+    #b8860b !important;
+}
+
+.stat-card-completed-games .stat-card-icon {
+  background:
+    linear-gradient(
+      145deg,
+      #e6f7f2,
+      #c9eee2
+    );
+
+  border-color:
+    #b9dfd0;
+}
+
+.stat-card-study-time .stat-card-icon {
+  background:
+    linear-gradient(
+      145deg,
+      #eff6ff,
+      #dbeafe
+    );
+
+  border-color:
+    #c7dcf7;
+}
+
 
 /* =========================================================
    ERROR
-========================================================= */
+   ========================================================= */
 
 .admin-error {
+  width: 100%;
+
   margin-bottom: 18px;
 
-  padding: 13px 16px;
+  padding:
+    13px 16px;
+
+  display: flex;
+  align-items: center;
 
   border:
     1px solid #e6b7b7;
 
   border-left:
-    4px solid var(--danger);
+    4px solid var(--admin-danger);
 
   border-radius: 10px;
 
-  color: #8f2028;
+  background:
+    #fff5f5;
 
-  background: #fff5f5;
+  color:
+    #8f2028;
 
   font-size: 13px;
+  line-height: 1.5;
+
   font-weight: 600;
+
+  box-shadow:
+    0 3px 10px rgba(180, 35, 45, 0.05);
 }
 
 
 /* =========================================================
    STUDENT LIST CARD
-========================================================= */
+   ---------------------------------------------------------
+   GIỮ NGUYÊN TỈ LỆ KHUNG
+   ========================================================= */
 
 .student-list-card {
   overflow: hidden;
 
+  background:
+    #fffdf5;
+
   border:
     1px solid rgba(212, 175, 55, 0.18);
 
-  border-radius: 18px;
-
-  background: var(--cream);
+  border-radius: 20px;
 
   box-shadow:
-    var(--shadow-lg);
+    var(--admin-shadow);
 }
 
 
 /* =========================================================
    LIST HEADER
-========================================================= */
+   ========================================================= */
 
 .student-list-header {
   padding:
-    24px 24px 20px;
-
-  border-bottom:
-    1px solid var(--border);
+    22px 24px 18px;
 
   background:
     linear-gradient(
@@ -723,105 +899,111 @@
       #fffef9 0%,
       #fffaf0 100%
     );
+
+  border-bottom:
+    1px solid var(--admin-border);
 }
 
 .student-list-heading-row {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   gap: 20px;
+
+  margin-bottom: 18px;
+}
+
+.student-list-title-area {
+  min-width: 0;
 }
 
 .student-list-title-row {
   display: flex;
+
   align-items: center;
 
   gap: 11px;
 }
 
 .student-list-icon {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 11px;
+  flex: 0 0 auto;
 
-  color: #70591a;
+  border-radius: 12px;
 
-  background: var(--gold-pale);
+  background:
+    linear-gradient(
+      145deg,
+      #fff8dc,
+      #f7e7a9
+    );
 
-  font-size: 19px;
+  border:
+    1px solid #e5d28a;
+
+  color:
+    #70591a;
+
+  font-size: 20px;
 }
 
 .student-list-title-row h2 {
   margin: 0;
 
-  color: var(--admin-bg);
+  color:
+    var(--admin-deep-green);
 
-  font-size: 19px;
-  font-weight: 700;
-}
+  font-size: 20px;
+  line-height: 1.3;
 
-.student-list-description {
-  margin:
-    5px 0 0 51px;
-
-  color: var(--muted);
-
-  font-size: 12px;
-}
-
-.student-list-description strong {
-  color: var(--gold-dark);
   font-weight: 800;
 }
 
-.student-list-count {
-  padding:
-    7px 11px;
-
-  border-radius: 8px;
-
-  color: #6d5a25;
-
-  background: #fff6d6;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   TOOLBAR
-========================================================= */
-
-.admin-toolbar {
+.student-list-actions {
   display: flex;
+
   align-items: center;
   justify-content: flex-end;
 
   gap: 9px;
 
-  margin-top: 21px;
+  flex-shrink: 0;
 }
 
+
+/* =========================================================
+   ACTION BUTTON
+   ========================================================= */
+
 .admin-action-button {
-  height: 39px;
+  min-height: 40px;
 
   padding:
     0 15px;
 
-  border-radius: 9px;
+  display: inline-flex;
 
-  font-family: inherit;
-  font-size: 12.5px;
-  font-weight: 700;
+  align-items: center;
+  justify-content: center;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 10px;
+
+  font: inherit;
+
+  font-size: 13px;
+  font-weight: 800;
 
   cursor: pointer;
 
@@ -831,16 +1013,14 @@
     background 0.18s ease;
 }
 
-
-/* =========================================================
-   TẠO TÀI KHOẢN
-========================================================= */
+.admin-action-button:hover {
+  transform:
+    translateY(-1px);
+}
 
 .admin-create-button {
-  color: #fffdf5;
-
-  border:
-    1px solid #075c48;
+  color:
+    #fffdf5;
 
   background:
     linear-gradient(
@@ -849,27 +1029,28 @@
       #075c48
     );
 
+  border-color:
+    #075c48;
+
   box-shadow:
-    0 4px 10px rgba(7, 92, 72, 0.18);
+    0 5px 12px rgba(7, 92, 72, 0.18);
 }
 
 .admin-create-button:hover {
-  transform: translateY(-1px);
+  background:
+    linear-gradient(
+      135deg,
+      #059669,
+      #087f62
+    );
 
   box-shadow:
-    0 7px 15px rgba(7, 92, 72, 0.25);
+    0 8px 17px rgba(7, 92, 72, 0.25);
 }
 
-
-/* =========================================================
-   EXCEL
-========================================================= */
-
 .admin-export-button {
-  color: #624d14;
-
-  border:
-    1px solid #e3c75b;
+  color:
+    #624d14;
 
   background:
     linear-gradient(
@@ -878,12 +1059,20 @@
       #f5dc79
     );
 
+  border-color:
+    #e3c75b;
+
   box-shadow:
     0 4px 10px rgba(212, 175, 55, 0.14);
 }
 
 .admin-export-button:hover {
-  transform: translateY(-1px);
+  background:
+    linear-gradient(
+      135deg,
+      #f7e7a9,
+      #f0c75e
+    );
 
   box-shadow:
     0 7px 15px rgba(212, 175, 55, 0.22);
@@ -891,21 +1080,66 @@
 
 
 /* =========================================================
+   STUDENT TOOLBAR
+   ---------------------------------------------------------
+   QUAN TRỌNG:
+   SEARCH + COUNT + PAGE SIZE
+   LUÔN NẰM TRÊN CÙNG MỘT HÀNG
+   ========================================================= */
+
+.student-toolbar {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
    SEARCH
-========================================================= */
+   ========================================================= */
 
 .student-search-wrapper {
-  margin-top: 15px;
+  position: relative;
+
+  flex: 1 1 auto;
+
+  min-width: 260px;
+
+  max-width: none;
+}
+
+.student-search-icon {
+  position: absolute;
+
+  left: 14px;
+  top: 50%;
+
+  transform:
+    translateY(-50%);
+
+  z-index: 2;
+
+  color:
+    #8a806f;
+
+  font-size: 16px;
+
+  pointer-events: none;
 }
 
 .student-search-input {
   width: 100%;
+
   height: 44px;
 
-  box-sizing: border-box;
-
   padding:
-    0 15px;
+    0 15px 0 40px;
 
   border:
     1px solid #d9d4c7;
@@ -914,24 +1148,43 @@
 
   outline: none;
 
-  color: var(--text);
+  background:
+    #ffffff;
 
-  background: #ffffff;
+  color:
+    var(--admin-text);
 
-  font-family: inherit;
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
   font-size: 13px;
+
+  font-weight: 500;
 
   transition:
     border-color 0.18s ease,
-    box-shadow 0.18s ease;
+    box-shadow 0.18s ease,
+    background 0.18s ease;
 }
 
 .student-search-input::placeholder {
-  color: #a4aaa6;
+  color:
+    #a4aaa6;
+}
+
+.student-search-input:hover {
+  border-color:
+    #c9bb98;
 }
 
 .student-search-input:focus {
-  border-color: var(--gold);
+  border-color:
+    var(--admin-gold);
+
+  background:
+    #fffefb;
 
   box-shadow:
     0 0 0 3px
@@ -940,112 +1193,320 @@
 
 
 /* =========================================================
-   PAGE SIZE
-========================================================= */
+   RESULT COUNT
+   ========================================================= */
 
-.student-pagination-top {
-  display: flex;
-  justify-content: flex-end;
+.student-list-count {
+  height: 44px;
 
-  margin-top: 13px;
+  flex: 0 0 auto;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    0 15px;
+
+  white-space: nowrap;
+
+  border:
+    1px solid #e4dcc9;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff8dc,
+      #fff3c9
+    );
+
+  color:
+    var(--admin-gold-dark);
+
+  font-size: 12.5px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 2px 6px rgba(212, 175, 55, 0.06);
 }
 
+
+/* =========================================================
+   PAGE SIZE
+   ========================================================= */
+
 .student-page-size {
+  height: 44px;
+
+  flex: 0 0 auto;
+
   display: flex;
+
   align-items: center;
+  justify-content: center;
 
   gap: 7px;
 
-  color: #7d847f;
+  padding:
+    0 10px;
 
-  font-size: 11.5px;
+  white-space: nowrap;
+
+  border:
+    1px solid #e3dac1;
+
+  border-radius: 10px;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--admin-text-soft);
+
+  font-size: 12.5px;
+
+  font-weight: 600;
 }
 
 .student-page-size-select {
-  height: 33px;
+  height: 32px;
+
+  min-width: 62px;
 
   padding:
-    0 29px 0 10px;
+    0 25px 0 9px;
 
   border:
-    1px solid #d8d2c4;
+    1px solid #d7caa9;
 
-  border-radius: 8px;
+  border-radius: 7px;
 
   outline: none;
 
-  color: var(--admin-bg);
+  background:
+    linear-gradient(
+      180deg,
+      #fffdf8,
+      #fff8e7
+    );
 
-  background: #fffef9;
+  color:
+    var(--admin-deep-green);
 
-  font-family: inherit;
+  font: inherit;
 
   font-size: 12px;
-  font-weight: 700;
+
+  font-weight: 800;
 
   cursor: pointer;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.student-page-size-select:hover {
+  border-color:
+    var(--admin-gold);
+}
+
+.student-page-size-select:focus {
+  border-color:
+    var(--admin-jade);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(8, 127, 98, 0.09);
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.admin-loading {
+  min-height: 280px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  color:
+    var(--admin-text-soft);
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.admin-loading-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff8dc,
+      #f7e7a9
+    );
+
+  border:
+    1px solid #e2cf82;
+
+  font-size: 25px;
+
+  animation:
+    admin-loading-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes admin-loading-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.06);
+    opacity: 0.72;
+  }
 }
 
 
 /* =========================================================
    TABLE
-========================================================= */
+   ========================================================= */
 
 .student-table-wrapper {
   width: 100%;
 
   overflow-x: auto;
+  overflow-y: hidden;
+
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #c9b979
+    #f7f3e7;
+}
+
+.student-table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.student-table-wrapper::-webkit-scrollbar-track {
+  background:
+    #f7f3e7;
+}
+
+.student-table-wrapper::-webkit-scrollbar-thumb {
+  background:
+    #c9b979;
+
+  border-radius:
+    999px;
 }
 
 .student-table {
   width: 100%;
 
-  border-collapse: collapse;
+  min-width: 1080px;
 
-  min-width: 1050px;
+  border-collapse:
+    separate;
+
+  border-spacing:
+    0;
+
+  color:
+    var(--admin-text);
+
+  font-size:
+    13px;
 }
 
-.student-table thead {
+.student-table thead th {
+  height: 50px;
+
+  padding:
+    0 13px;
+
   background:
     linear-gradient(
       180deg,
       #075443,
       #064536
     );
-}
 
-.student-table th {
-  height: 48px;
-
-  padding:
-    0 13px;
+  color:
+    #fff8df;
 
   border-bottom:
-    2px solid var(--gold);
+    2px solid var(--admin-gold);
 
-  color: #fff8df;
+  font-size:
+    12px;
 
-  font-size: 11px;
-  font-weight: 700;
+  font-weight:
+    800;
 
-  white-space: nowrap;
+  letter-spacing:
+    0.15px;
 
-  text-align: left;
+  white-space:
+    nowrap;
+
+  text-align:
+    left;
 }
 
-.student-table td {
-  padding: 13px;
+.student-table thead th:first-child {
+  padding-left:
+    20px;
+}
+
+.student-table thead th:last-child {
+  padding-right:
+    20px;
+}
+
+.student-table tbody td {
+  height:
+    64px;
+
+  padding:
+    11px 13px;
+
+  background:
+    #fffefb;
 
   border-bottom:
     1px solid #eee8da;
 
-  color: #4d5853;
+  vertical-align:
+    middle;
 
-  background: #fffefb;
+  white-space:
+    nowrap;
 
-  font-size: 12px;
-
-  vertical-align: middle;
+  font-size:
+    13px;
 }
 
 .student-table tbody tr {
@@ -1054,104 +1515,162 @@
 }
 
 .student-table tbody tr:hover td {
-  background: #fffaf0;
+  background:
+    linear-gradient(
+      90deg,
+      #fffaf0,
+      #f7fcf9
+    );
 }
 
 .student-table tbody tr:last-child td {
-  border-bottom: none;
+  border-bottom:
+    none;
+}
+
+.student-table tbody td:first-child {
+  padding-left:
+    20px;
+}
+
+.student-table tbody td:last-child {
+  padding-right:
+    20px;
 }
 
 
 /* =========================================================
-   ALIGNMENT
-========================================================= */
-
-.text-center {
-  text-align: center !important;
-}
-
-.text-right {
-  text-align: right !important;
-}
-
-
-/* =========================================================
-   STUDENT CELLS
-========================================================= */
+   TABLE TEXT — TĂNG KÍCH THƯỚC
+   ========================================================= */
 
 .student-index {
-  display: inline-flex;
+  width:
+    32px;
 
-  min-width: 26px;
-  height: 26px;
+  height:
+    32px;
 
-  align-items: center;
-  justify-content: center;
+  display:
+    inline-flex;
 
-  border-radius: 7px;
+  align-items:
+    center;
 
-  color: #7d6827;
+  justify-content:
+    center;
 
-  background: #fff6d6;
+  border-radius:
+    9px;
+
+  background:
+    #fff6d6;
+
+  color:
+    #7d6827;
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
 
-  font-size: 11px;
-  font-weight: 700;
+  font-size:
+    12px;
+
+  font-weight:
+    800;
 }
 
 .student-name {
-  color: var(--admin-bg);
+  color:
+    var(--admin-deep-green);
 
-  font-size: 13px;
-  font-weight: 700;
+  font-size:
+    14px;
+
+  font-weight:
+    800;
 }
 
 .student-account {
-  color: #6c756f;
+  color:
+    #5f675f;
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
 
-  font-size: 12px;
+  font-size:
+    13px;
+
+  font-weight:
+    600;
 }
 
 .student-email {
-  color: #78817c;
+  max-width:
+    270px;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  color:
+    #68736d;
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
 
-  font-size: 11.5px;
+  font-size:
+    12px;
+
+  font-weight:
+    500;
+}
+
+.text-center {
+  text-align:
+    center !important;
+}
+
+.text-right {
+  text-align:
+    right !important;
 }
 
 
 /* =========================================================
-   LEVEL
-========================================================= */
+   LEVEL — TĂNG
+   ========================================================= */
 
 .student-level {
-  display: inline-flex;
+  display:
+    inline-flex;
 
-  align-items: center;
-  justify-content: center;
+  align-items:
+    center;
 
-  min-width: 48px;
-  height: 27px;
+  justify-content:
+    center;
+
+  min-width:
+    56px;
+
+  height:
+    31px;
 
   padding:
-    0 9px;
+    0 10px;
 
-  border-radius: 999px;
+  border-radius:
+    9px;
 
-  color: #735b16;
+  color:
+    #735b16;
 
   background:
     linear-gradient(
@@ -1168,137 +1687,195 @@
     Arial,
     sans-serif;
 
-  font-size: 11px;
-  font-weight: 800;
+  font-size:
+    12px;
+
+  font-weight:
+    800;
 
   box-shadow:
-    0 2px 5px rgba(212, 175, 55, 0.12);
+    0 2px 5px
+    rgba(212, 175, 55, 0.12);
 }
 
 
 /* =========================================================
-   EXP
-========================================================= */
+   EXP — TĂNG
+   ========================================================= */
 
 .student-exp {
-  color: #b58a12 !important;
+  color:
+    #b58a12 !important;
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
 
-  font-size: 13px !important;
+  font-size:
+    14px !important;
 
-  font-weight: 800 !important;
+  font-weight:
+    800 !important;
 
-  white-space: nowrap;
+  white-space:
+    nowrap;
 }
 
 
 /* =========================================================
-   GAME
-========================================================= */
+   GAME PROGRESS — TĂNG
+   ========================================================= */
 
 .student-game-progress {
-  display: inline-flex;
+  min-width:
+    76px;
 
-  align-items: center;
-  justify-content: center;
-
-  min-width: 67px;
-  height: 28px;
-
-  padding:
-    0 9px;
-
-  border-radius: 999px;
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  font-size: 11px;
-  font-weight: 800;
-
-  white-space: nowrap;
-}
-
-.game-complete {
-  color: #126347;
-
-  border:
-    1px solid #9bd2bc;
-
-  background: #e6f5ed;
-}
-
-.game-learning {
-  color: #7d6418;
-
-  border:
-    1px solid #e4cc72;
-
-  background: #fff7d9;
-}
-
-.game-not-started {
-  color: #7b827e;
-
-  border:
-    1px solid #dddcd5;
-
-  background: #f3f3ef;
-}
-
-
-/* =========================================================
-   STUDY TIME
-========================================================= */
-
-.student-study-time {
-  color: #53635b !important;
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-  font-size: 11.5px !important;
-
-  white-space: nowrap;
-}
-
-
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
-
-.student-action-buttons {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 7px;
-}
-
-.password-button,
-.delete-button {
-  min-height: 32px;
+  height:
+    31px;
 
   padding:
     0 10px;
 
-  border-radius: 8px;
+  display:
+    inline-flex;
 
-  font-family: inherit;
+  align-items:
+    center;
 
-  font-size: 10.5px;
-  font-weight: 700;
+  justify-content:
+    center;
 
-  cursor: pointer;
+  border-radius:
+    9px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+}
+
+.game-complete {
+  color:
+    #126347;
+
+  border:
+    1px solid #9bd2bc;
+
+  background:
+    #e6f5ed;
+}
+
+.game-learning {
+  color:
+    #7d6418;
+
+  border:
+    1px solid #e4cc72;
+
+  background:
+    #fff7d9;
+}
+
+.game-not-started {
+  color:
+    #7b827e;
+
+  border:
+    1px solid #dddcd5;
+
+  background:
+    #f3f3ef;
+}
+
+
+/* =========================================================
+   STUDY TIME — TĂNG
+   ========================================================= */
+
+.student-study-time {
+  color:
+    #53635b !important;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size:
+    12.5px !important;
+
+  font-weight:
+    700 !important;
+
+  white-space:
+    nowrap;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS — TĂNG
+   ========================================================= */
+
+.student-action-buttons {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+}
+
+.password-button,
+.delete-button {
+  min-height:
+    34px;
+
+  padding:
+    0 11px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    8px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  font-size:
+    11.5px;
+
+  font-weight:
+    800;
+
+  white-space:
+    nowrap;
+
+  cursor:
+    pointer;
 
   transition:
     transform 0.16s ease,
@@ -1306,13 +1883,9 @@
     background 0.16s ease;
 }
 
-
-/* =========================================================
-   ĐỔI MẬT KHẨU — GOLD
-========================================================= */
-
 .password-button {
-  color: #6c5310;
+  color:
+    #6c5310;
 
   border:
     1px solid #e0bf47;
@@ -1325,7 +1898,8 @@
     );
 
   box-shadow:
-    0 3px 8px rgba(212, 175, 55, 0.12);
+    0 3px 8px
+    rgba(212, 175, 55, 0.12);
 }
 
 .password-button:hover {
@@ -1336,19 +1910,17 @@
       #edcb52
     );
 
-  transform: translateY(-1px);
+  transform:
+    translateY(-1px);
 
   box-shadow:
-    0 5px 12px rgba(212, 175, 55, 0.20);
+    0 5px 12px
+    rgba(212, 175, 55, 0.20);
 }
 
-
-/* =========================================================
-   XÓA — RED
-========================================================= */
-
 .delete-button {
-  color: #ffffff;
+  color:
+    #ffffff;
 
   border:
     1px solid #a7232d;
@@ -1361,7 +1933,8 @@
     );
 
   box-shadow:
-    0 3px 8px rgba(167, 35, 45, 0.14);
+    0 3px 8px
+    rgba(167, 35, 45, 0.14);
 }
 
 .delete-button:hover {
@@ -1372,166 +1945,247 @@
       #b4222c
     );
 
-  transform: translateY(-1px);
+  transform:
+    translateY(-1px);
 
   box-shadow:
-    0 5px 12px rgba(167, 35, 45, 0.22);
-}
-
-
-/* =========================================================
-   LOADING
-========================================================= */
-
-.admin-loading {
-  min-height: 250px;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 9px;
-
-  color: #6d7772;
-
-  font-size: 13px;
-}
-
-.admin-loading-icon {
-  width: 48px;
-  height: 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: var(--gold-pale);
-
-  font-size: 22px;
+    0 5px 12px
+    rgba(167, 35, 45, 0.22);
 }
 
 
 /* =========================================================
    EMPTY
-========================================================= */
+   ========================================================= */
 
 .admin-empty {
+  min-height:
+    250px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
   padding:
-    55px 20px;
+    35px 20px;
 
-  text-align: center;
-
-  color: #737d78;
+  text-align:
+    center;
 }
 
 .admin-empty-icon {
-  width: 56px;
-  height: 56px;
+  width:
+    60px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height:
+    60px;
 
-  margin:
-    0 auto 12px;
+  display:
+    flex;
 
-  border-radius: 50%;
+  align-items:
+    center;
 
-  background: #f4efe2;
+  justify-content:
+    center;
 
-  font-size: 24px;
+  margin-bottom:
+    13px;
+
+  border-radius:
+    17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5f4ee,
+      #ece9dd
+    );
+
+  border:
+    1px solid #ded8c6;
+
+  font-size:
+    24px;
 }
 
 .admin-empty strong {
-  display: block;
+  color:
+    var(--admin-deep-green);
 
-  color: var(--admin-bg);
+  font-size:
+    15px;
 
-  font-size: 14px;
+  font-weight:
+    800;
 }
 
 .admin-empty-text {
-  margin-top: 5px;
+  margin-top:
+    5px;
 
-  color: #8a918d;
+  color:
+    var(--admin-text-muted);
 
-  font-size: 12px;
+  font-size:
+    12px;
 }
 
 
 /* =========================================================
    PAGINATION
-========================================================= */
+   ========================================================= */
 
 .student-pagination {
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 7px;
+  min-height:
+    72px;
 
   padding:
-    18px 22px;
+    14px 20px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    10px;
 
   border-top:
-    1px solid var(--border);
+    1px solid var(--admin-border);
 
-  background: #fffaf0;
+  background:
+    linear-gradient(
+      180deg,
+      #fffefb,
+      #fffaf0
+    );
 }
 
 .student-pagination-pages {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 5px;
+  justify-content:
+    center;
+
+  gap:
+    5px;
 }
 
 .student-pagination-button,
 .student-pagination-page {
-  min-width: 34px;
-  height: 34px;
+  height:
+    35px;
+
+  min-width:
+    35px;
 
   padding:
-    0 8px;
+    0 9px;
 
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    8px;
+
+  font:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease,
+    background 0.16s ease,
+    color 0.16s ease;
+}
+
+.student-pagination-button {
   border:
     1px solid #d9d3c5;
 
-  border-radius: 8px;
+  background:
+    #fffefb;
 
-  color: #64706a;
-
-  background: #fffefb;
-
-  font-family: inherit;
-
-  font-size: 11.5px;
-  font-weight: 700;
-
-  cursor: pointer;
-
-  transition:
-    all 0.16s ease;
+  color:
+    #64706a;
 }
 
-.student-pagination-button:hover:not(:disabled),
+.student-pagination-button:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    var(--admin-gold);
+
+  background:
+    #fff7d8;
+
+  color:
+    var(--admin-deep-green);
+}
+
+.student-pagination-button:disabled {
+  opacity:
+    0.4;
+
+  cursor:
+    not-allowed;
+}
+
+.student-pagination-page {
+  border:
+    1px solid transparent;
+
+  background:
+    transparent;
+
+  color:
+    #766f63;
+}
+
 .student-pagination-page:hover {
-  color: var(--admin-bg);
+  border-color:
+    #dfd4b5;
 
-  border-color: var(--gold);
+  background:
+    #fff9e8;
 
-  background: #fff7d8;
+  color:
+    var(--admin-green);
 }
 
 .student-pagination-page.active {
-  color: #fffdf5;
-
   border-color:
     var(--admin-green);
 
@@ -1542,102 +2196,141 @@
       #075c48
     );
 
+  color:
+    #ffffff;
+
   box-shadow:
-    0 4px 9px rgba(7, 92, 72, 0.18);
-}
-
-.student-pagination-button:disabled {
-  opacity: 0.4;
-
-  cursor: not-allowed;
+    0 4px 10px
+    rgba(7, 92, 72, 0.18);
 }
 
 .student-pagination-ellipsis {
-  min-width: 22px;
+  min-width:
+    24px;
 
-  color: #8b918d;
+  display:
+    inline-flex;
 
-  text-align: center;
+  align-items:
+    center;
 
-  font-size: 13px;
+  justify-content:
+    center;
+
+  color:
+    #8b918d;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
 }
 
 
 /* =========================================================
    MODAL OVERLAY
-========================================================= */
+   ========================================================= */
 
 .password-modal-overlay {
-  position: fixed;
+  position:
+    fixed;
 
-  inset: 0;
+  inset:
+    0;
 
-  z-index: 1000;
+  z-index:
+    1000;
 
-  display: flex;
+  padding:
+    24px;
 
-  align-items: center;
-  justify-content: center;
+  display:
+    flex;
 
-  padding: 20px;
+  align-items:
+    center;
+
+  justify-content:
+    center;
 
   background:
     rgba(2, 31, 25, 0.72);
 
-  backdrop-filter: blur(5px);
+  backdrop-filter:
+    blur(5px);
+
+  -webkit-backdrop-filter:
+    blur(5px);
 
   animation:
-    modalOverlayIn 0.18s ease;
+    admin-overlay-in 0.18s ease-out;
 }
 
-@keyframes modalOverlayIn {
+@keyframes admin-overlay-in {
   from {
-    opacity: 0;
+    opacity:
+      0;
   }
 
   to {
-    opacity: 1;
+    opacity:
+      1;
   }
 }
 
 
 /* =========================================================
    MODAL
-========================================================= */
+   ---------------------------------------------------------
+   KHUNG GIỮ TỈ LỆ
+   NHƯNG NỘI DUNG TO HƠN
+   ========================================================= */
 
 .password-modal {
-  width: min(470px, 100%);
+  width:
+    min(500px, 100%);
 
   max-height:
-    calc(100vh - 40px);
+    calc(100vh - 48px);
 
-  overflow-y: auto;
+  overflow-y:
+    auto;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fffdf7 100%
+    );
 
   border:
     1px solid rgba(212, 175, 55, 0.28);
 
-  border-radius: 17px;
-
-  background: #fffdf7;
+  border-radius:
+    20px;
 
   box-shadow:
-    0 25px 70px rgba(0, 0, 0, 0.35);
+    0 25px 70px
+    rgba(0, 0, 0, 0.28);
 
   animation:
-    modalIn 0.22s ease;
+    admin-modal-in 0.2s ease-out;
 }
 
-@keyframes modalIn {
+@keyframes admin-modal-in {
   from {
-    opacity: 0;
+    opacity:
+      0;
 
     transform:
-      translateY(12px)
-      scale(0.98);
+      translateY(10px)
+      scale(0.985);
   }
 
   to {
-    opacity: 1;
+    opacity:
+      1;
 
     transform:
       translateY(0)
@@ -1648,133 +2341,221 @@
 
 /* =========================================================
    MODAL HEADER
-========================================================= */
+   ========================================================= */
 
 .password-modal-header {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
+  min-height:
+    78px;
 
   padding:
-    18px 20px;
+    17px 20px;
 
-  border-bottom:
-    1px solid #e8dfcc;
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
 
   background:
     linear-gradient(
       135deg,
-      #064536,
+      #042f27,
+      #063f32 55%,
       #075c48
     );
+
+  border-bottom:
+    2px solid var(--admin-gold);
+
+  border-radius:
+    19px 19px 0 0;
 }
 
 .password-modal-title {
-  color: #fffdf5;
+  color:
+    #fffdf5;
 
-  font-size: 16px;
-  font-weight: 700;
+  font-size:
+    18px;
+
+  line-height:
+    1.3;
+
+  font-weight:
+    800;
 }
 
 .password-modal-subtitle {
-  margin-top: 2px;
+  margin-top:
+    4px;
 
   color:
-    rgba(255, 253, 245, 0.60);
+    rgba(255, 253, 245, 0.68);
 
-  font-size: 10px;
+  font-size:
+    12px;
+
+  line-height:
+    1.5;
 }
 
 .password-modal-close {
-  width: 32px;
-  height: 32px;
+  width:
+    36px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height:
+    36px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  flex:
+    0 0 auto;
 
   border:
     1px solid rgba(255, 255, 255, 0.18);
 
-  border-radius: 8px;
-
-  color: #fffdf5;
+  border-radius:
+    9px;
 
   background:
     rgba(255, 255, 255, 0.08);
 
-  font-size: 21px;
+  color:
+    #ffffff;
 
-  line-height: 1;
+  font-size:
+    24px;
 
-  cursor: pointer;
+  line-height:
+    1;
+
+  cursor:
+    pointer;
 
   transition:
-    background 0.16s ease;
+    background 0.16s ease,
+    transform 0.16s ease;
 }
 
 .password-modal-close:hover {
   background:
-    rgba(255, 255, 255, 0.16);
+    rgba(255, 255, 255, 0.17);
+
+  transform:
+    rotate(3deg);
+}
+
+.password-modal-close:disabled {
+  opacity:
+    0.4;
+
+  cursor:
+    not-allowed;
 }
 
 
 /* =========================================================
    FORM
-========================================================= */
+   ---------------------------------------------------------
+   TĂNG FONT VÀ INPUT
+   ========================================================= */
 
 .password-form {
-  padding: 21px;
+  padding:
+    24px 23px 26px;
 }
 
 .password-label {
-  display: block;
+  display:
+    block;
 
   margin:
-    14px 0 6px;
+    17px 0 8px;
 
-  color: #4d5a54;
+  color:
+    var(--admin-deep-green);
 
-  font-size: 12px;
-  font-weight: 700;
+  font-size:
+    13px;
+
+  line-height:
+    1.4;
+
+  font-weight:
+    800;
 }
 
 .password-label:first-of-type {
-  margin-top: 0;
+  margin-top:
+    0;
 }
 
 .password-input {
-  width: 100%;
-  height: 43px;
+  width:
+    100%;
 
-  box-sizing: border-box;
+  height:
+    47px;
 
   padding:
-    0 12px;
+    0 14px;
 
   border:
     1px solid #d9d3c5;
 
-  border-radius: 9px;
+  border-radius:
+    10px;
 
-  outline: none;
+  outline:
+    none;
 
-  color: #27352f;
+  background:
+    #ffffff;
 
-  background: #fff;
+  color:
+    var(--admin-text);
 
-  font-family: inherit;
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
 
-  font-size: 13px;
+  font-size:
+    14px;
+
+  font-weight:
+    500;
 
   transition:
     border-color 0.18s ease,
-    box-shadow 0.18s ease;
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.password-input:hover {
+  border-color:
+    #c9bb98;
 }
 
 .password-input:focus {
-  border-color: var(--gold);
+  border-color:
+    var(--admin-gold);
+
+  background:
+    #fffefb;
 
   box-shadow:
     0 0 0 3px
@@ -1782,39 +2563,78 @@
 }
 
 .password-input:disabled {
-  opacity: 0.65;
+  background:
+    #f5f3ed;
 
-  background: #f5f3ed;
+  color:
+    #999287;
 
-  cursor: not-allowed;
+  cursor:
+    not-allowed;
+}
+
+.password-input.input-error {
+  border-color:
+    #d85b50;
+
+  background:
+    #fffafa;
+}
+
+.password-input.input-error:focus {
+  border-color:
+    #c83e33;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(180, 35, 24, 0.09);
 }
 
 .password-help {
-  margin-top: 6px;
+  margin-top:
+    6px;
 
-  color: #8a918d;
+  color:
+    #8a918d;
 
-  font-size: 10.5px;
+  font-size:
+    11.5px;
 
-  line-height: 1.45;
+  line-height:
+    1.55;
+}
+
+.password-field-error {
+  color:
+    #9b242d;
+
+  font-size:
+    11.5px;
+
+  font-weight:
+    650;
 }
 
 
 /* =========================================================
    SELECTED STUDENT
-========================================================= */
+   ========================================================= */
 
 .selected-student {
+  margin-bottom:
+    18px;
+
   padding:
-    13px 14px;
+    15px 16px;
 
   border:
     1px solid #e5d7a5;
 
   border-left:
-    4px solid var(--gold);
+    4px solid var(--admin-gold);
 
-  border-radius: 10px;
+  border-radius:
+    11px;
 
   background:
     linear-gradient(
@@ -1825,109 +2645,161 @@
 }
 
 .selected-student-label {
-  color: #8a7944;
+  margin-bottom:
+    6px;
 
-  font-size: 10px;
-  font-weight: 700;
+  color:
+    #8a7944;
 
-  text-transform: uppercase;
+  font-size:
+    11px;
 
-  letter-spacing: 0.5px;
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.6px;
 }
 
 .selected-student-name {
-  margin-top: 3px;
+  color:
+    var(--admin-deep-green);
 
-  color: var(--admin-bg);
+  font-size:
+    15px;
 
-  font-size: 14px;
-  font-weight: 700;
+  line-height:
+    1.4;
+
+  font-weight:
+    800;
 }
 
 .selected-student-account {
-  margin-top: 2px;
+  margin-top:
+    3px;
 
-  color: #8b918d;
+  color:
+    #68756e;
 
   font-family:
     "Segoe UI",
     Arial,
     sans-serif;
 
-  font-size: 11px;
+  font-size:
+    12px;
+
+  font-weight:
+    600;
 }
 
 
 /* =========================================================
    SUCCESS / ERROR
-========================================================= */
+   ========================================================= */
 
-.reset-success,
-.reset-error {
-  margin-bottom: 13px;
+.reset-error,
+.reset-success {
+  margin-bottom:
+    14px;
 
   padding:
-    10px 12px;
+    12px 14px;
 
-  border-radius: 8px;
+  border-radius:
+    9px;
 
-  font-size: 11.5px;
+  font-size:
+    12px;
 
-  line-height: 1.45;
+  line-height:
+    1.55;
 
-  font-weight: 600;
-}
-
-.reset-success {
-  color: #176847;
-
-  border:
-    1px solid #a9d8c2;
-
-  background: #eaf7f0;
+  font-weight:
+    650;
 }
 
 .reset-error {
-  color: #9b242d;
-
   border:
     1px solid #e5b8bb;
 
-  background: #fff1f1;
+  background:
+    linear-gradient(
+      135deg,
+      #fff5f5,
+      #fff0f0
+    );
+
+  color:
+    #9b242d;
+}
+
+.reset-success {
+  border:
+    1px solid #a9d8c2;
+
+  background:
+    linear-gradient(
+      135deg,
+      #effaf5,
+      #e2f7ec
+    );
+
+  color:
+    #176847;
 }
 
 
 /* =========================================================
    FORM ACTIONS
-========================================================= */
+   ========================================================= */
 
 .password-form-actions {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
-  justify-content: flex-end;
+  align-items:
+    center;
 
-  gap: 8px;
+  justify-content:
+    flex-end;
 
-  margin-top: 20px;
+  gap:
+    9px;
+
+  margin-top:
+    22px;
 }
 
 .modal-cancel-button,
 .modal-submit-button,
 .modal-delete-button {
-  min-height: 39px;
+  min-height:
+    42px;
 
   padding:
-    0 15px;
+    0 17px;
 
-  border-radius: 8px;
+  border-radius:
+    9px;
 
-  font-family: inherit;
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
 
-  font-size: 12px;
-  font-weight: 700;
+  font-size:
+    12.5px;
 
-  cursor: pointer;
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
 
   transition:
     transform 0.16s ease,
@@ -1935,145 +2807,66 @@
     background 0.16s ease;
 }
 
-
-/* =========================================================
-   HỦY
-========================================================= */
-
 .modal-cancel-button {
-  color: #59645f;
+  color:
+    #59645f;
 
   border:
     1px solid #d5d0c4;
 
-  background: #f8f6ef;
+  background:
+    #f8f6ef;
 }
 
-.modal-cancel-button:hover {
-  background: #efede5;
+.modal-cancel-button:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
+
+  background:
+    #efede5;
 }
-
-
-/* =========================================================
-   MODAL SUBMIT — GOLD
-========================================================= */
 
 .modal-submit-button {
-  color: #5d4810;
+  color:
+    #fffdf5;
 
   border:
-    1px solid #d6b641;
+    1px solid #075c48;
 
   background:
     linear-gradient(
       135deg,
-      #f7df83,
-      #d4af37
+      #087f62,
+      #075c48
     );
 
   box-shadow:
-    0 4px 10px rgba(212, 175, 55, 0.16);
+    0 4px 10px
+    rgba(7, 92, 72, 0.18);
 }
 
 .modal-submit-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-
-  box-shadow:
-    0 6px 14px rgba(212, 175, 55, 0.24);
-}
-
-
-/* =========================================================
-   DELETE MODAL
-========================================================= */
-
-.delete-confirm-modal {
-  width: min(450px, 100%);
-}
-
-.delete-confirm-body {
-  padding:
-    25px 23px 8px;
-
-  text-align: center;
-}
-
-.delete-warning-icon {
-  width: 56px;
-  height: 56px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin:
-    0 auto 12px;
-
-  border-radius: 50%;
+  transform:
+    translateY(-1px);
 
   background:
-    var(--danger-light);
+    linear-gradient(
+      135deg,
+      #059669,
+      #087f62
+    );
 
-  font-size: 26px;
+  box-shadow:
+    0 7px 16px
+    rgba(7, 92, 72, 0.25);
 }
-
-.delete-confirm-body h3 {
-  margin: 0;
-
-  color: #572328;
-
-  font-size: 17px;
-}
-
-.delete-confirm-body p {
-  margin:
-    9px auto 0;
-
-  max-width: 350px;
-
-  color: #777e7a;
-
-  font-size: 12px;
-
-  line-height: 1.6;
-}
-
-.delete-confirm-body p strong {
-  color: #7f242b;
-}
-
-.delete-warning-note {
-  margin-top: 15px;
-
-  padding: 10px;
-
-  border-radius: 8px;
-
-  color: #9a3339;
-
-  background: #fff2f2;
-
-  font-size: 11px;
-  font-weight: 600;
-}
-
-.delete-actions {
-  padding:
-    0 23px 21px;
-
-  margin-top: 13px;
-}
-
-
-/* =========================================================
-   DELETE BUTTON MODAL
-========================================================= */
 
 .modal-delete-button {
-  color: #ffffff;
+  color:
+    #ffffff;
 
   border:
-    1px solid #a51f29;
+    1px solid #a7232d;
 
   background:
     linear-gradient(
@@ -2083,11 +2876,13 @@
     );
 
   box-shadow:
-    0 4px 10px rgba(165, 31, 41, 0.16);
+    0 4px 10px
+    rgba(165, 31, 41, 0.16);
 }
 
 .modal-delete-button:hover:not(:disabled) {
-  transform: translateY(-1px);
+  transform:
+    translateY(-1px);
 
   background:
     linear-gradient(
@@ -2097,168 +2892,206 @@
     );
 
   box-shadow:
-    0 6px 14px rgba(165, 31, 41, 0.24);
+    0 6px 14px
+    rgba(165, 31, 41, 0.24);
 }
 
-
-/* =========================================================
-   LOADING BUTTON
-========================================================= */
-
+.modal-cancel-button:disabled,
 .modal-submit-button:disabled,
 .modal-delete-button:disabled {
-  opacity: 0.65;
+  opacity:
+    0.55;
 
-  cursor: not-allowed;
+  cursor:
+    not-allowed;
 
-  transform: none;
+  transform:
+    none;
+
+  box-shadow:
+    none;
 }
 
 .modal-submit-button.is-loading,
 .modal-delete-button.is-loading {
-  cursor: wait;
+  cursor:
+    wait;
 }
 
 
 /* =========================================================
-   ACCESS DENIED
-========================================================= */
+   DELETE CONFIRM MODAL
+   ========================================================= */
 
-.admin-access-denied {
-  min-height: 100vh;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  padding: 24px;
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(212, 175, 55, 0.10),
-      transparent 35%
-    ),
-    linear-gradient(
-      145deg,
-      #042f27,
-      #063f32
-    );
+.delete-confirm-modal {
+  width:
+    min(470px, 100%);
 }
 
-.admin-access-card {
-  width: min(430px, 100%);
-
+.delete-confirm-body {
   padding:
-    36px 30px;
+    29px 26px 8px;
 
-  border:
-    1px solid rgba(212, 175, 55, 0.25);
-
-  border-radius: 18px;
-
-  background: #fffdf7;
-
-  box-shadow:
-    0 25px 60px rgba(0, 0, 0, 0.28);
-
-  text-align: center;
+  text-align:
+    center;
 }
 
-.admin-access-icon {
-  width: 62px;
-  height: 62px;
+.delete-warning-icon {
+  width:
+    64px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height:
+    64px;
 
   margin:
     0 auto 15px;
 
-  border-radius: 50%;
+  display:
+    flex;
 
-  background: #fff0f0;
+  align-items:
+    center;
 
-  font-size: 28px;
-}
+  justify-content:
+    center;
 
-.admin-access-card h2 {
-  margin: 0;
-
-  color: var(--admin-bg);
-
-  font-size: 20px;
-}
-
-.admin-access-card p {
-  margin:
-    9px auto 21px;
-
-  color: #7a837e;
-
-  font-size: 12.5px;
-
-  line-height: 1.6;
-}
-
-.admin-primary-button {
-  min-height: 42px;
-
-  padding:
-    0 18px;
-
-  border: none;
-
-  border-radius: 9px;
-
-  color: #fffdf5;
+  border-radius:
+    19px;
 
   background:
     linear-gradient(
-      135deg,
-      #087f62,
-      #075c48
+      145deg,
+      #fff8dc,
+      #f7e7a9
     );
 
-  font-family: inherit;
+  border:
+    1px solid #dfca7d;
 
-  font-size: 12px;
-  font-weight: 700;
-
-  cursor: pointer;
+  font-size:
+    27px;
 
   box-shadow:
-    0 5px 13px rgba(7, 92, 72, 0.20);
-
-  transition:
-    transform 0.16s ease,
-    box-shadow 0.16s ease;
+    0 7px 17px
+    rgba(212, 175, 55, 0.13);
 }
 
-.admin-primary-button:hover {
-  transform: translateY(-1px);
+.delete-confirm-body h3 {
+  margin:
+    0 0 9px;
 
-  box-shadow:
-    0 7px 17px rgba(7, 92, 72, 0.27);
+  color:
+    var(--admin-deep-green);
+
+  font-size:
+    20px;
+
+  line-height:
+    1.35;
+
+  font-weight:
+    800;
+}
+
+.delete-confirm-body p {
+  max-width:
+    380px;
+
+  margin:
+    0 auto;
+
+  color:
+    var(--admin-text-soft);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.7;
+}
+
+.delete-confirm-body p strong {
+  color:
+    var(--admin-green);
+
+  font-weight:
+    800;
+}
+
+.delete-warning-note {
+  max-width:
+    390px;
+
+  margin:
+    16px auto 0;
+
+  padding:
+    11px 13px;
+
+  border:
+    1px solid #e5b8bb;
+
+  border-radius:
+    9px;
+
+  background:
+    #fff1f1;
+
+  color:
+    #9b242d;
+
+  font-size:
+    11.5px;
+
+  line-height:
+    1.55;
+
+  font-weight:
+    700;
+}
+
+.delete-actions {
+  padding:
+    0 26px 24px;
+
+  margin-top:
+    20px;
 }
 
 
 /* =========================================================
-   RESPONSIVE — TABLET
-========================================================= */
+   MODAL SCROLLBAR
+   ========================================================= */
 
-@media (max-width: 1100px) {
+.password-modal::-webkit-scrollbar {
+  width:
+    7px;
+}
 
-  .admin-header-inner {
-    width:
-      min(100% - 32px, 1480px);
-  }
+.password-modal::-webkit-scrollbar-track {
+  background:
+    #f7f4ea;
+}
 
+.password-modal::-webkit-scrollbar-thumb {
+  background:
+    #cdbd7d;
+
+  border-radius:
+    999px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1180px) {
+
+  .admin-header-inner,
   .admin-main {
     width:
-      min(100% - 32px, 1480px);
+      min(100% - 32px, 1100px);
   }
 
   .admin-stats-grid {
@@ -2266,308 +3099,620 @@
       repeat(2, minmax(0, 1fr));
   }
 
-  .admin-header-actions {
-    gap: 6px;
+  .admin-header-inner {
+    min-height:
+      76px;
+  }
+
+  .admin-brand-title {
+    font-size:
+      19px;
   }
 
   .admin-header-button {
     padding:
+      0 12px;
+  }
+
+  .student-toolbar {
+    gap:
+      9px;
+  }
+
+  .student-search-wrapper {
+    min-width:
+      220px;
+  }
+
+  .student-list-count {
+    padding:
       0 11px;
+  }
+
+  .student-page-size {
+    padding:
+      0 8px;
+
+    gap:
+      5px;
   }
 }
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE
-========================================================= */
+   SMALL TABLET / LARGE PHONE
+   ========================================================= */
 
-@media (max-width: 760px) {
-
-  .admin-header {
-    position: relative;
-  }
+@media (max-width: 860px) {
 
   .admin-header-inner {
     width:
-      calc(100% - 24px);
-
-    min-height: auto;
+      calc(100% - 28px);
 
     padding:
       13px 0;
 
-    align-items: flex-start;
-
-    flex-direction: column;
-
-    gap: 12px;
-  }
-
-  .admin-brand-title {
-    font-size: 18px;
-  }
-
-  .admin-brand-logo {
-    width: 35px;
-    height: 35px;
-
-    font-size: 18px;
-  }
-
-  .admin-greeting {
-    margin-left: 46px;
-
-    font-size: 11px;
+    align-items:
+      flex-start;
   }
 
   .admin-header-actions {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-      repeat(3, 1fr);
-
-    gap: 6px;
+    flex-wrap:
+      wrap;
   }
 
   .admin-header-button {
-    width: 100%;
+    min-height:
+      36px;
 
-    padding:
-      0 5px;
-
-    font-size: 10.5px;
+    font-size:
+      11px;
   }
 
   .admin-main {
     width:
-      calc(100% - 24px);
+      calc(100% - 28px);
 
-    padding:
-      28px 0 45px;
-  }
-
-  .admin-page-heading h1 {
-    font-size: 24px;
-  }
-
-  .admin-page-heading p {
-    font-size: 12px;
-  }
-
-  .admin-stats-grid {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
-
-    gap: 10px;
-  }
-
-  .stat-card {
-    min-height: 145px;
-
-    padding:
-      17px 15px;
-  }
-
-  .stat-card-icon {
-    width: 37px;
-    height: 37px;
-
-    margin-bottom: 9px;
-
-    font-size: 18px;
-  }
-
-  .stat-card-title {
-    font-size: 9.5px;
-  }
-
-  .stat-card-value {
-    font-size: 22px;
-  }
-
-  .stat-card-description {
-    font-size: 9.5px;
-  }
-
-  .student-list-header {
-    padding:
-      18px 15px 16px;
+    padding-top:
+      28px;
   }
 
   .student-list-heading-row {
-    align-items: flex-start;
+    align-items:
+      flex-start;
   }
 
-  .student-list-title-row h2 {
-    font-size: 16px;
+  .student-toolbar {
+    overflow-x:
+      auto;
+
+    padding-bottom:
+      2px;
+
+    scrollbar-width:
+      thin;
   }
 
-  .student-list-icon {
-    width: 35px;
-    height: 35px;
-
-    font-size: 16px;
+  .student-search-wrapper {
+    flex:
+      1 0 260px;
   }
 
-  .student-list-description {
-    margin-left: 46px;
-  }
-
-  .student-list-count {
-    display: none;
-  }
-
-  .admin-toolbar {
-    display: grid;
-
-    grid-template-columns:
-      1fr 1fr;
-
-    gap: 7px;
-  }
-
-  .admin-action-button {
-    width: 100%;
-
-    padding:
-      0 7px;
-
-    font-size: 10.5px;
-  }
-
-  .student-search-input {
-    height: 42px;
-
-    font-size: 12px;
-  }
-
-  .student-pagination-top {
-    justify-content: space-between;
-  }
-
+  .student-list-count,
   .student-page-size {
-    font-size: 10.5px;
-  }
-
-  .student-pagination {
-    padding:
-      14px 10px;
-
-    gap: 4px;
-  }
-
-  .student-pagination-button,
-  .student-pagination-page {
-    min-width: 31px;
-    height: 31px;
-
-    font-size: 10px;
-  }
-
-  .password-modal-overlay {
-    padding: 12px;
-  }
-
-  .password-form {
-    padding: 18px;
-  }
-
-  .password-modal-title {
-    font-size: 14px;
+    flex:
+      0 0 auto;
   }
 }
 
 
 /* =========================================================
-   RESPONSIVE — SMALL PHONE
-========================================================= */
+   PHONE
+   ========================================================= */
 
-@media (max-width: 430px) {
+@media (max-width: 680px) {
+
+  .admin-header {
+    position:
+      relative;
+  }
+
+  .admin-header-inner {
+    width:
+      calc(100% - 24px);
+
+    flex-direction:
+      column;
+
+    gap:
+      13px;
+  }
+
+  .admin-brand {
+    width:
+      100%;
+  }
+
+  .admin-brand-title {
+    font-size:
+      18px;
+  }
+
+  .admin-brand-logo {
+    width:
+      35px;
+
+    height:
+      35px;
+
+    font-size:
+      19px;
+  }
+
+  .admin-greeting {
+    margin-left:
+      46px;
+
+    font-size:
+      12px;
+  }
+
+  .admin-header-actions {
+    width:
+      100%;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    gap:
+      7px;
+  }
+
+  .admin-header-button {
+    width:
+      100%;
+
+    padding:
+      0 7px;
+
+    font-size:
+      10px;
+  }
 
   .admin-main {
     width:
-      calc(100% - 18px);
+      calc(100% - 20px);
+
+    padding:
+      24px 0 40px;
   }
+
+  .admin-page-heading {
+    margin-bottom:
+      20px;
+  }
+
+  .admin-page-heading h1 {
+    font-size:
+      27px;
+  }
+
+  .admin-page-heading p {
+    font-size:
+      12px;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      12px;
+  }
+
+  .stat-card {
+    min-height:
+      145px;
+
+    padding:
+      18px;
+  }
+
+  .student-list-card {
+    border-radius:
+      16px;
+  }
+
+  .student-list-header {
+    padding:
+      17px 14px 14px;
+  }
+
+  .student-list-heading-row {
+    flex-direction:
+      column;
+
+    gap:
+      13px;
+  }
+
+  .student-list-actions {
+    width:
+      100%;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-action-button {
+    width:
+      100%;
+  }
+
+  /* -------------------------------------------------------
+     MOBILE:
+     VẪN GIỮ 1 HÀNG NGANG
+     SEARCH | COUNT | PAGE SIZE
+     ------------------------------------------------------- */
+
+  .student-toolbar {
+    width:
+      100%;
+
+    flex-wrap:
+      nowrap;
+
+    overflow-x:
+      auto;
+
+    padding-bottom:
+      3px;
+  }
+
+  .student-search-wrapper {
+    flex:
+      0 0 260px;
+
+    min-width:
+      260px;
+  }
+
+  .student-list-count {
+    flex:
+      0 0 auto;
+  }
+
+  .student-page-size {
+    flex:
+      0 0 auto;
+  }
+
+  .student-table {
+    min-width:
+      1080px;
+  }
+
+  .student-table tbody td {
+    font-size:
+      13px;
+  }
+
+  .student-pagination {
+    justify-content:
+      flex-start;
+
+    overflow-x:
+      auto;
+  }
+
+  .student-pagination-pages {
+    flex:
+      0 0 auto;
+  }
+
+  .password-modal-overlay {
+    padding:
+      12px;
+  }
+
+  .password-modal {
+    max-height:
+      calc(100vh - 24px);
+
+    border-radius:
+      16px;
+  }
+
+  .password-modal-header {
+    border-radius:
+      15px 15px 0 0;
+  }
+
+  .password-form {
+    padding:
+      20px;
+  }
+
+  .password-modal-title {
+    font-size:
+      16px;
+  }
+
+  .password-modal-subtitle {
+    font-size:
+      11px;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 430px) {
 
   .admin-header-inner {
     width:
       calc(100% - 18px);
   }
 
-  .admin-stats-grid {
-    gap: 8px;
+  .admin-main {
+    width:
+      calc(100% - 14px);
   }
 
-  .stat-card {
-    min-height: 136px;
-
-    padding:
-      14px 12px;
+  .admin-brand-title {
+    font-size:
+      17px;
   }
 
-  .stat-card-value {
-    font-size: 19px;
+  .admin-header-actions {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
   }
 
-  .stat-card-title {
-    font-size: 8.5px;
-  }
-
-  .stat-card-description {
-    font-size: 8.5px;
+  .admin-header-button {
+    font-size:
+      9px;
   }
 
   .admin-page-heading h1 {
-    font-size: 21px;
+    font-size:
+      24px;
   }
 
   .admin-dashboard-label {
-    font-size: 8.5px;
+    font-size:
+      9px;
+
+    letter-spacing:
+      1px;
   }
 
   .student-list-title-row h2 {
-    font-size: 14px;
+    font-size:
+      16px;
   }
 
-  .student-list-description {
-    font-size: 10px;
+  .student-list-actions {
+    gap:
+      6px;
   }
 
-  .admin-toolbar {
-    grid-template-columns: 1fr;
+  .admin-action-button {
+    min-height:
+      38px;
+
+    padding:
+      0 8px;
+
+    font-size:
+      10px;
   }
 
-  .student-page-size span:last-child {
-    display: none;
+  /* -------------------------------------------------------
+     GIỮ 1 HÀNG NGANG
+     ------------------------------------------------------- */
+
+  .student-toolbar {
+    gap:
+      7px;
   }
 
-  .password-modal-overlay {
-    align-items: flex-start;
+  .student-search-wrapper {
+    flex-basis:
+      245px;
 
-    padding-top: 15px;
+    min-width:
+      245px;
   }
 
-  .password-modal {
-    max-height:
-      calc(100vh - 30px);
+  .student-search-input {
+    height:
+      40px;
 
-    border-radius: 14px;
+    font-size:
+      11.5px;
+  }
+
+  .student-list-count {
+    height:
+      40px;
+
+    padding:
+      0 10px;
+
+    font-size:
+      10.5px;
+  }
+
+  .student-page-size {
+    height:
+      40px;
+
+    padding:
+      0 8px;
+
+    font-size:
+      10.5px;
+  }
+
+  .student-page-size-select {
+    min-width:
+      54px;
+
+    font-size:
+      10.5px;
+  }
+
+  /* -------------------------------------------------------
+     MOBILE TABLE
+     ------------------------------------------------------- */
+
+  .student-table {
+    min-width:
+      1080px;
+  }
+
+  .student-table thead th {
+    font-size:
+      11.5px;
+  }
+
+  .student-table tbody td {
+    font-size:
+      12.5px;
+  }
+
+  .student-name {
+    font-size:
+      13.5px;
+  }
+
+  .student-account {
+    font-size:
+      12.5px;
+  }
+
+  .student-email {
+    font-size:
+      11.5px;
+  }
+
+  .student-level {
+    font-size:
+      11.5px;
+  }
+
+  .student-exp {
+    font-size:
+      13px !important;
+  }
+
+  .student-game-progress {
+    font-size:
+      11.5px;
+  }
+
+  .student-study-time {
+    font-size:
+      12px !important;
+  }
+
+  .password-modal-title {
+    font-size:
+      15px;
+  }
+
+  .password-modal-subtitle {
+    font-size:
+      10.5px;
+  }
+
+  .password-form {
+    padding:
+      18px;
+  }
+
+  .password-label {
+    font-size:
+      12px;
+  }
+
+  .password-input {
+    height:
+      45px;
+
+    font-size:
+      13px;
+  }
+
+  .password-help {
+    font-size:
+      10.5px;
+  }
+
+  .selected-student-name {
+    font-size:
+      14px;
+  }
+
+  .selected-student-account {
+    font-size:
+      11.5px;
+  }
+
+  .password-form-actions {
+    display:
+      grid;
+
+    grid-template-columns:
+      1fr 1fr;
+  }
+
+  .modal-cancel-button,
+  .modal-submit-button,
+  .modal-delete-button {
+    width:
+      100%;
+
+    padding:
+      0 8px;
+
+    font-size:
+      10.5px;
+  }
+
+  .delete-confirm-body h3 {
+    font-size:
+      17px;
+  }
+
+  .delete-confirm-body p {
+    font-size:
+      11.5px;
   }
 }
 
 
 /* =========================================================
-   REDUCE MOTION
-========================================================= */
+   REDUCED MOTION
+   ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
+  .admin-page *,
+  .admin-page *::before,
+  .admin-page *::after,
+  .admin-access-denied *,
+  .admin-access-denied *::before,
+  .admin-access-denied *::after {
 
     animation-duration:
       0.01ms !important;
@@ -2575,7 +3720,55 @@
     animation-iteration-count:
       1 !important;
 
+    scroll-behavior:
+      auto !important;
+
     transition-duration:
       0.01ms !important;
+  }
+}
+
+
+/* =========================================================
+   PRINT
+   ========================================================= */
+
+@media print {
+
+  .admin-header-actions,
+  .student-list-actions,
+  .student-toolbar,
+  .student-pagination,
+  .student-action-buttons {
+    display:
+      none !important;
+  }
+
+  .admin-header {
+    position:
+      static;
+
+    background:
+      #ffffff;
+
+    box-shadow:
+      none;
+  }
+
+  .admin-brand-title,
+  .admin-greeting {
+    color:
+      #000000;
+  }
+
+  .student-list-card,
+  .stat-card {
+    box-shadow:
+      none;
+  }
+
+  .admin-page {
+    background:
+      #ffffff;
   }
 }

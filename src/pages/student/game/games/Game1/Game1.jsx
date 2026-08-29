@@ -1,4 +1,7 @@
-import React from "react";
+import React, {
+  useEffect,
+  useState,
+} from "react";
 
 import StageCard from "../../components/StageCard";
 
@@ -10,44 +13,111 @@ import Stage4 from "./Stage4";
 import {
   isStageCompleted,
   getStageState,
+  subscribeGameProgress,
 } from "../../data/gameProgress";
 
-const Game1 = ({ navigate, path }) => {
+
+const TOTAL_STAGES = 4;
+
+
+const Game1 = ({
+  navigate,
+  path,
+}) => {
+
+  /* =======================================================
+     FORCE UI UPDATE KHI GAME PROGRESS THAY ĐỔI
+  ======================================================= */
+
+  const [, setProgressVersion] =
+    useState(0);
+
+  useEffect(() => {
+    const unsubscribe =
+      subscribeGameProgress(() => {
+        setProgressVersion(
+          (value) =>
+            value + 1
+        );
+      });
+
+    return unsubscribe;
+  }, []);
+
+
   /* =======================================================
      ĐIỀU HƯỚNG STAGE
   ======================================================= */
 
-  if (path === "/game/1/stage/1") {
-    return <Stage1 navigate={navigate} />;
+  if (
+    path === "/game/1/stage/1"
+  ) {
+    return (
+      <Stage1
+        navigate={navigate}
+      />
+    );
   }
 
-  if (path === "/game/1/stage/2") {
-    return <Stage2 navigate={navigate} />;
+  if (
+    path === "/game/1/stage/2"
+  ) {
+    return (
+      <Stage2
+        navigate={navigate}
+      />
+    );
   }
 
-  if (path === "/game/1/stage/3") {
-    return <Stage3 navigate={navigate} />;
+  if (
+    path === "/game/1/stage/3"
+  ) {
+    return (
+      <Stage3
+        navigate={navigate}
+      />
+    );
   }
 
-  if (path === "/game/1/stage/4") {
-    return <Stage4 navigate={navigate} />;
+  if (
+    path === "/game/1/stage/4"
+  ) {
+    return (
+      <Stage4
+        navigate={navigate}
+      />
+    );
   }
+
 
   /* =======================================================
      TIẾN ĐỘ
   ======================================================= */
 
   const stage1Completed =
-    isStageCompleted(1, 1);
+    isStageCompleted(
+      1,
+      1
+    );
 
   const stage2Completed =
-    isStageCompleted(1, 2);
+    isStageCompleted(
+      1,
+      2
+    );
 
   const stage3Completed =
-    isStageCompleted(1, 3);
+    isStageCompleted(
+      1,
+      3
+    );
 
   const stage4Completed =
-    isStageCompleted(1, 4);
+    isStageCompleted(
+      1,
+      4
+    );
+
 
   /* =======================================================
      DỮ LIỆU STAGE
@@ -57,29 +127,35 @@ const Game1 = ({ navigate, path }) => {
     {
       id: 1,
       title: "STAGE 1",
-      description: "Màn chơi đầu tiên",
+      description:
+        "Màn chơi đầu tiên",
     },
+
     {
       id: 2,
       title: "STAGE 2",
       description:
         "Hoàn thành Stage 1 để mở khóa",
     },
+
     {
       id: 3,
       title: "STAGE 3",
       description:
         "Hoàn thành Stage 2 để mở khóa",
     },
+
     {
       id: 4,
       title: "STAGE 4",
-      description: "Màn chơi cuối cùng",
+      description:
+        "Màn chơi cuối cùng",
     },
   ];
 
+
   /* =======================================================
-     TIẾN ĐỘ STAGE
+     TIẾN ĐỘ
   ======================================================= */
 
   const completedStates = {
@@ -89,6 +165,7 @@ const Game1 = ({ navigate, path }) => {
     4: stage4Completed,
   };
 
+
   /* =======================================================
      MỞ KHÓA STAGE
   ======================================================= */
@@ -96,7 +173,9 @@ const Game1 = ({ navigate, path }) => {
   const isStageUnlocked = (
     stageId
   ) => {
-    if (stageId === 1) {
+    if (
+      stageId === 1
+    ) {
       return true;
     }
 
@@ -107,6 +186,7 @@ const Game1 = ({ navigate, path }) => {
     );
   };
 
+
   /* =======================================================
      ĐIỀU HƯỚNG
   ======================================================= */
@@ -115,7 +195,9 @@ const Game1 = ({ navigate, path }) => {
     stage
   ) => {
     if (
-      !isStageUnlocked(stage.id)
+      !isStageUnlocked(
+        stage.id
+      )
     ) {
       return;
     }
@@ -125,13 +207,16 @@ const Game1 = ({ navigate, path }) => {
     );
   };
 
+
   /* =======================================================
      GAME 1 HOME
   ======================================================= */
 
   return (
     <div className="game-stage-page">
+
       <header className="game-stage-header">
+
         <button
           type="button"
           onClick={() =>
@@ -140,9 +225,12 @@ const Game1 = ({ navigate, path }) => {
         >
           ← QUAY LẠI GAME
         </button>
+
       </header>
 
+
       <main className="game-stage-content">
+
         <div className="game-stage-icon">
           🎮
         </div>
@@ -151,16 +239,21 @@ const Game1 = ({ navigate, path }) => {
           ហ្គេម ១
         </div>
 
-        <h1>GAME 1</h1>
+        <h1>
+          GAME 1
+        </h1>
 
         <p>
           Hành trình đầu tiên chinh phục
           tiếng Khmer.
         </p>
 
+
         <section className="stage-list">
+
           {stageData.map(
             (stage) => {
+
               const unlocked =
                 isStageUnlocked(
                   stage.id
@@ -180,19 +273,25 @@ const Game1 = ({ navigate, path }) => {
               return (
                 <StageCard
                   key={stage.id}
+
                   stage={{
                     ...stage,
+
                     playCount:
                       state.playCount,
+
                     highScore:
                       state.highScore,
                   }}
+
                   unlocked={
                     unlocked
                   }
+
                   completed={
                     completed
                   }
+
                   onClick={() =>
                     handleStageClick(
                       stage
@@ -202,10 +301,14 @@ const Game1 = ({ navigate, path }) => {
               );
             }
           )}
+
         </section>
+
       </main>
+
     </div>
   );
 };
+
 
 export default Game1;

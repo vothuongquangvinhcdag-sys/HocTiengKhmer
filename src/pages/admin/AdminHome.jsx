@@ -4,7 +4,7 @@ import { supabase } from "../../supabase";
 import "./AdminHome.css";
 
 /* =========================================================
-   CẤU HÌNH LEVEL
+   CẤU HÌNH
 ========================================================= */
 
 const LEVEL_EXP = {
@@ -22,14 +22,15 @@ const LEVEL_EXP = {
 
 const TOTAL_GAMES = 5;
 
-/* =========================================================
-   CẤU HÌNH PHÂN TRANG
-========================================================= */
+const ACCOUNT_MIN_LENGTH = 6;
+const ACCOUNT_MAX_LENGTH = 20;
+
+const MIN_PASSWORD_LENGTH = 6;
 
 const PAGE_SIZE_OPTIONS = [10, 15, 20, 30];
 
 /* =========================================================
-   LEVEL TỪ EXP
+   LEVEL
 ========================================================= */
 
 function getLevelFromExp(exp) {
@@ -49,151 +50,15 @@ function getLevelFromExp(exp) {
 }
 
 /* =========================================================
-   LẤY SỐ GAME ĐÃ HOÀN THÀNH
-
-   Hỗ trợ:
-   - completed_games: 3
-   - games_completed: 3
-   - game_completed: 3
-   - completedGames: 3
-   - gamesCompleted: 3
-
-   Hoặc:
-   - [1,2,3]
-   - ["1","2","3"]
-
-   Hoặc:
-   - { 1: true, 2: true, 3: true }
-========================================================= */
-
-function getCompletedGameCount(student) {
-  if (!student) return 0;
-
-  const possibleValues = [
-    student.completed_games,
-    student.games_completed,
-    student.game_completed,
-    student.completedGames,
-    student.gamesCompleted,
-  ];
-
-  for (const value of possibleValues) {
-    if (value === null || value === undefined) {
-      continue;
-    }
-
-    /* =====================================================
-       SỐ
-    ===================================================== */
-
-    if (typeof value === "number") {
-      return Math.min(
-        TOTAL_GAMES,
-        Math.max(0, Math.floor(value))
-      );
-    }
-
-    /* =====================================================
-       CHUỖI
-    ===================================================== */
-
-    if (
-      typeof value === "string" &&
-      value.trim() !== ""
-    ) {
-      const numericValue = Number(value);
-
-      if (Number.isFinite(numericValue)) {
-        return Math.min(
-          TOTAL_GAMES,
-          Math.max(0, Math.floor(numericValue))
-        );
-      }
-
-      try {
-        const parsed = JSON.parse(value);
-
-        if (Array.isArray(parsed)) {
-          return Math.min(
-            TOTAL_GAMES,
-            parsed.length
-          );
-        }
-
-        if (
-          parsed &&
-          typeof parsed === "object"
-        ) {
-          return Math.min(
-            TOTAL_GAMES,
-            Object.values(parsed).filter(Boolean).length
-          );
-        }
-      } catch {
-        // Không phải JSON
-      }
-    }
-
-    /* =====================================================
-       MẢNG
-    ===================================================== */
-
-    if (Array.isArray(value)) {
-      return Math.min(
-        TOTAL_GAMES,
-        value.length
-      );
-    }
-
-    /* =====================================================
-       OBJECT
-    ===================================================== */
-
-    if (
-      typeof value === "object" &&
-      value !== null
-    ) {
-      return Math.min(
-        TOTAL_GAMES,
-        Object.values(value).filter(Boolean).length
-      );
-    }
-  }
-
-  return 0;
-}
-
-/* =========================================================
-   FORMAT GAME
-========================================================= */
-
-function formatGameProgress(student) {
-  const completed =
-    getCompletedGameCount(student);
-
-  return `${completed}/${TOTAL_GAMES}`;
-}
-
-/* =========================================================
    FORMAT THỜI GIAN
 ========================================================= */
 
 function formatStudyTime(seconds) {
-  const safeSeconds = Math.max(
-    0,
-    Number(seconds) || 0
-  );
+  const safeSeconds = Math.max(0, Number(seconds) || 0);
 
-  const hours = Math.floor(
-    safeSeconds / 3600
-  );
-
-  const minutes = Math.floor(
-    (safeSeconds % 3600) / 60
-  );
-
-  const remainingSeconds =
-    safeSeconds % 60;
+  const hours = Math.floor(safeSeconds / 3600);
+  const minutes = Math.floor((safeSeconds % 3600) / 60);
+  const remainingSeconds = safeSeconds % 60;
 
   if (hours > 0) {
     return `${hours} giờ ${minutes} phút`;
@@ -207,193 +72,312 @@ function formatStudyTime(seconds) {
 }
 
 /* =========================================================
+   KIỂM TRA GAME HOÀN THÀNH
+========================================================= */
+
+function isGameProgressCompleted(row) {
+  if (!row) {
+    return false;
+  }
+
+  if (row.completed === true) {
+    return true;
+  }
+
+  return (
+    row.stage1_completed === true &&
+    row.stage2_completed === true &&
+    row.stage3_completed === true &&
+    row.stage4_completed === true
+  );
+}
+
+/* =========================================================
+   TẠO MAP GAME PROGRESS
+
+   user_id → Set(game_id)
+========================================================= */
+
+function buildGameProgressMap(rows) {
+  const map = new Map();
+
+  for (const row of rows || []) {
+    const userId = String(row.user_id || "");
+    const gameId = Number(row.game_id);
+
+    if (!userId || !Number.isInteger(gameId)) {
+      continue;
+    }
+
+    if (gameId < 1 || gameId > TOTAL_GAMES) {
+      continue;
+    }
+
+    if (!isGameProgressCompleted(row)) {
+      continue;
+    }
+
+    if (!map.has(userId)) {
+      map.set(userId, new Set());
+    }
+
+    map.get(userId).add(gameId);
+  }
+
+  return map;
+}
+
+/* =========================================================
+   SỐ GAME HOÀN THÀNH
+========================================================= */
+
+function getCompletedGameCount(student, gameProgressMap) {
+  if (!student) {
+    return 0;
+  }
+
+  const completedGames = gameProgressMap.get(String(student.id));
+
+  if (!completedGames) {
+    return 0;
+  }
+
+  return Math.min(TOTAL_GAMES, completedGames.size);
+}
+
+/* =========================================================
    ADMIN HOME
 ========================================================= */
 
-function AdminHome({
-  profile,
-  navigate,
-  onLogout,
-}) {
-  const [students, setStudents] =
-    useState([]);
+function AdminHome({ profile, navigate, onLogout }) {
+  /* =======================================================
+     DATA
+  ======================================================= */
 
-  const [loading, setLoading] =
-    useState(true);
+  const [students, setStudents] = useState([]);
+  const [gameProgressMap, setGameProgressMap] = useState(new Map());
 
-  const [search, setSearch] =
-    useState("");
-
-  const [error, setError] =
-    useState("");
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [error, setError] = useState("");
 
   /* =======================================================
      PHÂN TRANG
   ======================================================= */
 
-  const [currentPage, setCurrentPage] =
-    useState(1);
-
-  const [pageSize, setPageSize] =
-    useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   /* =======================================================
-     ĐỔI MẬT KHẨU
+     POPUP ĐỔI MẬT KHẨU
   ======================================================= */
 
-  const [passwordModal, setPasswordModal] =
-    useState(false);
+  const [passwordModal, setPasswordModal] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const [selectedStudent, setSelectedStudent] =
-    useState(null);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [newPassword, setNewPassword] =
-    useState("");
-
-  const [confirmPassword, setConfirmPassword] =
-    useState("");
-
-  const [resetLoading, setResetLoading] =
-    useState(false);
-
-  const [resetError, setResetError] =
-    useState("");
-
-  const [resetSuccess, setResetSuccess] =
-    useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [resetError, setResetError] = useState("");
+  const [resetSuccess, setResetSuccess] = useState("");
 
   /* =======================================================
-     TẠO TÀI KHOẢN
+     POPUP TẠO TÀI KHOẢN
   ======================================================= */
 
-  const [createModal, setCreateModal] =
-    useState(false);
+  const [createModal, setCreateModal] = useState(false);
 
-  const [createUsername, setCreateUsername] =
-    useState("");
+  const [createUsername, setCreateUsername] = useState("");
+  const [createAccount, setCreateAccount] = useState("");
+  const [createPassword, setCreatePassword] = useState("");
 
-  const [createAccount, setCreateAccount] =
-    useState("");
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createError, setCreateError] = useState("");
 
-  const [createPassword, setCreatePassword] =
-    useState("");
-
-  const [createLoading, setCreateLoading] =
-    useState(false);
-
-  const [createError, setCreateError] =
-    useState("");
-
-  const [createSuccess, setCreateSuccess] =
-    useState("");
+  const [accountError, setAccountError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   /* =======================================================
-     XÓA TÀI KHOẢN
+     POPUP THÔNG BÁO TẠO TÀI KHOẢN THÀNH CÔNG
   ======================================================= */
 
-  const [deleteModal, setDeleteModal] =
-    useState(false);
-
-  const [deleteStudent, setDeleteStudent] =
-    useState(null);
-
-  const [deleteLoading, setDeleteLoading] =
-    useState(false);
-
-  const [deleteError, setDeleteError] =
-    useState("");
+  const [successModal, setSuccessModal] = useState(false);
+  const [createdAccount, setCreatedAccount] = useState("");
 
   /* =======================================================
-     TẢI DANH SÁCH PROFILE
+     POPUP XÓA TÀI KHOẢN
+  ======================================================= */
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteStudent, setDeleteStudent] = useState(null);
+
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+
+  /* =======================================================
+     ĐỌC LỖI EDGE FUNCTION
+  ======================================================= */
+
+  const getFunctionErrorMessage = async (
+    functionError,
+    defaultMessage
+  ) => {
+    try {
+      if (
+        functionError?.context &&
+        typeof functionError.context.json === "function"
+      ) {
+        const responseData = await functionError.context.json();
+
+        return responseData?.error || defaultMessage;
+      }
+    } catch {
+      // Không đọc được response JSON.
+    }
+
+    return defaultMessage;
+  };
+
+  /* =======================================================
+     TẢI DỮ LIỆU
   ======================================================= */
 
   const loadStudents = async () => {
     setLoading(true);
     setError("");
 
-    const {
-      data,
-      error: profileError,
-    } = await supabase
-      .from("profiles")
-      .select("*")
-      .order("exp", {
-        ascending: false,
-      });
+    try {
+      const [profilesResult, gameProgressResult] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("*")
+          .eq("role", "student")
+          .order("exp", {
+            ascending: false,
+          }),
 
-    if (profileError) {
+        supabase
+          .from("game_progress")
+          .select(`
+            user_id,
+            game_id,
+            stage1_completed,
+            stage2_completed,
+            stage3_completed,
+            stage4_completed,
+            completed
+          `)
+          .order("game_id", {
+            ascending: true,
+          }),
+      ]);
+
+      const {
+        data: profileData,
+        error: profileError,
+      } = profilesResult;
+
+      const {
+        data: gameData,
+        error: gameError,
+      } = gameProgressResult;
+
+      if (profileError) {
+        console.error(
+          "ADMIN - Profiles error:",
+          profileError
+        );
+
+        throw new Error(
+          "Không thể tải danh sách tài khoản."
+        );
+      }
+
+      if (gameError) {
+        console.error(
+          "ADMIN - Game progress error:",
+          gameError
+        );
+
+        throw new Error(
+          "Không thể tải tiến độ game của học sinh."
+        );
+      }
+
+      const nextStudents = profileData || [];
+
+      const nextGameProgressMap =
+        buildGameProgressMap(gameData || []);
+
+      setStudents(nextStudents);
+      setGameProgressMap(nextGameProgressMap);
+      setCurrentPage(1);
+    } catch (loadError) {
       console.error(
-        "Không thể tải profiles:",
-        profileError
-      );
-
-      setError(
-        "Không thể tải danh sách tài khoản."
+        "ADMIN - Load data error:",
+        loadError
       );
 
       setStudents([]);
-      setLoading(false);
+      setGameProgressMap(new Map());
 
+      setError(
+        loadError instanceof Error
+          ? loadError.message
+          : "Không thể tải dữ liệu hệ thống."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =======================================================
+     KIỂM TRA ADMIN
+  ======================================================= */
+
+  useEffect(() => {
+    if (!profile || profile.role !== "admin") {
       return;
     }
 
-    setStudents(data || []);
-    setCurrentPage(1);
-    setLoading(false);
-  };
-
-  useEffect(() => {
     loadStudents();
-  }, []);
-
-  /* =======================================================
-     CHỈ LẤY HỌC SINH
-  ======================================================= */
-
-  const studentList = useMemo(() => {
-    return students.filter(
-      (student) =>
-        student.role === "student"
-    );
-  }, [students]);
+  }, [profile]);
 
   /* =======================================================
      TÌM KIẾM
   ======================================================= */
 
   const filteredStudents = useMemo(() => {
-    const keyword =
-      search.trim().toLowerCase();
+    const keyword = search.trim().toLowerCase();
 
     if (!keyword) {
-      return studentList;
+      return students;
     }
 
-    return studentList.filter(
-      (student) => {
-        const username = String(
-          student.username || ""
-        ).toLowerCase();
+    return students.filter((student) => {
+      const username = String(
+        student.username || ""
+      ).toLowerCase();
 
-        const account = String(
-          student.account || ""
-        ).toLowerCase();
+      const account = String(
+        student.account || ""
+      ).toLowerCase();
 
-        const email = String(
-          student.email || ""
-        ).toLowerCase();
+      const email = String(
+        student.email || ""
+      ).toLowerCase();
 
-        return (
-          username.includes(keyword) ||
-          account.includes(keyword) ||
-          email.includes(keyword)
-        );
-      }
-    );
-  }, [studentList, search]);
+      return (
+        username.includes(keyword) ||
+        account.includes(keyword) ||
+        email.includes(keyword)
+      );
+    });
+  }, [students, search]);
 
   /* =======================================================
-     TỰ ĐỘNG VỀ TRANG 1 KHI TÌM KIẾM
+     RESET TRANG
   ======================================================= */
 
   useEffect(() => {
@@ -404,19 +388,18 @@ function AdminHome({
      THỐNG KÊ
   ======================================================= */
 
-  const totalStudents =
-    studentList.length;
+  const totalStudents = students.length;
 
-  const totalExp =
-    studentList.reduce(
+  const totalExp = useMemo(() => {
+    return students.reduce(
       (total, student) =>
-        total +
-        Number(student.exp || 0),
+        total + Number(student.exp || 0),
       0
     );
+  }, [students]);
 
-  const totalStudySeconds =
-    studentList.reduce(
+  const totalStudySeconds = useMemo(() => {
+    return students.reduce(
       (total, student) =>
         total +
         Number(
@@ -424,114 +407,79 @@ function AdminHome({
         ),
       0
     );
+  }, [students]);
 
-  /* =======================================================
-     THỐNG KÊ GAME
-
-     Tổng số game hoàn thành của toàn bộ
-     học sinh.
-  ======================================================= */
-
-  const totalCompletedGames =
-    studentList.reduce(
+  const totalCompletedGames = useMemo(() => {
+    return students.reduce(
       (total, student) =>
         total +
-        getCompletedGameCount(student),
+        getCompletedGameCount(
+          student,
+          gameProgressMap
+        ),
       0
     );
+  }, [students, gameProgressMap]);
 
   /* =======================================================
-     PHÂN TRANG DANH SÁCH
+     PHÂN TRANG
   ======================================================= */
 
   const totalFilteredStudents =
     filteredStudents.length;
 
-  const totalPages =
-    Math.max(
-      1,
-      Math.ceil(
-        totalFilteredStudents /
-          pageSize
-      )
-    );
-
-  /* =======================================================
-     ĐẢM BẢO CURRENT PAGE HỢP LỆ
-  ======================================================= */
+  const totalPages = Math.max(
+    1,
+    Math.ceil(
+      totalFilteredStudents / pageSize
+    )
+  );
 
   useEffect(() => {
-    if (
-      currentPage >
-      totalPages
-    ) {
+    if (currentPage > totalPages) {
       setCurrentPage(totalPages);
     }
+  }, [currentPage, totalPages]);
+
+  const paginatedStudents = useMemo(() => {
+    const startIndex =
+      (currentPage - 1) * pageSize;
+
+    return filteredStudents.slice(
+      startIndex,
+      startIndex + pageSize
+    );
   }, [
+    filteredStudents,
     currentPage,
-    totalPages,
+    pageSize,
   ]);
-
-  /* =======================================================
-     DANH SÁCH ĐANG HIỂN THỊ
-  ======================================================= */
-
-  const paginatedStudents =
-    useMemo(() => {
-      const startIndex =
-        (currentPage - 1) *
-        pageSize;
-
-      const endIndex =
-        startIndex + pageSize;
-
-      return filteredStudents.slice(
-        startIndex,
-        endIndex
-      );
-    }, [
-      filteredStudents,
-      currentPage,
-      pageSize,
-    ]);
-
-  /* =======================================================
-     CHỈ SỐ STT TRANG HIỆN TẠI
-  ======================================================= */
 
   const pageStartIndex =
     totalFilteredStudents === 0
       ? 0
-      : (currentPage - 1) *
-          pageSize +
-        1;
+      : (currentPage - 1) * pageSize + 1;
 
-  const pageEndIndex =
-    Math.min(
-      currentPage * pageSize,
-      totalFilteredStudents
-    );
+  const pageEndIndex = Math.min(
+    currentPage * pageSize,
+    totalFilteredStudents
+  );
 
   /* =======================================================
-     DANH SÁCH SỐ TRANG
+     SỐ TRANG
   ======================================================= */
 
   const pageNumbers = useMemo(() => {
-    const pages = [];
-
     if (totalPages <= 7) {
-      for (
-        let page = 1;
-        page <= totalPages;
-        page++
-      ) {
-        pages.push(page);
-      }
-
-      return pages;
+      return Array.from(
+        {
+          length: totalPages,
+        },
+        (_, index) => index + 1
+      );
     }
 
-    pages.push(1);
+    const pages = [1];
 
     if (currentPage > 4) {
       pages.push("...");
@@ -565,227 +513,287 @@ function AdminHome({
     pages.push(totalPages);
 
     return pages;
-  }, [
-    currentPage,
-    totalPages,
-  ]);
-
-  /* =======================================================
-     ĐỌC LỖI EDGE FUNCTION
-  ======================================================= */
-
-  const getFunctionErrorMessage =
-    async (
-      functionError,
-      defaultMessage
-    ) => {
-      let message =
-        defaultMessage;
-
-      try {
-        if (
-          functionError?.context &&
-          typeof functionError.context
-            .json === "function"
-        ) {
-          const responseData =
-            await functionError.context.json();
-
-          if (
-            responseData?.error
-          ) {
-            message =
-              responseData.error;
-          }
-        }
-      } catch {
-        // Không đọc được response JSON
-      }
-
-      return message;
-    };
-
-  /* =======================================================
-     MỞ POPUP TẠO TÀI KHOẢN
-  ======================================================= */
-
-  const openCreateModal = () => {
-    setCreateUsername("");
-    setCreateAccount("");
-    setCreatePassword("");
-
-    setCreateError("");
-    setCreateSuccess("");
-
-    setCreateModal(true);
-  };
-
-  /* =======================================================
-     ĐÓNG POPUP TẠO TÀI KHOẢN
-  ======================================================= */
-
-  const closeCreateModal = () => {
-    if (createLoading) return;
-
-    setCreateModal(false);
-
-    setCreateUsername("");
-    setCreateAccount("");
-    setCreatePassword("");
-
-    setCreateError("");
-    setCreateSuccess("");
-  };
+  }, [currentPage, totalPages]);
 
   /* =======================================================
      TẠO TÀI KHOẢN
   ======================================================= */
 
-  const handleCreateAccount =
-    async (event) => {
-      event.preventDefault();
+  const resetCreateForm = () => {
+    setCreateUsername("");
+    setCreateAccount("");
+    setCreatePassword("");
 
-      setCreateError("");
-      setCreateSuccess("");
+    setCreateError("");
+    setAccountError("");
+    setPasswordError("");
+  };
 
-      const username =
-        createUsername.trim();
+  const openCreateModal = () => {
+    resetCreateForm();
+    setCreateModal(true);
+  };
 
-      const account =
-        createAccount.trim();
+  const closeCreateModal = () => {
+    if (createLoading) {
+      return;
+    }
 
-      if (!username) {
-        setCreateError(
-          "Vui lòng nhập tên học sinh."
-        );
-        return;
-      }
-
-      if (!account) {
-        setCreateError(
-          "Vui lòng nhập tài khoản."
-        );
-        return;
-      }
-
-      if (!createPassword) {
-        setCreateError(
-          "Vui lòng nhập mật khẩu."
-        );
-        return;
-      }
-
-      if (
-        createPassword.length < 6
-      ) {
-        setCreateError(
-          "Mật khẩu phải có ít nhất 6 ký tự."
-        );
-        return;
-      }
-
-      const duplicated =
-        students.some(
-          (student) =>
-            String(
-              student.account || ""
-            )
-              .trim()
-              .toLowerCase() ===
-            account.toLowerCase()
-        );
-
-      if (duplicated) {
-        setCreateError(
-          "Tài khoản này đã tồn tại."
-        );
-        return;
-      }
-
-      setCreateLoading(true);
-
-      try {
-        const {
-          data,
-          error: functionError,
-        } =
-          await supabase.functions.invoke(
-            "admin-create-user",
-            {
-              body: {
-                username,
-                account,
-                password:
-                  createPassword,
-              },
-            }
-          );
-
-        if (functionError) {
-          console.error(
-            "Admin create user error:",
-            functionError
-          );
-
-          const message =
-            await getFunctionErrorMessage(
-              functionError,
-              "Không thể tạo tài khoản."
-            );
-
-          throw new Error(
-            message
-          );
-        }
-
-        if (!data?.success) {
-          throw new Error(
-            data?.error ||
-              "Không thể tạo tài khoản."
-          );
-        }
-
-        setCreateSuccess(
-          "Đã tạo tài khoản học sinh thành công."
-        );
-
-        setCreateUsername("");
-        setCreateAccount("");
-        setCreatePassword("");
-
-        await loadStudents();
-      } catch (error) {
-        console.error(
-          "Create account:",
-          error
-        );
-
-        setCreateError(
-          error instanceof Error
-            ? error.message
-            : "Có lỗi xảy ra khi tạo tài khoản."
-        );
-      } finally {
-        setCreateLoading(false);
-      }
-    };
+    setCreateModal(false);
+    resetCreateForm();
+  };
 
   /* =======================================================
-     MỞ POPUP XÓA
+     KIỂM TRA TÀI KHOẢN TRÙNG
   ======================================================= */
 
-  const openDeleteModal = (
-    student
-  ) => {
-    if (!student) return;
+  const accountAlreadyExists = (account) => {
+    const normalizedAccount = String(
+      account || ""
+    )
+      .trim()
+      .toLowerCase();
+
+    if (!normalizedAccount) {
+      return false;
+    }
+
+    return students.some(
+      (student) =>
+        String(student.account || "")
+          .trim()
+          .toLowerCase() === normalizedAccount
+    );
+  };
+
+  /* =======================================================
+     KIỂM TRA TÀI KHOẢN KHI NHẬP
+  ======================================================= */
+
+  const handleAccountChange = (event) => {
+    const value = event.target.value;
+
+    setCreateAccount(value);
+    setAccountError("");
+    setCreateError("");
+  };
+
+  /* =======================================================
+     KIỂM TRA TÀI KHOẢN KHI RỜI Ô
+  ======================================================= */
+
+  const handleAccountBlur = () => {
+    const account = createAccount.trim();
+
+    if (!account) {
+      setAccountError(
+        "Vui lòng nhập tài khoản."
+      );
+      return;
+    }
 
     if (
-      student.id === profile?.id
+      account.length <
+      ACCOUNT_MIN_LENGTH ||
+      account.length >
+      ACCOUNT_MAX_LENGTH
     ) {
+      setAccountError(
+        `Tài khoản phải có từ ${ACCOUNT_MIN_LENGTH} đến ${ACCOUNT_MAX_LENGTH} ký tự.`
+      );
+      return;
+    }
+
+    if (accountAlreadyExists(account)) {
+      setAccountError(
+        "Tên tài khoản đã tồn tại."
+      );
+      return;
+    }
+
+    setAccountError("");
+  };
+
+  /* =======================================================
+     KIỂM TRA MẬT KHẨU KHI NHẬP
+  ======================================================= */
+
+  const handleCreatePasswordChange = (
+    event
+  ) => {
+    setCreatePassword(
+      event.target.value
+    );
+
+    setPasswordError("");
+    setCreateError("");
+  };
+
+  /* =======================================================
+     KIỂM TRA MẬT KHẨU KHI RỜI Ô
+  ======================================================= */
+
+  const handleCreatePasswordBlur = () => {
+    const password = createPassword;
+
+    if (!password) {
+      setPasswordError(
+        "Vui lòng nhập mật khẩu."
+      );
+      return;
+    }
+
+    if (
+      password.length <
+      MIN_PASSWORD_LENGTH
+    ) {
+      setPasswordError(
+        `Mật khẩu phải có ít nhất ${MIN_PASSWORD_LENGTH} ký tự.`
+      );
+      return;
+    }
+
+    setPasswordError("");
+  };
+
+  /* =======================================================
+     SUBMIT TẠO TÀI KHOẢN
+  ======================================================= */
+
+  const handleCreateAccount = async (
+    event
+  ) => {
+    event.preventDefault();
+
+    setCreateError("");
+
+    const account =
+      createAccount.trim();
+
+    const username =
+      createUsername.trim() || account;
+
+    if (!account) {
+      setAccountError(
+        "Vui lòng nhập tài khoản."
+      );
+      return;
+    }
+
+    if (
+      account.length <
+        ACCOUNT_MIN_LENGTH ||
+      account.length >
+        ACCOUNT_MAX_LENGTH
+    ) {
+      setAccountError(
+        `Tài khoản phải có từ ${ACCOUNT_MIN_LENGTH} đến ${ACCOUNT_MAX_LENGTH} ký tự.`
+      );
+      return;
+    }
+
+    if (accountAlreadyExists(account)) {
+      setAccountError(
+        "Tên tài khoản đã tồn tại."
+      );
+      return;
+    }
+
+    if (!createPassword) {
+      setPasswordError(
+        "Vui lòng nhập mật khẩu."
+      );
+      return;
+    }
+
+    if (
+      createPassword.length <
+      MIN_PASSWORD_LENGTH
+    ) {
+      setPasswordError(
+        `Mật khẩu phải có ít nhất ${MIN_PASSWORD_LENGTH} ký tự.`
+      );
+      return;
+    }
+
+    setCreateLoading(true);
+
+    try {
+      const {
+        data,
+        error: functionError,
+      } = await supabase.functions.invoke(
+        "admin-create-user",
+        {
+          body: {
+            username,
+            account,
+            password: createPassword,
+          },
+        }
+      );
+
+      if (functionError) {
+        console.error(
+          "ADMIN - Create user error:",
+          functionError
+        );
+
+        const message =
+          await getFunctionErrorMessage(
+            functionError,
+            "Không thể tạo tài khoản."
+          );
+
+        throw new Error(message);
+      }
+
+      if (!data?.success) {
+        throw new Error(
+          data?.error ||
+            "Không thể tạo tài khoản."
+        );
+      }
+
+      const finalAccount =
+        data?.account || account;
+
+      setCreateModal(false);
+      resetCreateForm();
+
+      setCreatedAccount(finalAccount);
+      setSuccessModal(true);
+
+      await loadStudents();
+    } catch (createAccountError) {
+      console.error(
+        "ADMIN - Create account:",
+        createAccountError
+      );
+
+      setCreateError(
+        createAccountError instanceof Error
+          ? createAccountError.message
+          : "Có lỗi xảy ra khi tạo tài khoản."
+      );
+    } finally {
+      setCreateLoading(false);
+    }
+  };
+
+  /* =======================================================
+     XÓA TÀI KHOẢN
+  ======================================================= */
+
+  const openDeleteModal = (student) => {
+    if (!student) {
+      return;
+    }
+
+    if (student.id === profile?.id) {
       setError(
         "Không thể xóa tài khoản quản trị viên đang đăng nhập."
       );
-
       return;
     }
 
@@ -794,121 +802,102 @@ function AdminHome({
     setDeleteModal(true);
   };
 
-  /* =======================================================
-     ĐÓNG POPUP XÓA
-  ======================================================= */
-
   const closeDeleteModal = () => {
-    if (deleteLoading) return;
+    if (deleteLoading) {
+      return;
+    }
 
     setDeleteModal(false);
     setDeleteStudent(null);
     setDeleteError("");
   };
 
-  /* =======================================================
-     XÓA TÀI KHOẢN
-  ======================================================= */
+  const handleDeleteAccount = async () => {
+    if (!deleteStudent) {
+      setDeleteError(
+        "Chưa chọn tài khoản cần xóa."
+      );
+      return;
+    }
 
-  const handleDeleteAccount =
-    async () => {
-      if (!deleteStudent) {
-        setDeleteError(
-          "Chưa chọn tài khoản cần xóa."
+    if (
+      deleteStudent.id ===
+      profile?.id
+    ) {
+      setDeleteError(
+        "Không thể xóa tài khoản quản trị viên đang đăng nhập."
+      );
+      return;
+    }
+
+    setDeleteLoading(true);
+    setDeleteError("");
+
+    try {
+      const {
+        data,
+        error: functionError,
+      } = await supabase.functions.invoke(
+        "admin-delete-user",
+        {
+          body: {
+            userId: deleteStudent.id,
+          },
+        }
+      );
+
+      if (functionError) {
+        console.error(
+          "ADMIN - Delete user error:",
+          functionError
         );
 
-        return;
+        const message =
+          await getFunctionErrorMessage(
+            functionError,
+            "Không thể xóa tài khoản."
+          );
+
+        throw new Error(message);
       }
 
-      if (
-        deleteStudent.id ===
-        profile?.id
-      ) {
-        setDeleteError(
-          "Không thể xóa tài khoản quản trị viên đang đăng nhập."
+      if (!data?.success) {
+        throw new Error(
+          data?.error ||
+            "Không thể xóa tài khoản."
         );
-
-        return;
       }
 
-      setDeleteLoading(true);
+      setDeleteModal(false);
+      setDeleteStudent(null);
       setDeleteError("");
 
-      try {
-        const {
-          data,
-          error: functionError,
-        } =
-          await supabase.functions.invoke(
-            "admin-delete-user",
-            {
-              body: {
-                userId:
-                  deleteStudent.id,
-              },
-            }
-          );
+      await loadStudents();
+    } catch (deleteAccountError) {
+      console.error(
+        "ADMIN - Delete account:",
+        deleteAccountError
+      );
 
-        if (functionError) {
-          console.error(
-            "Admin delete user error:",
-            functionError
-          );
-
-          const message =
-            await getFunctionErrorMessage(
-              functionError,
-              "Không thể xóa tài khoản."
-            );
-
-          throw new Error(
-            message
-          );
-        }
-
-        if (!data?.success) {
-          throw new Error(
-            data?.error ||
-              "Không thể xóa tài khoản."
-          );
-        }
-
-        setDeleteModal(false);
-        setDeleteStudent(null);
-        setDeleteError("");
-
-        await loadStudents();
-      } catch (error) {
-        console.error(
-          "Delete account:",
-          error
-        );
-
-        setDeleteError(
-          error instanceof Error
-            ? error.message
-            : "Có lỗi xảy ra khi xóa tài khoản."
-        );
-      } finally {
-        setDeleteLoading(false);
-      }
-    };
+      setDeleteError(
+        deleteAccountError instanceof Error
+          ? deleteAccountError.message
+          : "Có lỗi xảy ra khi xóa tài khoản."
+      );
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   /* =======================================================
      XUẤT EXCEL
-
-     Luôn xuất TOÀN BỘ studentList,
-     không phụ thuộc currentPage.
   ======================================================= */
 
   const exportExcel = () => {
-    if (
-      studentList.length === 0
-    ) {
+    if (students.length === 0) {
       setError(
         "Không có dữ liệu học sinh để xuất Excel."
       );
-
       return;
     }
 
@@ -922,66 +911,60 @@ function AdminHome({
       now.getMonth() + 1
     ).padStart(2, "0");
 
-    const year =
-      now.getFullYear();
+    const year = now.getFullYear();
 
     const fileName =
       `THONG KE HOC VIEN NGAY ${day}-${month}-${year}.xlsx`;
 
-    /* =====================================================
-       XUẤT TOÀN BỘ HỌC SINH
-    ===================================================== */
+    const exportData = students.map(
+      (student, index) => ({
+        STT: index + 1,
 
-    const exportData =
-      studentList.map(
-        (student, index) => ({
-          STT: index + 1,
+        "Họ tên":
+          student.username || "",
 
-          "Họ tên":
-            student.username || "",
+        "Tài khoản":
+          student.account || "",
 
-          "Tài khoản":
-            student.account || "",
+        Email:
+          student.email || "",
 
-          Email:
-            student.email || "",
+        Level:
+          getLevelFromExp(
+            student.exp
+          ),
 
-          Level:
-            getLevelFromExp(
-              student.exp
-            ),
+        EXP:
+          Number(
+            student.exp || 0
+          ),
 
-          EXP:
-            Number(
-              student.exp || 0
-            ),
+        "Game hoàn thành":
+          `${getCompletedGameCount(
+            student,
+            gameProgressMap
+          )}/${TOTAL_GAMES}`,
 
-          "Game hoàn thành":
-            formatGameProgress(
-              student
-            ),
+        "Thời gian học":
+          formatStudyTime(
+            student.total_study_seconds
+          ),
 
-          "Thời gian học":
-            formatStudyTime(
-              student.total_study_seconds
-            ),
+        "Thời gian học (giây)":
+          Number(
+            student.total_study_seconds || 0
+          ),
 
-          "Thời gian học (giây)":
-            Number(
-              student.total_study_seconds ||
-                0
-            ),
-
-          "Ngày tạo":
-            student.created_at
-              ? new Date(
-                  student.created_at
-                ).toLocaleString(
-                  "vi-VN"
-                )
-              : "",
-        })
-      );
+        "Ngày tạo":
+          student.created_at
+            ? new Date(
+                student.created_at
+              ).toLocaleString(
+                "vi-VN"
+              )
+            : "",
+      })
+    );
 
     const worksheet =
       XLSX.utils.json_to_sheet(
@@ -992,7 +975,7 @@ function AdminHome({
       { wch: 7 },
       { wch: 28 },
       { wch: 22 },
-      { wch: 32 },
+      { wch: 40 },
       { wch: 10 },
       { wch: 15 },
       { wch: 18 },
@@ -1017,7 +1000,7 @@ function AdminHome({
   };
 
   /* =======================================================
-     MỞ POPUP ĐỔI MẬT KHẨU
+     ĐỔI MẬT KHẨU
   ======================================================= */
 
   const openPasswordModal = (
@@ -1034,12 +1017,10 @@ function AdminHome({
     setPasswordModal(true);
   };
 
-  /* =======================================================
-     ĐÓNG POPUP ĐỔI MẬT KHẨU
-  ======================================================= */
-
   const closePasswordModal = () => {
-    if (resetLoading) return;
+    if (resetLoading) {
+      return;
+    }
 
     setPasswordModal(false);
     setSelectedStudent(null);
@@ -1051,120 +1032,111 @@ function AdminHome({
     setResetSuccess("");
   };
 
-  /* =======================================================
-     RESET MẬT KHẨU
-  ======================================================= */
+  const handleResetPassword = async (
+    event
+  ) => {
+    event.preventDefault();
 
-  const handleResetPassword =
-    async (event) => {
-      event.preventDefault();
+    setResetError("");
+    setResetSuccess("");
 
-      setResetError("");
-      setResetSuccess("");
+    if (!selectedStudent) {
+      setResetError(
+        "Chưa chọn học sinh."
+      );
+      return;
+    }
 
-      if (!selectedStudent) {
-        setResetError(
-          "Chưa chọn học sinh."
-        );
+    if (!newPassword) {
+      setResetError(
+        "Vui lòng nhập mật khẩu mới."
+      );
+      return;
+    }
 
-        return;
-      }
+    if (
+      newPassword.length <
+      MIN_PASSWORD_LENGTH
+    ) {
+      setResetError(
+        `Mật khẩu phải có ít nhất ${MIN_PASSWORD_LENGTH} ký tự.`
+      );
+      return;
+    }
 
-      if (!newPassword) {
-        setResetError(
-          "Vui lòng nhập mật khẩu mới."
-        );
+    if (
+      newPassword !==
+      confirmPassword
+    ) {
+      setResetError(
+        "Mật khẩu xác nhận không khớp."
+      );
+      return;
+    }
 
-        return;
-      }
+    setResetLoading(true);
 
-      if (
-        newPassword.length < 6
-      ) {
-        setResetError(
-          "Mật khẩu phải có ít nhất 6 ký tự."
-        );
-
-        return;
-      }
-
-      if (
-        newPassword !==
-        confirmPassword
-      ) {
-        setResetError(
-          "Mật khẩu xác nhận không khớp."
-        );
-
-        return;
-      }
-
-      setResetLoading(true);
-
-      try {
-        const {
-          data,
-          error: functionError,
-        } =
-          await supabase.functions.invoke(
-            "admin-reset-password",
-            {
-              body: {
-                userId:
-                  selectedStudent.id,
-                newPassword,
-              },
-            }
-          );
-
-        if (functionError) {
-          console.error(
-            "Admin reset password error:",
-            functionError
-          );
-
-          const message =
-            await getFunctionErrorMessage(
-              functionError,
-              "Không thể đổi mật khẩu."
-            );
-
-          throw new Error(
-            message
-          );
+    try {
+      const {
+        data,
+        error: functionError,
+      } = await supabase.functions.invoke(
+        "admin-reset-password",
+        {
+          body: {
+            userId:
+              selectedStudent.id,
+            newPassword,
+          },
         }
+      );
 
-        if (!data?.success) {
-          throw new Error(
-            data?.error ||
-              "Không thể đổi mật khẩu."
-          );
-        }
-
-        setResetSuccess(
-          "Đã đổi mật khẩu thành công."
-        );
-
-        setNewPassword("");
-        setConfirmPassword("");
-      } catch (error) {
+      if (functionError) {
         console.error(
-          "Reset password:",
-          error
+          "ADMIN - Reset password error:",
+          functionError
         );
 
-        setResetError(
-          error instanceof Error
-            ? error.message
-            : "Có lỗi xảy ra khi đổi mật khẩu."
-        );
-      } finally {
-        setResetLoading(false);
+        const message =
+          await getFunctionErrorMessage(
+            functionError,
+            "Không thể đổi mật khẩu."
+          );
+
+        throw new Error(message);
       }
-    };
+
+      if (!data?.success) {
+        throw new Error(
+          data?.error ||
+            "Không thể đổi mật khẩu."
+        );
+      }
+
+      setResetSuccess(
+        "Đã đổi mật khẩu thành công."
+      );
+
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (resetPasswordError) {
+      console.error(
+        "ADMIN - Reset password:",
+        resetPasswordError
+      );
+
+      setResetError(
+        resetPasswordError instanceof Error
+          ? resetPasswordError.message
+          : "Có lỗi xảy ra khi đổi mật khẩu."
+      );
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   /* =======================================================
-     KIỂM TRA ADMIN
+     ACCESS DENIED
   ======================================================= */
 
   if (
@@ -1206,15 +1178,15 @@ function AdminHome({
   }
 
   /* =======================================================
-     ADMIN DASHBOARD
+     DASHBOARD
   ======================================================= */
 
   return (
     <div className="admin-page">
 
-      {/* =====================================================
+      {/* =================================================
           HEADER
-      ===================================================== */}
+      ================================================= */}
 
       <header className="admin-header">
 
@@ -1228,20 +1200,18 @@ function AdminHome({
                 👑
               </span>
 
-              Quản trị hệ thống
+              <span>
+                Quản trị hệ thống
+              </span>
 
             </div>
 
             <div className="admin-greeting">
-
               Xin chào{" "}
-
               <strong>
                 {profile.username}
               </strong>{" "}
-
               — Học Tiếng Khmer
-
             </div>
 
           </div>
@@ -1261,6 +1231,7 @@ function AdminHome({
             <button
               type="button"
               onClick={loadStudents}
+              disabled={loading}
               className="admin-header-button admin-refresh-button"
             >
               🔄 Làm mới
@@ -1280,15 +1251,11 @@ function AdminHome({
 
       </header>
 
-      {/* =====================================================
-          CONTENT
-      ===================================================== */}
+      {/* =================================================
+          MAIN
+      ================================================= */}
 
       <main className="admin-main">
-
-        {/* ===================================================
-            TIÊU ĐỀ
-        =================================================== */}
 
         <div className="admin-page-heading">
 
@@ -1307,9 +1274,9 @@ function AdminHome({
 
         </div>
 
-        {/* ===================================================
-            THỐNG KÊ
-        =================================================== */}
+        {/* =================================================
+            STATISTICS
+        ================================================= */}
 
         <div className="admin-stats-grid">
 
@@ -1351,21 +1318,19 @@ function AdminHome({
 
         </div>
 
-        {/* ===================================================
+        {/* =================================================
             ERROR
-        =================================================== */}
+        ================================================= */}
 
         {error && (
-
           <div className="admin-error">
             ⚠️ {error}
           </div>
-
         )}
 
-        {/* ===================================================
-            DANH SÁCH HỌC SINH
-        =================================================== */}
+        {/* =================================================
+            STUDENT LIST
+        ================================================= */}
 
         <section className="student-list-card">
 
@@ -1373,7 +1338,7 @@ function AdminHome({
 
             <div className="student-list-heading-row">
 
-              <div>
+              <div className="student-list-title-area">
 
                 <div className="student-list-title-row">
 
@@ -1387,17 +1352,53 @@ function AdminHome({
 
                 </div>
 
-                <p className="student-list-description">
+              </div>
 
-                  Có{" "}
+              <div className="student-list-actions">
 
-                  <strong>
-                    {totalStudents}
-                  </strong>{" "}
+                <button
+                  type="button"
+                  onClick={openCreateModal}
+                  className="admin-action-button admin-create-button"
+                >
+                  ➕ Thêm tài khoản
+                </button>
 
-                  tài khoản học viên
+                <button
+                  type="button"
+                  onClick={exportExcel}
+                  className="admin-action-button admin-export-button"
+                >
+                  📊 Xuất Excel
+                </button>
 
-                </p>
+              </div>
+
+            </div>
+
+            {/* =================================================
+                SEARCH + PAGE INFO
+            ================================================= */}
+
+            <div className="student-toolbar">
+
+              <div className="student-search-wrapper">
+
+                <span className="student-search-icon">
+                  🔎
+                </span>
+
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(event) =>
+                    setSearch(
+                      event.target.value
+                    )
+                  }
+                  placeholder="Tìm học viên, tài khoản hoặc email..."
+                  className="student-search-input"
+                />
 
               </div>
 
@@ -1418,60 +1419,6 @@ function AdminHome({
                 )}
 
               </div>
-
-            </div>
-
-            {/* =================================================
-                CÔNG CỤ ADMIN
-            ================================================= */}
-
-            <div className="admin-toolbar">
-
-              <button
-                type="button"
-                onClick={
-                  openCreateModal
-                }
-                className="admin-action-button admin-create-button"
-              >
-                ➕ Thêm tài khoản
-              </button>
-
-              <button
-                type="button"
-                onClick={exportExcel}
-                className="admin-action-button admin-export-button"
-              >
-                📊 Xuất Excel
-              </button>
-
-            </div>
-
-            {/* =================================================
-                TÌM KIẾM
-            ================================================= */}
-
-            <div className="student-search-wrapper">
-
-              <input
-                type="text"
-                value={search}
-                onChange={(event) =>
-                  setSearch(
-                    event.target.value
-                  )
-                }
-                placeholder="🔎  Tìm học viên, tài khoản hoặc email..."
-                className="student-search-input"
-              />
-
-            </div>
-
-            {/* =================================================
-                ĐIỀU KHIỂN SỐ DÒNG / TRANG
-            ================================================= */}
-
-            <div className="student-pagination-top">
 
               <div className="student-page-size">
 
@@ -1519,7 +1466,6 @@ function AdminHome({
           ================================================= */}
 
           {loading ? (
-
             <div className="admin-loading">
 
               <div className="admin-loading-icon">
@@ -1529,10 +1475,12 @@ function AdminHome({
               Đang tải danh sách học sinh...
 
             </div>
-
           ) : (
-
             <>
+
+              {/* =================================================
+                  TABLE
+              ================================================= */}
 
               <div className="student-table-wrapper">
 
@@ -1547,7 +1495,7 @@ function AdminHome({
                       </th>
 
                       <th>
-                        Tên học viên  
+                        Tên học viên
                       </th>
 
                       <th>
@@ -1592,7 +1540,8 @@ function AdminHome({
 
                         const completedGames =
                           getCompletedGameCount(
-                            student
+                            student,
+                            gameProgressMap
                           );
 
                         const globalIndex =
@@ -1602,7 +1551,6 @@ function AdminHome({
                           1;
 
                         return (
-
                           <tr
                             key={
                               student.id
@@ -1610,50 +1558,38 @@ function AdminHome({
                           >
 
                             <td>
-
                               <span className="student-index">
                                 {globalIndex}
                               </span>
-
                             </td>
 
                             <td>
 
                               <strong className="student-name">
-                                {
-                                  student.username
-                                }
+                                {student.username ||
+                                  student.account ||
+                                  "—"}
                               </strong>
 
                             </td>
 
                             <td className="student-account">
-
-                              {
-                                student.account
-                              }
-
+                              {student.account ||
+                                "—"}
                             </td>
 
                             <td className="student-email">
-
-                              {
-                                student.email ||
-                                "—"
-                              }
-
+                              {student.email ||
+                                "—"}
                             </td>
 
                             <td className="text-center">
 
                               <span className="student-level">
-
                                 Lv.{" "}
-
                                 {getLevelFromExp(
                                   student.exp
                                 )}
-
                               </span>
 
                             </td>
@@ -1661,7 +1597,6 @@ function AdminHome({
                             <td className="student-exp text-right">
 
                               ⭐{" "}
-
                               {Number(
                                 student.exp ||
                                   0
@@ -1671,10 +1606,6 @@ function AdminHome({
 
                             </td>
 
-                            {/* =================================
-                                GAME
-                            ================================= */}
-
                             <td className="student-game text-center">
 
                               <span
@@ -1682,15 +1613,13 @@ function AdminHome({
                                   completedGames ===
                                   TOTAL_GAMES
                                     ? "game-complete"
-                                    : completedGames >
-                                      0
+                                    : completedGames > 0
                                     ? "game-learning"
                                     : "game-not-started"
                                 }`}
                               >
 
                                 🎮{" "}
-
                                 {completedGames}/
                                 {TOTAL_GAMES}
 
@@ -1701,7 +1630,6 @@ function AdminHome({
                             <td className="student-study-time text-right">
 
                               ⏱️{" "}
-
                               {formatStudyTime(
                                 student.total_study_seconds
                               )}
@@ -1741,9 +1669,7 @@ function AdminHome({
                             </td>
 
                           </tr>
-
                         );
-
                       }
                     )}
 
@@ -1757,9 +1683,7 @@ function AdminHome({
                   EMPTY
               ================================================= */}
 
-              {filteredStudents.length ===
-                0 && (
-
+              {filteredStudents.length === 0 && (
                 <div className="admin-empty">
 
                   <div className="admin-empty-icon">
@@ -1776,110 +1700,105 @@ function AdminHome({
                   </div>
 
                 </div>
-
               )}
 
               {/* =================================================
-                  PHÂN TRANG
+                  PAGINATION
               ================================================= */}
 
               {totalFilteredStudents > 0 &&
                 totalPages > 1 && (
+                  <div className="student-pagination">
 
-                <div className="student-pagination">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCurrentPage(
+                          (page) =>
+                            Math.max(
+                              1,
+                              page - 1
+                            )
+                        )
+                      }
+                      disabled={
+                        currentPage === 1
+                      }
+                      className="student-pagination-button student-pagination-prev"
+                    >
+                      ‹ Trước
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setCurrentPage(
-                        (page) =>
-                          Math.max(
-                            1,
-                            page - 1
-                          )
-                      )
-                    }
-                    disabled={
-                      currentPage === 1
-                    }
-                    className="student-pagination-button student-pagination-prev"
-                  >
-                    ‹ Trước
-                  </button>
+                    <div className="student-pagination-pages">
 
-                  <div className="student-pagination-pages">
+                      {pageNumbers.map(
+                        (
+                          page,
+                          index
+                        ) => {
 
-                    {pageNumbers.map(
-                      (
-                        page,
-                        index
-                      ) => {
+                          if (
+                            page ===
+                            "..."
+                          ) {
+                            return (
+                              <span
+                                key={`ellipsis-${index}`}
+                                className="student-pagination-ellipsis"
+                              >
+                                …
+                              </span>
+                            );
+                          }
 
-                        if (
-                          page ===
-                          "..."
-                        ) {
                           return (
-                            <span
-                              key={`ellipsis-${index}`}
-                              className="student-pagination-ellipsis"
+                            <button
+                              type="button"
+                              key={page}
+                              onClick={() =>
+                                setCurrentPage(
+                                  page
+                                )
+                              }
+                              className={`student-pagination-page ${
+                                currentPage ===
+                                page
+                                  ? "active"
+                                  : ""
+                              }`}
                             >
-                              …
-                            </span>
+                              {page}
+                            </button>
                           );
                         }
+                      )}
 
-                        return (
-                          <button
-                            type="button"
-                            key={page}
-                            onClick={() =>
-                              setCurrentPage(
-                                page
-                              )
-                            }
-                            className={`student-pagination-page ${
-                              currentPage ===
-                              page
-                                ? "active"
-                                : ""
-                            }`}
-                          >
-                            {page}
-                          </button>
-                        );
+                    </div>
 
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCurrentPage(
+                          (page) =>
+                            Math.min(
+                              totalPages,
+                              page + 1
+                            )
+                        )
                       }
-                    )}
+                      disabled={
+                        currentPage ===
+                        totalPages
+                      }
+                      className="student-pagination-button student-pagination-next"
+                    >
+                      Sau ›
+                    </button>
 
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setCurrentPage(
-                        (page) =>
-                          Math.min(
-                            totalPages,
-                            page + 1
-                          )
-                      )
-                    }
-                    disabled={
-                      currentPage ===
-                      totalPages
-                    }
-                    className="student-pagination-button student-pagination-next"
-                  >
-                    Sau ›
-                  </button>
-
-                </div>
-
-              )}
+                )}
 
             </>
-
           )}
 
         </section>
@@ -1891,7 +1810,6 @@ function AdminHome({
       ===================================================== */}
 
       {createModal && (
-
         <div
           className="password-modal-overlay"
           onMouseDown={(event) => {
@@ -1942,24 +1860,16 @@ function AdminHome({
               className="password-form"
             >
 
-              {createSuccess && (
-
-                <div className="reset-success">
-                  ✅ {createSuccess}
-                </div>
-
-              )}
-
               {createError && (
-
                 <div className="reset-error">
                   ⚠️ {createError}
                 </div>
-
               )}
 
+              {/* TÊN HỌC SINH */}
+
               <label className="password-label">
-                Tên học sinh
+                Tên người dùng
               </label>
 
               <input
@@ -1972,13 +1882,20 @@ function AdminHome({
                     event.target.value
                   )
                 }
-                placeholder="Nhập tên học sinh..."
+                placeholder="Có thể bỏ trống"
                 disabled={
                   createLoading
                 }
                 autoComplete="name"
                 className="password-input"
               />
+
+              <div className="password-help">
+                Bỏ trống sẽ tự động lấy
+                tên tài khoản.
+              </div>
+
+              {/* TÀI KHOẢN */}
 
               <label className="password-label">
                 Tài khoản
@@ -1989,18 +1906,37 @@ function AdminHome({
                 value={
                   createAccount
                 }
-                onChange={(event) =>
-                  setCreateAccount(
-                    event.target.value
-                  )
+                onChange={
+                  handleAccountChange
                 }
-                placeholder="Nhập tài khoản..."
+                onBlur={
+                  handleAccountBlur
+                }
+                placeholder="Tài khoản phải có từ 6 đến 20 ký tự"
                 disabled={
                   createLoading
                 }
                 autoComplete="username"
-                className="password-input"
+                minLength={
+                  ACCOUNT_MIN_LENGTH
+                }
+                maxLength={
+                  ACCOUNT_MAX_LENGTH
+                }
+                className={`password-input ${
+                  accountError
+                    ? "input-error"
+                    : ""
+                }`}
               />
+
+              {accountError && (
+                <div className="password-help password-field-error">
+                  ⚠️ {accountError}
+                </div>
+              )}
+
+              {/* MẬT KHẨU */}
 
               <label className="password-label">
                 Mật khẩu
@@ -2011,25 +1947,32 @@ function AdminHome({
                 value={
                   createPassword
                 }
-                onChange={(event) =>
-                  setCreatePassword(
-                    event.target.value
-                  )
+                onChange={
+                  handleCreatePasswordChange
                 }
-                placeholder="Nhập mật khẩu..."
-                minLength={6}
+                onBlur={
+                  handleCreatePasswordBlur
+                }
+                placeholder="Mật khẩu phải có ít nhất 6 ký tự"
+                minLength={
+                  MIN_PASSWORD_LENGTH
+                }
                 disabled={
                   createLoading
                 }
                 autoComplete="new-password"
-                className="password-input"
+                className={`password-input ${
+                  passwordError
+                    ? "input-error"
+                    : ""
+                }`}
               />
 
-              <div className="password-help">
-                Mật khẩu phải có ít nhất
-                6 ký tự. Không cần xác
-                nhận mật khẩu.
-              </div>
+              {passwordError && (
+                <div className="password-help password-field-error">
+                  ⚠️ {passwordError}
+                </div>
+              )}
 
               <div className="password-form-actions">
 
@@ -2069,7 +2012,76 @@ function AdminHome({
           </div>
 
         </div>
+      )}
 
+      {/* =====================================================
+          POPUP THÀNH CÔNG
+      ===================================================== */}
+
+      {successModal && (
+        <div
+          className="password-modal-overlay"
+          onMouseDown={(event) => {
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              setSuccessModal(false);
+            }
+          }}
+        >
+
+          <div className="password-modal">
+
+            <div className="password-modal-header">
+
+              <div>
+
+                <div className="password-modal-title">
+                  THÔNG BÁO TỪ HỆ THỐNG
+                </div>
+
+                <div className="password-modal-subtitle">
+                  Quản trị viên
+                </div>
+
+              </div>
+
+              <button
+                type="button"
+                onClick={() =>
+                  setSuccessModal(false)
+                }
+                className="password-modal-close"
+              >
+                ×
+              </button>
+
+            </div>
+
+            <div className="delete-confirm-body">
+
+              <div className="delete-warning-icon">
+                ✅
+              </div>
+
+              <h3>
+                Tạo tài khoản thành công!
+              </h3>
+
+              <p>
+                Tài khoản{" "}
+                <strong>
+                  {createdAccount}
+                </strong>{" "}
+                đã được tạo thành công.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
       )}
 
       {/* =====================================================
@@ -2077,7 +2089,6 @@ function AdminHome({
       ===================================================== */}
 
       {deleteModal && (
-
         <div
           className="password-modal-overlay"
           onMouseDown={(event) => {
@@ -2132,23 +2143,17 @@ function AdminHome({
               </h3>
 
               <p>
-
                 Tài khoản{" "}
-
                 <strong>
                   {deleteStudent?.account ||
                     "—"}
                 </strong>{" "}
-
                 của học sinh{" "}
-
                 <strong>
                   {deleteStudent?.username ||
                     "—"}
                 </strong>{" "}
-
                 sẽ bị xóa khỏi hệ thống.
-
               </p>
 
               <div className="delete-warning-note">
@@ -2157,11 +2162,9 @@ function AdminHome({
               </div>
 
               {deleteError && (
-
                 <div className="reset-error">
                   ⚠️ {deleteError}
                 </div>
-
               )}
 
             </div>
@@ -2205,7 +2208,6 @@ function AdminHome({
           </div>
 
         </div>
-
       )}
 
       {/* =====================================================
@@ -2213,7 +2215,6 @@ function AdminHome({
       ===================================================== */}
 
       {passwordModal && (
-
         <div
           className="password-modal-overlay"
           onMouseDown={(event) => {
@@ -2271,38 +2272,28 @@ function AdminHome({
                 </div>
 
                 <div className="selected-student-name">
-
                   👨‍🎓{" "}
-
                   {selectedStudent?.username ||
                     "—"}
-
                 </div>
 
                 <div className="selected-student-account">
-
                   {selectedStudent?.account ||
-                    selectedStudent?.email ||
-                    ""}
-
+                    "—"}
                 </div>
 
               </div>
 
               {resetSuccess && (
-
                 <div className="reset-success">
                   ✅ {resetSuccess}
                 </div>
-
               )}
 
               {resetError && (
-
                 <div className="reset-error">
                   ⚠️ {resetError}
                 </div>
-
               )}
 
               <label className="password-label">
@@ -2311,16 +2302,16 @@ function AdminHome({
 
               <input
                 type="password"
-                value={
-                  newPassword
-                }
+                value={newPassword}
                 onChange={(event) =>
                   setNewPassword(
                     event.target.value
                   )
                 }
                 placeholder="Nhập mật khẩu mới..."
-                minLength={6}
+                minLength={
+                  MIN_PASSWORD_LENGTH
+                }
                 disabled={
                   resetLoading
                 }
@@ -2329,8 +2320,8 @@ function AdminHome({
               />
 
               <div className="password-help">
-                Mật khẩu phải có ít nhất
-                6 ký tự.
+                Mật khẩu phải có ít nhất{" "}
+                {MIN_PASSWORD_LENGTH} ký tự.
               </div>
 
               <label className="password-label">
@@ -2348,7 +2339,9 @@ function AdminHome({
                   )
                 }
                 placeholder="Nhập lại mật khẩu mới..."
-                minLength={6}
+                minLength={
+                  MIN_PASSWORD_LENGTH
+                }
                 disabled={
                   resetLoading
                 }
@@ -2394,7 +2387,6 @@ function AdminHome({
           </div>
 
         </div>
-
       )}
 
     </div>
