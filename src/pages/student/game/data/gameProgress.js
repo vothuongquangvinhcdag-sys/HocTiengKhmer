@@ -6,7 +6,12 @@
    - Progress được tách riêng theo từng tài khoản.
    - Tài khoản mới luôn bắt đầu từ Game 1 - Stage 1.
    - Không dùng chung progress giữa các tài khoản.
+   - User hiện tại được xác định bằng Supabase user.id.
+   
+   STORAGE:
+   khmer_game_progress_<USER_ID>
 ========================================================= */
+
 
 /* =========================================================
    STORAGE
@@ -15,12 +20,11 @@
 const STORAGE_PREFIX =
   "khmer_game_progress_";
 
-/*
-  User hiện tại.
 
-  Không dùng một STORAGE_KEY cố định nữa,
-  vì như vậy mọi tài khoản sẽ dùng chung progress.
-*/
+/* =========================================================
+   USER HIỆN TẠI
+========================================================= */
+
 let currentUserId = null;
 
 
@@ -29,14 +33,15 @@ let currentUserId = null;
 ========================================================= */
 
 /*
-  Gọi hàm này ngay sau khi xác định được user hiện tại.
+  Gọi khi:
+  - App khởi động và đã có session.
+  - User đăng nhập.
+  - Supabase khôi phục session.
 
   Ví dụ:
     setGameProgressUser(user.id);
-
-  Khi logout:
-    clearGameProgressUser();
 */
+
 export const setGameProgressUser = (
   userId
 ) => {
@@ -54,13 +59,32 @@ export const setGameProgressUser = (
    XÓA USER HIỆN TẠI
 ========================================================= */
 
-export const clearGameProgressUser = () => {
-  currentUserId = null;
-};
+/*
+  Chỉ xóa user context.
+
+  KHÔNG xóa progress trong localStorage.
+*/
+
+export const clearGameProgressUser =
+  () => {
+    currentUserId = null;
+  };
 
 
 /* =========================================================
-   LẤY STORAGE KEY CỦA USER
+   KIỂM TRA ĐÃ CÓ USER
+========================================================= */
+
+export const hasGameProgressUser =
+  () => {
+    return Boolean(
+      currentUserId
+    );
+  };
+
+
+/* =========================================================
+   LẤY STORAGE KEY
 ========================================================= */
 
 const getStorageKey = () => {
@@ -82,7 +106,7 @@ const DEFAULT_PROGRESS = {
 
 
 /* =========================================================
-   LOAD
+   LOAD PROGRESS
 ========================================================= */
 
 const loadProgress = () => {
@@ -91,12 +115,14 @@ const loadProgress = () => {
       getStorageKey();
 
     /*
-      Chưa xác định user
-      → không được lấy progress của user khác.
+      Chưa xác định user:
+      tuyệt đối không đọc progress.
     */
+
     if (!storageKey) {
       return {
         ...DEFAULT_PROGRESS,
+        games: {},
       };
     }
 
@@ -105,20 +131,44 @@ const loadProgress = () => {
         storageKey
       );
 
+    /*
+      User mới:
+      chưa có dữ liệu → bắt đầu từ Game 1.
+    */
+
     if (!saved) {
       return {
         ...DEFAULT_PROGRESS,
+        games: {},
       };
     }
 
     const parsed =
       JSON.parse(saved);
 
+    /*
+      Bảo vệ dữ liệu cũ / dữ liệu lỗi.
+    */
+
+    if (
+      !parsed ||
+      typeof parsed !== "object"
+    ) {
+      return {
+        ...DEFAULT_PROGRESS,
+        games: {},
+      };
+    }
+
     return {
       ...DEFAULT_PROGRESS,
       ...parsed,
+
       games:
-        parsed.games || {},
+        parsed.games &&
+        typeof parsed.games === "object"
+          ? parsed.games
+          : {},
     };
   } catch (error) {
     console.error(
@@ -128,13 +178,14 @@ const loadProgress = () => {
 
     return {
       ...DEFAULT_PROGRESS,
+      games: {},
     };
   }
 };
 
 
 /* =========================================================
-   SAVE
+   SAVE PROGRESS
 ========================================================= */
 
 const saveProgress = (
@@ -145,26 +196,31 @@ const saveProgress = (
       getStorageKey();
 
     /*
-      Không có user
-      → tuyệt đối không lưu.
+      Không có user:
+      tuyệt đối không lưu.
     */
+
     if (!storageKey) {
       console.warn(
         "Không thể lưu tiến độ game: chưa xác định tài khoản."
       );
 
-      return;
+      return false;
     }
 
     localStorage.setItem(
       storageKey,
       JSON.stringify(progress)
     );
+
+    return true;
   } catch (error) {
     console.error(
       "Không thể lưu tiến độ game:",
       error
     );
+
+    return false;
   }
 };
 
@@ -189,7 +245,43 @@ const getGame = (
     };
   }
 
-  return progress.games[key];
+  /*
+    Bảo vệ dữ liệu cũ nếu game tồn tại
+    nhưng thiếu một số thuộc tính.
+  */
+
+  const game =
+    progress.games[key];
+
+  if (
+    typeof game.completed !==
+    "boolean"
+  ) {
+    game.completed = false;
+  }
+
+  if (
+    typeof game.expClaimed !==
+    "boolean"
+  ) {
+    game.expClaimed = false;
+  }
+
+  if (
+    typeof game.badgeClaimed !==
+    "boolean"
+  ) {
+    game.badgeClaimed = false;
+  }
+
+  if (
+    !game.stages ||
+    typeof game.stages !== "object"
+  ) {
+    game.stages = {};
+  }
+
+  return game;
 };
 
 
@@ -219,54 +311,33 @@ const getStage = (
     };
   }
 
-  return game.stages[key];
-};
-
-
-/* =========================================================
-   KIỂM TRA USER ĐÃ ĐƯỢC GÁN CHƯA
-========================================================= */
-
-export const hasGameProgressUser = () => {
-  return Boolean(
-    currentUserId
-  );
-};
-
-
-/* =========================================================
-   KIỂM TRA STAGE ĐÃ MỞ KHÓA
-========================================================= */
-
-/*
-  Quy tắc:
-
-  Stage 1 → luôn mở nếu Game đã mở.
-  Stage 2 → cần hoàn thành Stage 1.
-  Stage 3 → cần hoàn thành Stage 2.
-  Stage 4 → cần hoàn thành Stage 3.
-*/
-
-export const isStageUnlocked = (
-  gameId,
-  stageId
-) => {
-  const game =
-    Number(gameId);
-
   const stage =
-    Number(stageId);
+    game.stages[key];
+
+  /*
+    Bảo vệ dữ liệu cũ.
+  */
 
   if (
-    stage <= 1
+    typeof stage.completed !==
+    "boolean"
   ) {
-    return true;
+    stage.completed = false;
   }
 
-  return isStageCompleted(
-    game,
-    stage - 1
-  );
+  stage.playCount =
+    Math.max(
+      0,
+      Number(stage.playCount) || 0
+    );
+
+  stage.highScore =
+    Math.max(
+      0,
+      Number(stage.highScore) || 0
+    );
+
+  return stage;
 };
 
 
@@ -302,6 +373,67 @@ export const isStageCompleted = (
 
 
 /* =========================================================
+   KIỂM TRA STAGE ĐÃ MỞ KHÓA
+========================================================= */
+
+/*
+  Quy tắc:
+
+  Stage 1 → luôn mở.
+
+  Stage 2 → cần hoàn thành Stage 1.
+
+  Stage 3 → cần hoàn thành Stage 2.
+
+  Stage 4 → cần hoàn thành Stage 3.
+*/
+
+export const isStageUnlocked = (
+  gameId,
+  stageId
+) => {
+  const game =
+    Number(gameId);
+
+  const stage =
+    Number(stageId);
+
+  /*
+    ID không hợp lệ.
+  */
+
+  if (
+    !Number.isFinite(game) ||
+    !Number.isFinite(stage) ||
+    game < 1 ||
+    stage < 1
+  ) {
+    return false;
+  }
+
+  /*
+    Stage 1 luôn mở.
+  */
+
+  if (
+    stage === 1
+  ) {
+    return true;
+  }
+
+  /*
+    Stage 2+:
+    Stage trước phải hoàn thành.
+  */
+
+  return isStageCompleted(
+    game,
+    stage - 1
+  );
+};
+
+
+/* =========================================================
    LẤY THÔNG TIN STAGE
 ========================================================= */
 
@@ -327,6 +459,7 @@ export const getStageState = (
 
 /* =========================================================
    BẮT ĐẦU STAGE
+   ---------------------------------------------------------
    KHÔNG TĂNG PLAY COUNT
 ========================================================= */
 
@@ -335,8 +468,10 @@ export const startStage = (
   stageId
 ) => {
   /*
-    Không cho bắt đầu Stage chưa mở khóa.
+    Không cho bắt đầu Stage
+    chưa được mở khóa.
   */
+
   if (
     !isStageUnlocked(
       gameId,
@@ -368,7 +503,7 @@ export const startStage = (
 
 /* =========================================================
    GHI NHẬN MỘT LẦN CHƠI
-
+   ---------------------------------------------------------
    Chỉ gọi khi:
    - THẮNG
    - THUA
@@ -381,8 +516,10 @@ export const recordStagePlay = (
   stageId
 ) => {
   /*
-    Không cho ghi nhận Stage chưa mở khóa.
+    Không cho ghi nhận
+    Stage chưa mở khóa.
   */
+
   if (
     !isStageUnlocked(
       gameId,
@@ -402,7 +539,11 @@ export const recordStagePlay = (
       stageId
     );
 
-  stage.playCount += 1;
+  stage.playCount =
+    Math.max(
+      0,
+      Number(stage.playCount) || 0
+    ) + 1;
 
   saveProgress(
     progress
@@ -416,6 +557,8 @@ export const recordStagePlay = (
 
 /* =========================================================
    LƯU ĐIỂM
+   ---------------------------------------------------------
+   Chỉ lưu HIGH SCORE.
 ========================================================= */
 
 export const recordStageScore = (
@@ -424,8 +567,10 @@ export const recordStageScore = (
   score
 ) => {
   /*
-    Không cho lưu điểm Stage chưa mở khóa.
+    Không cho lưu điểm
+    Stage chưa mở khóa.
   */
+
   if (
     !isStageUnlocked(
       gameId,
@@ -450,6 +595,11 @@ export const recordStageScore = (
       0,
       Number(score) || 0
     );
+
+  /*
+    Chỉ cập nhật nếu
+    điểm mới cao hơn điểm cũ.
+  */
 
   if (
     safeScore >
@@ -481,6 +631,7 @@ export const completeStage = (
     Không thể hoàn thành Stage
     nếu Stage trước chưa hoàn thành.
   */
+
   if (
     !isStageUnlocked(
       gameId,
@@ -514,16 +665,21 @@ export const completeStage = (
       stageId
     );
 
+  /*
+    Chỉ lần đầu hoàn thành
+    mới được xem là First Win.
+  */
+
   const isFirstWin =
     !stage.completed;
 
   stage.completed =
     true;
 
-  /* =====================================
+  /* =======================================================
      STAGE 4
      → HOÀN THÀNH GAME
-  ===================================== */
+  ======================================================= */
 
   if (
     Number(stageId) === 4
@@ -575,6 +731,16 @@ export const isGameCompleted = (
    KIỂM TRA GAME ĐÃ MỞ KHÓA
 ========================================================= */
 
+/*
+  Game 1 → luôn mở.
+
+  Game 2 → cần Game 1 hoàn thành.
+
+  Game 3 → cần Game 2 hoàn thành.
+
+  ...
+*/
+
 export const isGameUnlocked = (
   gameId,
   completedGames = []
@@ -582,11 +748,31 @@ export const isGameUnlocked = (
   const id =
     Number(gameId);
 
+  /*
+    ID không hợp lệ.
+  */
+
   if (
-    id <= 1
+    !Number.isFinite(id) ||
+    id < 1
+  ) {
+    return false;
+  }
+
+  /*
+    Game 1 luôn mở.
+  */
+
+  if (
+    id === 1
   ) {
     return true;
   }
+
+  /*
+    Game tiếp theo cần Game trước
+    hoàn thành.
+  */
 
   return completedGames.includes(
     id - 1
@@ -608,11 +794,23 @@ export const getCompletedGames =
     )
       .filter(
         ([, game]) =>
-          game.completed
+          Boolean(
+            game?.completed
+          )
       )
       .map(
         ([gameId]) =>
           Number(gameId)
+      )
+      .filter(
+        (gameId) =>
+          Number.isFinite(
+            gameId
+          )
+      )
+      .sort(
+        (a, b) =>
+          a - b
       );
   };
 
@@ -620,9 +818,9 @@ export const getCompletedGames =
 /* =========================================================
    EXP GAME
 
-   Game 1   → 1.000
-   Game 2   → 2.000
-   Game 3   → 3.000
+   Game 1 → 1.000 EXP
+   Game 2 → 2.000 EXP
+   Game 3 → 3.000 EXP
    ...
 ========================================================= */
 
@@ -676,6 +874,10 @@ export const claimGameExp = (
       gameId
     );
 
+  /*
+    Không nhận EXP lần thứ hai.
+  */
+
   if (
     game.expClaimed
   ) {
@@ -686,9 +888,10 @@ export const claimGameExp = (
   }
 
   /*
-    Chỉ cho nhận EXP
+    Chỉ nhận EXP
     khi Game đã hoàn thành.
   */
+
   if (
     !game.completed
   ) {
@@ -751,6 +954,10 @@ export const claimBadge = (
       gameId
     );
 
+  /*
+    Không nhận Badge lần thứ hai.
+  */
+
   if (
     game.badgeClaimed
   ) {
@@ -760,9 +967,10 @@ export const claimBadge = (
   }
 
   /*
-    Chỉ cho nhận Badge
+    Chỉ nhận Badge
     khi Game đã hoàn thành.
   */
+
   if (
     !game.completed
   ) {
@@ -785,8 +993,16 @@ export const claimBadge = (
 
 
 /* =========================================================
-   RESET GAME PROGRESS CỦA USER HIỆN TẠI
+   RESET GAME PROGRESS
+   CỦA USER HIỆN TẠI
 ========================================================= */
+
+/*
+  Xóa toàn bộ tiến độ Game
+  của user hiện tại.
+
+  Không ảnh hưởng user khác.
+*/
 
 export const resetGameProgress =
   () => {
@@ -795,44 +1011,55 @@ export const resetGameProgress =
         getStorageKey();
 
       if (!storageKey) {
-        return;
+        return false;
       }
 
       localStorage.removeItem(
         storageKey
       );
+
+      return true;
     } catch (error) {
       console.error(
         "Không thể reset tiến độ game:",
         error
       );
+
+      return false;
     }
   };
 
 
 /* =========================================================
    RESET PROGRESS CỦA MỘT USER CỤ THỂ
-   Dùng khi cần test / admin
+   ---------------------------------------------------------
+   Dùng khi:
+   - TEST
+   - ADMIN
+   - DEBUG
 ========================================================= */
 
-export const resetUserGameProgress = (
-  userId
-) => {
-  try {
-    if (!userId) {
-      return;
+export const resetUserGameProgress =
+  (userId) => {
+    try {
+      if (!userId) {
+        return false;
+      }
+
+      const storageKey =
+        `${STORAGE_PREFIX}${String(userId)}`;
+
+      localStorage.removeItem(
+        storageKey
+      );
+
+      return true;
+    } catch (error) {
+      console.error(
+        "Không thể reset tiến độ game của user:",
+        error
+      );
+
+      return false;
     }
-
-    const storageKey =
-      `${STORAGE_PREFIX}${userId}`;
-
-    localStorage.removeItem(
-      storageKey
-    );
-  } catch (error) {
-    console.error(
-      "Không thể reset tiến độ game của user:",
-      error
-    );
-  }
-};
+  };
