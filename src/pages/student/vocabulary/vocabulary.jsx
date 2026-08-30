@@ -7,14 +7,14 @@ import {
 import "./vocabulary.css";
 
 /* =========================================================
-CẤU HÌNH TIMER
+   CẤU HÌNH TIMER
 ========================================================= */
 
 const EXP_PER_MINUTE = 10;
 const SECONDS_PER_MINUTE = 60;
 
 /* =========================================================
-FORMAT THỜI GIAN
+   FORMAT THỜI GIAN
 ========================================================= */
 
 const formatStudyTime = (totalSeconds) => {
@@ -42,7 +42,35 @@ const formatStudyTime = (totalSeconds) => {
 };
 
 /* =========================================================
-COMPONENT
+   TẠO ĐƯỜNG DẪN AUDIO TỰ ĐỘNG
+   ---------------------------------------------------------
+   Không cần khai báo audio trong từng từ.
+
+   Ví dụ:
+
+   category.id = "numbers"
+   word.khmer = "មួយ"
+
+   => /audio/vocabulary/numbers/មួយ.mp3
+
+   Chỉ cần:
+   khmer
+   roman
+   vietnamese
+   image
+
+========================================================= */
+
+const getVocabularyAudio = (word, category) => {
+  if (!word?.khmer || !category?.id) {
+    return null;
+  }
+
+  return `/audio/vocabulary/${category.id}/${word.khmer}.mp3`;
+};
+
+/* =========================================================
+   COMPONENT
 ========================================================= */
 
 function Vocabulary({
@@ -59,7 +87,7 @@ function Vocabulary({
     useState(null);
 
   /* =======================================================
-  USER ID
+     USER ID
   ======================================================= */
 
   const userId =
@@ -68,14 +96,14 @@ function Vocabulary({
     null;
 
   /* =======================================================
-  TIMER
+     TIMER
 
-  GIỐNG CƠ CHẾ ALPHABET:
+     GIỐNG CƠ CHẾ ALPHABET:
 
-  - Tổng thời gian lấy từ Supabase.
-  - Giây đang học chỉ tồn tại khi đang ở Vocabulary.
-  - Thoát trang → reset giây lẻ.
-  - Không dùng localStorage.
+     - Tổng thời gian lấy từ Supabase.
+     - Giây đang học chỉ tồn tại khi đang ở Vocabulary.
+     - Thoát trang → reset giây lẻ.
+     - Không dùng localStorage.
   ======================================================= */
 
   const [totalStudySeconds, setTotalStudySeconds] =
@@ -104,7 +132,14 @@ function Vocabulary({
     useRef(false);
 
   /* =======================================================
-  ĐỒNG BỘ REF
+     AUDIO MP3
+  ======================================================= */
+
+  const audioRef =
+    useRef(null);
+
+  /* =======================================================
+     ĐỒNG BỘ REF
   ======================================================= */
 
   useEffect(() => {
@@ -118,13 +153,7 @@ function Vocabulary({
   }, [remainderSeconds]);
 
   /* =======================================================
-  LOAD TỔNG THỜI GIAN TỪ SUPABASE
-
-  Khi mở Vocabulary:
-
-  1. Lấy total_study_seconds
-  2. Không lấy giây lẻ cũ
-  3. Bắt đầu phần giây từ 0
+     LOAD TỔNG THỜI GIAN TỪ SUPABASE
   ======================================================= */
 
   useEffect(() => {
@@ -177,13 +206,6 @@ function Vocabulary({
           );
         }
 
-        /*
-          Không khôi phục remainder.
-
-          Mỗi lần mở Vocabulary:
-          phần giây bắt đầu từ 00.
-        */
-
         if (!cancelled) {
           remainderSecondsRef.current =
             0;
@@ -206,10 +228,10 @@ function Vocabulary({
   }, [userId]);
 
   /* =======================================================
-  CỘNG 1 PHÚT
+     CỘNG 1 PHÚT
 
-  +60 total_study_seconds
-  +10 EXP
+     +60 total_study_seconds
+     +10 EXP
   ======================================================= */
 
   const saveOneMinute = async () => {
@@ -308,12 +330,6 @@ function Vocabulary({
         newStudySeconds
       );
 
-      /*
-        Đã hoàn thành 1 phút.
-
-        Reset phần giây về 0.
-      */
-
       remainderSecondsRef.current =
         0;
 
@@ -352,35 +368,13 @@ function Vocabulary({
   };
 
   /* =======================================================
-  TIMER CHỈ CHẠY Ở VOCABULARY
-
-  Ví dụ:
-
-  Vào:
-  00:20:00
-
-  Sau 30 giây:
-  00:20:30
-
-  Thoát:
-  00:20:00
-
-  Vào lại:
-  00:20:00
-
-  Sau đủ 60 giây:
-  00:21:00
-  +10 EXP
+     TIMER CHỈ CHẠY Ở VOCABULARY
   ======================================================= */
 
   useEffect(() => {
     if (!userId) {
       return;
     }
-
-    /*
-      Không tạo timer thứ hai.
-    */
 
     if (timerRef.current) {
       return;
@@ -390,11 +384,6 @@ function Vocabulary({
       "🟢 VOCABULARY: bắt đầu tính thời gian."
     );
 
-    /*
-      Mỗi lần bắt đầu vào Vocabulary,
-      phần giây luôn bắt đầu từ 0.
-    */
-
     remainderSecondsRef.current =
       0;
 
@@ -402,11 +391,6 @@ function Vocabulary({
 
     timerRef.current =
       setInterval(() => {
-        /*
-          Nếu đang lưu phút trước
-          thì chờ vòng tiếp theo.
-        */
-
         if (savingRef.current) {
           return;
         }
@@ -438,7 +422,7 @@ function Vocabulary({
         /* ---------------------------------------------
            ĐỦ 60 GIÂY
 
-           +60 giây vào Supabase
+           +60 giây
            +10 EXP
         --------------------------------------------- */
 
@@ -455,22 +439,6 @@ function Vocabulary({
           null;
       }
 
-      /*
-        QUAN TRỌNG:
-
-        Không lưu phần giây lẻ.
-
-        Ví dụ:
-        00:25:37
-
-        Thoát Vocabulary
-        ↓
-        37 giây bị reset.
-
-        Lần sau:
-        00:25:00
-      */
-
       remainderSecondsRef.current =
         0;
 
@@ -483,7 +451,100 @@ function Vocabulary({
   }, [userId]);
 
   /* =======================================================
-  HIỂN THỊ THỜI GIAN
+     PHÁT AUDIO MP3
+
+     TỰ ĐỘNG NHẬN FILE:
+
+     /audio/vocabulary/{category.id}/{word.khmer}.mp3
+
+     Không cần:
+     audio: "..."
+
+     trong vocabularydata.js nữa.
+  ======================================================= */
+
+  const speakWord = (word) => {
+    if (!word || !selectedCategory) {
+      return;
+    }
+
+    const audioPath =
+      getVocabularyAudio(
+        word,
+        selectedCategory
+      );
+
+    if (!audioPath) {
+      console.warn(
+        "⚠️ Không tạo được đường dẫn MP3:",
+        word
+      );
+
+      return;
+    }
+
+    /* -----------------------------------------------
+       DỪNG AUDIO ĐANG PHÁT
+    ------------------------------------------------ */
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+
+    /* -----------------------------------------------
+       TẠO AUDIO MP3
+    ------------------------------------------------ */
+
+    const audio =
+      new Audio(audioPath);
+
+    audioRef.current =
+      audio;
+
+    /* -----------------------------------------------
+       PHÁT AUDIO
+    ------------------------------------------------ */
+
+    audio.play().catch((error) => {
+      console.error(
+        "❌ Không phát được file MP3:",
+        audioPath,
+        error
+      );
+    });
+
+    /* -----------------------------------------------
+       KHI PHÁT XONG
+    ------------------------------------------------ */
+
+    audio.onended = () => {
+      if (
+        audioRef.current ===
+        audio
+      ) {
+        audioRef.current = null;
+      }
+    };
+  };
+
+  /* =======================================================
+     DỌN AUDIO KHI RỜI VOCABULARY
+  ======================================================= */
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  /* =======================================================
+     HIỂN THỊ THỜI GIAN
   ======================================================= */
 
   const displayedTotalSeconds =
@@ -496,7 +557,7 @@ function Vocabulary({
     );
 
   /* =======================================================
-  ĐIỀU HƯỚNG
+     ĐIỀU HƯỚNG
   ======================================================= */
 
   const goToStudent = () => {
@@ -512,7 +573,7 @@ function Vocabulary({
   };
 
   /* =======================================================
-  CHỌN CHỦ ĐỀ
+     CHỌN CHỦ ĐỀ
   ======================================================= */
 
   const openCategory = (category) => {
@@ -523,40 +584,18 @@ function Vocabulary({
   const backToCategories = () => {
     setSelectedCategory(null);
     setSelectedWord(null);
-  };
 
-  /* =======================================================
-  PHÁT ÂM
-  ======================================================= */
+    /* Dừng audio khi đổi chủ đề */
 
-  const speakWord = (word) => {
-    if (
-      !("speechSynthesis" in window)
-    ) {
-      alert(
-        "Trình duyệt không hỗ trợ phát âm."
-      );
-
-      return;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
     }
-
-    const utterance =
-      new SpeechSynthesisUtterance(
-        word.khmer
-      );
-
-    utterance.lang = "km-KH";
-    utterance.rate = 0.75;
-
-    window.speechSynthesis.cancel();
-
-    window.speechSynthesis.speak(
-      utterance
-    );
   };
 
   /* =======================================================
-  RENDER
+     RENDER
   ======================================================= */
 
   return (
@@ -654,6 +693,7 @@ function Vocabulary({
       ================================================= */}
 
       <main className="vocabulary-container">
+
         {/* =================================================
             DANH SÁCH CHỦ ĐỀ
         ================================================= */}
@@ -715,6 +755,7 @@ function Vocabulary({
 
         {selectedCategory && (
           <section className="vocabulary-list-section">
+
             <button
               type="button"
               className="vocabulary-category-back"

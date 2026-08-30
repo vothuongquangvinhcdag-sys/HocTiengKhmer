@@ -27,140 +27,140 @@ const numbers = [
   {
     khmer: "មួយ",
     roman: "Muôi",
-    vietnamese: "Một",
+    vietnamese: "Viết bằng số khmer: ១",
     image: "1",
   },
 
   {
     khmer: "ពីរ",
     roman: "Pi",
-    vietnamese: "Hai",
+    vietnamese: "Viết bằng số khmer: ២",
     image: "2",
   },
 
   {
     khmer: "បី",
     roman: "Bây",
-    vietnamese: "Ba",
+    vietnamese: "Viết bằng số khmer: ៣",
     image: "3",
   },
 
   {
     khmer: "បួន",
     roman: "Buôn",
-    vietnamese: "Bốn",
+    vietnamese: "Viết bằng số khmer: ៤",
     image: "4",
   },
 
   {
     khmer: "ប្រាំ",
     roman: "Prăm",
-    vietnamese: "Năm",
+    vietnamese: "Viết bằng số khmer: ៥",
     image: "5",
   },
 
   {
     khmer: "ប្រាំមួយ",
     roman: "Prăm - Muôi",
-    vietnamese: "Sáu",
+    vietnamese: "Viết bằng số khmer: ៦",
     image: "6",
   },
 
   {
     khmer: "ប្រាំពីរ",
     roman: "Prăm - Pi",
-    vietnamese: "Bảy",
+    vietnamese: "Viết bằng số khmer: ៧",
     image: "7",
   },
 
   {
     khmer: "ប្រាំបី",
     roman: "Prăm - Bây",
-    vietnamese: "Tám",
+    vietnamese: "Viết bằng số khmer: ៨",
     image: "8",
   },
 
   {
     khmer: "ប្រាំបួន",
     roman: "Prăm - Buôn",
-    vietnamese: "Chín",
+    vietnamese: "Viết bằng số khmer: ៩",
     image: "9",
   },
 
   {
     khmer: "ដប់",
     roman: "Đóp",
-    vietnamese: "Mười",
+    vietnamese: "Viết bằng số khmer: ១០",
     image: "10",
   },
 
   {
     khmer: "ដប់មួយ",
     roman: "Đóp - Muôi",
-    vietnamese: "Mười một",
+    vietnamese: "Viết bằng số khmer: ១១",
     image: "11",
   },
 
   {
     khmer: "ដប់ពីរ",
     roman: "Đóp - Pi",
-    vietnamese: "Mười hai",
+    vietnamese: "Viết bằng số khmer: ១២",
     image: "12",
   },
 
   {
     khmer: "ដប់បី",
     roman: "Đóp - Bây",
-    vietnamese: "Mười ba",
+    vietnamese: "Viết bằng số khmer: ១៣",
     image: "13",
   },
 
   {
     khmer: "ដប់បួន",
     roman: "Đóp - Buôn",
-    vietnamese: "Mười bốn",
+    vietnamese: "Viết bằng số khmer: ១៤",
     image: "14",
   },
 
   {
     khmer: "ដប់ប្រាំ",
     roman: "Đóp - Prăm",
-    vietnamese: "Mười lăm",
+    vietnamese: "Viết bằng số khmer: ១៥",
     image: "15",
   },
 
   {
     khmer: "ដប់ប្រាំមួយ",
     roman: "Đóp - Prăm - Muôi",
-    vietnamese: "Mười sáu",
+    vietnamese: "Viết bằng số khmer: ១៦",
     image: "16",
   },
 
   {
     khmer: "ដប់ប្រាំពីរ",
     roman: "Đóp - Prăm - Pi",
-    vietnamese: "Mười bảy",
+    vietnamese: "Viết bằng số khmer: ១៧",
     image: "17",
   },
 
   {
     khmer: "ដប់ប្រាំបី",
     roman: "Đóp - Prăm - Bây",
-    vietnamese: "Mười tám",
+    vietnamese: "Viết bằng số khmer: ១៨",
     image: "18",
   },
 
   {
     khmer: "ដប់ប្រាំបួន",
     roman: "Đóp - Prăm - Buôn",
-    vietnamese: "Mười chín",
+    vietnamese: "Viết bằng số khmer: ១៩",
     image: "19",
   },
 
   {
     khmer: "ម្ភៃ",
     roman: "Mô-phây",
-    vietnamese: "Hai mươi",
+    vietnamese: "Viết bằng số khmer: ២០",
     image: "20",
   },
 
@@ -171,7 +171,7 @@ const numbers = [
   {
     khmer: "សាមសិប",
     roman: "Sam (sâp)",
-    vietnamese: "Ba mươi",
+    vietnamese: "Viết bằng số khmer: ៣០",
     image: "30",
     note: "Có thể đọc ngắn khi ghép với hàng đơn vị.",
   },
@@ -179,42 +179,42 @@ const numbers = [
   {
     khmer: "សែសិប",
     roman: "Se (sâp)",
-    vietnamese: "Bốn mươi",
+    vietnamese: "Viết bằng số khmer: ៤០",
     image: "40",
   },
 
   {
     khmer: "ហាសិប",
     roman: "Ha (sâp)",
-    vietnamese: "Năm mươi",
+    vietnamese: "Viết bằng số khmer: ៥០",
     image: "50",
   },
 
   {
     khmer: "ហុកសិប",
     roman: "Hốc (sâp)",
-    vietnamese: "Sáu mươi",
+    vietnamese: "Viết bằng số khmer: ៦០",
     image: "60",
   },
 
   {
     khmer: "ចិតសិប",
     roman: "Chet (sâp)",
-    vietnamese: "Bảy mươi",
+    vietnamese: "Viết bằng số khmer: ៧០",
     image: "70",
   },
 
   {
     khmer: "ប៉ែតសិប",
     roman: "Pet (sâp)",
-    vietnamese: "Tám mươi",
+    vietnamese: "Viết bằng số khmer: ៨០",
     image: "80",
   },
 
   {
     khmer: "កៅសិប",
     roman: "Cau / Kao (sâp)",
-    vietnamese: "Chín mươi",
+    vietnamese: "Viết bằng số khmer: ៩០",
     image: "90",
   },
 
@@ -225,7 +225,7 @@ const numbers = [
   {
     khmer: "មួយរយ",
     roman: "Muôi-rôi",
-    vietnamese: "Một trăm",
+    vietnamese: "Viết bằng số khmer: ១០០",
     image: "100",
   },
 
@@ -236,70 +236,70 @@ const numbers = [
   {
     khmer: "មួយពាន់",
     roman: "Muôi-pon",
-    vietnamese: "Một nghìn",
+    vietnamese: "Viết bằng số khmer: ១០០០",
     image: "1 nghìn",
   },
 
   {
     khmer: "មួយម៉ឺន",
     roman: "Muôi-mơn",
-    vietnamese: "Mười nghìn / Một vạn",
+    vietnamese: "Viết bằng số khmer: ១០០០០",
     image: "10 nghìn",
   },
 
   {
     khmer: "ពីរម៉ឺន",
     roman: "Pi mơn",
-    vietnamese: "Hai mươi nghìn",
+    vietnamese: "Viết bằng số khmer: ២០០០០",
     image: "20 nghìn",
   },
 
   {
     khmer: "បីម៉ឺនប្រាំពាន់",
     roman: "Bây mơn prăm pon",
-    vietnamese: "Ba mươi lăm nghìn",
+    vietnamese: "Viết bằng số khmer: ៣៥០០០",
     image: "35 nghìn",
   },
 
   {
     khmer: "បួនម៉ឺនប្រាំពាន់",
     roman: "Buôn mơn prăm pon",
-    vietnamese: "Bốn mươi lăm nghìn",
+    vietnamese: "Viết bằng số khmer: ៤៥០០០",
     image: "45 nghìn",
   },
 
   {
     khmer: "ប្រាំម៉ឺន",
     roman: "Prăm mơn",
-    vietnamese: "Năm mươi nghìn",
+    vietnamese: "Viết bằng số khmer: ៥០០០០",
     image: "50 nghìn",
   },
 
   {
     khmer: "ប្រាំបួនម៉ឺន",
     roman: "Prăm-buôn mơn",
-    vietnamese: "Chín mươi nghìn",
+    vietnamese: "Viết bằng số khmer: ៩០០០០",
     image: "90 nghìn",
   },
 
   {
     khmer: "ដប់ម៉ឺន",
     roman: "Đóp mơn",
-    vietnamese: "Một trăm nghìn",
+    vietnamese: "Viết bằng số khmer: ១០០០០០",
     image: "100 nghìn",
   },
 
   {
     khmer: "ម្ភៃម៉ឺន",
     roman: "Mô-phây mơn",
-    vietnamese: "Hai trăm nghìn",
+    vietnamese: "Viết bằng số khmer: ២០០០០០",
     image: "200 nghìn",
   },
 
   {
     khmer: "ម្ភៃម៉ឺនប្រាំពាន់",
     roman: "Mô-phây mơn prăm pon",
-    vietnamese: "Hai trăm lẻ năm nghìn",
+    vietnamese: "Viết bằng số khmer: ២០៥០០០",
     image: "205 nghìn",
   },
 
@@ -310,42 +310,42 @@ const numbers = [
   {
     khmer: "មួយលាន",
     roman: "Muôi-lian",
-    vietnamese: "Một triệu",
+    vietnamese: "Viết bằng số khmer: ១០០០០០០",
     image: "1 triệu",
   },
 
   {
     khmer: "មួយលានម្ភៃម៉ឺន",
     roman: "Muôi-lian mô-phây mơn",
-    vietnamese: "Một triệu hai trăm nghìn",
+    vietnamese: "Viết bằng số khmer: ១២០០០០០",
     image: "1,2 triệu",
   },
 
   {
     khmer: "ប្រាំលានហាសិបម៉ឺន",
     roman: "Prăm-lian ha-sâp prăm mơn",
-    vietnamese: "Năm triệu năm trăm nghìn",
+    vietnamese: "Viết bằng số khmer: ៥៥០០០០០",
     image: "5,5 triệu",
   },
 
   {
     khmer: "មួយកោដិ",
     roman: "Muôi-coth",
-    vietnamese: "Mười triệu",
+    vietnamese: "Viết bằng số khmer: ១០០០០០០០",
     image: "10 triệu",
   },
 
   {
     khmer: "ម្ភៃលានប្រាំម៉ឺន",
     roman: "Mô-phây lian prăm mơn",
-    vietnamese: "Hai mươi triệu năm mươi nghìn",
+    vietnamese: "Viết bằng số khmer: ២០០៥០០០០",
     image: "20,05 triệu",
   },
 
   {
     khmer: "មួយរយលាន",
     roman: "Muôi-rôi lian",
-    vietnamese: "Một trăm triệu",
+    vietnamese: "Viết bằng số khmer: ១០០០០០០០០",
     image: "100 triệu",
   },
 
@@ -356,14 +356,14 @@ const numbers = [
   {
     khmer: "មួយពាន់លាន",
     roman: "Muôi-pon lian",
-    vietnamese: "Một tỷ",
+    vietnamese: "Viết bằng số khmer: ១០០០០០០០០០",
     image: "1 tỷ",
   },
 
   {
     khmer: "មួយពាន់លានប្រាំរយលាន",
     roman: "Muôi pon prăm rôi lian",
-    vietnamese: "Một tỷ năm trăm triệu",
+    vietnamese: "Viết bằng số khmer: ១៥០០០០០០០០",
     image: "1,5 tỷ",
   },
 
@@ -374,21 +374,21 @@ const numbers = [
   {
     khmer: "មួយទ្រីលាន",
     roman: "Muôi tri-lian",
-    vietnamese: "Một nghìn tỷ",
+    vietnamese: "Viết bằng số khmer: ១០០០០០០០០០០០០",
     image: "1.000 tỷ",
   },
 
   {
     khmer: "ពីរទ្រីលាន",
     roman: "Pi tri-lian",
-    vietnamese: "Hai nghìn tỷ",
+    vietnamese: "Viết bằng số khmer: ២០០០០០០០០០០០០",
     image: "2.000 tỷ",
   },
 
   {
     khmer: "បីទ្រីលាន",
     roman: "Bây tri-lian",
-    vietnamese: "Ba nghìn tỷ",
+    vietnamese: "Viết bằng số khmer: ៣០០០០០០០០០០០០",
     image: "3.000 tỷ",
   },
 ];
