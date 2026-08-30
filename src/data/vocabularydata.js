@@ -398,14 +398,7 @@ const numbers = [
 ========================================================= */
 
 const pronouns = [
-  {
-    khmer: "ឈ្មោះ",
-    roman: "Ch'muas",
-    vietnamese: "Tên",
-    image: "👤",
-  },
-
-  {
+    {
     khmer: "ខ្ញុំ",
     roman: "Kh'nhôm",
     vietnamese: "Tôi",
@@ -427,9 +420,16 @@ const pronouns = [
   },
 
   {
-    khmer: "យើង / ពួកយើង",
-    roman: "Dơng / Puak dơng",
-    vietnamese: "Mình / Chúng mình",
+    khmer: "យើង",
+    roman: "Dơng",
+    vietnamese: "Mình",
+    image: "👫",
+  },
+
+  {
+    khmer: "ពួកយើង",
+    roman: "Puak dơng",
+    vietnamese: "Chúng mình",
     image: "👫",
   },
 
@@ -448,15 +448,36 @@ const pronouns = [
   },
 
   {
-    khmer: "អ្នកណា / នរណា",
-    roman: "Nek na / Nô na",
-    vietnamese: "Ai / Người nào",
+    khmer: "អ្នកណា",
+    roman: "Nek na",
+    vietnamese: "Ai",
     image: "❓",
   },
 
   {
-    khmer: "មិត្ត / មិត្តភក្តិ / ពួកម៉ាក់",
-    roman: "Mit / Mit-phek / Puak mac",
+    khmer: "នរណា",
+    roman: "Nô na",
+    vietnamese: "Người nào",
+    image: "❓",
+  },
+
+  {
+    khmer: "មិត្ត",
+    roman: "Mit",
+    vietnamese: "Bạn",
+    image: "🤝",
+  },
+
+  {
+    khmer: "មិត្តភក្តិ",
+    roman: "Mit-phek",
+    vietnamese: "Bạn",
+    image: "🤝",
+  },
+
+  {
+    khmer: "ពួកម៉ាក់",
+    roman: "Puak mac",
     vietnamese: "Bạn",
     image: "🤝",
   },
@@ -476,8 +497,8 @@ const pronouns = [
   },
 
   {
-    khmer: "ឯង / ហែង",
-    roman: "Eng / H'eng",
+    khmer: "ឯង",
+    roman: "Eng",
     vietnamese: "Mày (nam)",
     image: "👦",
   },
