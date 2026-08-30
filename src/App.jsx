@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabase";
+import "./App.css";
 
 import {
   setGameProgressUser,
@@ -44,72 +45,44 @@ const LEVEL_EXP = {
 ========================================================= */
 
 function getLevelFromExp(exp) {
-  const safeExp =
-    Math.max(
-      0,
-      Number(exp) || 0
-    );
+  const safeExp = Math.max(
+    0,
+    Number(exp) || 0
+  );
 
-  if (
-    safeExp <
-    LEVEL_EXP[2]
-  ) {
+  if (safeExp < LEVEL_EXP[2]) {
     return 1;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[3]
-  ) {
+  if (safeExp < LEVEL_EXP[3]) {
     return 2;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[4]
-  ) {
+  if (safeExp < LEVEL_EXP[4]) {
     return 3;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[5]
-  ) {
+  if (safeExp < LEVEL_EXP[5]) {
     return 4;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[6]
-  ) {
+  if (safeExp < LEVEL_EXP[6]) {
     return 5;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[7]
-  ) {
+  if (safeExp < LEVEL_EXP[7]) {
     return 6;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[8]
-  ) {
+  if (safeExp < LEVEL_EXP[8]) {
     return 7;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[9]
-  ) {
+  if (safeExp < LEVEL_EXP[9]) {
     return 8;
   }
 
-  if (
-    safeExp <
-    LEVEL_EXP[10]
-  ) {
+  if (safeExp < LEVEL_EXP[10]) {
     return 9;
   }
 
@@ -131,13 +104,8 @@ function App() {
     window.location.pathname || "/"
   );
 
-  const navigate = (
-    newPath
-  ) => {
-    if (
-      newPath ===
-      window.location.pathname
-    ) {
+  const navigate = (newPath) => {
+    if (newPath === window.location.pathname) {
       setPath(newPath);
       return;
     }
@@ -197,9 +165,7 @@ function App() {
      LOAD PROFILE
   ======================================================= */
 
-  const loadProfile = async (
-    userId
-  ) => {
+  const loadProfile = async (userId) => {
     if (!userId) {
       setProfile(null);
       return null;
@@ -236,26 +202,21 @@ function App() {
       return null;
     }
 
-    const safeExp =
-      Math.max(
-        0,
-        Number(
-          data.exp ?? 0
-        )
-      );
+    const safeExp = Math.max(
+      0,
+      Number(data.exp ?? 0)
+    );
 
-    const safeLevel =
-      getLevelFromExp(
-        safeExp
-      );
+    const safeLevel = getLevelFromExp(
+      safeExp
+    );
 
-    const safeStudySeconds =
-      Math.max(
-        0,
-        Number(
-          data.total_study_seconds ?? 0
-        )
-      );
+    const safeStudySeconds = Math.max(
+      0,
+      Number(
+        data.total_study_seconds ?? 0
+      )
+    );
 
     const normalizedProfile = {
       ...data,
@@ -289,146 +250,141 @@ function App() {
   useEffect(() => {
     let mounted = true;
 
-    const initialize =
-      async () => {
+    const initialize = async () => {
 
-        const {
-          data,
-          error,
-        } =
-          await supabase.auth.getSession();
+      const {
+        data,
+        error,
+      } = await supabase.auth.getSession();
 
-        if (error) {
-          console.error(
-            "❌ Lỗi lấy session:",
-            error
+      if (error) {
+        console.error(
+          "❌ Lỗi lấy session:",
+          error
+        );
+      }
+
+      if (!mounted) {
+        return;
+      }
+
+      const currentSession =
+        data?.session || null;
+
+      setSession(
+        currentSession
+      );
+
+
+      /* =================================================
+         CÓ USER
+      ================================================= */
+
+      if (
+        currentSession?.user?.id
+      ) {
+        const userId =
+          currentSession.user.id;
+
+        /*
+          Gán đúng Supabase user.id
+          cho Game Progress.
+        */
+
+        const progressPromise =
+          setGameProgressUser(
+            userId
           );
+
+        /*
+          Tải profile.
+        */
+
+        const loadedProfile =
+          await loadProfile(
+            userId
+          );
+
+        /*
+          Đảm bảo Game Progress
+          hydrate xong.
+        */
+
+        if (progressPromise) {
+          await progressPromise;
         }
 
         if (!mounted) {
           return;
         }
 
-        const currentSession =
-          data?.session ||
-          null;
-
-        setSession(
-          currentSession
-        );
-
-
-        /* =================================================
-           CÓ USER
-        ================================================= */
+        /*
+          User đang ở root/login/register
+          thì chuyển về đúng trang.
+        */
 
         if (
-          currentSession?.user?.id
+          loadedProfile &&
+          (
+            window.location.pathname === "/" ||
+            window.location.pathname === "/login" ||
+            window.location.pathname === "/register"
+          )
         ) {
-          const userId =
-            currentSession.user.id;
+          const target =
+            loadedProfile.role === "admin"
+              ? "/admin"
+              : "/student";
 
-          /*
-            QUAN TRỌNG:
+          window.history.replaceState(
+            {},
+            "",
+            target
+          );
 
-            Gán đúng Supabase user.id
-            cho Game Progress.
-
-            Hàm này đồng thời bắt đầu
-            hydrate progress từ Supabase.
-          */
-
-          const progressPromise =
-            setGameProgressUser(
-              userId
-            );
-
-          /*
-            Tải profile.
-          */
-
-          const loadedProfile =
-            await loadProfile(
-              userId
-            );
-
-          /*
-            Đảm bảo Game Progress đã
-            được hydrate trước khi
-            kết thúc initialization.
-          */
-
-          if (
-            progressPromise
-          ) {
-            await progressPromise;
-          }
-
-          if (!mounted) {
-            return;
-          }
-
-          if (
-            loadedProfile &&
-            (
-              window.location.pathname === "/" ||
-              window.location.pathname === "/login" ||
-              window.location.pathname === "/register"
-            )
-          ) {
-            const target =
-              loadedProfile.role ===
-              "admin"
-                ? "/admin"
-                : "/student";
-
-            window.history.replaceState(
-              {},
-              "",
-              target
-            );
-
-            setPath(
-              target
-            );
-          }
+          setPath(
+            target
+          );
         }
+      }
 
 
-        /* =================================================
-           CHƯA ĐĂNG NHẬP
-        ================================================= */
+      /* =================================================
+         CHƯA ĐĂNG NHẬP
+      ================================================= */
 
-        if (!currentSession) {
+      if (!currentSession) {
 
-          /*
-            Chỉ xóa context.
+        /*
+          Chỉ xóa context.
 
-            KHÔNG xóa dữ liệu
-            trên Supabase.
-          */
+          KHÔNG xóa dữ liệu
+          trên Supabase.
+        */
 
-          clearGameProgressUser();
+        clearGameProgressUser();
 
-          if (
-            window.location.pathname !== "/login" &&
-            window.location.pathname !== "/register" &&
-            window.location.pathname !== "/forgot-password"
-          ) {
-            window.history.replaceState(
-              {},
-              "",
-              "/login"
-            );
+        if (
+          window.location.pathname !== "/login" &&
+          window.location.pathname !== "/register" &&
+          window.location.pathname !== "/forgot-password"
+        ) {
+          window.history.replaceState(
+            {},
+            "",
+            "/login"
+          );
 
-            setPath(
-              "/login"
-            );
-          }
+          setPath(
+            "/login"
+          );
         }
+      }
 
+      if (mounted) {
         setLoading(false);
-      };
+      }
+    };
 
 
     initialize();
@@ -439,8 +395,7 @@ function App() {
     ===================================================== */
 
     const {
-      data:
-        authListener,
+      data: authListener,
     } =
       supabase.auth.onAuthStateChange(
         async (
@@ -453,8 +408,7 @@ function App() {
           }
 
           setSession(
-            newSession ||
-            null
+            newSession || null
           );
 
 
@@ -468,11 +422,6 @@ function App() {
             const userId =
               newSession.user.id;
 
-            /*
-              Chuyển Game Progress
-              sang đúng tài khoản.
-            */
-
             const progressPromise =
               setGameProgressUser(
                 userId
@@ -483,9 +432,7 @@ function App() {
                 userId
               );
 
-            if (
-              progressPromise
-            ) {
+            if (progressPromise) {
               await progressPromise;
             }
 
@@ -506,8 +453,7 @@ function App() {
                 window.location.pathname === "/register"
               ) {
                 const target =
-                  loadedProfile.role ===
-                  "admin"
+                  loadedProfile.role === "admin"
                     ? "/admin"
                     : "/student";
 
@@ -530,7 +476,6 @@ function App() {
           =============================================== */
 
           else {
-
             clearGameProgressUser();
 
             setProfile(null);
@@ -551,126 +496,116 @@ function App() {
      REFRESH PROFILE
   ======================================================= */
 
-  const refreshProfile =
-    async () => {
-      if (
-        !session?.user?.id
-      ) {
-        return;
-      }
+  const refreshProfile = async () => {
+    if (!session?.user?.id) {
+      return;
+    }
 
-      await loadProfile(
-        session.user.id
-      );
-    };
+    await loadProfile(
+      session.user.id
+    );
+  };
 
 
   /* =======================================================
      LOGOUT
   ======================================================= */
 
-  const handleLogout =
-    async () => {
+  const handleLogout = async () => {
 
-      /*
-        Xóa timer tạm Alphabet.
-      */
+    /*
+      Xóa timer tạm Alphabet.
+    */
 
-      if (
-        session?.user?.id
-      ) {
-        try {
-          localStorage.removeItem(
-            `alphabet_study_${session.user.id}`
-          );
-        } catch (error) {
-          console.warn(
-            "Không thể xóa dữ liệu timer tạm:",
-            error
-          );
-        }
-      }
-
-
-      /*
-        QUAN TRỌNG:
-
-        Chỉ clear user context.
-
-        KHÔNG xóa:
-        game_progress trên Supabase.
-      */
-
-      clearGameProgressUser();
-
-
-      const {
-        error,
-      } =
-        await supabase.auth.signOut();
-
-      if (error) {
-        console.error(
-          "❌ Lỗi đăng xuất:",
+    if (session?.user?.id) {
+      try {
+        localStorage.removeItem(
+          `alphabet_study_${session.user.id}`
+        );
+      } catch (error) {
+        console.warn(
+          "Không thể xóa dữ liệu timer tạm:",
           error
         );
       }
+    }
 
 
-      setProfile(null);
+    /*
+      Chỉ clear user context.
 
-      setSession(null);
+      KHÔNG xóa game_progress
+      trên Supabase.
+    */
+
+    clearGameProgressUser();
 
 
-      window.history.replaceState(
-        {},
-        "",
-        "/login"
+    const {
+      error,
+    } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error(
+        "❌ Lỗi đăng xuất:",
+        error
       );
+    }
 
-      setPath(
-        "/login"
-      );
-    };
+
+    setProfile(null);
+
+    setSession(null);
+
+
+    window.history.replaceState(
+      {},
+      "",
+      "/login"
+    );
+
+    setPath(
+      "/login"
+    );
+  };
 
 
   /* =======================================================
-     LOADING
+     SYSTEM LOADING
   ======================================================= */
 
   if (loading) {
     return (
-      <div
-        style={{
-          minHeight:
-            "100vh",
+      <div className="app-loading">
+        <div className="app-loading-card">
 
-          display:
-            "flex",
+          <div className="app-loading-crown">
+            ⏳
+          </div>
 
-          alignItems:
-            "center",
+          <div className="app-loading-title">
+            HỌC TIẾNG KHMER
+          </div>
 
-          justifyContent:
-            "center",
+          <div className="app-loading-divider">
+            <span />
+            <i />
+            <span />
+          </div>
 
-          fontFamily:
-            "Arial, sans-serif",
+          <div className="app-loading-spinner">
+            <div />
+          </div>
 
-          background:
-            "#fffbeb",
+          <div className="app-loading-text">
+            Đang tải hệ thống...
+          </div>
 
-          color:
-            "#92400e",
+          <div className="app-loading-subtext">
+            Vui lòng chờ trong giây lát
+          </div>
 
-          fontSize:
-            "18px",
-
-          fontWeight:
-            "700",
-        }}
-      >
-        Đang tải hệ thống...
+        </div>
       </div>
     );
   }
@@ -683,8 +618,7 @@ function App() {
   if (!session) {
 
     if (
-      path ===
-      "/register"
+      path === "/register"
     ) {
       return (
         <Register
@@ -695,9 +629,9 @@ function App() {
       );
     }
 
+
     if (
-      path ===
-      "/forgot-password"
+      path === "/forgot-password"
     ) {
       return (
         <ForgotPassword
@@ -707,6 +641,7 @@ function App() {
         />
       );
     }
+
 
     return (
       <Login
@@ -724,34 +659,36 @@ function App() {
 
   if (!profile) {
     return (
-      <div
-        style={{
-          minHeight:
-            "100vh",
+      <div className="app-loading">
+        <div className="app-loading-card">
 
-          display:
-            "flex",
+          <div className="app-loading-crown">
+            ⏳
+          </div>
 
-          alignItems:
-            "center",
+          <div className="app-loading-title">
+            HỌC TIẾNG KHMER
+          </div>
 
-          justifyContent:
-            "center",
+          <div className="app-loading-divider">
+            <span />
+            <i />
+            <span />
+          </div>
 
-          background:
-            "#fffbeb",
+          <div className="app-loading-spinner">
+            <div />
+          </div>
 
-          color:
-            "#92400e",
+          <div className="app-loading-text">
+            Đang tải hệ thống...
+          </div>
 
-          fontFamily:
-            "Arial, sans-serif",
+          <div className="app-loading-subtext">
+            Đang tải thông tin tài khoản...
+          </div>
 
-          fontWeight:
-            "700",
-        }}
-      >
-        Đang tải thông tin tài khoản...
+        </div>
       </div>
     );
   }
@@ -762,12 +699,10 @@ function App() {
   ======================================================= */
 
   if (
-    profile.role ===
-    "admin"
+    profile.role === "admin"
   ) {
     if (
-      path ===
-      "/admin"
+      path === "/admin"
     ) {
       return (
         <AdminHome
@@ -787,15 +722,19 @@ function App() {
       );
     }
 
-    window.history.replaceState(
-      {},
-      "",
-      "/admin"
-    );
+    /*
+      Admin chỉ được ở khu vực admin.
+    */
 
-    setPath(
-      "/admin"
-    );
+    if (
+      window.location.pathname !== "/admin"
+    ) {
+      window.history.replaceState(
+        {},
+        "",
+        "/admin"
+      );
+    }
 
     return null;
   }
@@ -836,8 +775,7 @@ function App() {
   ======================================================= */
 
   if (
-    path ===
-    "/alphabet"
+    path === "/alphabet"
   ) {
     return (
       <Alphabet
@@ -866,8 +804,7 @@ function App() {
   ======================================================= */
 
   if (
-    path ===
-    "/vocabulary"
+    path === "/vocabulary"
   ) {
     return (
       <Vocabulary
@@ -896,10 +833,8 @@ function App() {
   ======================================================= */
 
   if (
-    path ===
-      "/admin" &&
-    profile.role !==
-      "admin"
+    path === "/admin" &&
+    profile.role !== "admin"
   ) {
     navigate(
       "/student"
@@ -915,9 +850,7 @@ function App() {
 
   if (
     path === "/game" ||
-    path.startsWith(
-      "/game/"
-    )
+    path.startsWith("/game/")
   ) {
     return (
       <Game
@@ -946,8 +879,7 @@ function App() {
   ======================================================= */
 
   if (
-    path ===
-    "/communication"
+    path === "/communication"
   ) {
     return (
       <Communication
@@ -976,8 +908,7 @@ function App() {
   ======================================================= */
 
   if (
-    path ===
-    "/progress"
+    path === "/progress"
   ) {
     return (
       <Progress
@@ -1006,8 +937,7 @@ function App() {
   ======================================================= */
 
   if (
-    path ===
-    "/student/profile"
+    path === "/student/profile"
   ) {
     return (
       <Profile
@@ -1033,42 +963,38 @@ function App() {
   ======================================================= */
 
   return (
-    <div
-      style={{
-        minHeight:
-          "100vh",
+    <div className="app-development-page">
 
-        padding:
-          "40px",
+      <div className="app-development-card">
 
-        fontFamily:
-          "Arial, sans-serif",
+        <div className="app-development-icon">
+          🛠️
+        </div>
 
-        background:
-          "#fffbeb",
-      }}
-    >
-      <h2>
-        Trang đang được phát triển
-      </h2>
+        <h2>
+          Trang đang được phát triển
+        </h2>
 
-      <p>
-        Đường dẫn:{" "}
-        <strong>
-          {path}
-        </strong>
-      </p>
+        <p>
+          Đường dẫn:
+          <strong>
+            {path}
+          </strong>
+        </p>
 
-      <button
-        type="button"
-        onClick={() =>
-          navigate(
-            "/student"
-          )
-        }
-      >
-        ← Về trang học
-      </button>
+        <button
+          type="button"
+          onClick={() =>
+            navigate(
+              "/student"
+            )
+          }
+        >
+          ← Về trang học
+        </button>
+
+      </div>
+
     </div>
   );
 }
