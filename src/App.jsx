@@ -21,7 +21,6 @@ import Profile from "./pages/student/profile/Profile";
 
 import AdminHome from "./pages/admin/AdminHome";
 
-
 /* =========================================================
    LEVEL EXP
 ========================================================= */
@@ -38,7 +37,6 @@ const LEVEL_EXP = {
   9: 12800,
   10: 25600,
 };
-
 
 /* =========================================================
    LEVEL TỪ EXP
@@ -89,41 +87,60 @@ function getLevelFromExp(exp) {
   return 10;
 }
 
+/* =========================================================
+   NORMALIZE ROUTE
+========================================================= */
+
+function normalizePath(pathname) {
+  if (!pathname) {
+    return "/";
+  }
+
+  const normalized = pathname.replace(/\/+$/, "");
+
+  return normalized || "/";
+}
 
 /* =========================================================
    APP
 ========================================================= */
 
 function App() {
-
   /* =======================================================
      ROUTE
   ======================================================= */
 
   const [path, setPath] = useState(
-    window.location.pathname || "/"
+    normalizePath(window.location.pathname)
   );
 
   const navigate = (newPath) => {
-    if (newPath === window.location.pathname) {
-      setPath(newPath);
+    const normalizedPath =
+      normalizePath(newPath);
+
+    if (
+      normalizedPath ===
+      normalizePath(window.location.pathname)
+    ) {
+      setPath(normalizedPath);
       return;
     }
 
     window.history.pushState(
       {},
       "",
-      newPath
+      normalizedPath
     );
 
-    setPath(newPath);
+    setPath(normalizedPath);
   };
-
 
   useEffect(() => {
     const handlePopState = () => {
       setPath(
-        window.location.pathname
+        normalizePath(
+          window.location.pathname
+        )
       );
     };
 
@@ -140,7 +157,6 @@ function App() {
     };
   }, []);
 
-
   /* =======================================================
      AUTH / PROFILE
   ======================================================= */
@@ -149,6 +165,17 @@ function App() {
     loading,
     setLoading,
   ] = useState(true);
+
+  /*
+    authReady dùng để đảm bảo App KHÔNG render
+    route trung gian khi session/profile/path
+    chưa đồng bộ xong.
+  */
+
+  const [
+    authReady,
+    setAuthReady,
+  ] = useState(false);
 
   const [
     session,
@@ -159,7 +186,6 @@ function App() {
     profile,
     setProfile,
   ] = useState(null);
-
 
   /* =======================================================
      LOAD PROFILE
@@ -207,16 +233,18 @@ function App() {
       Number(data.exp ?? 0)
     );
 
-    const safeLevel = getLevelFromExp(
-      safeExp
-    );
+    const safeLevel =
+      getLevelFromExp(
+        safeExp
+      );
 
-    const safeStudySeconds = Math.max(
-      0,
-      Number(
-        data.total_study_seconds ?? 0
-      )
-    );
+    const safeStudySeconds =
+      Math.max(
+        0,
+        Number(
+          data.total_study_seconds ?? 0
+        )
+      );
 
     const normalizedProfile = {
       ...data,
@@ -242,6 +270,186 @@ function App() {
     return normalizedProfile;
   };
 
+  /* =======================================================
+     AUTH PROCESS
+  ======================================================= */
+
+  const processSession = async (
+    currentSession,
+    options = {}
+  ) => {
+    const {
+      redirectIfNeeded = true,
+    } = options;
+
+    /*
+      Trong toàn bộ quá trình xử lý auth:
+
+      authReady = false
+
+      => App chỉ hiển thị loading.
+      => Không thể rơi xuống Development Page.
+    */
+
+    setAuthReady(false);
+
+    /* =====================================================
+       CHƯA ĐĂNG NHẬP
+    ===================================================== */
+
+    if (
+      !currentSession?.user?.id
+    ) {
+      clearGameProgressUser();
+
+      setProfile(null);
+      setSession(null);
+
+      const currentPath =
+        normalizePath(
+          window.location.pathname
+        );
+
+      if (
+        currentPath !== "/login" &&
+        currentPath !== "/register" &&
+        currentPath !== "/forgot-password"
+      ) {
+        window.history.replaceState(
+          {},
+          "",
+          "/login"
+        );
+
+        setPath("/login");
+      } else {
+        setPath(currentPath);
+      }
+
+      setAuthReady(true);
+      setLoading(false);
+
+      return;
+    }
+
+    /* =====================================================
+       CÓ USER
+    ===================================================== */
+
+    const userId =
+      currentSession.user.id;
+
+    try {
+      /*
+        Tải profile và GameProgress
+        song song để nhanh hơn.
+      */
+
+      const [
+        loadedProfile,
+      ] = await Promise.all([
+        loadProfile(userId),
+        setGameProgressUser(userId),
+      ]);
+
+      /*
+        Kiểm tra component còn mounted
+        được xử lý ở useEffect bên ngoài.
+      */
+
+      if (!loadedProfile) {
+        console.error(
+          "❌ Không tìm thấy profile của user:",
+          userId
+        );
+
+        setSession(
+          currentSession
+        );
+
+        setAuthReady(true);
+        setLoading(false);
+
+        return;
+      }
+
+      /*
+        QUAN TRỌNG:
+
+        Chỉ set session sau khi profile
+        đã tải xong.
+
+        Nhờ vậy không có trạng thái:
+
+        session = có
+        profile = null
+        path = cũ
+
+        => không còn nhảy qua Development Page.
+      */
+
+      setSession(
+        currentSession
+      );
+
+      /*
+        Xác định trang đích.
+      */
+
+      const target =
+        loadedProfile.role === "admin"
+          ? "/admin"
+          : "/student";
+
+      const currentPath =
+        normalizePath(
+          window.location.pathname
+        );
+
+      /*
+        Nếu đang ở các trang auth/root
+        thì chuyển sang trang chính.
+
+        Nếu user đã refresh trực tiếp
+        /student hoặc /admin thì giữ nguyên.
+      */
+
+      if (
+        redirectIfNeeded &&
+        (
+          currentPath === "/" ||
+          currentPath === "/login" ||
+          currentPath === "/register"
+        )
+      ) {
+        window.history.replaceState(
+          {},
+          "",
+          target
+        );
+
+        setPath(target);
+      } else {
+        /*
+          Luôn đồng bộ path với URL hiện tại.
+        */
+
+        setPath(currentPath);
+      }
+    } catch (error) {
+      console.error(
+        "❌ Lỗi xử lý session:",
+        error
+      );
+
+      setSession(
+        currentSession
+      );
+    } finally {
+      setAuthReady(true);
+      setLoading(false);
+    }
+  };
 
   /* =======================================================
      KHỞI ĐỘNG AUTH
@@ -251,144 +459,53 @@ function App() {
     let mounted = true;
 
     const initialize = async () => {
-
-      const {
-        data,
-        error,
-      } = await supabase.auth.getSession();
-
-      if (error) {
-        console.error(
-          "❌ Lỗi lấy session:",
-          error
-        );
-      }
-
-      if (!mounted) {
-        return;
-      }
-
-      const currentSession =
-        data?.session || null;
-
-      setSession(
-        currentSession
-      );
-
-
-      /* =================================================
-         CÓ USER
-      ================================================= */
-
-      if (
-        currentSession?.user?.id
-      ) {
-        const userId =
-          currentSession.user.id;
-
+      try {
         /*
-          Gán đúng Supabase user.id
-          cho Game Progress.
+          Lấy session hiện tại.
         */
 
-        const progressPromise =
-          setGameProgressUser(
-            userId
+        const {
+          data,
+          error,
+        } = await supabase.auth.getSession();
+
+        if (error) {
+          console.error(
+            "❌ Lỗi lấy session:",
+            error
           );
-
-        /*
-          Tải profile.
-        */
-
-        const loadedProfile =
-          await loadProfile(
-            userId
-          );
-
-        /*
-          Đảm bảo Game Progress
-          hydrate xong.
-        */
-
-        if (progressPromise) {
-          await progressPromise;
         }
 
         if (!mounted) {
           return;
         }
 
-        /*
-          User đang ở root/login/register
-          thì chuyển về đúng trang.
-        */
-
-        if (
-          loadedProfile &&
-          (
-            window.location.pathname === "/" ||
-            window.location.pathname === "/login" ||
-            window.location.pathname === "/register"
-          )
-        ) {
-          const target =
-            loadedProfile.role === "admin"
-              ? "/admin"
-              : "/student";
-
-          window.history.replaceState(
-            {},
-            "",
-            target
-          );
-
-          setPath(
-            target
-          );
-        }
-      }
-
-
-      /* =================================================
-         CHƯA ĐĂNG NHẬP
-      ================================================= */
-
-      if (!currentSession) {
+        const currentSession =
+          data?.session || null;
 
         /*
-          Chỉ xóa context.
-
-          KHÔNG xóa dữ liệu
-          trên Supabase.
+          Không xử lý nếu component đã unmount.
         */
 
-        clearGameProgressUser();
+        await processSession(
+          currentSession
+        );
+      } catch (error) {
+        console.error(
+          "❌ Lỗi khởi động Auth:",
+          error
+        );
 
-        if (
-          window.location.pathname !== "/login" &&
-          window.location.pathname !== "/register" &&
-          window.location.pathname !== "/forgot-password"
-        ) {
-          window.history.replaceState(
-            {},
-            "",
-            "/login"
-          );
-
-          setPath(
-            "/login"
-          );
+        if (mounted) {
+          setSession(null);
+          setProfile(null);
+          setAuthReady(true);
+          setLoading(false);
         }
-      }
-
-      if (mounted) {
-        setLoading(false);
       }
     };
 
-
     initialize();
-
 
     /* =====================================================
        AUTH STATE CHANGE
@@ -402,87 +519,82 @@ function App() {
           event,
           newSession
         ) => {
-
           if (!mounted) {
             return;
           }
 
-          setSession(
-            newSession || null
-          );
+          /*
+            SIGNED_OUT
+          */
 
+          if (
+            event ===
+            "SIGNED_OUT"
+          ) {
+            clearGameProgressUser();
 
-          /* ===============================================
-             CÓ USER
-          =============================================== */
+            setSession(null);
+            setProfile(null);
+
+            window.history.replaceState(
+              {},
+              "",
+              "/login"
+            );
+
+            setPath(
+              "/login"
+            );
+
+            setAuthReady(true);
+            setLoading(false);
+
+            return;
+          }
+
+          /*
+            Các event có session:
+
+            SIGNED_IN
+            INITIAL_SESSION
+            TOKEN_REFRESHED
+            USER_UPDATED
+          */
 
           if (
             newSession?.user?.id
           ) {
-            const userId =
-              newSession.user.id;
+            await processSession(
+              newSession,
+              {
+                /*
+                  INITIAL_SESSION:
+                  Nếu URL đã là /student thì
+                  không ép chuyển lại.
 
-            const progressPromise =
-              setGameProgressUser(
-                userId
-              );
+                  SIGNED_IN:
+                  Nếu đang ở login/register/root
+                  thì chuyển /student hoặc /admin.
+                */
 
-            const loadedProfile =
-              await loadProfile(
-                userId
-              );
-
-            if (progressPromise) {
-              await progressPromise;
-            }
-
-            if (!mounted) {
-              return;
-            }
-
-            if (
-              loadedProfile &&
-              (
-                event === "SIGNED_IN" ||
-                event === "INITIAL_SESSION"
-              )
-            ) {
-              if (
-                window.location.pathname === "/" ||
-                window.location.pathname === "/login" ||
-                window.location.pathname === "/register"
-              ) {
-                const target =
-                  loadedProfile.role === "admin"
-                    ? "/admin"
-                    : "/student";
-
-                window.history.replaceState(
-                  {},
-                  "",
-                  target
-                );
-
-                setPath(
-                  target
-                );
+                redirectIfNeeded: true,
               }
-            }
-          }
+            );
+          } else {
+            /*
+              Không có session.
+            */
 
-
-          /* ===============================================
-             KHÔNG CÓ USER
-          =============================================== */
-
-          else {
             clearGameProgressUser();
 
+            setSession(null);
             setProfile(null);
+
+            setAuthReady(true);
+            setLoading(false);
           }
         }
       );
-
 
     return () => {
       mounted = false;
@@ -490,7 +602,6 @@ function App() {
       authListener?.subscription?.unsubscribe();
     };
   }, []);
-
 
   /* =======================================================
      REFRESH PROFILE
@@ -506,18 +617,18 @@ function App() {
     );
   };
 
-
   /* =======================================================
      LOGOUT
   ======================================================= */
 
   const handleLogout = async () => {
-
     /*
       Xóa timer tạm Alphabet.
     */
 
-    if (session?.user?.id) {
+    if (
+      session?.user?.id
+    ) {
       try {
         localStorage.removeItem(
           `alphabet_study_${session.user.id}`
@@ -530,16 +641,21 @@ function App() {
       }
     }
 
-
     /*
-      Chỉ clear user context.
-
+      Chỉ clear context.
       KHÔNG xóa game_progress
       trên Supabase.
     */
 
     clearGameProgressUser();
 
+    /*
+      Đưa App về trạng thái loading
+      trong lúc logout.
+    */
+
+    setAuthReady(false);
+    setLoading(true);
 
     const {
       error,
@@ -550,13 +666,25 @@ function App() {
         "❌ Lỗi đăng xuất:",
         error
       );
+
+      /*
+        Nếu logout lỗi thì khôi phục UI.
+      */
+
+      setAuthReady(true);
+      setLoading(false);
+
+      return;
     }
 
+    /*
+      Auth listener sẽ xử lý SIGNED_OUT.
+      Nhưng set trực tiếp ở đây để UI
+      phản hồi ngay lập tức.
+    */
 
     setProfile(null);
-
     setSession(null);
-
 
     window.history.replaceState(
       {},
@@ -567,14 +695,40 @@ function App() {
     setPath(
       "/login"
     );
-  };
 
+    setAuthReady(true);
+    setLoading(false);
+  };
 
   /* =======================================================
      SYSTEM LOADING
   ======================================================= */
 
-  if (loading) {
+  /*
+    Đây là phần QUAN TRỌNG NHẤT.
+
+    Khi auth/profile/GameProgress đang xử lý,
+    App KHÔNG render bất kỳ route nào.
+
+    Vì vậy sẽ không có:
+
+      Loading
+        ↓
+      Development Page
+        ↓
+      StudentHome
+
+    mà chỉ có:
+
+      Loading
+        ↓
+      StudentHome
+  */
+
+  if (
+    loading ||
+    !authReady
+  ) {
     return (
       <div className="app-loading">
         <div className="app-loading-card">
@@ -610,13 +764,11 @@ function App() {
     );
   }
 
-
   /* =======================================================
      CHƯA ĐĂNG NHẬP
   ======================================================= */
 
   if (!session) {
-
     if (
       path === "/register"
     ) {
@@ -628,7 +780,6 @@ function App() {
         />
       );
     }
-
 
     if (
       path === "/forgot-password"
@@ -642,7 +793,6 @@ function App() {
       );
     }
 
-
     return (
       <Login
         navigate={
@@ -652,10 +802,16 @@ function App() {
     );
   }
 
-
   /* =======================================================
      CHƯA CÓ PROFILE
   ======================================================= */
+
+  /*
+    Trường hợp cực hiếm:
+    session có nhưng profile chưa có.
+
+    Không cho rơi xuống Development Page.
+  */
 
   if (!profile) {
     return (
@@ -693,7 +849,6 @@ function App() {
     );
   }
 
-
   /* =======================================================
      ADMIN
   ======================================================= */
@@ -727,18 +882,32 @@ function App() {
     */
 
     if (
-      window.location.pathname !== "/admin"
+      path !== "/admin"
     ) {
       window.history.replaceState(
         {},
         "",
         "/admin"
       );
+
+      return (
+        <AdminHome
+          profile={
+            profile
+          }
+          session={
+            session
+          }
+          navigate={
+            navigate
+          }
+          onLogout={
+            handleLogout
+          }
+        />
+      );
     }
-
-    return null;
   }
-
 
   /* =======================================================
      STUDENT HOME
@@ -769,7 +938,6 @@ function App() {
     );
   }
 
-
   /* =======================================================
      ALPHABET
   ======================================================= */
@@ -797,7 +965,6 @@ function App() {
       />
     );
   }
-
 
   /* =======================================================
      VOCABULARY
@@ -827,7 +994,6 @@ function App() {
     );
   }
 
-
   /* =======================================================
      ADMIN BLOCK
   ======================================================= */
@@ -842,7 +1008,6 @@ function App() {
 
     return null;
   }
-
 
   /* =======================================================
      GAME
@@ -873,7 +1038,6 @@ function App() {
     );
   }
 
-
   /* =======================================================
      COMMUNICATION
   ======================================================= */
@@ -901,7 +1065,6 @@ function App() {
       />
     );
   }
-
 
   /* =======================================================
      PROGRESS
@@ -931,7 +1094,6 @@ function App() {
     );
   }
 
-
   /* =======================================================
      PROFILE
   ======================================================= */
@@ -957,47 +1119,43 @@ function App() {
     );
   }
 
-
   /* =======================================================
-     TRANG CHƯA LÀM
+     ROUTE KHÔNG TỒN TẠI
   ======================================================= */
 
+  /*
+    Nếu user nhập URL lạ thì đưa về Student
+    thay vì hiển thị "Trang đang được phát triển".
+
+    Điều này cũng giúp tránh cảm giác App bị lỗi
+    khi route chưa được khai báo.
+  */
+
+  window.history.replaceState(
+    {},
+    "",
+    "/student"
+  );
+
   return (
-    <div className="app-development-page">
-
-      <div className="app-development-card">
-
-        <div className="app-development-icon">
-          🛠️
-        </div>
-
-        <h2>
-          Trang đang được phát triển
-        </h2>
-
-        <p>
-          Đường dẫn:
-          <strong>
-            {path}
-          </strong>
-        </p>
-
-        <button
-          type="button"
-          onClick={() =>
-            navigate(
-              "/student"
-            )
-          }
-        >
-          ← Về trang học
-        </button>
-
-      </div>
-
-    </div>
+    <StudentHome
+      profile={
+        profile
+      }
+      session={
+        session
+      }
+      navigate={
+        navigate
+      }
+      onLogout={
+        handleLogout
+      }
+      onProgressUpdated={
+        refreshProfile
+      }
+    />
   );
 }
-
 
 export default App;
