@@ -1195,7 +1195,11 @@
 
 
 /* =========================================================
-   SCORE
+   SCORE ACHIEVEMENT
+   CHINH PHỤC ĐIỂM SỐ
+   ---------------------------------------------------------
+   ĐỒNG → BẠC → VÀNG → BẠCH KIM → KIM CƯƠNG
+   Đồng bộ với GAME + TIME ACHIEVEMENT
 ========================================================= */
 
 .score-achievement
@@ -1231,9 +1235,14 @@
   filter:
     drop-shadow(
       0 4px 5px
-      rgba(217, 119, 6, 0.18)
+      rgba(120, 53, 15, 0.18)
     );
 }
+
+
+/* =========================================================
+   SCORE — ĐỒNG
+========================================================= */
 
 .score-achievement.bronze
 .score-stars {
@@ -1244,7 +1253,22 @@
       #cd7f32,
       #8c4a1c
     );
+
+  text-shadow:
+    0 2px 3px
+    rgba(75, 34, 10, 0.38);
+
+  filter:
+    drop-shadow(
+      0 4px 5px
+      rgba(140, 74, 28, 0.25)
+    );
 }
+
+
+/* =========================================================
+   SCORE — BẠC
+========================================================= */
 
 .score-achievement.silver
 .score-stars {
@@ -1255,7 +1279,24 @@
       #d1d5db,
       #94a3b8
     );
+
+  color: #ffffff;
+
+  text-shadow:
+    0 2px 3px
+    rgba(51, 65, 85, 0.32);
+
+  filter:
+    drop-shadow(
+      0 4px 5px
+      rgba(100, 116, 139, 0.22)
+    );
 }
+
+
+/* =========================================================
+   SCORE — VÀNG
+========================================================= */
 
 .score-achievement.gold
 .score-stars {
@@ -1266,7 +1307,55 @@
       #fbbf24,
       #d97706
     );
+
+  color: #ffffff;
+
+  text-shadow:
+    0 2px 3px
+    rgba(120, 53, 15, 0.34);
+
+  filter:
+    drop-shadow(
+      0 4px 5px
+      rgba(217, 119, 6, 0.24)
+    );
 }
+
+
+/* =========================================================
+   SCORE — BẠCH KIM
+   XANH LÁ CHỦ ĐẠO + ÁNH TRẮNG
+========================================================= */
+
+.score-achievement.platinum
+.score-stars {
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #a7f3d0 18%,
+      #34d399 48%,
+      #10b981 75%,
+      #047857 100%
+    );
+
+  color: #ffffff;
+
+  text-shadow:
+    0 2px 3px
+    rgba(6, 78, 59, 0.38);
+
+  filter:
+    drop-shadow(
+      0 4px 5px
+      rgba(5, 150, 105, 0.25)
+    );
+}
+
+
+/* =========================================================
+   SCORE — KIM CƯƠNG
+========================================================= */
 
 .score-achievement.diamond
 .score-stars {
@@ -1276,6 +1365,32 @@
       #ffffff,
       #dbeafe,
       #60a5fa
+    );
+
+  color: #ffffff;
+
+  text-shadow:
+    0 2px 3px
+    rgba(30, 64, 175, 0.34);
+
+  filter:
+    drop-shadow(
+      0 4px 5px
+      rgba(37, 99, 235, 0.22)
+    );
+}
+
+
+/* =========================================================
+   SCORE HOVER
+========================================================= */
+
+.score-achievement:hover
+.score-stars {
+  filter:
+    drop-shadow(
+      0 6px 7px
+      rgba(120, 53, 15, 0.22)
     );
 }
 

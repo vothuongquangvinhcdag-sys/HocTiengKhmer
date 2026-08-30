@@ -156,7 +156,7 @@ const SCORE_ACHIEVEMENTS = [
   {
     id: "score-3",
     required: 3,
-    icon: "★★★",
+    icon: "★",
     tier: "ĐỒNG",
     className: "bronze",
     title: "Tay Chơi Triển Vọng",
@@ -166,7 +166,7 @@ const SCORE_ACHIEVEMENTS = [
   {
     id: "score-5",
     required: 5,
-    icon: "★★★★★",
+    icon: "★★",
     tier: "BẠC",
     className: "silver",
     title: "Bậc Thầy Combo",
@@ -176,7 +176,7 @@ const SCORE_ACHIEVEMENTS = [
   {
     id: "score-10",
     required: 10,
-    icon: "★★★★★★★★★★",
+    icon: "★★★",
     tier: "VÀNG",
     className: "gold",
     title: "Chiến Binh Điểm Số",
@@ -186,11 +186,21 @@ const SCORE_ACHIEVEMENTS = [
   {
     id: "score-20",
     required: 20,
-    icon: "★★★★★★★★★★★★★★★★★★★★",
+    icon: "★★★★",
     tier: "BẠCH KIM",
     className: "platinum",
-    title: "Huyền Thoại 550",
+    title: "Thủ lĩnh trò chơi",
     description: "Có 20 Stage đạt 550 điểm",
+  },
+
+  {
+    id: "score-50",
+    required: 50,
+    icon: "★★★★★",
+    tier: "KIM CƯƠNG",
+    className: "diamond",
+    title: "Huyền Thoại 550",
+    description: "Có 50 Stage đạt 550 điểm",
   },
 ];
 
