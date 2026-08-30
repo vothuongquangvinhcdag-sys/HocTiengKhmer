@@ -55,7 +55,7 @@ const additionalConsonants = [
   { stt: 4, letter: "យ៉", roman: "Do", voice: "O", uppercase: null, handwriting: null },
   { stt: 5, letter: "រ៉", roman: "Ro", voice: "O", uppercase: null, handwriting: null },
   { stt: 6, letter: "វ៉", roman: "Vo", voice: "O", uppercase: null, handwriting: null },
-  { stt: 7, letter: "ប៉", roman: "Po", voice: "O", uppercase: null, handwriting: null },
+  { stt: 7, letter: "ប៉", roman: "Po*", voice: "O", uppercase: null, handwriting: null },
   { stt: 8, letter: "ប៊", roman: "Bô", voice: "Ô", uppercase: null, handwriting: null },
   { stt: 9, letter: "ស៊", roman: "Sô", voice: "Ô", uppercase: null, handwriting: null },
   { stt: 10, letter: "ហ៊", roman: "Hô", voice: "Ô", uppercase: null, handwriting: null },
@@ -99,39 +99,39 @@ const vowels = [
 ========================================================= */
 
 const subscriptConsonants = [
-  { stt: 1, letter: "្ក", roman: "Co", voice: "O", uppercase: null, handwriting: null },
-  { stt: 2, letter: "្ខ", roman: "Kho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 3, letter: "្គ", roman: "Cô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 4, letter: "្ឃ", roman: "Khô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 5, letter: "្ង", roman: "Ngô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 6, letter: "្ច", roman: "Cho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 7, letter: "្ឆ", roman: "Chho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 8, letter: "្ជ", roman: "Chô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 9, letter: "្ឈ", roman: "Chhô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 10, letter: "្ញ", roman: "Nhô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 11, letter: "ញ្ញ", roman: "Nhô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 12, letter: "្ដ", roman: "Đo", voice: "O", uppercase: null, handwriting: null },
-  { stt: 13, letter: "្ឋ", roman: "Tho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 14, letter: "្ឌ", roman: "Đô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 15, letter: "្ឍ", roman: "Thô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 16, letter: "្ណ", roman: "No", voice: "O", uppercase: null, handwriting: null },
-  { stt: 17, letter: "្ត", roman: "To", voice: "O", uppercase: null, handwriting: null },
-  { stt: 18, letter: "្ថ", roman: "Tho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 19, letter: "្ទ", roman: "Tô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 20, letter: "្ធ", roman: "Thô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 21, letter: "្ន", roman: "Nô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 22, letter: "្ប", roman: "Bo", voice: "O", uppercase: null, handwriting: null },
-  { stt: 23, letter: "្ផ", roman: "Pho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 24, letter: "្ព", roman: "Pô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 25, letter: "្ភ", roman: "Phô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 26, letter: "្ម", roman: "Mô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 27, letter: "្យ", roman: "Dô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 28, letter: "្រ", roman: "Rô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 29, letter: "្ល", roman: "Lô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 30, letter: "្វ", roman: "Vô", voice: "Ô", uppercase: null, handwriting: null },
-  { stt: 31, letter: "្ស", roman: "So", voice: "O", uppercase: null, handwriting: null },
-  { stt: 32, letter: "្ហ", roman: "Ho", voice: "O", uppercase: null, handwriting: null },
-  { stt: 33, letter: "្អ", roman: "O", voice: "O", uppercase: null, handwriting: null },
+  { stt: 1, letter: "្ក", roman: "Chân Co", voice: "O", uppercase: null, handwriting: null },
+  { stt: 2, letter: "្ខ", roman: "Chân Kho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 3, letter: "្គ", roman: "Chân Cô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 4, letter: "្ឃ", roman: "Chân Khô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 5, letter: "្ង", roman: "Chân Ngô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 6, letter: "្ច", roman: "Chân Cho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 7, letter: "្ឆ", roman: "Chân Chho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 8, letter: "្ជ", roman: "Chân Chô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 9, letter: "្ឈ", roman: "Chân Chhô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 10, letter: "្ញ", roman: "Chân Nhô*", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 11, letter: "ញ្ញ", roman: "Chân Nhô*", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 12, letter: "្ដ", roman: "Chân Đo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 13, letter: "្ឋ", roman: "Chân Tho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 14, letter: "្ឌ", roman: "Chân Đô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 15, letter: "្ឍ", roman: "Chân Thô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 16, letter: "្ណ", roman: "Chân No", voice: "O", uppercase: null, handwriting: null },
+  { stt: 17, letter: "្ត", roman: "Chân To", voice: "O", uppercase: null, handwriting: null },
+  { stt: 18, letter: "្ថ", roman: "Chân Tho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 19, letter: "្ទ", roman: "Chân Tô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 20, letter: "្ធ", roman: "Chân Thô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 21, letter: "្ន", roman: "Chân Nô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 22, letter: "្ប", roman: "Chân Bo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 23, letter: "្ផ", roman: "Chân Pho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 24, letter: "្ព", roman: "Chân Pô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 25, letter: "្ភ", roman: "Chân Phô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 26, letter: "្ម", roman: "Chân Mô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 27, letter: "្យ", roman: "Chân Dô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 28, letter: "្រ", roman: "Chân Rô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 29, letter: "្ល", roman: "Chân Lô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 30, letter: "្វ", roman: "Chân Vô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 31, letter: "្ស", roman: "Chân So", voice: "O", uppercase: null, handwriting: null },
+  { stt: 32, letter: "្ហ", roman: "Chân Ho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 33, letter: "្អ", roman: "Chân O", voice: "O", uppercase: null, handwriting: null },
 ];
 
 /* =========================================================
@@ -1190,6 +1190,11 @@ function Alphabet({
             <strong>33</strong>
             <span>Phụ âm</span>
           </div>
+          
+          <div className="alphabet-stat">
+            <strong>25</strong>
+            <span>Nguyên âm</span>
+          </div>
 
           <div className="alphabet-stat">
             <strong>11</strong>
@@ -1197,12 +1202,7 @@ function Alphabet({
           </div>
 
           <div className="alphabet-stat">
-            <strong>25</strong>
-            <span>Nguyên âm</span>
-          </div>
-
-          <div className="alphabet-stat">
-            <strong>33</strong>
+            <strong>32</strong>
             <span>Chân chữ</span>
           </div>
 
@@ -1320,7 +1320,7 @@ function Alphabet({
           }}
         >
           Chân chữ
-          <span>33 chân</span>
+          <span>32 chân</span>
         </button>
 
       </div>
