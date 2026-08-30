@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+
 import { supabase } from "../../../supabase";
+
 import "./Alphabet.css";
 
 /* =========================================================
@@ -43,6 +45,24 @@ const consonants = [
 ];
 
 /* =========================================================
+   11 PHỤ ÂM BỔ SUNG
+========================================================= */
+
+const additionalConsonants = [
+  { stt: 1, letter: "ង៉", roman: "Ngo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 2, letter: "ញ៉", roman: "Nho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 3, letter: "ម៉", roman: "Mo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 4, letter: "យ៉", roman: "Do", voice: "O", uppercase: null, handwriting: null },
+  { stt: 5, letter: "រ៉", roman: "Ro", voice: "O", uppercase: null, handwriting: null },
+  { stt: 6, letter: "វ៉", roman: "Vo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 7, letter: "ប៉", roman: "Po", voice: "O", uppercase: null, handwriting: null },
+  { stt: 8, letter: "ប៊", roman: "Bô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 9, letter: "ស៊", roman: "Sô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 10, letter: "ហ៊", roman: "Hô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 11, letter: "អ៊", roman: "Ô", voice: "Ô", uppercase: null, handwriting: null },
+];
+
+/* =========================================================
    25 NGUYÊN ÂM KHMER
 ========================================================= */
 
@@ -71,7 +91,47 @@ const vowels = [
   { stt: 22, symbol: "េះ", romanO: "és", romanOh: "ếs", note: "Ngắt hơi", uppercase: null, handwriting: null },
   { stt: 23, symbol: "ុះ", romanO: "ốs", romanOh: "ús", note: "Ngắt hơi", uppercase: null, handwriting: null },
   { stt: 24, symbol: "ោះ", romanO: "ós", romanOh: "úas", note: "Ngắt hơi", uppercase: null, handwriting: null },
-  { stt: 25, symbol: "ឹះ", romanO: "ấs", romanOh: "ứs", note: "Ngắt hơi", uppercase: null, handwriting: null }
+  { stt: 25, symbol: "ឹះ", romanO: "ấs", romanOh: "ứs", note: "Ngắt hơi", uppercase: null, handwriting: null },
+];
+
+/* =========================================================
+   33 CHÂN CHỮ / GỬI CHÂN
+========================================================= */
+
+const subscriptConsonants = [
+  { stt: 1, letter: "្ក", roman: "Co", voice: "O", uppercase: null, handwriting: null },
+  { stt: 2, letter: "្ខ", roman: "Kho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 3, letter: "្គ", roman: "Cô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 4, letter: "្ឃ", roman: "Khô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 5, letter: "្ង", roman: "Ngô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 6, letter: "្ច", roman: "Cho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 7, letter: "្ឆ", roman: "Chho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 8, letter: "្ជ", roman: "Chô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 9, letter: "្ឈ", roman: "Chhô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 10, letter: "្ញ", roman: "Nhô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 11, letter: "ញ្ញ", roman: "Nhô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 12, letter: "្ដ", roman: "Đo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 13, letter: "្ឋ", roman: "Tho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 14, letter: "្ឌ", roman: "Đô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 15, letter: "្ឍ", roman: "Thô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 16, letter: "្ណ", roman: "No", voice: "O", uppercase: null, handwriting: null },
+  { stt: 17, letter: "្ត", roman: "To", voice: "O", uppercase: null, handwriting: null },
+  { stt: 18, letter: "្ថ", roman: "Tho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 19, letter: "្ទ", roman: "Tô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 20, letter: "្ធ", roman: "Thô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 21, letter: "្ន", roman: "Nô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 22, letter: "្ប", roman: "Bo", voice: "O", uppercase: null, handwriting: null },
+  { stt: 23, letter: "្ផ", roman: "Pho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 24, letter: "្ព", roman: "Pô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 25, letter: "្ភ", roman: "Phô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 26, letter: "្ម", roman: "Mô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 27, letter: "្យ", roman: "Dô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 28, letter: "្រ", roman: "Rô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 29, letter: "្ល", roman: "Lô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 30, letter: "្វ", roman: "Vô", voice: "Ô", uppercase: null, handwriting: null },
+  { stt: 31, letter: "្ស", roman: "So", voice: "O", uppercase: null, handwriting: null },
+  { stt: 32, letter: "្ហ", roman: "Ho", voice: "O", uppercase: null, handwriting: null },
+  { stt: 33, letter: "្អ", roman: "O", voice: "O", uppercase: null, handwriting: null },
 ];
 
 /* =========================================================
@@ -101,15 +161,6 @@ const getSafeVowelFileName = (symbol) => {
 const getAlphabetAudio = (item, type, voice = null) => {
   if (!item) return null;
 
-  /* =======================================================
-     PHỤ ÂM
-
-     Ví dụ:
-     ក
-     ↓
-     /audio/alphabet/consonants/%E1%9E%80.mp3
-  ======================================================= */
-
   if (type === "consonant") {
     const fileName = `${item.letter}.mp3`;
 
@@ -118,17 +169,21 @@ const getAlphabetAudio = (item, type, voice = null) => {
     )}`;
   }
 
-  /* =======================================================
-     NGUYÊN ÂM
+  if (type === "additional-consonant") {
+    const fileName = `${item.letter}.mp3`;
 
-     Ví dụ:
+    return `/audio/alphabet/additional-consonants/${encodeURIComponent(
+      fileName
+    )}`;
+  }
 
-     ◌ា + O
-     → ◌ា-o.mp3
+  if (type === "subscript-consonant") {
+    const fileName = `${item.letter}.mp3`;
 
-     ◌ា + Ô
-     → ◌ា-oh.mp3
-  ======================================================= */
+    return `/audio/alphabet/subscript-consonants/${encodeURIComponent(
+      fileName
+    )}`;
+  }
 
   if (type === "vowel") {
     const safeName = getSafeVowelFileName(item.symbol);
@@ -215,7 +270,9 @@ function Alphabet({
     useState(
       Math.max(
         0,
-        Number(profile?.total_study_seconds ?? 0)
+        Number(
+          profile?.total_study_seconds ?? 0
+        )
       )
     );
 
@@ -234,23 +291,6 @@ function Alphabet({
 
   /* =======================================================
      AUDIO
-
-     audioRef:
-       Lưu Audio object hiện tại.
-
-     audioIdRef:
-       Mỗi lần tạo Audio mới sẽ tăng ID.
-       Nhờ vậy event của Audio cũ không thể
-       làm thay đổi trạng thái của Audio mới.
-
-     currentAudioUrlRef:
-       URL hiện tại.
-
-     playingVoice:
-       null
-       "consonant"
-       "O"
-       "Ô"
   ======================================================= */
 
   const audioRef = useRef(null);
@@ -392,7 +432,9 @@ function Alphabet({
 
       const currentExp = Math.max(
         0,
-        Number(currentProfile.exp ?? 0)
+        Number(
+          currentProfile.exp ?? 0
+        )
       );
 
       const currentStudySeconds =
@@ -439,6 +481,7 @@ function Alphabet({
       );
 
       remainderSecondsRef.current = 0;
+
       setRemainderSeconds(0);
 
       console.log(
@@ -483,6 +526,7 @@ function Alphabet({
     );
 
     remainderSecondsRef.current = 0;
+
     setRemainderSeconds(0);
 
     timerRef.current = setInterval(() => {
@@ -512,6 +556,7 @@ function Alphabet({
       }
 
       remainderSecondsRef.current = 0;
+
       setRemainderSeconds(0);
 
       console.log(
@@ -526,6 +571,7 @@ function Alphabet({
 
   const resetAudioState = () => {
     setIsAudioPlaying(false);
+
     setPlayingVoice(null);
 
     currentAudioUrlRef.current = null;
@@ -533,28 +579,18 @@ function Alphabet({
 
   /* =======================================================
      AUDIO - STOP
-
-     Hàm này dùng khi:
-     - đổi chữ
-     - đóng modal
-     - đổi tab
-     - unmount
-     - chuyển audio
   ======================================================= */
 
   const stopAudio = () => {
-    /*
-       Tăng ID để tất cả event của Audio cũ
-       bị vô hiệu hóa.
-    */
-
     audioIdRef.current += 1;
 
     if (audioRef.current) {
-      const oldAudio = audioRef.current;
+      const oldAudio =
+        audioRef.current;
 
       try {
         oldAudio.pause();
+
         oldAudio.currentTime = 0;
 
         oldAudio.onplay = null;
@@ -576,25 +612,6 @@ function Alphabet({
 
   /* =======================================================
      AUDIO - PLAY URL
-
-     LOGIC:
-
-     1. Nếu đúng audio đang phát:
-        → pause
-        → nút trở lại ▶
-
-     2. Nếu audio khác:
-        → dừng audio cũ
-        → tạo audio mới
-
-     3. Khi audio bắt đầu:
-        → hiện ❚❚
-
-     4. Khi audio kết thúc:
-        → tự động hiện ▶
-
-     5. Nếu lỗi:
-        → hiện ▶
   ======================================================= */
 
   const playAudioUrl = async (
@@ -608,14 +625,6 @@ function Alphabet({
 
       return;
     }
-
-    /* =====================================================
-       TRƯỜNG HỢP ĐANG PHÁT ĐÚNG AUDIO
-
-       Bấm ❚❚
-       → pause
-       → trở lại ▶
-    ===================================================== */
 
     if (
       audioRef.current &&
@@ -637,36 +646,20 @@ function Alphabet({
         );
       }
 
-      /*
-         Không cần chờ onpause.
-         Chủ động đưa UI về ▶ ngay.
-      */
-
       setIsAudioPlaying(false);
+
       setPlayingVoice(null);
 
       return;
     }
 
-    /* =====================================================
-       AUDIO CŨ
-    ===================================================== */
-
     stopAudio();
-
-    /* =====================================================
-       TẠO AUDIO ID MỚI
-    ===================================================== */
 
     const currentAudioId =
       audioIdRef.current + 1;
 
     audioIdRef.current =
       currentAudioId;
-
-    /* =====================================================
-       TẠO AUDIO
-    ===================================================== */
 
     const audio = new Audio();
 
@@ -677,15 +670,8 @@ function Alphabet({
     currentAudioUrlRef.current =
       audioUrl;
 
-    /*
-       Quan trọng:
-
-       Khi bắt đầu tải audio,
-       chưa hiển thị ❚❚ cho tới khi
-       audio thật sự PLAY.
-    */
-
     setIsAudioPlaying(false);
+
     setPlayingVoice(voice);
 
     console.log(
@@ -693,16 +679,7 @@ function Alphabet({
       audioUrl
     );
 
-    /* =====================================================
-       EVENT: PLAY
-    ===================================================== */
-
     audio.onplay = () => {
-      /*
-         Nếu đây không còn là Audio hiện tại
-         thì bỏ qua.
-      */
-
       if (
         audioIdRef.current !==
         currentAudioId
@@ -716,17 +693,9 @@ function Alphabet({
       );
 
       setIsAudioPlaying(true);
+
       setPlayingVoice(voice);
     };
-
-    /* =====================================================
-       EVENT: PAUSE
-
-       Chỉ xử lý nếu chính Audio hiện tại
-       bị pause.
-
-       Không dùng onpause để đổi audio mới.
-    ===================================================== */
 
     audio.onpause = () => {
       if (
@@ -735,10 +704,6 @@ function Alphabet({
       ) {
         return;
       }
-
-      /*
-         Nếu pause thủ công thì nút trở lại ▶.
-      */
 
       if (
         audio.currentTime <
@@ -750,18 +715,10 @@ function Alphabet({
         );
 
         setIsAudioPlaying(false);
+
         setPlayingVoice(null);
       }
     };
-
-    /* =====================================================
-       EVENT: ENDED
-
-       Đây là phần QUAN TRỌNG NHẤT.
-
-       Khi đọc xong:
-       ❚❚ → ▶
-    ===================================================== */
 
     audio.onended = () => {
       if (
@@ -777,6 +734,7 @@ function Alphabet({
       );
 
       setIsAudioPlaying(false);
+
       setPlayingVoice(null);
 
       currentAudioUrlRef.current =
@@ -784,10 +742,6 @@ function Alphabet({
 
       audioRef.current = null;
     };
-
-    /* =====================================================
-       EVENT: ERROR
-    ===================================================== */
 
     audio.onerror = () => {
       if (
@@ -802,15 +756,8 @@ function Alphabet({
         audioUrl
       );
 
-      console.error(
-        "👉 Kiểm tra file trong:"
-      );
-
-      console.error(
-        "👉 public/audio/alphabet/"
-      );
-
       setIsAudioPlaying(false);
+
       setPlayingVoice(null);
 
       currentAudioUrlRef.current =
@@ -819,18 +766,7 @@ function Alphabet({
       audioRef.current = null;
     };
 
-    /* =====================================================
-       GÁN SRC SAU KHI ĐÃ GẮN EVENT
-    ===================================================== */
-
     audio.src = audioUrl;
-
-    /* =====================================================
-       PLAY
-
-       Nếu trình duyệt chặn autoplay,
-       catch sẽ xử lý.
-    ===================================================== */
 
     try {
       await audio.play();
@@ -846,6 +782,7 @@ function Alphabet({
         currentAudioId
       ) {
         setIsAudioPlaying(false);
+
         setPlayingVoice(null);
 
         currentAudioUrlRef.current =
@@ -884,6 +821,68 @@ function Alphabet({
       "consonant"
     );
   };
+
+  /* =======================================================
+     AUDIO PHỤ ÂM BỔ SUNG
+  ======================================================= */
+
+  const toggleAdditionalConsonantAudio =
+    async () => {
+      if (
+        !selected ||
+        selectedType !==
+          "additional-consonant"
+      ) {
+        return;
+      }
+
+      const audioUrl =
+        getAlphabetAudio(
+          selected,
+          "additional-consonant"
+        );
+
+      console.log(
+        "🔊 AUDIO PHỤ ÂM BỔ SUNG:",
+        audioUrl
+      );
+
+      await playAudioUrl(
+        audioUrl,
+        "additional-consonant"
+      );
+    };
+
+  /* =======================================================
+     AUDIO CHÂN CHỮ
+  ======================================================= */
+
+  const toggleSubscriptConsonantAudio =
+    async () => {
+      if (
+        !selected ||
+        selectedType !==
+          "subscript-consonant"
+      ) {
+        return;
+      }
+
+      const audioUrl =
+        getAlphabetAudio(
+          selected,
+          "subscript-consonant"
+        );
+
+      console.log(
+        "🔊 AUDIO CHÂN CHỮ:",
+        audioUrl
+      );
+
+      await playAudioUrl(
+        audioUrl,
+        "subscript-consonant"
+      );
+    };
 
   /* =======================================================
      AUDIO NGUYÊN ÂM
@@ -925,13 +924,39 @@ function Alphabet({
     stopAudio();
 
     setSelected(item);
+
     setSelectedType("consonant");
+  };
+
+  const openAdditionalConsonant = (
+    item
+  ) => {
+    stopAudio();
+
+    setSelected(item);
+
+    setSelectedType(
+      "additional-consonant"
+    );
+  };
+
+  const openSubscriptConsonant = (
+    item
+  ) => {
+    stopAudio();
+
+    setSelected(item);
+
+    setSelectedType(
+      "subscript-consonant"
+    );
   };
 
   const openVowel = (item) => {
     stopAudio();
 
     setSelected(item);
+
     setSelectedType("vowel");
   };
 
@@ -943,6 +968,7 @@ function Alphabet({
     stopAudio();
 
     setSelected(null);
+
     setSelectedType(null);
   };
 
@@ -951,35 +977,23 @@ function Alphabet({
   ======================================================= */
 
   useEffect(() => {
-    /*
-       Không cần stopAudio() ở đây.
-
-       openConsonant/openVowel đã stopAudio()
-       trước khi setSelected.
-
-       Nếu gọi stopAudio() ở đây sẽ dễ tạo
-       thêm các lần reset không cần thiết.
-    */
-
     setIsAudioPlaying(false);
+
     setPlayingVoice(null);
   }, [selected]);
 
   /* =======================================================
-     CLEANUP AUDIO KHI UNMOUNT
+     CLEANUP AUDIO
   ======================================================= */
 
   useEffect(() => {
     return () => {
-      /*
-         Vô hiệu hóa mọi event Audio.
-      */
-
       audioIdRef.current += 1;
 
       if (audioRef.current) {
         try {
           audioRef.current.pause();
+
           audioRef.current.currentTime = 0;
 
           audioRef.current.onplay = null;
@@ -992,7 +1006,9 @@ function Alphabet({
       }
 
       audioRef.current = null;
-      currentAudioUrlRef.current = null;
+
+      currentAudioUrlRef.current =
+        null;
     };
   }, []);
 
@@ -1042,7 +1058,9 @@ function Alphabet({
   const goToStudent = () => {
     stopAudio();
 
-    if (typeof navigate === "function") {
+    if (
+      typeof navigate === "function"
+    ) {
       navigate("/student");
     } else {
       window.location.href =
@@ -1063,12 +1081,40 @@ function Alphabet({
             voiceFilter
         );
 
+  const filteredAdditionalConsonants =
+    voiceFilter === "all"
+      ? additionalConsonants
+      : additionalConsonants.filter(
+          (item) =>
+            item.voice ===
+            voiceFilter
+        );
+
+  const filteredSubscriptConsonants =
+    voiceFilter === "all"
+      ? subscriptConsonants
+      : subscriptConsonants.filter(
+          (item) =>
+            item.voice ===
+            voiceFilter
+        );
+
   /* =======================================================
-     KIỂM TRA AUDIO ĐANG PHÁT
+     KIỂM TRA AUDIO
   ======================================================= */
 
   const isConsonantPlaying =
     selectedType === "consonant" &&
+    isAudioPlaying;
+
+  const isAdditionalConsonantPlaying =
+    selectedType ===
+      "additional-consonant" &&
+    isAudioPlaying;
+
+  const isSubscriptConsonantPlaying =
+    selectedType ===
+      "subscript-consonant" &&
     isAudioPlaying;
 
   const isVowelOPlaying =
@@ -1093,7 +1139,6 @@ function Alphabet({
       ================================================= */}
 
       <div className="alphabet-timer">
-
         <div className="alphabet-timer-label">
           🟢 ĐANG HỌC
         </div>
@@ -1105,7 +1150,6 @@ function Alphabet({
         <div className="alphabet-timer-exp">
           +10 EXP / phút
         </div>
-
       </div>
 
       {/* =================================================
@@ -1125,9 +1169,7 @@ function Alphabet({
       ================================================= */}
 
       <header className="alphabet-header">
-
         <div className="alphabet-header-main">
-
           <div className="alphabet-khmer">
             អក្សរខ្មែរ
           </div>
@@ -1137,9 +1179,9 @@ function Alphabet({
           </h1>
 
           <p>
-            Tra cứu phụ âm và nguyên âm tiếng Khmer
+            Tra cứu phụ âm, phụ âm bổ sung,
+            nguyên âm và chân chữ tiếng Khmer
           </p>
-
         </div>
 
         <div className="alphabet-stats">
@@ -1150,19 +1192,33 @@ function Alphabet({
           </div>
 
           <div className="alphabet-stat">
+            <strong>11</strong>
+            <span>Phụ âm bổ sung</span>
+          </div>
+
+          <div className="alphabet-stat">
             <strong>25</strong>
             <span>Nguyên âm</span>
           </div>
 
-        </div>
+          <div className="alphabet-stat">
+            <strong>33</strong>
+            <span>Chân chữ</span>
+          </div>
 
+        </div>
       </header>
 
       {/* =================================================
           TABS
+          ĐÃ ĐỔI THỨ TỰ:
+          Phụ âm | Nguyên âm
+          Phụ âm bổ sung | Chân chữ
       ================================================= */}
 
       <div className="alphabet-tabs">
+
+        {/* PHỤ ÂM */}
 
         <button
           type="button"
@@ -1177,12 +1233,17 @@ function Alphabet({
             setTab("consonants");
 
             setSelected(null);
+
             setSelectedType(null);
+
+            setVoiceFilter("all");
           }}
         >
           Phụ âm
           <span>33 chữ</span>
         </button>
+
+        {/* NGUYÊN ÂM */}
 
         <button
           type="button"
@@ -1197,11 +1258,69 @@ function Alphabet({
             setTab("vowels");
 
             setSelected(null);
+
             setSelectedType(null);
+
+            setVoiceFilter("all");
           }}
         >
           Nguyên âm
           <span>25 âm</span>
+        </button>
+
+        {/* PHỤ ÂM BỔ SUNG */}
+
+        <button
+          type="button"
+          className={
+            tab ===
+            "additional-consonants"
+              ? "alphabet-tab active"
+              : "alphabet-tab"
+          }
+          onClick={() => {
+            stopAudio();
+
+            setTab(
+              "additional-consonants"
+            );
+
+            setSelected(null);
+
+            setSelectedType(null);
+
+            setVoiceFilter("all");
+          }}
+        >
+          Phụ âm bổ sung
+          <span>11 chữ</span>
+        </button>
+
+        {/* CHÂN CHỮ */}
+
+        <button
+          type="button"
+          className={
+            tab === "subscript-consonants"
+              ? "alphabet-tab active"
+              : "alphabet-tab"
+          }
+          onClick={() => {
+            stopAudio();
+
+            setTab(
+              "subscript-consonants"
+            );
+
+            setSelected(null);
+
+            setSelectedType(null);
+
+            setVoiceFilter("all");
+          }}
+        >
+          Chân chữ
+          <span>33 chân</span>
         </button>
 
       </div>
@@ -1216,7 +1335,6 @@ function Alphabet({
           <div className="alphabet-toolbar">
 
             <div>
-
               <h2>
                 33 PHỤ ÂM KHMER
               </h2>
@@ -1224,7 +1342,6 @@ function Alphabet({
               <p>
                 Nhấn vào chữ để xem đầy đủ thông tin
               </p>
-
             </div>
 
             <div className="voice-buttons">
@@ -1272,7 +1389,6 @@ function Alphabet({
               </button>
 
             </div>
-
           </div>
 
           <div className="alphabet-grid">
@@ -1318,7 +1434,6 @@ function Alphabet({
                     </div>
 
                   </div>
-
                 </button>
               )
             )}
@@ -1335,7 +1450,8 @@ function Alphabet({
               <strong>
                 Chh (ឆ, ឈ):
               </strong>{" "}
-              Đọc như chữ S tiếng Việt nhưng có hơi bật mạnh.
+              Đọc như chữ S tiếng Việt nhưng
+              có hơi bật mạnh.
             </p>
 
             <p>
@@ -1358,6 +1474,168 @@ function Alphabet({
       )}
 
       {/* =================================================
+          PHỤ ÂM BỔ SUNG
+      ================================================= */}
+
+      {tab ===
+        "additional-consonants" && (
+        <section>
+
+          <div className="alphabet-toolbar">
+
+            <div>
+              <h2>
+                11 PHỤ ÂM BỔ SUNG
+              </h2>
+
+              <p>
+                Các phụ âm được biến đổi giọng
+                bằng dấu bổ sung.
+              </p>
+            </div>
+
+            <div className="voice-buttons">
+
+              <button
+                type="button"
+                className={
+                  voiceFilter === "all"
+                    ? "voice-btn active"
+                    : "voice-btn"
+                }
+                onClick={() =>
+                  setVoiceFilter("all")
+                }
+              >
+                Tất cả
+              </button>
+
+              <button
+                type="button"
+                className={
+                  voiceFilter === "O"
+                    ? "voice-btn voice-o active"
+                    : "voice-btn voice-o"
+                }
+                onClick={() =>
+                  setVoiceFilter("O")
+                }
+              >
+                🟢 Giọng O
+              </button>
+
+              <button
+                type="button"
+                className={
+                  voiceFilter === "Ô"
+                    ? "voice-btn voice-oh active"
+                    : "voice-btn voice-oh"
+                }
+                onClick={() =>
+                  setVoiceFilter("Ô")
+                }
+              >
+                🟠 Giọng Ô
+              </button>
+
+            </div>
+          </div>
+
+          <div className="alphabet-grid">
+
+            {filteredAdditionalConsonants.map(
+              (item) => (
+                <button
+                  type="button"
+                  key={item.stt}
+                  className="consonant-card"
+                  onClick={() =>
+                    openAdditionalConsonant(
+                      item
+                    )
+                  }
+                  aria-label={`Xem chi tiết chữ ${item.letter}`}
+                >
+
+                  <div className="consonant-number">
+                    {item.stt}
+                  </div>
+
+                  <div className="consonant-card-content">
+
+                    <div className="consonant-letter">
+                      {item.letter}
+                    </div>
+
+                    <div className="consonant-card-roman">
+                      {item.roman}
+                    </div>
+
+                    <div
+                      className={
+                        item.voice === "O"
+                          ? "voice-badge voice-o"
+                          : "voice-badge voice-oh"
+                      }
+                    >
+                      Giọng {item.voice}
+                    </div>
+
+                    <div className="consonant-card-action">
+                      Nhấn để xem chi tiết →
+                    </div>
+
+                  </div>
+                </button>
+              )
+            )}
+
+          </div>
+
+          <div className="alphabet-notes">
+
+            <h3>
+              📌 Ghi chú phụ âm bổ sung
+            </h3>
+
+            <p>
+              <strong>
+                Dấu " / ៉:
+              </strong>{" "}
+              Có thể dùng để biến phụ âm
+              giọng Ô thành giọng O.
+            </p>
+
+            <p>
+              <strong>
+                Dấu ៊:
+              </strong>{" "}
+              Có thể dùng để biến phụ âm
+              giọng O thành giọng Ô.
+            </p>
+
+            <p>
+              <strong>
+                Ví dụ:
+              </strong>{" "}
+              ប → ប៉ và ស → ស៊.
+            </p>
+
+            <p>
+              <strong>
+                Lưu ý:
+              </strong>{" "}
+              Một số trường hợp khi ghép với
+              nguyên âm sẽ có quy tắc biến đổi
+              dấu riêng.
+            </p>
+
+          </div>
+
+        </section>
+      )}
+
+      {/* =================================================
           NGUYÊN ÂM
       ================================================= */}
 
@@ -1367,15 +1645,14 @@ function Alphabet({
           <div className="alphabet-toolbar">
 
             <div>
-
               <h2>
                 25 NGUYÊN ÂM KHMER
               </h2>
 
               <p>
-                Cách đọc phụ thuộc vào nhóm giọng của phụ âm đi kèm.
+                Cách đọc phụ thuộc vào nhóm giọng
+                của phụ âm đi kèm.
               </p>
-
             </div>
 
           </div>
@@ -1475,11 +1752,180 @@ function Alphabet({
                 </strong>
 
                 <p>
-                  Một số nguyên âm giữ nguyên cách đọc giữa hai nhóm giọng.
+                  Một số nguyên âm giữ nguyên
+                  cách đọc giữa hai nhóm giọng.
                 </p>
               </div>
 
             </div>
+          </div>
+
+        </section>
+      )}
+
+      {/* =================================================
+          CHÂN CHỮ
+      ================================================= */}
+
+      {tab ===
+        "subscript-consonants" && (
+        <section>
+
+          <div className="alphabet-toolbar">
+
+            <div>
+              <h2>
+                33 CHÂN CHỮ / GỬI CHÂN
+              </h2>
+
+              <p>
+                Chân chữ được ghép bên dưới phụ âm
+                chính để tạo thành cụm phụ âm Khmer.
+              </p>
+            </div>
+
+            <div className="voice-buttons">
+
+              <button
+                type="button"
+                className={
+                  voiceFilter === "all"
+                    ? "voice-btn active"
+                    : "voice-btn"
+                }
+                onClick={() =>
+                  setVoiceFilter("all")
+                }
+              >
+                Tất cả
+              </button>
+
+              <button
+                type="button"
+                className={
+                  voiceFilter === "O"
+                    ? "voice-btn voice-o active"
+                    : "voice-btn voice-o"
+                }
+                onClick={() =>
+                  setVoiceFilter("O")
+                }
+              >
+                🟢 Giọng O
+              </button>
+
+              <button
+                type="button"
+                className={
+                  voiceFilter === "Ô"
+                    ? "voice-btn voice-oh active"
+                    : "voice-btn voice-oh"
+                }
+                onClick={() =>
+                  setVoiceFilter("Ô")
+                }
+              >
+                🟠 Giọng Ô
+              </button>
+
+            </div>
+          </div>
+
+          <div className="alphabet-grid">
+
+            {filteredSubscriptConsonants.map(
+              (item) => (
+                <button
+                  type="button"
+                  key={`${item.stt}-${item.letter}`}
+                  className="consonant-card"
+                  onClick={() =>
+                    openSubscriptConsonant(
+                      item
+                    )
+                  }
+                  aria-label={`Xem chi tiết chân chữ ${item.letter}`}
+                >
+
+                  <div className="consonant-number">
+                    {item.stt}
+                  </div>
+
+                  <div className="consonant-card-content">
+
+                    <div className="consonant-letter">
+                      {item.letter}
+                    </div>
+
+                    <div className="consonant-card-roman">
+                      {item.roman}
+                    </div>
+
+                    <div
+                      className={
+                        item.voice === "O"
+                          ? "voice-badge voice-o"
+                          : "voice-badge voice-oh"
+                      }
+                    >
+                      Giọng {item.voice}
+                    </div>
+
+                    <div className="consonant-card-action">
+                      Nhấn để xem chi tiết →
+                    </div>
+
+                  </div>
+
+                </button>
+              )
+            )}
+
+          </div>
+
+          <div className="alphabet-notes">
+
+            <h3>
+              📌 Quy tắc hòa giọng khi gửi chân
+            </h3>
+
+            <p>
+              <strong>
+                Giọng của chân chữ:
+              </strong>{" "}
+              Nguyên âm đi kèm sẽ được đọc theo
+              giọng của chân chữ.
+            </p>
+
+            <p>
+              <strong>
+                Chân O:
+              </strong>{" "}
+              Nguyên âm đọc theo Giọng O.
+            </p>
+
+            <p>
+              <strong>
+                Chân Ô:
+              </strong>{" "}
+              Nguyên âm đọc theo Giọng Ô.
+            </p>
+
+            <p>
+              <strong>
+                Lưu ý:
+              </strong>{" "}
+              Khi ghép thực tế, một số chân chữ
+              có quy tắc hòa giọng đặc biệt.
+            </p>
+
+            <p>
+              <strong>
+                Đặc biệt:
+              </strong>{" "}
+              Phụ âm ឡ (Lo) không có chân chữ
+              tương ứng.
+            </p>
 
           </div>
 
@@ -1491,6 +1937,7 @@ function Alphabet({
       ================================================= */}
 
       {selected && (
+
         <div
           className="alphabet-modal-backdrop"
           onClick={closeModal}
@@ -1520,7 +1967,13 @@ function Alphabet({
                 MODAL PHỤ ÂM
             ================================================= */}
 
-            {selectedType === "consonant" && (
+            {(selectedType ===
+              "consonant" ||
+              selectedType ===
+                "additional-consonant" ||
+              selectedType ===
+                "subscript-consonant") && (
+
               <>
 
                 <div className="modal-consonant-header">
@@ -1545,18 +1998,21 @@ function Alphabet({
 
                 <div className="alphabet-detail-grid">
 
-                  {/* CHỮ THƯỜNG */}
-
                   <div className="alphabet-detail-card detail-card-normal">
 
                     <div className="alphabet-detail-card-title">
+
                       <span className="detail-icon">
                         ✍️
                       </span>
 
                       <span>
-                        Chữ thường
+                        {selectedType ===
+                        "subscript-consonant"
+                          ? "Chân chữ"
+                          : "Chữ thường"}
                       </span>
+
                     </div>
 
                     <div className="alphabet-detail-card-value normal-khmer-value">
@@ -1565,11 +2021,10 @@ function Alphabet({
 
                   </div>
 
-                  {/* CHỮ HOA */}
-
                   <div className="alphabet-detail-card detail-card-uppercase">
 
                     <div className="alphabet-detail-card-title">
+
                       <span className="detail-icon">
                         ✍️
                       </span>
@@ -1577,6 +2032,7 @@ function Alphabet({
                       <span>
                         Chữ hoa
                       </span>
+
                     </div>
 
                     <div className="alphabet-detail-card-value uppercase-khmer-value">
@@ -1586,11 +2042,10 @@ function Alphabet({
 
                   </div>
 
-                  {/* VIẾT TAY */}
-
                   <div className="alphabet-detail-card detail-card-handwriting">
 
                     <div className="alphabet-detail-card-title">
+
                       <span className="detail-icon">
                         ✍️
                       </span>
@@ -1598,6 +2053,7 @@ function Alphabet({
                       <span>
                         Viết tay
                       </span>
+
                     </div>
 
                     <div className="alphabet-detail-card-value handwriting-khmer-value">
@@ -1607,11 +2063,10 @@ function Alphabet({
 
                   </div>
 
-                  {/* PHIÊN ÂM */}
-
                   <div className="alphabet-detail-card detail-card-pronunciation">
 
                     <div className="alphabet-detail-card-title">
+
                       <span className="detail-icon">
                         🗣️
                       </span>
@@ -1619,6 +2074,7 @@ function Alphabet({
                       <span>
                         Phiên âm
                       </span>
+
                     </div>
 
                     <div
@@ -1635,10 +2091,6 @@ function Alphabet({
 
                 </div>
 
-                {/* =================================================
-                    AUDIO PHỤ ÂM
-                ================================================= */}
-
                 <div className="modal-audio-divider">
                   - - - - - - 🔊 Giọng đọc - - - - - -
                 </div>
@@ -1648,7 +2100,21 @@ function Alphabet({
                   <button
                     type="button"
                     className={
-                      isConsonantPlaying
+                      (
+                        selectedType ===
+                          "consonant" &&
+                        isConsonantPlaying
+                      ) ||
+                      (
+                        selectedType ===
+                          "additional-consonant" &&
+                        isAdditionalConsonantPlaying
+                      ) ||
+                      (
+                        selectedType ===
+                          "subscript-consonant" &&
+                        isSubscriptConsonantPlaying
+                      )
                         ? "audio-play-button playing"
                         : "audio-play-button"
                     }
@@ -1659,56 +2125,79 @@ function Alphabet({
                       minHeight: "80px",
                       maxWidth: "80px",
                       maxHeight: "80px",
-
                       flex: "0 0 80px",
-
                       borderRadius: "12px",
-
-                      border: "2px solid transparent",
-
+                      border:
+                        "2px solid transparent",
                       backgroundColor:
                         selected.voice === "O"
                           ? "var(--khmer-green)"
                           : "var(--khmer-gold)",
-
                       color: "#000",
-
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-
                       padding: 0,
                       margin: "0 auto",
-
                       fontFamily:
                         '"Segoe UI", Arial, sans-serif',
-
                       fontSize:
-                        isConsonantPlaying
+                        (
+                          selectedType ===
+                            "consonant" &&
+                          isConsonantPlaying
+                        ) ||
+                        (
+                          selectedType ===
+                            "additional-consonant" &&
+                          isAdditionalConsonantPlaying
+                        ) ||
+                        (
+                          selectedType ===
+                            "subscript-consonant" &&
+                          isSubscriptConsonantPlaying
+                        )
                           ? "28px"
                           : "34px",
-
                       fontWeight: 900,
                       lineHeight: 1,
-
                       cursor: "pointer",
-
                       boxShadow:
                         "0 5px 14px rgba(0, 0, 0, 0.18)",
-
                       transition:
                         "transform 0.15s ease, box-shadow 0.15s ease",
                     }}
-                    onClick={
-                      toggleConsonantAudio
-                    }
+                    onClick={() => {
+
+                      if (
+                        selectedType ===
+                        "consonant"
+                      ) {
+                        toggleConsonantAudio();
+                      }
+
+                      if (
+                        selectedType ===
+                        "additional-consonant"
+                      ) {
+                        toggleAdditionalConsonantAudio();
+                      }
+
+                      if (
+                        selectedType ===
+                        "subscript-consonant"
+                      ) {
+                        toggleSubscriptConsonantAudio();
+                      }
+
+                    }}
                     aria-label={
-                      isConsonantPlaying
+                      isAudioPlaying
                         ? "Tạm dừng"
                         : "Phát âm thanh"
                     }
                   >
-                    {isConsonantPlaying
+                    {isAudioPlaying
                       ? "❚❚"
                       : "▶"}
                   </button>
@@ -1723,6 +2212,7 @@ function Alphabet({
             ================================================= */}
 
             {selectedType === "vowel" && (
+
               <>
 
                 <div className="modal-vowel-header">
@@ -1734,8 +2224,6 @@ function Alphabet({
                 </div>
 
                 <div className="alphabet-detail-grid vowel-detail-grid">
-
-                  {/* CHỮ THƯỜNG */}
 
                   <div className="alphabet-detail-card detail-card-normal">
 
@@ -1757,8 +2245,6 @@ function Alphabet({
 
                   </div>
 
-                  {/* CHỮ HOA */}
-
                   <div className="alphabet-detail-card detail-card-uppercase">
 
                     <div className="alphabet-detail-card-title">
@@ -1779,8 +2265,6 @@ function Alphabet({
                     </div>
 
                   </div>
-
-                  {/* VIẾT TAY */}
 
                   <div className="alphabet-detail-card detail-card-handwriting">
 
@@ -1803,8 +2287,6 @@ function Alphabet({
 
                   </div>
 
-                  {/* PHIÊN ÂM */}
-
                   <div className="alphabet-detail-card detail-card-pronunciation vowel-pronunciation-detail">
 
                     <div className="alphabet-detail-card-title">
@@ -1821,8 +2303,6 @@ function Alphabet({
 
                     <div className="vowel-modal-pronunciation">
 
-                      {/* GIỌNG O */}
-
                       <div className="vowel-modal-pronunciation-row">
 
                         <span className="vowel-modal-voice voice-o">
@@ -1834,8 +2314,6 @@ function Alphabet({
                         </strong>
 
                       </div>
-
-                      {/* GIỌNG Ô */}
 
                       <div className="vowel-modal-pronunciation-row">
 
@@ -1854,10 +2332,6 @@ function Alphabet({
                   </div>
 
                 </div>
-
-                {/* =================================================
-                    GHI CHÚ
-                ================================================= */}
 
                 <div className="modal-note">
 
@@ -1878,10 +2352,6 @@ function Alphabet({
 
                 </div>
 
-                {/* =================================================
-                    AUDIO NGUYÊN ÂM
-                ================================================= */}
-
                 <div className="modal-audio-divider">
                   - - - - - - 🔊 Giọng đọc - - - - - -
                 </div>
@@ -1900,10 +2370,6 @@ function Alphabet({
                     }}
                   >
 
-                    {/* =================================================
-                        NÚT PLAY O
-                    ================================================= */}
-
                     <button
                       type="button"
                       className={
@@ -1918,42 +2384,29 @@ function Alphabet({
                         minHeight: "80px",
                         maxWidth: "80px",
                         maxHeight: "80px",
-
                         flex: "0 0 80px",
-
                         borderRadius: "12px",
-
                         border:
                           "2px solid var(--khmer-green)",
-
                         backgroundColor:
                           "var(--khmer-green)",
-
                         color: "#000",
-
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-
                         padding: 0,
                         margin: 0,
-
                         fontFamily:
                           '"Segoe UI", Arial, sans-serif',
-
                         fontSize:
                           isVowelOPlaying
                             ? "28px"
                             : "34px",
-
                         fontWeight: 900,
                         lineHeight: 1,
-
                         cursor: "pointer",
-
                         boxShadow:
                           "0 5px 14px rgba(0, 0, 0, 0.18)",
-
                         transition:
                           "transform 0.15s ease, box-shadow 0.15s ease",
                       }}
@@ -1971,10 +2424,6 @@ function Alphabet({
                         : "▶"}
                     </button>
 
-                    {/* =================================================
-                        NÚT PLAY Ô
-                    ================================================= */}
-
                     <button
                       type="button"
                       className={
@@ -1989,42 +2438,29 @@ function Alphabet({
                         minHeight: "80px",
                         maxWidth: "80px",
                         maxHeight: "80px",
-
                         flex: "0 0 80px",
-
                         borderRadius: "12px",
-
                         border:
                           "2px solid var(--khmer-gold)",
-
                         backgroundColor:
                           "var(--khmer-gold)",
-
                         color: "#000",
-
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-
                         padding: 0,
                         margin: 0,
-
                         fontFamily:
                           '"Segoe UI", Arial, sans-serif',
-
                         fontSize:
                           isVowelOhPlaying
                             ? "28px"
                             : "34px",
-
                         fontWeight: 900,
                         lineHeight: 1,
-
                         cursor: "pointer",
-
                         boxShadow:
                           "0 5px 14px rgba(0, 0, 0, 0.18)",
-
                         transition:
                           "transform 0.15s ease, box-shadow 0.15s ease",
                       }}
