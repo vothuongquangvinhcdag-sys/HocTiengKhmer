@@ -7,7 +7,7 @@ const communicationData = [
   {
     id: 1,
 
-    category: "Chào hỏi - Giới thiệu 1",
+    category: "CHÀO HỎI - GIỚI THIỆU 1",
 
     categoryKhmer: "ការស្វាគមន៍ និងការណែនាំខ្លួន",
 
@@ -451,7 +451,7 @@ const communicationData = [
           {
             id: 2,
 
-            speaker: "Chantra",
+            speaker: "Chantria",
 
             khmer: "សួស្តី",
 
@@ -484,7 +484,7 @@ const communicationData = [
           {
             id: 4,
 
-            speaker: "Chantra",
+            speaker: "Chantria",
 
             khmer:
               "ខ្ញុំឈ្មោះ ចន្ទ្រា",
@@ -520,7 +520,7 @@ const communicationData = [
           {
             id: 6,
 
-            speaker: "Chantra",
+            speaker: "Chantria",
 
             khmer:
               "ខ្ញុំក៏រីករាយដែរ",
@@ -556,7 +556,7 @@ const communicationData = [
           {
             id: 8,
 
-            speaker: "Chantra",
+            speaker: "Chantria",
 
             khmer:
               "ខ្ញុំសុខសប្បាយ អរគុណ។ អ្នកវិញ?",
@@ -592,7 +592,7 @@ const communicationData = [
           {
             id: 10,
 
-            speaker: "Chantra",
+            speaker: "Chantria",
 
             khmer:
               "លាហើយ ដារា",
@@ -633,866 +633,598 @@ const communicationData = [
      CHỦ ĐỀ 2
      CHÀO HỎI - GIỚI THIỆU 2
   ========================================================= */
+{
+  id: 2,
 
-  {
-    id: 2,
+  category: "CHÀO HỎI - GIỚI THIỆU 2",
 
-    category: "Chào hỏi - Giới thiệu 2",
+  categoryKhmer: "ការស្វាគមន៍ និងការណែនាំខ្លួន",
 
-    categoryKhmer:
-      "ការណែនាំខ្លួនឱ្យបានស៊ីជម្រៅ",
+  description:
+    "Những mẫu câu giao tiếp khi gặp lại người đã quen, hỏi tuổi, nơi sinh sống và nghề nghiệp.",
 
-    description:
-      "Mở rộng giao tiếp sau khi đã quen biết, tập trung vào tuổi, nghề nghiệp và nơi sinh sống.",
+  lessons: [
 
-    lessons: [
-      /* =====================================================
-         2.1 CHÀO KHI ĐÃ QUEN BIẾT
-      ===================================================== */
+    /* =====================================================
+       2.1 LỜI CHÀO KHI GẶP LẠI
+    ===================================================== */
 
-      {
-        id: 1,
+    {
+      id: 1,
 
-        title: "Chào khi đã quen biết",
+      title: "Lời chào khi gặp lại",
 
-        titleKhmer:
-          "ការសួរសុខទុក្ខនៅពេលស្គាល់គ្នារួច",
+      titleKhmer: "ពាក្យស្វាគមន៍ពេលជួបគ្នាម្តងទៀត",
 
-        description:
-          "Những cách chào hỏi tự nhiên khi Dara và Chantra đã quen biết nhau từ trước.",
+      description:
+        "Những cách chào hỏi khi gặp lại người đã quen sau một thời gian không gặp.",
 
-        sentences: [
-          {
-            id: 1,
+      sentences: [
+        {
+          id: 1,
 
-            khmer:
-              "សួស្តី ដារា! ជួបគ្នាទៀតហើយ",
+          khmer: "យូរហើយមិនបានជួបគ្នា",
 
-            pronunciation:
-              "Suô-sđây Dara! Chuôp-knea tiet haey",
+          pronunciation: "Yu haey min ban chuôp-knea",
 
-            vietnamese:
-              "Chào Dara! Lại gặp nhau rồi",
+          vietnamese: "Lâu rồi không gặp nhau",
 
-            audio:
-              "/audio/communication/deeper/សួស្តី ដារា ជួបគ្នាទៀតហើយ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.1/យូរហើយមិនបានជួបគ្នា.mp3",
+        },
 
-          {
-            id: 2,
+        {
+          id: 2,
 
-            khmer:
-              "សួស្តី ចន្ទ្រា! ខានជួបគ្នាយូរហើយ",
+          khmer: "រីករាយណាស់ដែលបានជួបអ្នកម្តងទៀត",
 
-            pronunciation:
-              "Suô-sđây Chantra! Khân chuôp-knea yu haey",
+          pronunciation:
+            "Rik-reay nas del ban chuôp neak mdong tiet",
 
-            vietnamese:
-              "Chào Chantra! Lâu rồi không gặp",
+          vietnamese: "Rất vui được gặp lại bạn",
 
-            audio:
-              "/audio/communication/deeper/សួស្តី ចន្ទ្រា ខានជួបគ្នាយូរហើយ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.1/រីករាយណាស់ដែលបានជួបអ្នកម្តងទៀត.mp3",
+        },
 
-          {
-            id: 3,
+        {
+          id: 3,
 
-            khmer:
-              "យូរហើយមិនបានជួបគ្នា",
+          khmer: "ខ្ញុំក៏រីករាយដែលបានជួបអ្នកដែរ",
 
-            pronunciation:
-              "Yu haey min ban chuôp-knea",
+          pronunciation:
+            "Khnhom ko rik-reay del ban chuôp neak đae",
 
-            vietnamese:
-              "Lâu rồi chúng ta không gặp nhau",
+          vietnamese: "Tôi cũng rất vui được gặp bạn",
 
-            audio:
-              "/audio/communication/deeper/យូរហើយមិនបានជួបគ្នា.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.1/ខ្ញុំក៏រីករាយដែលបានជួបអ្នកដែរ.mp3",
+        },
 
-          {
-            id: 4,
+        {
+          id: 4,
 
-            khmer:
-              "រីករាយដែលបានជួបអ្នកម្តងទៀត",
+          khmer: "រីករាយដែលបានជួបអ្នក",
 
-            pronunciation:
-              "Rik-reay đel ban chuôp neak mdong tiet",
+          pronunciation:
+            "Rik-reay del ban chuôp neak",
 
-            vietnamese:
-              "Rất vui được gặp lại bạn",
+          vietnamese: "Hân hạnh được gặp bạn",
 
-            audio:
-              "/audio/communication/deeper/រីករាយដែលបានជួបអ្នកម្តងទៀត.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.1/រីករាយដែលបានជួបអ្នក.mp3",
+        },
+      ],
+    },
 
-          {
-            id: 5,
+    /* =====================================================
+       2.2 TUỔI TÁC
+    ===================================================== */
 
-            khmer:
-              "សុខសប្បាយទេ ចន្ទ្រា?",
+    {
+      id: 2,
 
-            pronunciation:
-              "Sốc-sáp-bai tê Chantra?",
+      title: "Tuổi tác",
 
-            vietnamese:
-              "Dạo này khỏe không Chantra?",
+      titleKhmer: "អាយុ",
 
-            audio:
-              "/audio/communication/deeper/សុខសប្បាយទេ ចន្ទ្រា.mp3",
-          },
+      description:
+        "Cách hỏi và trả lời về tuổi khi trò chuyện với người đã quen biết.",
 
-          {
-            id: 6,
+      sentences: [
+        {
+          id: 1,
 
-            khmer:
-              "សុខសប្បាយទេ ដារា?",
+          khmer: "ឆ្នាំនេះអ្នកអាយុប៉ុន្មានឆ្នាំ?",
 
-            pronunciation:
-              "Sốc-sáp-bai tê Dara?",
+          pronunciation:
+            "Chnam nih neak ayu pon-man chnam?",
 
-            vietnamese:
-              "Dạo này khỏe không Dara?",
+          vietnamese: "Năm nay bạn bao nhiêu tuổi?",
 
-            audio:
-              "/audio/communication/deeper/សុខសប្បាយទេ ដារា.mp3",
-          },
-        ],
-      },
+          audio:
+            "/audio/communication/basic2/basic2.2/ឆ្នាំនេះអ្នកអាយុប៉ុន្មានឆ្នាំ.mp3",
+        },
 
-      /* =====================================================
-         2.2 HỎI VÀ ĐÁP VỀ TUỔI
-      ===================================================== */
+        {
+          id: 2,
 
-      {
-        id: 2,
+          khmer: "ឆ្នាំនេះខ្ញុំអាយុម្ភៃប្រាំឆ្នាំ",
 
-        title: "Hỏi và đáp về tuổi",
+          pronunciation:
+            "Chnam nih khnhom ayu ph-nyai-pram chnam",
 
-        titleKhmer:
-          "ការសួរ និងឆ្លើយអំពីអាយុ",
+          vietnamese: "Năm nay tôi 25 tuổi",
 
-        description:
-          "Cách hỏi tuổi và nói tuổi của bản thân trong giao tiếp.",
+          audio:
+            "/audio/communication/basic2/basic2.2/ឆ្នាំនេះខ្ញុំអាយុម្ភៃប្រាំឆ្នាំ.mp3",
+        },
 
-        sentences: [
-          {
-            id: 1,
+        {
+          id: 3,
 
-            khmer:
-              "តើអ្នកអាយុប៉ុន្មានឆ្នាំ?",
+          khmer: "ឆ្នាំនេះខ្ញុំអាយុដប់ប្រាំមួយឆ្នាំ",
 
-            pronunciation:
-              "Tơ neak ayu pon-man chnam?",
+          pronunciation:
+            "Chnam nih khnhom ayu dop-pram-muoy chnam",
 
-            vietnamese:
-              "Bạn bao nhiêu tuổi?",
+          vietnamese: "Năm nay tôi 16 tuổi",
 
-            audio:
-              "/audio/communication/deeper/តើអ្នកអាយុប៉ុន្មានឆ្នាំ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.2/ឆ្នាំនេះខ្ញុំអាយុដប់ប្រាំមួយឆ្នាំ.mp3",
+        },
+      ],
+    },
 
-          {
-            id: 2,
+    /* =====================================================
+       2.3 NƠI SINH SỐNG
+    ===================================================== */
 
-            khmer:
-              "ខ្ញុំអាយុម្ភៃពីរឆ្នាំ",
+    {
+      id: 3,
 
-            pronunciation:
-              "Khnhom ayu mphai-pi chnam",
+      title: "Nơi sinh sống",
 
-            vietnamese:
-              "Tôi 22 tuổi",
+      titleKhmer: "ទីកន្លែងរស់នៅ",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំអាយុម្ភៃពីរឆ្នាំ.mp3",
-          },
+      description:
+        "Cách hỏi và trả lời về nơi sinh sống, sử dụng xã, phường và tỉnh.",
 
-          {
-            id: 3,
+      sentences: [
+        {
+          id: 1,
 
-            khmer:
-              "ខ្ញុំអាយុដប់ប្រាំបីឆ្នាំ",
+          khmer: "តើអ្នករស់នៅឯណា?",
 
-            pronunciation:
-              "Khnhom ayu dop-pram-bei chnam",
+          pronunciation:
+            "Tơ neak ros-nov ae-na?",
 
-            vietnamese:
-              "Tôi 18 tuổi",
+          vietnamese: "Bạn sống ở đâu?",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំអាយុដប់ប្រាំបីឆ្នាំ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.3/តើអ្នករស់នៅឯណា.mp3",
+        },
 
-          {
-            id: 4,
+        {
+          id: 2,
 
-            khmer:
-              "ដារា អាយុប៉ុន្មានឆ្នាំ?",
+          khmer: "ខ្ញុំរស់នៅឃុំត្រីតូន ខេត្តអានយ៉ាង។",
 
-            pronunciation:
-              "Dara ayu pon-man chnam?",
+          pronunciation:
+            "Khnhom ros-nov khum Tri-ton, khaet An-yang",
 
-            vietnamese:
-              "Dara bao nhiêu tuổi?",
+          vietnamese:
+            "Tôi sống ở xã Tri Tôn, tỉnh An Giang",
 
-            audio:
-              "/audio/communication/deeper/ដារា អាយុប៉ុន្មានឆ្នាំ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.3/ខ្ញុំរស់នៅឃុំត្រីតូន ខេត្តអានយ៉ាង។.mp3",
+        },
 
-          {
-            id: 5,
+        {
+          id: 3,
 
-            khmer:
-              "ចន្ទ្រា អាយុប៉ុន្មានឆ្នាំ?",
+          khmer: "ខ្ញុំរស់នៅសង្កាត់ទិញបៀន ខេត្តអានយ៉ាង",
 
-            pronunciation:
-              "Chantra ayu pon-man chnam?",
+          pronunciation:
+            "Khnhom ros-nov sang-kat Tinh-biên, khaet An-yang",
 
-            vietnamese:
-              "Chantra bao nhiêu tuổi?",
+          vietnamese:
+            "Tôi sống ở phường Tịnh Biên, tỉnh An Giang",
 
-            audio:
-              "/audio/communication/deeper/ចន្ទ្រា អាយុប៉ុន្មានឆ្នាំ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.3/ខ្ញុំរស់នៅសង្កាត់ទិញបៀន ខេត្តអានយ៉ាង.mp3",
+        },
+      ],
+    },
 
-          {
-            id: 6,
+    /* =====================================================
+       2.4 NGHỀ NGHIỆP
+    ===================================================== */
 
-            khmer:
-              "ខ្ញុំចាស់ជាងអ្នកបន្តិច",
+    {
+      id: 4,
 
-            pronunciation:
-              "Khnhom chas châng neak bontich",
+      title: "Nghề nghiệp",
 
-            vietnamese:
-              "Tôi lớn hơn bạn một chút",
+      titleKhmer: "មុខរបរ",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំចាស់ជាងអ្នកបន្តិច.mp3",
-          },
+      description:
+        "Cách hỏi nghề nghiệp và giới thiệu một số nghề nghiệp quen thuộc.",
 
-          {
-            id: 7,
+      sentences: [
+        {
+          id: 1,
 
-            khmer:
-              "បាទ/ចាស ខ្ញុំក្មេងជាងអ្នក",
+          khmer: "តើអ្នកមានមុខរបរអ្វី?",
 
-            pronunciation:
-              "Baat/Chas, khnhom k'meng châng neak",
+          pronunciation:
+            "Tơ neak mean muk-ro-p avei?",
 
-            vietnamese:
-              "Vâng, tôi nhỏ tuổi hơn bạn",
+          vietnamese: "Bạn làm nghề gì?",
 
-            audio:
-              "/audio/communication/deeper/បាទ ចាស ខ្ញុំក្មេងជាងអ្នក.mp3",
-          },
-        ],
-      },
+          audio:
+            "/audio/communication/basic2/basic2.4/តើអ្នកមានមុខរបរអ្វី.mp3",
+        },
 
-      /* =====================================================
-         2.3 HỎI VÀ ĐÁP VỀ NGHỀ NGHIỆP
-      ===================================================== */
+        {
+          id: 2,
 
-      {
-        id: 3,
+          khmer: "ខ្ញុំជាគ្រូបង្រៀន",
 
-        title: "Hỏi và đáp về nghề nghiệp",
+          pronunciation:
+            "Khnhom chia kru bang-riên",
 
-        titleKhmer:
-          "ការសួរ និងឆ្លើយអំពីមុខរបរ",
+          vietnamese: "Tôi là giáo viên",
 
-        description:
-          "Cách hỏi người khác làm nghề gì và giới thiệu nghề nghiệp của bản thân.",
+          audio:
+            "/audio/communication/basic2/basic2.4/ខ្ញុំជាគ្រូបង្រៀន.mp3",
+        },
 
-        sentences: [
-          {
-            id: 1,
+        {
+          id: 3,
 
-            khmer:
-              "តើអ្នកធ្វើការអ្វី?",
+          khmer: "ខ្ញុំជាសិស្ស",
 
-            pronunciation:
-              "Tơ neak thveu-ka avei?",
+          pronunciation:
+            "Khnhom chia se-s",
 
-            vietnamese:
-              "Bạn làm nghề gì?",
+          vietnamese: "Tôi là học sinh",
 
-            audio:
-              "/audio/communication/deeper/តើអ្នកធ្វើការអ្វី.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.4/ខ្ញុំជាសិស្ស.mp3",
+        },
 
-          {
-            id: 2,
+        {
+          id: 4,
 
-            khmer:
-              "តើអ្នកមានមុខរបរអ្វី?",
+          khmer: "ខ្ញុំជាប៉ូលិស",
 
-            pronunciation:
-              "Tơ neak mean muk-rop avei?",
+          pronunciation:
+            "Khnhom chia po-lis",
 
-            vietnamese:
-              "Bạn làm công việc gì?",
+          vietnamese: "Tôi là công an",
 
-            audio:
-              "/audio/communication/deeper/តើអ្នកមានមុខរបរអ្វី.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.4/ខ្ញុំជាប៉ូលិស.mp3",
+        },
 
-          {
-            id: 3,
+        {
+          id: 5,
 
-            khmer:
-              "ខ្ញុំជាគ្រូបង្រៀន",
+          khmer: "ខ្ញុំជាទាហាន",
 
-            pronunciation:
-              "Khnhom chia kru bong-rien",
+          pronunciation:
+            "Khnhom chia tie-haen",
 
-            vietnamese:
-              "Tôi là giáo viên",
+          vietnamese: "Tôi là bộ đội",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំជាគ្រូបង្រៀន.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.4/ខ្ញុំជាទាហាន.mp3",
+        },
+      ],
+    },
 
-          {
-            id: 4,
+    /* =====================================================
+       2.5 HỘI THOẠI
+    ===================================================== */
 
-            khmer:
-              "ខ្ញុំជាសិស្ស",
+    {
+      id: 5,
 
-            pronunciation:
-              "Khnhom chia sâ-sâ",
+      title: "Hội thoại",
 
-            vietnamese:
-              "Tôi là học sinh",
+      titleKhmer: "ការសន្ទនា",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំជាសិស្ស.mp3",
-          },
+      description:
+        "Hai người bạn gặp lại nhau, hỏi tuổi, nơi sinh sống và nghề nghiệp.",
 
-          {
-            id: 5,
+      dialogue: [
 
-            khmer:
-              "ដារា អ្នកធ្វើការអ្វី?",
+        /* -------------------------------------------------
+           GIAI ĐOẠN 1
+           CHƯA BIẾT TUỔI
+           → DÙNG អ្នក / ខ្ញុំ
+        ------------------------------------------------- */
 
-            pronunciation:
-              "Dara neak thveu-ka avei?",
+        {
+          id: 1,
 
-            vietnamese:
-              "Dara, bạn làm nghề gì?",
+          speaker: "Chantria",
 
-            audio:
-              "/audio/communication/deeper/ដារា អ្នកធ្វើការអ្វី.mp3",
-          },
+          khmer:
+            "ជំរាបសួរដារា។រីករាយណាស់ដែលបានជួបអ្នកម្តងទៀត",
 
-          {
-            id: 6,
+          pronunciation:
+            "Suô-sđây Dara. Rik-reay nas del ban chuôp neak mdong tiet",
 
-            khmer:
-              "ចន្ទ្រា ជាសិស្ស",
+          vietnamese:
+            "Xin chào Dara. Rất vui được gặp lại bạn",
 
-            pronunciation:
-              "Chantra chia sâ-sâ",
+          audio:
+            "/audio/communication/basic2/basic2.5/C-ជំរាបសួរដារា។រីករាយណាស់ដែលបានជួបអ្នកម្តងទៀត.mp3",
+        },
 
-            vietnamese:
-              "Chantra là học sinh",
+        {
+          id: 2,
 
-            audio:
-              "/audio/communication/deeper/ចន្ទ្រា ជាសិស្ស.mp3",
-          },
+          speaker: "Dara",
 
-          {
-            id: 7,
+          khmer:
+            "សួស្តី ចន្ទ្រា។ រីករាយដែលបានជួបអ្នក",
 
-            khmer:
-              "ខ្ញុំចូលចិត្តការងាររបស់ខ្ញុំ",
+          pronunciation:
+            "Suô-sđây Chantra. Rik-reay del ban chuôp neak",
 
-            pronunciation:
-              "Khnhom chol-chet ka-nga robos khnhom",
+          vietnamese:
+            "Xin chào Chantria. Hân hạnh được gặp bạn",
 
-            vietnamese:
-              "Tôi thích công việc của mình",
+          audio:
+            "/audio/communication/basic2/basic2.5/D-សួស្តី ចន្ទ្រា។ រីករាយដែលបានជួបអ្នក.mp3",
+        },
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំចូលចិត្តការងាររបស់ខ្ញុំ.mp3",
-          },
-        ],
-      },
+        {
+          id: 3,
 
-      /* =====================================================
-         2.4 HỎI VÀ ĐÁP VỀ NƠI SINH SỐNG
-      ===================================================== */
+          speaker: "Chantria",
 
-      {
-        id: 4,
+          khmer:
+            "ឆ្នាំនេះអ្នកអាយុប៉ុន្មានឆ្នាំ?",
 
-        title: "Hỏi và đáp về nơi sinh sống",
+          pronunciation:
+            "Chnam nih neak ayu pon-man chnam?",
 
-        titleKhmer:
-          "ការសួរ និងឆ្លើយអំពីទីកន្លែងរស់នៅ",
+          vietnamese:
+            "Năm nay bạn bao nhiêu tuổi?",
 
-        description:
-          "Cách hỏi nơi một người đang sinh sống và nói về nơi mình ở.",
+          audio:
+            "/audio/communication/basic2/basic2.5/C-ឆ្នាំនេះអ្នកអាយុប៉ុន្មានឆ្នាំ.mp3",
+        },
 
-        sentences: [
-          {
-            id: 1,
+        {
+          id: 4,
 
-            khmer:
-              "តើអ្នករស់នៅឯណា?",
+          speaker: "Dara",
 
-            pronunciation:
-              "Tơ neak ros nov ae-na?",
+          khmer:
+            "ឆ្នាំនេះខ្ញុំអាយុម្ភៃប្រាំឆ្នាំ។ ហើយអ្នកអាយុប៉ុន្មានឆ្នាំ?",
 
-            vietnamese:
-              "Bạn sống ở đâu?",
+          pronunciation:
+            "Chnam nih khnhom ayu ph-nyai-pram chnam. Haey neak ayu pon-man chnam?",
 
-            audio:
-              "/audio/communication/deeper/តើអ្នករស់នៅឯណា.mp3",
-          },
+          vietnamese:
+            "Năm nay tôi 25 tuổi. Còn bạn bao nhiêu tuổi?",
 
-          {
-            id: 2,
+          audio:
+            "/audio/communication/basic2/basic2.5/D-ឆ្នាំនេះខ្ញុំអាយុម្ភៃប្រាំឆ្នាំ។ ហើយអ្នកអាយុប៉ុន្មានឆ្នាំ.mp3",
+        },
+        
+        {
+          id: 5,
 
-            khmer:
-              "ខ្ញុំរស់នៅក្រុងចៅដុក",
+          speaker: "Chantria",
 
-            pronunciation:
-              "Khnhom ros nov krong Chao-Đok",
+          khmer:
+            "ឆ្នាំនេះខ្ញុំអាយុដប់ប្រាំមួយឆ្នាំ",
 
-            vietnamese:
-              "Tôi sống ở thành phố Châu Đốc",
+          pronunciation:
+            "Chnam nih khnhom ayu dop-pram-muoy chnam",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំរស់នៅក្រុងចៅដុក.mp3",
-          },
+          vietnamese:
+            "Năm nay tôi 16 tuổi",
 
-          {
-            id: 3,
+          audio:
+            "/audio/communication/basic2/basic2.5/C-ឆ្នាំនេះខ្ញុំអាយុដប់ប្រាំមួយឆ្នាំ.mp3",
+        },
 
-            khmer:
-              "ខ្ញុំរស់នៅខេត្តអានយ៉ាង",
+        /* -------------------------------------------------
+           TỪ ĐÂY ĐÃ BIẾT TUỔI
+           DARA = បង
+           CHANTRIA = អូន
+        ------------------------------------------------- */
 
-            pronunciation:
-              "Khnhom ros nov khaet An-yang",
+        {
+          id: 6,
 
-            vietnamese:
-              "Tôi sống ở tỉnh An Giang",
+          speaker: "Dara",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំរស់នៅខេត្តអានយ៉ាង.mp3",
-          },
+          khmer:
+            "អូនរស់នៅឯណា?",
 
-          {
-            id: 4,
+          pronunciation:
+            "Oun ros-nov ae-na?",
 
-            khmer:
-              "ដារា រស់នៅឯណា?",
+          vietnamese:
+            "Em sống ở đâu?",
 
-            pronunciation:
-              "Dara ros nov ae-na?",
+          audio:
+            "/audio/communication/basic2/basic2.5/D-អូនរស់នៅឯណា.mp3",
+        },
 
-            vietnamese:
-              "Dara sống ở đâu?",
+        {
+          id: 7,
 
-            audio:
-              "/audio/communication/deeper/ដារា រស់នៅឯណា.mp3",
-          },
+          speaker: "Chantria",
 
-          {
-            id: 5,
+          khmer:
+            "ខ្ញុំរស់នៅឃុំទ្រីសុទ្រន៍ ខេត្តអានយ៉ាង។ បងរស់នៅឯណា?",
 
-            khmer:
-              "ចន្ទ្រា រស់នៅឯណា?",
+          pronunciation:
+            "Khnhom ros-nov khum Tri-sot, khaet An-yang. Bong ros-nov ae-na?",
 
-            pronunciation:
-              "Chantra ros nov ae-na?",
+          vietnamese:
+            "Em sống ở xã Tri Tôn, tỉnh An Giang. Còn anh sống ở đâu?",
 
-            vietnamese:
-              "Chantra sống ở đâu?",
+          audio:
+            "/audio/communication/basic2/basic2.5/C-ខ្ញុំរស់នៅឃុំទ្រីសុទ្រន៍ ខេត្តអានយ៉ាង។ បងរស់នៅឯណា.mp3",
+        },
 
-            audio:
-              "/audio/communication/deeper/ចន្ទ្រា រស់នៅឯណា.mp3",
-          },
+        {
+          id: 8,
 
-          {
-            id: 6,
+          speaker: "Dara",
 
-            khmer:
-              "ខ្ញុំរស់នៅជាមួយគ្រួសារ",
+          khmer:
+            "ខ្ញុំរស់នៅសង្កាត់ទិញបៀន ខេត្តអានយ៉ាង",
 
-            pronunciation:
-              "Khnhom ros nov chea-muoy kru-sa",
+          pronunciation:
+            "Khnhom ros-nov sang-kat Tinh-biên, khaet An-yang",
 
-            vietnamese:
-              "Tôi sống cùng gia đình",
+          vietnamese:
+            "Anh sống ở phường Tịnh Biên, tỉnh An Giang",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំរស់នៅជាមួយគ្រួសារ.mp3",
-          },
+          audio:
+            "/audio/communication/basic2/basic2.5/D-ខ្ញុំរស់នៅសង្កាត់ទិញបៀន ខេត្តអានយ៉ាង.mp3",
+        },
 
-          {
-            id: 7,
+        {
+          id: 9,
 
-            khmer:
-              "ខ្ញុំចូលចិត្តកន្លែងដែលខ្ញុំរស់នៅ",
+          speaker: "Chantria",
 
-            pronunciation:
-              "Khnhom chol-chet kon-laeng del khnhom ros nov",
+          khmer:
+            "បងមានមុខរបរអ្វី?",
 
-            vietnamese:
-              "Tôi thích nơi mình đang sống",
+          pronunciation:
+            "Bong mean muk-ro-p avei?",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំចូលចិត្តកន្លែងដែលខ្ញុំរស់នៅ.mp3",
-          },
-        ],
-      },
+          vietnamese:
+            "Anh làm nghề gì?",
 
-      /* =====================================================
-         2.5 HỘI THOẠI NGẮN
-      ===================================================== */
+          audio:
+            "/audio/communication/basic2/basic2.5/C-បងមានមុខរបរអ្វី.mp3",
+        },
 
-      {
-        id: 5,
+        {
+          id: 10,
 
-        title: "Hội thoại ngắn",
+          speaker: "Dara",
 
-        titleKhmer:
-          "ការសន្ទនាខ្លី",
+          khmer:
+            "ខ្ញុំជាគ្រូបង្រៀន។ អូនមានមុខរបរអ្វី?",
 
-        description:
-          "Dara và Chantra gặp lại nhau và trò chuyện về tuổi, nghề nghiệp và nơi sinh sống.",
+          pronunciation:
+            "Khnhom chia kru bang-riên. Oun mean muk-ro-p avei?",
 
-        dialogue: [
-          {
-            id: 1,
+          vietnamese:
+            "Anh làm giáo viên. Còn em làm nghề gì?",
 
-            speaker: "Chantra",
+          audio:
+            "/audio/communication/basic2/basic2.5/D-ខ្ញុំជាគ្រូបង្រៀន។ អូនមានមុខរបរអ្វី.mp3",
+        },
 
-            khmer:
-              "សួស្តី ដារា! ជួបគ្នាទៀតហើយ",
+        {
+          id: 11,
 
-            pronunciation:
-              "Suô-sđây Dara! Chuôp-knea tiet haey",
+          speaker: "Chantria",
 
-            vietnamese:
-              "Chào Dara! Lại gặp nhau rồi",
+          khmer:
+            "ខ្ញុំជាសិស្ស",
 
-            audio:
-              "/audio/communication/deeper/សួស្តី ដារា ជួបគ្នាទៀតហើយ.mp3",
-          },
+          pronunciation:
+            "Khnhom chia se-s",
 
-          {
-            id: 2,
+          vietnamese:
+            "Em là học sinh",
 
-            speaker: "Dara",
+          audio:
+            "/audio/communication/basic2/basic2.5/C-ខ្ញុំជាសិស្ស.mp3",
+        },
 
-            khmer:
-              "សួស្តី ចន្ទ្រា! ខានជួបគ្នាយូរហើយ",
+        {
+          id: 12,
 
-            pronunciation:
-              "Suô-sđây Chantra! Khân chuôp-knea yu haey",
+          speaker: "Dara",
 
-            vietnamese:
-              "Chào Chantra! Lâu rồi không gặp",
+          khmer:
+            "សូមអូនសុខសប្បាយ",
 
-            audio:
-              "/audio/communication/deeper/សួស្តី ចន្ទ្រា ខានជួបគ្នាយូរហើយ.mp3",
-          },
+          pronunciation:
+            "Som oun sóc sập bai",
 
-          {
-            id: 3,
+          vietnamese:
+            "Chúc em luôn mạnh khỏe",
 
-            speaker: "Dara",
+          audio:
+            "/audio/communication/basic2/basic2.5/D-សូមអូនសុខសប្បាយ.mp3",
+        },
 
-            khmer:
-              "សុខសប្បាយទេ ចន្ទ្រា?",
+        {
+          id: 13,
 
-            pronunciation:
-              "Sốc-sáp-bai tê Chantra?",
+          speaker: "Chantria",
 
-            vietnamese:
-              "Dạo này khỏe không Chantra?",
+          khmer:
+            "សូមបងសុខសប្បាយដែរ",
 
-            audio:
-              "/audio/communication/deeper/សុខសប្បាយទេ ចន្ទ្រា.mp3",
-          },
+          pronunciation:
+            "Som boong sóc sập bai đae",
 
-          {
-            id: 4,
+          vietnamese:
+            "Chúc anh cũng luôn mạnh khỏe",
 
-            speaker: "Chantra",
+          audio:
+            "/audio/communication/basic2/basic2.5/C-សូមបងសុខសប្បាយដែរ.mp3",
+        },
 
-            khmer:
-              "ខ្ញុំសុខសប្បាយ។ ដារា វិញ?",
+        {
+          id: 14,
 
-            pronunciation:
-              "Khnhom sốc-sáp-bai. Dara vinh?",
+          speaker: "Dara",
 
-            vietnamese:
-              "Tôi khỏe. Còn Dara?",
+          khmer:
+            "អរគុណ។ លាអូនហើយ",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំសុខសប្បាយ ដារា វិញ.mp3",
-          },
+          pronunciation:
+            "Or-kun. Lea oun haey",
 
-          {
-            id: 5,
+          vietnamese:
+            "Cảm ơn, tạm biệt em",
 
-            speaker: "Dara",
+          audio:
+            "/audio/communication/basic2/basic2.5/D-អរគុណ។ លាអូនហើយ.mp3",
+        },
 
-            khmer:
-              "ខ្ញុំក៏សុខសប្បាយដែរ",
+        {
+          id: 15,
 
-            pronunciation:
-              "Khnhom ko sốc-sáp-bai đae",
+          speaker: "Chantria",
 
-            vietnamese:
-              "Tôi cũng khỏe",
+          khmer:
+            "អរគុណច្រើន។ លាបងហើយ",
 
-            audio:
-              "/audio/communication/deeper/ខ្ញុំក៏សុខសប្បាយដែរ.mp3",
-          },
+          pronunciation:
+            "Or-kun chh-rơn. Lea bong haey",
 
-          {
-            id: 6,
+          vietnamese:
+            "Cảm ơn rất nhiều. Tạm biệt anh",
 
-            speaker: "Dara",
-
-            khmer:
-              "ចន្ទ្រា អាយុប៉ុន្មានឆ្នាំហើយ?",
-
-            pronunciation:
-              "Chantra ayu pon-man chnam haey?",
-
-            vietnamese:
-              "Chantra bao nhiêu tuổi rồi?",
-
-            audio:
-              "/audio/communication/deeper/ចន្ទ្រា អាយុប៉ុន្មានឆ្នាំហើយ.mp3",
-          },
-
-          {
-            id: 7,
-
-            speaker: "Chantra",
-
-            khmer:
-              "ខ្ញុំអាយុដប់ប្រាំបីឆ្នាំ។ ចុះដារា?",
-
-            pronunciation:
-              "Khnhom ayu dop-pram-bei chnam. Chôh Dara?",
-
-            vietnamese:
-              "Tôi 18 tuổi. Còn Dara?",
-
-            audio:
-              "/audio/communication/deeper/ខ្ញុំអាយុដប់ប្រាំបីឆ្នាំ ចុះដារា.mp3",
-          },
-
-          {
-            id: 8,
-
-            speaker: "Dara",
-
-            khmer:
-              "ខ្ញុំអាយុម្ភៃពីរឆ្នាំ",
-
-            pronunciation:
-              "Khnhom ayu mphai-pi chnam",
-
-            vietnamese:
-              "Tôi 22 tuổi",
-
-            audio:
-              "/audio/communication/deeper/ខ្ញុំអាយុម្ភៃពីរឆ្នាំ.mp3",
-          },
-
-          {
-            id: 9,
-
-            speaker: "Chantra",
-
-            khmer:
-              "តើដារាធ្វើការអ្វី?",
-
-            pronunciation:
-              "Tơ Dara thveu-ka avei?",
-
-            vietnamese:
-              "Dara làm nghề gì?",
-
-            audio:
-              "/audio/communication/deeper/តើដារាធ្វើការអ្វី.mp3",
-          },
-
-          {
-            id: 10,
-
-            speaker: "Dara",
-
-            khmer:
-              "ខ្ញុំជាគ្រូបង្រៀន",
-
-            pronunciation:
-              "Khnhom chia kru bong-rien",
-
-            vietnamese:
-              "Tôi là giáo viên",
-
-            audio:
-              "/audio/communication/deeper/ខ្ញុំជាគ្រូបង្រៀន.mp3",
-          },
-
-          {
-            id: 11,
-
-            speaker: "Dara",
-
-            khmer:
-              "ចុះចន្ទ្រា អ្នកធ្វើការអ្វី?",
-
-            pronunciation:
-              "Chôh Chantra, neak thveu-ka avei?",
-
-            vietnamese:
-              "Còn Chantra, bạn làm nghề gì?",
-
-            audio:
-              "/audio/communication/deeper/ចុះចន្ទ្រា អ្នកធ្វើការអ្វី.mp3",
-          },
-
-          {
-            id: 12,
-
-            speaker: "Chantra",
-
-            khmer:
-              "ខ្ញុំជាសិស្ស",
-
-            pronunciation:
-              "Khnhom chia sâ-sâ",
-
-            vietnamese:
-              "Tôi là học sinh",
-
-            audio:
-              "/audio/communication/deeper/ខ្ញុំជាសិស្ស.mp3",
-          },
-
-          {
-            id: 13,
-
-            speaker: "Dara",
-
-            khmer:
-              "តើអ្នករស់នៅឯណា?",
-
-            pronunciation:
-              "Tơ neak ros nov ae-na?",
-
-            vietnamese:
-              "Bạn sống ở đâu?",
-
-            audio:
-              "/audio/communication/deeper/តើអ្នករស់នៅឯណា.mp3",
-          },
-
-          {
-            id: 14,
-
-            speaker: "Chantra",
-
-            khmer:
-              "ខ្ញុំរស់នៅខេត្តអានយ៉ាង",
-
-            pronunciation:
-              "Khnhom ros nov khaet An-yang",
-
-            vietnamese:
-              "Tôi sống ở tỉnh An Giang",
-
-            audio:
-              "/audio/communication/deeper/ខ្ញុំរស់នៅខេត្តអានយ៉ាង.mp3",
-          },
-
-          {
-            id: 15,
-
-            speaker: "Dara",
-
-            khmer:
-              "ខ្ញុំក៏រស់នៅខេត្តអានយ៉ាងដែរ",
-
-            pronunciation:
-              "Khnhom ko ros nov khaet An-yang đae",
-
-            vietnamese:
-              "Tôi cũng sống ở tỉnh An Giang",
-
-            audio:
-              "/audio/communication/deeper/ខ្ញុំក៏រស់នៅខេត្តអានយ៉ាងដែរ.mp3",
-          },
-
-          {
-            id: 16,
-
-            speaker: "Chantra",
-
-            khmer:
-              "អូ! ពិតជាល្អណាស់",
-
-            pronunciation:
-              "Ô! Pit chea la-or nas",
-
-            vietnamese:
-              "Ồ! Thật là tuyệt",
-
-            audio:
-              "/audio/communication/deeper/អូ ពិតជាល្អណាស់.mp3",
-          },
-
-          {
-            id: 17,
-
-            speaker: "Dara",
-
-            khmer:
-              "បាទ/ចាស។ ជួបគ្នាម្តងទៀត",
-
-            pronunciation:
-              "Baat/Chas. Chuôp-knea mdong tiet",
-
-            vietnamese:
-              "Vâng. Hẹn gặp lại",
-
-            audio:
-              "/audio/communication/deeper/បាទ ចាស ជួបគ្នាម្តងទៀត.mp3",
-          },
-
-          {
-            id: 18,
-
-            speaker: "Chantra",
-
-            khmer:
-              "លាហើយ ដារា",
-
-            pronunciation:
-              "Lea-haey Dara",
-
-            vietnamese:
-              "Tạm biệt Dara",
-
-            audio:
-              "/audio/communication/deeper/លាហើយ ដារា.mp3",
-          },
-        ],
-      },
-    ],
-  },
+          audio:
+            "/audio/communication/basic2/basic2.5/C-អរគុណច្រើន។ លាបងហើយ.mp3",
+        },
+      ],
+    },
+  ],
+},
 ];
 
 export default communicationData;
