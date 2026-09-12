@@ -20,46 +20,51 @@
 
 
 /* =========================================================
-   VOCABULARY - GIAO DIỆN
+   VOCABULARY - COLOR SYSTEM
 ========================================================= */
 
 * {
   box-sizing: border-box;
 }
 
-.vocabulary-page {
-  min-height: 100vh;
-  padding: 25px;
+:root {
+  /* XANH NƯỚC BIỂN CHỦ ĐẠO */
+  --vocab-blue: #0077b6;
+  --vocab-blue-dark: #005b8f;
+  --vocab-blue-deep: #004f7c;
 
-  background:
-    radial-gradient(
-      circle at 0% 0%,
-      #dbeafe 0%,
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 100% 0%,
-      #fce7f3 0%,
-      transparent 28%
-    ),
-    radial-gradient(
-      circle at 50% 100%,
-      #dcfce7 0%,
-      transparent 30%
-    ),
-    #f8fafc;
+  /* XANH NHẠT - CHỈ DÙNG LÀM NỀN PHỤ */
+  --vocab-blue-light: #eaf7fb;
+  --vocab-blue-soft: #f4fbfd;
+  --vocab-blue-border: #b9dce8;
 
-  color: #172033;
+  /* CAM - TIÊU ĐỀ KHMER */
+  --vocab-orange: #d97706;
+  --vocab-orange-dark: #b45309;
+  --vocab-orange-light: #fff4e5;
 
-  /* FONT CHUNG CHO TIẾNG VIỆT + GIAO DIỆN */
-  font-family:
-    "Segoe UI",
-    Arial,
-    Helvetica,
-    sans-serif;
+  /* VÀNG NHẤN */
+  --vocab-gold: #d9a441;
+  --vocab-gold-light: #fff7df;
 
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  /* CHỮ */
+  --vocab-text: #263238;
+  --vocab-text-soft: #66736a;
+
+  /* NỀN */
+  --vocab-white: #ffffff;
+  --vocab-background: #f7fafb;
+  --vocab-border: #dce5e8;
+
+  /* SHADOW */
+  --vocab-shadow-sm:
+    0 3px 12px rgba(30, 80, 100, 0.08);
+
+  --vocab-shadow-md:
+    0 10px 28px rgba(20, 80, 105, 0.14);
+
+  --vocab-blue-shadow:
+    0 6px 18px rgba(0, 119, 182, 0.22);
 }
 
 
@@ -76,21 +81,18 @@
   min-width: 175px;
   padding: 12px 18px;
 
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 18px;
+  border: 1px solid var(--vocab-blue-border);
+  border-radius: 14px;
 
   text-align: center;
 
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.97);
 
-  box-shadow:
-    0 10px 30px rgba(15, 23, 42, 0.15);
-
-  backdrop-filter: blur(12px);
+  box-shadow: var(--vocab-shadow-sm);
 }
 
 .vocabulary-timer-label {
-  color: #16a34a;
+  color: var(--vocab-blue);
 
   font-size: 12px;
   font-weight: 800;
@@ -100,7 +102,7 @@
 .vocabulary-timer-time {
   margin-top: 2px;
 
-  color: #0f172a;
+  color: var(--vocab-blue-deep);
 
   font-size: 27px;
   line-height: 1.1;
@@ -112,7 +114,7 @@
 .vocabulary-timer-exp {
   margin-top: 4px;
 
-  color: #64748b;
+  color: var(--vocab-text-soft);
 
   font-size: 11px;
   font-weight: 600;
@@ -121,29 +123,33 @@
 
 
 /* =========================================================
-   NÚT QUAY LẠI
+   NÚT QUAY VỀ TRANG HỌC TẬP
+   CANH ĐÚNG MÉP TRÁI KHUNG 1200PX
 ========================================================= */
 
 .vocabulary-back-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 7px;
 
+  margin-top: 20px;
   margin-bottom: 18px;
 
+  /*
+    Canh mép trái theo đúng khung vocabulary-header
+    max-width: 1200px
+  */
+  margin-left: max(12px, calc((100% - 1200px) / 2));
+
+  padding: 10px 17px;
+
   border: none;
-  border-radius: 14px;
+  border-radius: 10px;
 
-  padding: 11px 18px;
+  color: #ffffff;
 
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #4f46e5,
-      #7c3aed
-    );
+  background: var(--vocab-blue);
 
   font-family:
     "Segoe UI",
@@ -157,17 +163,21 @@
 
   cursor: pointer;
 
-  box-shadow:
-    0 8px 20px rgba(79, 70, 229, 0.25);
+  box-shadow: var(--vocab-blue-shadow);
 
-  transition: 0.25s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .vocabulary-back-button:hover {
-  transform: translateY(-3px);
+  background: var(--vocab-blue-dark);
+
+  transform: translateY(-1px);
 
   box-shadow:
-    0 12px 28px rgba(79, 70, 229, 0.35);
+    0 9px 22px rgba(0, 119, 182, 0.30);
 }
 
 
@@ -176,112 +186,81 @@
 ========================================================= */
 
 .vocabulary-header {
-  position: relative;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
 
   max-width: 1200px;
-  margin: 0 auto 28px;
 
-  padding: 38px 35px;
+  margin: 20px auto 28px;
 
-  border-radius: 30px;
+  padding: 30px 34px;
 
-  color: white;
+  background: var(--vocab-white);
 
-  background:
-    radial-gradient(
-      circle at 15% 15%,
-      rgba(255, 255, 255, 0.25),
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 90% 85%,
-      rgba(255, 255, 255, 0.18),
-      transparent 25%
-    ),
-    linear-gradient(
-      135deg,
-      #7c3aed 0%,
-      #2563eb 45%,
-      #0891b2 100%
-    );
+  /*
+    VIỀN XANH GIỐNG CARD CHỦ ĐỀ
+  */
+  border: 1px solid var(--vocab-blue-border);
+  border-top: 5px solid var(--vocab-blue);
 
-  box-shadow:
-    0 20px 45px rgba(37, 99, 235, 0.28);
+  border-radius: 18px;
+
+  color: var(--vocab-text);
+
+  box-shadow: var(--vocab-shadow-sm);
 }
 
-.vocabulary-header::before {
-  content: "";
-
-  position: absolute;
-
-  width: 260px;
-  height: 260px;
-
-  right: -100px;
-  top: -140px;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.12);
-}
-
+.vocabulary-header::before,
 .vocabulary-header::after {
-  content: "";
-
-  position: absolute;
-
-  width: 180px;
-  height: 180px;
-
-  left: -80px;
-  bottom: -100px;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.08);
+  display: none;
 }
+
+
+/* =========================================================
+   HEADER MAIN
+========================================================= */
 
 .vocabulary-header-main {
+  flex: 1;
+
   position: relative;
   z-index: 2;
 
-  text-align: center;
+  text-align: left;
 }
 
 
 /* =========================================================
-   ICON HEADER
+   HEADER ICON
 ========================================================= */
 
 .vocabulary-header-icon {
-  font-size: 52px;
-
+  font-size: 46px;
   line-height: 1;
-
-  filter:
-    drop-shadow(
-      0 5px 8px rgba(0, 0, 0, 0.15)
-    );
 }
 
 
 /* =========================================================
-   CHỮ KHMER HEADER
+   TIÊU ĐỀ KHMER
+   MÀU CAM
 ========================================================= */
 
 .vocabulary-header-khmer {
-  margin-top: 8px;
+  margin-top: 6px;
+  margin-bottom: 5px;
 
-  color: white;
+  color: var(--vocab-orange);
 
   font-family:
     "Khmer OS Muol",
     "Khmer OS",
     sans-serif;
 
-  font-size: 30px;
-  line-height: 1.55;
+  font-size: 35px;
+  line-height: 1.45;
 
   font-weight: 700;
 
@@ -290,13 +269,13 @@
 
 
 /* =========================================================
-   TIẾNG VIỆT / TIẾNG ANH HEADER
+   TIÊU ĐỀ TIẾNG VIỆT
 ========================================================= */
 
 .vocabulary-header h1 {
-  margin: 8px 0 5px;
+  margin: 0;
 
-  color: white;
+  color: var(--vocab-blue-deep);
 
   font-family:
     "Segoe UI",
@@ -304,18 +283,16 @@
     Helvetica,
     sans-serif;
 
-  font-size: 32px;
-  line-height: 1.25;
+  font-size: 28px;
+  line-height: 1.2;
 
   font-weight: 800;
-
-  letter-spacing: 0.2px;
 }
 
 .vocabulary-header p {
-  margin: 0;
+  margin: 8px 0 0;
 
-  color: white;
+  color: var(--vocab-text-soft);
 
   font-family:
     "Segoe UI",
@@ -323,12 +300,10 @@
     Helvetica,
     sans-serif;
 
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.5;
 
-  font-weight: 500;
-
-  opacity: 0.92;
+  font-weight: 400;
 }
 
 
@@ -337,39 +312,32 @@
 ========================================================= */
 
 .vocabulary-stats {
-  position: relative;
-  z-index: 2;
-
   display: flex;
-  justify-content: center;
 
-  gap: 16px;
+  gap: 14px;
 
-  margin-top: 28px;
+  flex-shrink: 0;
 }
 
 .vocabulary-stat {
-  min-width: 175px;
+  min-width: 110px;
 
-  padding: 17px 25px;
+  padding: 16px 20px;
 
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  border-radius: 20px;
+  border: 1px solid var(--vocab-blue-border);
+  border-radius: 14px;
 
   text-align: center;
 
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--vocab-blue-soft);
 
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-
-  backdrop-filter: blur(10px);
+  box-shadow: none;
 }
 
 .vocabulary-stat strong {
   display: block;
 
-  color: white;
+  color: var(--vocab-blue);
 
   font-family:
     "Segoe UI",
@@ -377,7 +345,7 @@
     Helvetica,
     sans-serif;
 
-  font-size: 34px;
+  font-size: 28px;
   line-height: 1;
 
   font-weight: 800;
@@ -388,7 +356,7 @@
 
   margin-top: 7px;
 
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--vocab-blue-dark);
 
   font-family:
     "Segoe UI",
@@ -409,6 +377,7 @@
 
 .vocabulary-container {
   max-width: 1200px;
+
   margin: 0 auto;
 }
 
@@ -421,40 +390,27 @@
   position: relative;
 
   margin-bottom: 20px;
-  padding: 23px 25px;
 
-  border-radius: 22px;
+  padding: 20px 22px;
 
-  background: white;
+  border: 1px solid var(--vocab-border);
+  border-left: 5px solid var(--vocab-blue);
 
-  box-shadow:
-    0 8px 25px rgba(15, 23, 42, 0.07);
+  border-radius: 14px;
+
+  background: var(--vocab-white);
+
+  box-shadow: var(--vocab-shadow-sm);
 }
 
 .vocabulary-section-title::before {
-  content: "";
-
-  position: absolute;
-
-  left: 0;
-  top: 15px;
-  bottom: 15px;
-
-  width: 5px;
-
-  border-radius: 10px;
-
-  background:
-    linear-gradient(
-      #7c3aed,
-      #2563eb
-    );
+  display: none;
 }
 
 .vocabulary-section-title h2 {
   margin: 0;
 
-  color: #312e81;
+  color: var(--vocab-blue-deep);
 
   font-family:
     "Segoe UI",
@@ -462,16 +418,16 @@
     Helvetica,
     sans-serif;
 
-  font-size: 23px;
+  font-size: 19px;
   line-height: 1.3;
 
   font-weight: 800;
 }
 
 .vocabulary-section-title p {
-  margin: 7px 0 0;
+  margin: 5px 0 0;
 
-  color: #64748b;
+  color: var(--vocab-text-soft);
 
   font-family:
     "Segoe UI",
@@ -479,7 +435,7 @@
     Helvetica,
     sans-serif;
 
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
 
   font-weight: 400;
@@ -499,7 +455,7 @@
       minmax(0, 1fr)
     );
 
-  gap: 20px;
+  gap: 18px;
 }
 
 
@@ -511,27 +467,29 @@
   position: relative;
   overflow: hidden;
 
-  min-height: 235px;
+  min-height: 225px;
 
-  border: 2px solid transparent;
-  border-radius: 25px;
+  border: 1px solid var(--vocab-border);
+  border-radius: 16px;
 
-  padding: 25px;
+  padding: 22px;
 
   text-align: left;
 
-  background: white;
+  background: var(--vocab-white);
 
   cursor: pointer;
 
-  box-shadow:
-    0 8px 25px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--vocab-shadow-sm);
 
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 }
+
+
+/* Thanh xanh phía trên giống header */
 
 .vocabulary-category-card::before {
   content: "";
@@ -542,51 +500,43 @@
   left: 0;
   right: 0;
 
-  height: 6px;
+  height: 5px;
 
-  background:
-    linear-gradient(
-      90deg,
-      #7c3aed,
-      #2563eb,
-      #06b6d4
-    );
+  background: var(--vocab-blue);
 }
+
+
+/* Mảng xanh trang trí */
 
 .vocabulary-category-card::after {
   content: "";
 
   position: absolute;
 
-  width: 130px;
-  height: 130px;
+  width: 110px;
+  height: 110px;
 
-  right: -55px;
-  bottom: -55px;
+  right: -45px;
+  bottom: -45px;
 
   border-radius: 50%;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ede9fe,
-      #dbeafe
-    );
+  background: var(--vocab-blue-light);
 
-  transition: 0.35s ease;
+  transition:
+    transform 0.35s ease;
 }
 
 .vocabulary-category-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-5px);
 
-  border-color: #a78bfa;
+  border-color: #8fc9da;
 
-  box-shadow:
-    0 18px 40px rgba(79, 70, 229, 0.18);
+  box-shadow: var(--vocab-shadow-md);
 }
 
 .vocabulary-category-card:hover::after {
-  transform: scale(1.5);
+  transform: scale(1.4);
 }
 
 
@@ -598,27 +548,22 @@
   position: relative;
   z-index: 2;
 
-  width: 72px;
-  height: 72px;
+  width: 68px;
+  height: 68px;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  border-radius: 21px;
+  border: 1px solid var(--vocab-blue-border);
+  border-radius: 16px;
 
-  font-size: 38px;
+  color: var(--vocab-blue);
+
+  font-size: 36px;
   line-height: 1;
 
-  background:
-    linear-gradient(
-      135deg,
-      #dbeafe,
-      #ede9fe
-    );
-
-  box-shadow:
-    0 8px 18px rgba(79, 70, 229, 0.12);
+  background: var(--vocab-blue-soft);
 }
 
 
@@ -630,9 +575,9 @@
   position: relative;
   z-index: 2;
 
-  margin: 18px 0 7px;
+  margin: 16px 0 7px;
 
-  color: #312e81;
+  color: var(--vocab-blue-dark);
 
   font-family:
     "Segoe UI",
@@ -640,7 +585,7 @@
     Helvetica,
     sans-serif;
 
-  font-size: 22px;
+  font-size: 21px;
   line-height: 1.3;
 
   font-weight: 800;
@@ -654,7 +599,7 @@
 
   margin: 0;
 
-  color: #64748b;
+  color: var(--vocab-text-soft);
 
   font-family:
     "Segoe UI",
@@ -674,14 +619,16 @@
 
   display: inline-flex;
 
-  margin-top: 17px;
+  margin-top: 15px;
 
-  padding: 7px 13px;
+  padding: 6px 12px;
 
+  border: 1px solid var(--vocab-blue-border);
   border-radius: 999px;
 
-  color: #4338ca;
-  background: #eef2ff;
+  color: var(--vocab-blue-dark);
+
+  background: var(--vocab-blue-light);
 
   font-family:
     "Segoe UI",
@@ -697,19 +644,25 @@
 
 
 /* =========================================================
-   QUAY LẠI CHỦ ĐỀ
+   NÚT QUAY LẠI CHỌN CHỦ ĐỀ
 ========================================================= */
 
 .vocabulary-category-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: 8px;
   margin-bottom: 18px;
 
+  padding: 10px 17px;
+
   border: none;
-  border-radius: 13px;
+  border-radius: 10px;
 
-  padding: 10px 16px;
+  color: #ffffff;
 
-  color: #4338ca;
-  background: #eef2ff;
+  background: var(--vocab-blue);
 
   font-family:
     "Segoe UI",
@@ -718,26 +671,28 @@
     sans-serif;
 
   font-size: 14px;
-  line-height: 1.3;
-
   font-weight: 700;
+  line-height: 1.3;
 
   cursor: pointer;
 
-  transition: 0.2s ease;
+  box-shadow: var(--vocab-blue-shadow);
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .vocabulary-category-back:hover {
-  color: white;
+  color: #ffffff;
 
-  background:
-    linear-gradient(
-      135deg,
-      #4f46e5,
-      #7c3aed
-    );
+  background: var(--vocab-blue-dark);
 
-  transform: translateX(-4px);
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 9px 22px rgba(0, 119, 182, 0.30);
 }
 
 
@@ -748,31 +703,28 @@
 .vocabulary-topic-header {
   display: flex;
   align-items: center;
+
   gap: 18px;
 
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 
-  padding: 23px;
+  padding: 20px 22px;
 
-  border-radius: 23px;
+  border: 1px solid var(--vocab-border);
+  border-left: 5px solid var(--vocab-blue);
 
-  color: white;
+  border-radius: 14px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #7c3aed,
-      #2563eb 55%,
-      #0891b2
-    );
+  color: var(--vocab-text);
 
-  box-shadow:
-    0 12px 30px rgba(37, 99, 235, 0.22);
+  background: var(--vocab-white);
+
+  box-shadow: var(--vocab-shadow-sm);
 }
 
 .vocabulary-topic-icon {
-  width: 72px;
-  height: 72px;
+  width: 64px;
+  height: 64px;
 
   display: flex;
   align-items: center;
@@ -780,20 +732,21 @@
 
   flex-shrink: 0;
 
-  border-radius: 20px;
+  border: 1px solid var(--vocab-blue-border);
+  border-radius: 14px;
 
-  font-size: 39px;
+  color: var(--vocab-blue);
+
+  font-size: 35px;
   line-height: 1;
 
-  background: rgba(255, 255, 255, 0.18);
-
-  backdrop-filter: blur(8px);
+  background: var(--vocab-blue-soft);
 }
 
 .vocabulary-topic-header h2 {
   margin: 0;
 
-  color: white;
+  color: var(--vocab-blue-deep);
 
   font-family:
     "Segoe UI",
@@ -801,7 +754,7 @@
     Helvetica,
     sans-serif;
 
-  font-size: 28px;
+  font-size: 24px;
   line-height: 1.3;
 
   font-weight: 800;
@@ -810,7 +763,7 @@
 .vocabulary-topic-header p {
   margin: 5px 0 0;
 
-  color: white;
+  color: var(--vocab-text-soft);
 
   font-family:
     "Segoe UI",
@@ -822,8 +775,6 @@
   line-height: 1.5;
 
   font-weight: 400;
-
-  opacity: 0.9;
 }
 
 
@@ -840,7 +791,7 @@
       minmax(0, 1fr)
     );
 
-  gap: 17px;
+  gap: 16px;
 }
 
 
@@ -852,27 +803,29 @@
   position: relative;
   overflow: hidden;
 
-  min-height: 225px;
+  min-height: 215px;
 
-  border: 2px solid transparent;
-  border-radius: 22px;
+  border: 1px solid var(--vocab-border);
+  border-radius: 16px;
 
-  padding: 22px 17px;
+  padding: 20px 17px;
 
   text-align: center;
 
-  background: white;
+  background: var(--vocab-white);
 
   cursor: pointer;
 
-  box-shadow:
-    0 7px 20px rgba(15, 23, 42, 0.08);
+  box-shadow: var(--vocab-shadow-sm);
 
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 }
+
+
+/* Thanh xanh */
 
 .vocabulary-word-card::before {
   content: "";
@@ -883,24 +836,17 @@
   right: 0;
   top: 0;
 
-  height: 5px;
+  height: 4px;
 
-  background:
-    linear-gradient(
-      90deg,
-      #06b6d4,
-      #2563eb,
-      #7c3aed
-    );
+  background: var(--vocab-blue);
 }
 
 .vocabulary-word-card:hover {
-  transform: translateY(-7px);
+  transform: translateY(-5px);
 
-  border-color: #60a5fa;
+  border-color: #8fc9da;
 
-  box-shadow:
-    0 17px 35px rgba(37, 99, 235, 0.17);
+  box-shadow: var(--vocab-shadow-md);
 }
 
 
@@ -912,7 +858,7 @@
   margin-top: 5px;
   margin-bottom: 10px;
 
-  font-size: 44px;
+  font-size: 42px;
   line-height: 1;
 }
 
@@ -924,8 +870,8 @@
 .vocabulary-word-number {
   position: absolute;
 
-  top: 12px;
-  left: 13px;
+  top: 11px;
+  left: 12px;
 
   display: flex;
   align-items: center;
@@ -936,10 +882,12 @@
 
   padding: 0 6px;
 
+  border: 1px solid var(--vocab-blue-border);
   border-radius: 999px;
 
-  color: #475569;
-  background: #f1f5f9;
+  color: var(--vocab-blue-dark);
+
+  background: var(--vocab-blue-soft);
 
   font-family:
     "Segoe UI",
@@ -955,17 +903,16 @@
 
 
 /* =========================================================
-   ⭐ CHỮ KHMER TRÊN THẺ
+   CHỮ KHMER TRÊN CARD
 ========================================================= */
 
 .vocabulary-word-khmer {
   margin-top: 8px;
 
-  color: #312e81;
+  color: #006994;
 
   font-family:
     "Khmer OS",
-    "Noto Sans Khmer",
     sans-serif;
 
   font-size: 29px;
@@ -984,7 +931,7 @@
 .vocabulary-word-roman {
   margin-top: 7px;
 
-  color: #7c3aed;
+  color: var(--vocab-blue);
 
   font-family:
     "Segoe UI",
@@ -1006,7 +953,7 @@
 .vocabulary-word-vietnamese {
   margin-top: 8px;
 
-  color: #475569;
+  color: #53615a;
 
   font-family:
     "Segoe UI",
@@ -1039,7 +986,7 @@
   padding: 20px;
 
   background:
-    rgba(15, 23, 42, 0.72);
+    rgba(0, 55, 80, 0.74);
 
   backdrop-filter: blur(8px);
 }
@@ -1054,16 +1001,19 @@
 
   width: min(450px, 100%);
 
-  padding: 38px 30px;
+  padding: 36px 30px;
 
-  border-radius: 30px;
+  border: 1px solid var(--vocab-border);
+  border-top: 5px solid var(--vocab-blue);
+
+  border-radius: 18px;
 
   text-align: center;
 
-  background: white;
+  background: var(--vocab-white);
 
   box-shadow:
-    0 35px 90px rgba(0, 0, 0, 0.35);
+    0 30px 70px rgba(0, 70, 95, 0.28);
 
   animation:
     vocabularyModalIn 0.22s ease;
@@ -1095,18 +1045,18 @@
 .vocabulary-modal-close {
   position: absolute;
 
-  top: 14px;
-  right: 15px;
+  top: 13px;
+  right: 14px;
 
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
 
   border: none;
   border-radius: 50%;
 
-  color: #475569;
+  color: var(--vocab-blue-dark);
 
-  background: #f1f5f9;
+  background: var(--vocab-blue-soft);
 
   font-family:
     "Segoe UI",
@@ -1114,7 +1064,7 @@
     Helvetica,
     sans-serif;
 
-  font-size: 24px;
+  font-size: 23px;
   line-height: 1;
 
   cursor: pointer;
@@ -1123,9 +1073,9 @@
 }
 
 .vocabulary-modal-close:hover {
-  color: white;
+  color: #ffffff;
 
-  background: #ef4444;
+  background: var(--vocab-blue-dark);
 
   transform: rotate(90deg);
 }
@@ -1136,23 +1086,22 @@
 ========================================================= */
 
 .vocabulary-modal-image {
-  font-size: 68px;
+  font-size: 65px;
   line-height: 1;
 }
 
 
 /* =========================================================
-   ⭐ CHỮ KHMER TRONG MODAL
+   MODAL KHMER
 ========================================================= */
 
 .vocabulary-modal-khmer {
   margin-top: 12px;
 
-  color: #312e81;
+  color: #006994;
 
   font-family:
     "Khmer OS",
-    "Noto Sans Khmer",
     sans-serif;
 
   font-size: 50px;
@@ -1171,7 +1120,7 @@
 .vocabulary-modal-roman {
   margin-top: 7px;
 
-  color: #7c3aed;
+  color: var(--vocab-blue);
 
   font-family:
     "Segoe UI",
@@ -1193,7 +1142,7 @@
 .vocabulary-modal-vietnamese {
   margin-top: 8px;
 
-  color: #475569;
+  color: #53615a;
 
   font-family:
     "Segoe UI",
@@ -1215,19 +1164,14 @@
 .vocabulary-speak-button {
   margin-top: 25px;
 
+  padding: 12px 22px;
+
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
 
-  padding: 13px 23px;
+  color: #ffffff;
 
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #7c3aed
-    );
+  background: var(--vocab-blue);
 
   font-family:
     "Segoe UI",
@@ -1242,17 +1186,21 @@
 
   cursor: pointer;
 
-  box-shadow:
-    0 8px 20px rgba(79, 70, 229, 0.25);
+  box-shadow: var(--vocab-blue-shadow);
 
-  transition: 0.2s;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .vocabulary-speak-button:hover {
-  transform: translateY(-3px);
+  background: var(--vocab-blue-dark);
+
+  transform: translateY(-1px);
 
   box-shadow:
-    0 13px 27px rgba(79, 70, 229, 0.35);
+    0 9px 22px rgba(0, 119, 182, 0.30);
 }
 
 
@@ -1267,10 +1215,10 @@
 
   gap: 10px;
 
-  margin-top: 35px;
+  margin-top: 32px;
   padding: 20px;
 
-  color: #64748b;
+  color: var(--vocab-text-soft);
 
   font-family:
     "Segoe UI",
@@ -1286,10 +1234,24 @@
 
 
 /* =========================================================
-   MOBILE - TABLET
+   TABLET
 ========================================================= */
 
 @media (max-width: 950px) {
+
+  .vocabulary-header {
+    gap: 20px;
+  }
+
+  .vocabulary-stats {
+    gap: 10px;
+  }
+
+  .vocabulary-stat {
+    min-width: 100px;
+
+    padding: 14px 15px;
+  }
 
   .vocabulary-category-grid {
     grid-template-columns:
@@ -1315,11 +1277,6 @@
 
 @media (max-width: 700px) {
 
-  .vocabulary-page {
-    padding: 15px;
-  }
-
-
   /* TIMER */
 
   .vocabulary-timer {
@@ -1334,21 +1291,50 @@
   }
 
 
+  /* NÚT QUAY VỀ */
+
+  .vocabulary-back-button {
+    margin-top: 5px;
+    margin-bottom: 15px;
+
+    /*
+      Trên mobile không cần tính theo 1200px.
+      Giữ khoảng lùi nhỏ để đồng bộ với nội dung.
+    */
+    margin-left: 8px;
+
+    padding: 10px 16px;
+  }
+
+  .vocabulary-category-back {
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+
+
   /* HEADER */
 
   .vocabulary-header {
-    padding: 30px 18px;
+    display: block;
 
-    border-radius: 24px;
+    margin-top: 12px;
+
+    padding: 24px 18px;
+
+    border-radius: 16px;
+  }
+
+  .vocabulary-header-main {
+    text-align: left;
   }
 
   .vocabulary-header-icon {
-    font-size: 44px;
+    font-size: 42px;
   }
 
   .vocabulary-header-khmer {
-    font-size: 25px;
-    line-height: 1.55;
+    font-size: 27px;
+    line-height: 1.5;
   }
 
   .vocabulary-header h1 {
@@ -1365,6 +1351,8 @@
   /* STATS */
 
   .vocabulary-stats {
+    margin-top: 20px;
+
     gap: 10px;
   }
 
@@ -1377,7 +1365,7 @@
   }
 
   .vocabulary-stat strong {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .vocabulary-stat span {
@@ -1403,9 +1391,9 @@
   }
 
   .vocabulary-word-card {
-    min-height: 215px;
+    min-height: 210px;
 
-    padding: 20px 10px;
+    padding: 19px 10px;
   }
 
   .vocabulary-word-khmer {
@@ -1427,18 +1415,20 @@
   .vocabulary-topic-header {
     align-items: flex-start;
 
-    padding: 18px;
+    padding: 17px;
+
+    border-radius: 14px;
   }
 
   .vocabulary-topic-icon {
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
 
-    font-size: 31px;
+    font-size: 30px;
   }
 
   .vocabulary-topic-header h2 {
-    font-size: 23px;
+    font-size: 22px;
     line-height: 1.3;
   }
 
@@ -1451,6 +1441,8 @@
 
   .vocabulary-modal {
     padding: 30px 20px;
+
+    border-radius: 16px;
   }
 
   .vocabulary-modal-khmer {
@@ -1479,6 +1471,6 @@
   }
 
   .vocabulary-header-khmer {
-    font-size: 23px;
+    font-size: 24px;
   }
 }

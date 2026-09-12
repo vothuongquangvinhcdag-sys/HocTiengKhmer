@@ -43,22 +43,6 @@ const formatStudyTime = (totalSeconds) => {
 
 /* =========================================================
    TẠO ĐƯỜNG DẪN AUDIO TỰ ĐỘNG
-   ---------------------------------------------------------
-   Không cần khai báo audio trong từng từ.
-
-   Ví dụ:
-
-   category.id = "numbers"
-   word.khmer = "មួយ"
-
-   => /audio/vocabulary/numbers/មួយ.mp3
-
-   Chỉ cần:
-   khmer
-   roman
-   vietnamese
-   image
-
 ========================================================= */
 
 const getVocabularyAudio = (word, category) => {
@@ -97,13 +81,6 @@ function Vocabulary({
 
   /* =======================================================
      TIMER
-
-     GIỐNG CƠ CHẾ ALPHABET:
-
-     - Tổng thời gian lấy từ Supabase.
-     - Giây đang học chỉ tồn tại khi đang ở Vocabulary.
-     - Thoát trang → reset giây lẻ.
-     - Không dùng localStorage.
   ======================================================= */
 
   const [totalStudySeconds, setTotalStudySeconds] =
@@ -452,15 +429,6 @@ function Vocabulary({
 
   /* =======================================================
      PHÁT AUDIO MP3
-
-     TỰ ĐỘNG NHẬN FILE:
-
-     /audio/vocabulary/{category.id}/{word.khmer}.mp3
-
-     Không cần:
-     audio: "..."
-
-     trong vocabularydata.js nữa.
   ======================================================= */
 
   const speakWord = (word) => {
@@ -557,7 +525,9 @@ function Vocabulary({
     );
 
   /* =======================================================
-     ĐIỀU HƯỚNG
+     ĐIỀU HƯỚNG VỀ TRANG HỌC TẬP
+
+     Chỉ sử dụng khi đang ở TRANG CHỌN CHỦ ĐỀ.
   ======================================================= */
 
   const goToStudent = () => {
@@ -581,11 +551,17 @@ function Vocabulary({
     setSelectedWord(null);
   };
 
+  /* =======================================================
+     QUAY LẠI TRANG CHỌN CHỦ ĐỀ
+  ======================================================= */
+
   const backToCategories = () => {
     setSelectedCategory(null);
     setSelectedWord(null);
 
-    /* Dừng audio khi đổi chủ đề */
+    /* -----------------------------------------------
+       DỪNG AUDIO KHI QUAY LẠI
+    ------------------------------------------------ */
 
     if (audioRef.current) {
       audioRef.current.pause();
@@ -619,74 +595,82 @@ function Vocabulary({
       </div>
 
       {/* =================================================
-          NÚT QUAY LẠI
+          NÚT QUAY LẠI TRANG HỌC TẬP
+
+          CHỈ HIỆN KHI CHƯA CHỌN CHỦ ĐỀ
       ================================================= */}
 
-      <button
-        type="button"
-        className="vocabulary-back-button"
-        onClick={goToStudent}
-      >
-        ← Về trang học tập
-      </button>
+      {!selectedCategory && (
+        <button
+          type="button"
+          className="vocabulary-back-button"
+          onClick={goToStudent}
+        >
+          ← Về trang học tập
+        </button>
+      )}
 
       {/* =================================================
-          HEADER
+          HEADER TỔNG
+
+          CHỈ HIỆN KHI CHƯA CHỌN CHỦ ĐỀ
       ================================================= */}
 
-      <header className="vocabulary-header">
-        <div className="vocabulary-header-main">
-          <div className="vocabulary-header-icon">
-            📚
+      {!selectedCategory && (
+        <header className="vocabulary-header">
+          <div className="vocabulary-header-main">
+            <div className="vocabulary-header-icon">
+              📚
+            </div>
+
+            <div className="vocabulary-header-khmer">
+              ពាក្យសព្ទខ្មែរ
+            </div>
+
+            <h1>
+              TỪ VỰNG TIẾNG KHMER
+            </h1>
+
+            <p>
+              Học từ vựng Khmer theo chủ đề
+            </p>
           </div>
 
-          <div className="vocabulary-header-khmer">
-            ពាក្យសព្ទខ្មែរ
+          <div className="vocabulary-stats">
+            <div className="vocabulary-stat">
+              <strong>
+                {Object.keys(
+                  vocabularyData
+                ).length}
+              </strong>
+
+              <span>
+                Chủ đề
+              </span>
+            </div>
+
+            <div className="vocabulary-stat">
+              <strong>
+                {Object.values(
+                  vocabularyData
+                ).reduce(
+                  (
+                    total,
+                    items
+                  ) =>
+                    total +
+                    items.length,
+                  0
+                )}
+              </strong>
+
+              <span>
+                Từ vựng
+              </span>
+            </div>
           </div>
-
-          <h1>
-            TỪ VỰNG TIẾNG KHMER
-          </h1>
-
-          <p>
-            Học từ vựng Khmer theo chủ đề
-          </p>
-        </div>
-
-        <div className="vocabulary-stats">
-          <div className="vocabulary-stat">
-            <strong>
-              {Object.keys(
-                vocabularyData
-              ).length}
-            </strong>
-
-            <span>
-              Chủ đề
-            </span>
-          </div>
-
-          <div className="vocabulary-stat">
-            <strong>
-              {Object.values(
-                vocabularyData
-              ).reduce(
-                (
-                  total,
-                  items
-                ) =>
-                  total +
-                  items.length,
-                0
-              )}
-            </strong>
-
-            <span>
-              Từ vựng
-            </span>
-          </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* =================================================
           NỘI DUNG
@@ -750,11 +734,20 @@ function Vocabulary({
         )}
 
         {/* =================================================
-            DANH SÁCH TỪ VỰNG
+            TRANG HỌC TỪ VỰNG THEO CHỦ ĐỀ
+
+            KHI VÀO ĐÂY:
+            - Header tổng biến mất
+            - Nút "Về trang học tập" biến mất
+            - Chỉ còn "← Chọn chủ đề khác"
         ================================================= */}
 
         {selectedCategory && (
           <section className="vocabulary-list-section">
+
+            {/* =============================================
+                NÚT DUY NHẤT ĐỂ QUAY LẠI CHỌN CHỦ ĐỀ
+            ============================================= */}
 
             <button
               type="button"
@@ -765,6 +758,10 @@ function Vocabulary({
             >
               ← Chọn chủ đề khác
             </button>
+
+            {/* =============================================
+                TIÊU ĐỀ CHỦ ĐỀ
+            ============================================= */}
 
             <div className="vocabulary-topic-header">
               <div className="vocabulary-topic-icon">
@@ -783,6 +780,10 @@ function Vocabulary({
                 </p>
               </div>
             </div>
+
+            {/* =============================================
+                DANH SÁCH TỪ VỰNG
+            ============================================= */}
 
             <div className="vocabulary-word-grid">
               {vocabularyData[
