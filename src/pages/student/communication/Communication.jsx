@@ -851,7 +851,7 @@ function Communication({
       >
         {selectedCategory
           ? "← Chọn chủ đề"
-          : "← Về trang học tập"}
+          : "← Quay lại trang chủ"}
       </button>
 
 

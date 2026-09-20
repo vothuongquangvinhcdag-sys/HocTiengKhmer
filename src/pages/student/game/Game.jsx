@@ -47,9 +47,12 @@ const Game = ({
 
   /* =======================================================
      PROGRESS VERSION
-     -------------------------------------------------------
-     Mỗi khi gameProgress thay đổi,
-     tăng version để Game Home render lại.
+
+     Chỉ dùng để buộc Game Home render lại khi
+     gameProgress thay đổi.
+
+     KHÔNG lưu dữ liệu.
+     KHÔNG thay đổi Supabase.
   ======================================================= */
 
   const [
@@ -63,25 +66,20 @@ const Game = ({
     const unsubscribe =
       subscribeGameProgress(
         () => {
+
           setProgressVersion(
             (value) =>
               value + 1
           );
+
         }
       );
+
 
     return unsubscribe;
 
   }, []);
 
-
-  /*
-    Tránh warning unused variable.
-
-    progressVersion được dùng để buộc
-    React render lại khi Supabase hydrate
-    hoặc khi một Stage thay đổi.
-  */
 
   void progressVersion;
 
@@ -92,29 +90,19 @@ const Game = ({
 
   if (
     path === "/game/1" ||
-    path.startsWith(
-      "/game/1/"
-    )
+    path.startsWith("/game/1/")
   ) {
+
     return (
       <Game1
-        profile={
-          profile
-        }
-        session={
-          session
-        }
-        navigate={
-          navigate
-        }
-        onLogout={
-          onLogout
-        }
-        path={
-          path
-        }
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
       />
     );
+
   }
 
 
@@ -124,29 +112,19 @@ const Game = ({
 
   if (
     path === "/game/2" ||
-    path.startsWith(
-      "/game/2/"
-    )
+    path.startsWith("/game/2/")
   ) {
+
     return (
       <Game2
-        profile={
-          profile
-        }
-        session={
-          session
-        }
-        navigate={
-          navigate
-        }
-        onLogout={
-          onLogout
-        }
-        path={
-          path
-        }
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
       />
     );
+
   }
 
 
@@ -156,29 +134,19 @@ const Game = ({
 
   if (
     path === "/game/3" ||
-    path.startsWith(
-      "/game/3/"
-    )
+    path.startsWith("/game/3/")
   ) {
+
     return (
       <Game3
-        profile={
-          profile
-        }
-        session={
-          session
-        }
-        navigate={
-          navigate
-        }
-        onLogout={
-          onLogout
-        }
-        path={
-          path
-        }
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
       />
     );
+
   }
 
 
@@ -188,29 +156,19 @@ const Game = ({
 
   if (
     path === "/game/4" ||
-    path.startsWith(
-      "/game/4/"
-    )
+    path.startsWith("/game/4/")
   ) {
+
     return (
       <Game4
-        profile={
-          profile
-        }
-        session={
-          session
-        }
-        navigate={
-          navigate
-        }
-        onLogout={
-          onLogout
-        }
-        path={
-          path
-        }
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
       />
     );
+
   }
 
 
@@ -220,29 +178,19 @@ const Game = ({
 
   if (
     path === "/game/5" ||
-    path.startsWith(
-      "/game/5/"
-    )
+    path.startsWith("/game/5/")
   ) {
+
     return (
       <Game5
-        profile={
-          profile
-        }
-        session={
-          session
-        }
-        navigate={
-          navigate
-        }
-        onLogout={
-          onLogout
-        }
-        path={
-          path
-        }
+        profile={profile}
+        session={session}
+        navigate={navigate}
+        onLogout={onLogout}
+        path={path}
       />
     );
+
   }
 
 
@@ -250,255 +198,85 @@ const Game = ({
      COMPLETED GAMES
   ======================================================= */
 
-  const completedGames = [];
-
-  GAME_DATA.forEach(
-    (game) => {
-      if (
-        isGameCompleted(
-          game.id
-        )
-      ) {
-        completedGames.push(
-          game.id
-        );
-      }
-    }
-  );
-
-
-  /* =======================================================
-     EXP
-  ======================================================= */
-
-  const totalExp =
-    Number(
-      profile?.exp
-    ) || 0;
-
-
-  const getLevel = (
-    exp
-  ) => {
-
-    if (
-      exp >= 25600
-    ) {
-      return 10;
-    }
-
-    if (
-      exp >= 12800
-    ) {
-      return 9;
-    }
-
-    if (
-      exp >= 6400
-    ) {
-      return 8;
-    }
-
-    if (
-      exp >= 3200
-    ) {
-      return 7;
-    }
-
-    if (
-      exp >= 1600
-    ) {
-      return 6;
-    }
-
-    if (
-      exp >= 800
-    ) {
-      return 5;
-    }
-
-    if (
-      exp >= 400
-    ) {
-      return 4;
-    }
-
-    if (
-      exp >= 200
-    ) {
-      return 3;
-    }
-
-    if (
-      exp >= 100
-    ) {
-      return 2;
-    }
-
-    return 1;
-  };
-
-
-  const getLevelStartExp = (
-    level
-  ) => {
-
-    const levels = {
-      1: 0,
-      2: 100,
-      3: 200,
-      4: 400,
-      5: 800,
-      6: 1600,
-      7: 3200,
-      8: 6400,
-      9: 12800,
-      10: 25600,
-    };
-
-    return (
-      levels[level] ||
-      0
-    );
-  };
-
-
-  const level =
-    getLevel(
-      totalExp
-    );
-
-
-  const levelStartExp =
-    getLevelStartExp(
-      level
-    );
-
-
-  const nextLevelExp =
-    level >= 10
-      ? 25600
-      : getLevelStartExp(
-          level + 1
-        );
-
-
-  const levelExp =
-    Math.max(
-      0,
-      totalExp -
-        levelStartExp
-    );
-
-
-  const levelRange =
-    Math.max(
-      1,
-      nextLevelExp -
-        levelStartExp
-    );
-
-
-  const expPercent =
-    level >= 10
-      ? 100
-      : Math.min(
-          100,
-          Math.round(
-            (
-              levelExp /
-              levelRange
-            ) * 100
-          )
-        );
-
-
-  /* =======================================================
-     LEARNER NAME
-  ======================================================= */
-
-  const learnerName =
-    profile?.full_name ||
-    profile?.name ||
-    profile?.username ||
-    "NGƯỜI HỌC";
-
-
-  /* =======================================================
-     CLICK GAME
-  ======================================================= */
-
-  const handleGameClick =
-    (game) => {
-
-      const unlocked =
-        isGameUnlocked(
-          game.id,
-          completedGames
-        );
-
-      if (!unlocked) {
-        return;
-      }
-
-      navigate(
-        `/game/${game.id}`
+  const completedGames =
+    GAME_DATA
+      .filter((game) =>
+        isGameCompleted(game.id)
+      )
+      .map((game) =>
+        game.id
       );
-    };
+
+
+  /* =======================================================
+     GAME CLICK
+  ======================================================= */
+
+  const handleGameClick = (game) => {
+
+    const unlocked =
+      isGameUnlocked(
+        game.id,
+        completedGames
+      );
+
+
+    if (!unlocked) {
+      return;
+    }
+
+
+    navigate(
+      `/game/${game.id}`
+    );
+
+  };
 
 
   /* =======================================================
      GAME PROGRESS
   ======================================================= */
 
-  const getGameProgress =
-    (gameId) => {
+  const getGameProgress = (gameId) => {
 
-      let completedStages =
-        0;
+    let completedStages = 0;
 
-      for (
-        let stageId = 1;
-        stageId <= TOTAL_STAGES;
-        stageId++
+
+    for (
+      let stageId = 1;
+      stageId <= TOTAL_STAGES;
+      stageId++
+    ) {
+
+      if (
+        isStageCompleted(
+          gameId,
+          stageId
+        )
       ) {
 
-        if (
-          isStageCompleted(
-            gameId,
-            stageId
-          )
-        ) {
-          completedStages++;
-        }
+        completedStages++;
+
       }
 
-      const percent =
-        Math.round(
-          (
-            completedStages /
-            TOTAL_STAGES
-          ) * 100
-        );
+    }
 
-      return {
-        completedStages,
-        percent,
-      };
+
+    const percent =
+      Math.round(
+        (
+          completedStages /
+          TOTAL_STAGES
+        ) * 100
+      );
+
+
+    return {
+      completedStages,
+      percent,
     };
 
-
-  /* =======================================================
-     BADGES
-  ======================================================= */
-
-  const earnedBadges =
-    GAME_DATA.filter(
-      (game) =>
-        hasClaimedBadge(
-          game.id
-        )
-    );
+  };
 
 
   /* =======================================================
@@ -509,9 +287,7 @@ const Game = ({
     <div className="game-page">
 
       <GameHeader
-        navigate={
-          navigate
-        }
+        navigate={navigate}
       />
 
 
@@ -523,377 +299,19 @@ const Game = ({
 
         <section className="game-intro">
 
-          <div className="game-icon">
-            🎮
-          </div>
-
           <div className="game-khmer-title">
             ហ្គេម
           </div>
+
 
           <h1>
             TRÒ CHƠI
           </h1>
 
+
           <p>
             Hành trình chinh phục tiếng Khmer
           </p>
-
-        </section>
-
-
-        {/* =================================================
-            LEARNER
-        ================================================= */}
-
-        <section className="game-progress-section">
-
-          <div className="game-section-title">
-
-            <span>
-              👤
-            </span>
-
-            THÔNG TIN NGƯỜI HỌC
-
-          </div>
-
-
-          <div className="learner-card">
-
-            <div className="learner-greeting">
-
-              XIN CHÀO,{" "}
-
-              <strong>
-                {learnerName}
-              </strong>
-
-            </div>
-
-
-            <div className="learner-level-row">
-
-              <div className="learner-level">
-
-                LEVEL{" "}
-
-                <strong>
-                  {level}
-                </strong>
-
-              </div>
-
-
-              <div className="learner-exp">
-
-                {totalExp.toLocaleString()} EXP
-
-              </div>
-
-            </div>
-
-
-            <div className="exp-bar">
-
-              <div
-                className="exp-bar-fill"
-                style={{
-                  width:
-                    `${expPercent}%`,
-                }}
-              />
-
-            </div>
-
-
-            <div className="exp-detail">
-
-              {totalExp.toLocaleString()} /{" "}
-
-              {nextLevelExp.toLocaleString()} EXP
-
-            </div>
-
-          </div>
-
-        </section>
-
-
-        {/* =================================================
-            GAME PROGRESS
-        ================================================= */}
-
-        <section className="game-progress-section">
-
-          <div className="game-section-title">
-
-            <span>
-              📊
-            </span>
-
-            TIẾN ĐỘ TRÒ CHƠI
-
-          </div>
-
-
-          <div className="game-progress-list">
-
-            {GAME_DATA.map(
-              (game) => {
-
-                const unlocked =
-                  isGameUnlocked(
-                    game.id,
-                    completedGames
-                  );
-
-
-                const completed =
-                  isGameCompleted(
-                    game.id
-                  );
-
-
-                const {
-                  completedStages,
-                  percent,
-                } =
-                  getGameProgress(
-                    game.id
-                  );
-
-
-                const reward =
-                  GAME_EXP(
-                    game.id
-                  );
-
-
-                return (
-                  <div
-                    key={
-                      game.id
-                    }
-                    className={[
-                      "game-progress-card",
-
-                      unlocked
-                        ? "unlocked"
-                        : "locked",
-
-                      completed
-                        ? "completed"
-                        : "",
-                    ]
-                      .filter(
-                        Boolean
-                      )
-                      .join(" ")}
-                    onClick={() =>
-                      handleGameClick(
-                        game
-                      )
-                    }
-                  >
-
-                    {/* GAME TOP */}
-
-                    <div className="game-progress-top">
-
-                      <div className="game-progress-name">
-
-                        <span className="game-progress-dot">
-
-                          {completed
-                            ? "🟢"
-                            : unlocked
-                            ? "🔵"
-                            : "🔒"}
-
-                        </span>
-
-                        GAME{" "}
-                        {game.id}
-
-                      </div>
-
-
-                      <div className="game-progress-count">
-
-                        {completedStages} /{" "}
-
-                        {TOTAL_STAGES} MÀN
-
-                      </div>
-
-                    </div>
-
-
-                    {/* DESCRIPTION */}
-
-                    <div className="game-progress-description">
-
-                      {unlocked
-                        ? game.description ||
-                          game.title ||
-                          "Hành trình chinh phục tiếng Khmer"
-                        : "Chưa mở khóa"}
-
-                    </div>
-
-
-                    {/* PROGRESS BAR */}
-
-                    <div className="game-progress-bar">
-
-                      <div
-                        className="game-progress-fill"
-                        style={{
-                          width:
-                            `${percent}%`,
-                        }}
-                      />
-
-                    </div>
-
-
-                    {/* BOTTOM */}
-
-                    <div className="game-progress-bottom">
-
-                      <span>
-                        {percent}%
-                      </span>
-
-
-                      <span className="game-progress-status">
-
-                        {completed
-                          ? "✓ HOÀN THÀNH"
-                          : unlocked
-                          ? "ĐANG HỌC"
-                          : "🔒 CHƯA MỞ"}
-
-                      </span>
-
-                    </div>
-
-
-                    {/* EXP */}
-
-                    <div className="game-progress-reward">
-
-                      Hoàn thành Game nhận{" "}
-
-                      <strong>
-
-                        +{reward.toLocaleString()} EXP
-
-                      </strong>
-
-                    </div>
-
-                  </div>
-                );
-              }
-            )}
-
-          </div>
-
-        </section>
-
-
-        {/* =================================================
-            BADGES
-        ================================================= */}
-
-        <section className="game-progress-section badge-section">
-
-          <div className="game-section-title">
-
-            <span>
-              🏆
-            </span>
-
-            HUY HIỆU
-
-          </div>
-
-
-          <div className="badge-count">
-
-            ĐÃ ĐẠT{" "}
-
-            <strong>
-              {earnedBadges.length}
-            </strong>{" "}
-
-            HUY HIỆU
-
-          </div>
-
-
-          <div className="badge-grid">
-
-            {GAME_DATA.map(
-              (game) => {
-
-                const earned =
-                  hasClaimedBadge(
-                    game.id
-                  );
-
-
-                return (
-                  <div
-                    key={
-                      game.id
-                    }
-                    className={
-                      `badge-card ${
-                        earned
-                          ? "earned"
-                          : "locked"
-                      }`
-                    }
-                  >
-
-                    <div className="badge-icon">
-
-                      {earned
-                        ? game.badgeIcon ||
-                          "🏆"
-                        : "🔒"}
-
-                    </div>
-
-
-                    <div className="badge-name">
-
-                      {earned
-                        ? game.badgeName ||
-                          `GAME ${game.id}`
-                        : "???"}
-
-                    </div>
-
-
-                    <div className="badge-description">
-
-                      {earned
-                        ? game.badgeDescription ||
-                          `Hoàn thành Game ${game.id}`
-                        : "Chưa đạt được"}
-
-                    </div>
-
-                  </div>
-                );
-              }
-            )}
-
-          </div>
 
         </section>
 
@@ -905,57 +323,102 @@ const Game = ({
         <section className="game-list-section">
 
           <div className="game-section-title">
-
-            <span>
-              🎮
-            </span>
-
             DANH SÁCH TRÒ CHƠI
-
           </div>
 
 
           <section className="game-list">
 
-            {GAME_DATA.map(
-              (game) => {
+            {GAME_DATA.map((game) => {
 
-                const unlocked =
-                  isGameUnlocked(
-                    game.id,
-                    completedGames
-                  );
-
-
-                const completed =
-                  isGameCompleted(
-                    game.id
-                  );
-
-
-                return (
-                  <GameCard
-                    key={
-                      game.id
-                    }
-                    game={
-                      game
-                    }
-                    unlocked={
-                      unlocked
-                    }
-                    completed={
-                      completed
-                    }
-                    onClick={() =>
-                      handleGameClick(
-                        game
-                      )
-                    }
-                  />
+              const unlocked =
+                isGameUnlocked(
+                  game.id,
+                  completedGames
                 );
-              }
-            )}
+
+
+              const completed =
+                isGameCompleted(
+                  game.id
+                );
+
+
+              const {
+                completedStages,
+                percent,
+              } =
+                getGameProgress(
+                  game.id
+                );
+
+
+              const reward =
+                GAME_EXP(
+                  game.id
+                );
+
+
+              const badgeEarned =
+                hasClaimedBadge(
+                  game.id
+                );
+
+
+              return (
+                <GameCard
+                  key={game.id}
+
+                  game={game}
+
+                  unlocked={unlocked}
+
+                  completed={completed}
+
+                  completedStages={
+                    completedStages
+                  }
+
+                  totalStages={
+                    TOTAL_STAGES
+                  }
+
+                  progressPercent={
+                    percent
+                  }
+
+                  rewardExp={
+                    reward
+                  }
+
+                  badgeEarned={
+                    badgeEarned
+                  }
+
+                  badgeIcon={
+                    game.badgeIcon ||
+                    "🏆"
+                  }
+
+                  badgeName={
+                    game.badgeName ||
+                    `GAME ${game.id}`
+                  }
+
+                  badgeDescription={
+                    game.badgeDescription ||
+                    `Hoàn thành Game ${game.id}`
+                  }
+
+                  onClick={() =>
+                    handleGameClick(
+                      game
+                    )
+                  }
+                />
+              );
+
+            })}
 
           </section>
 

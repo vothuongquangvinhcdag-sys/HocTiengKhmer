@@ -140,7 +140,7 @@ const Game5 = ({ navigate, path }) => {
             navigate("/game")
           }
         >
-          ← QUAY LẠI GAME
+          ← Danh sách trò chơi
         </button>
       </header>
 

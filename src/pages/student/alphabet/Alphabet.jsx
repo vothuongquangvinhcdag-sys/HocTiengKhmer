@@ -1161,7 +1161,7 @@ function Alphabet({
         className="alphabet-back-button"
         onClick={goToStudent}
       >
-        ← Về trang học tập
+        ← Quay lại trang chủ
       </button>
 
       {/* =================================================

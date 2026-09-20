@@ -606,7 +606,7 @@ function Vocabulary({
           className="vocabulary-back-button"
           onClick={goToStudent}
         >
-          ← Về trang học tập
+          ← Quay lại trang chủ
         </button>
       )}
 
@@ -619,10 +619,7 @@ function Vocabulary({
       {!selectedCategory && (
         <header className="vocabulary-header">
           <div className="vocabulary-header-main">
-            <div className="vocabulary-header-icon">
-              📚
-            </div>
-
+           
             <div className="vocabulary-header-khmer">
               ពាក្យសព្ទខ្មែរ
             </div>

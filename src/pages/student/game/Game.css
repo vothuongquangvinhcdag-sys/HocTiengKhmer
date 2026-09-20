@@ -1,1280 +1,1165 @@
 /* =========================================================
-   GAME — PREMIUM KHMER
-   GREEN #20943B + SOFT 24K GOLD
-   CLEAN / ELEGANT / EYE FRIENDLY
-========================================================= */
-
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
-
-/* =========================================================
-   KHMER FONTS
+KHMER FONTS
 ========================================================= */
 
 @font-face {
-  font-family: "Khmer OS";
-  src: url("/fonts/KhmerOS.ttf") format("truetype");
-  font-display: swap;
+font-family: "Khmer OS";
+src: url("/fonts/KhmerOS.ttf") format("truetype");
+font-weight: 400;
+font-style: normal;
+font-display: swap;
 }
 
 @font-face {
-  font-family: "Khmer OS Muol";
-  src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
-  font-display: swap;
+font-family: "Khmer OS Muol";
+src: url("/fonts/KhmerOSMuol.ttf") format("truetype");
+font-weight: 700;
+font-style: normal;
+font-display: swap;
 }
 
 /* =========================================================
-   VARIABLES
+GAME - COLOR SYSTEM
 ========================================================= */
+
+* {
+  box-sizing: border-box;
+  }
 
 :root {
-  --green: #20943b;
-  --green-dark: #187a30;
-  --green-soft: #eaf7ed;
-  --green-border: #b8d9bf;
+--game-green: #166534;
+--game-green-dark: #14532d;
+--game-green-deep: #0f3d24;
+--game-green-main: #15803d;
+--game-green-light: #ecfdf3;
+--game-green-soft: #f0fdf4;
+--game-green-border: #bbdfc7;
 
-  --gold: #c99620;
-  --gold-dark: #a8780b;
-  --gold-light: #f5df82;
-  --gold-soft: #fff8df;
+--game-completed: #15803d;
+--game-completed-dark: #166534;
+--game-completed-light: #dcfce7;
+--game-completed-border: #86cfa0;
 
-  --text: #34443a;
-  --muted: #69766e;
+--game-gold: #d4af37;
+--game-gold-dark: #a67c00;
+--game-gold-deep: #806000;
+--game-gold-light: #fff8dc;
+--game-gold-soft: #fffbeb;
+--game-gold-border: #e6cf7a;
 
-  --white: #ffffff;
-  --surface: #f5faf6;
-  --border: #dce7de;
+--game-cherry: #b1123b;
+--game-cherry-dark: #941033;
+--game-cherry-light: #fff1f3;
+--game-cherry-border: #e7a0b2;
+
+--game-text: #26352b;
+--game-text-soft: #68756d;
+--game-text-muted: #7b857f;
+--game-white: #ffffff;
+--game-background: #f7faf8;
+--game-border: #dce7df;
+
+--game-shadow-sm:
+0 3px 12px rgba(20, 83, 45, 0.08);
+
+--game-shadow-md:
+0 10px 28px rgba(20, 83, 45, 0.14);
+
+--game-locked-text: #687078;
+--game-locked-text-dark: #5e666d;
+--game-locked-text-soft: #7b8389;
+--game-locked-light: #f1f3f4;
+--game-locked-soft: #e9ebed;
+--game-locked-border: #c7ccd0;
+--game-locked-border-dark: #bfc5c9;
+--game-locked-fill: #aeb5ba;
+--game-locked-button: #dfe2e4;
 }
 
 /* =========================================================
-   PAGE
+GAME PAGE
 ========================================================= */
 
 .game-page {
-  min-height: 100vh;
-  padding: 22px;
-  box-sizing: border-box;
-
-  background:
-    linear-gradient(
-      180deg,
-      #f8fcf8 0%,
-      #f1f8f3 100%
-    );
-
-  color: var(--text);
-
-  font-family:
-    "Inter",
-    "Segoe UI",
-    Arial,
-    sans-serif;
-}
-
-.game-content {
-  width: 100%;
-  max-width: 1050px;
-  margin: 0 auto;
+min-height: 100vh;
+padding: 0 20px 40px;
+color: var(--game-text);
+background:
+linear-gradient(
+180deg,
+#f7faf8 0%,
+#ffffff 48%,
+#f7faf8 100%
+);
+font-family:
+"Segoe UI",
+Arial,
+Helvetica,
+sans-serif;
 }
 
 /* =========================================================
-   INTRO
+GAME CONTENT
+========================================================= */
+
+.game-content {
+width: min(1200px, 100%);
+margin: 0 auto;
+}
+
+/* =========================================================
+GAME INTRO
 ========================================================= */
 
 .game-intro {
-  text-align: center;
-  padding: 22px 20px 35px;
+position: relative;
+margin: 20px auto 28px;
+padding: 30px 34px;
+border: 1px solid var(--game-cherry-border);
+border-top: 5px solid var(--game-cherry);
+border-radius: 18px;
+background: var(--game-white);
+box-shadow: var(--game-shadow-sm);
+text-align: left;
 }
 
 /* =========================================================
-   GAME ICON
-========================================================= */
-
-.game-icon {
-  font-size: 68px;
-  line-height: 1;
-
-  margin-bottom: 9px;
-
-  filter: none;
-}
-
-/* =========================================================
-   KHMER TITLE
+KHMER MAIN TITLE
 ========================================================= */
 
 .game-khmer-title {
-  margin: 0;
-
-  font-family:
-    "Khmer OS Muol",
-    "Khmer OS",
-    sans-serif;
-
-  font-size: 54px;
-  font-weight: 900;
-  line-height: 1.4;
-
-  color: var(--gold);
+margin: 0 0 5px;
+color: var(--game-gold-dark);
+font-family:
+"Khmer OS Muol",
+"Khmer OS",
+sans-serif;
+font-size: 35px;
+line-height: 1.45;
+font-weight: 700;
 }
 
 /* =========================================================
-   TRÒ CHƠI
+VIETNAMESE SUB TITLE
 ========================================================= */
 
 .game-intro h1 {
-  margin: 0 0 7px;
-
-  font-size: 29px;
-  font-weight: 900;
-
-  letter-spacing: 2px;
-
-  color: var(--green);
-}
-
-.game-intro p {
-  margin: 0;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  color: var(--muted);
+margin: 0;
+color: var(--game-cherry);
+font-family:
+"Segoe UI",
+Arial,
+Helvetica,
+sans-serif;
+font-size: 28px;
+line-height: 1.2;
+font-weight: 800;
 }
 
 /* =========================================================
-   HEADER
+INTRO DESCRIPTION
+========================================================= */
+
+.game-intro p {
+margin: 8px 0 0;
+color: var(--game-text-soft);
+font-size: 14px;
+line-height: 1.5;
+}
+
+/* =========================================================
+GAME LIST SECTION
+========================================================= */
+
+.game-list-section {
+margin-top: 0;
+}
+
+/* =========================================================
+SECTION TITLE
+========================================================= */
+
+.game-section-title {
+position: relative;
+margin-bottom: 20px;
+padding: 20px 22px;
+border: 1px solid var(--game-cherry-border);
+border-left: 5px solid var(--game-cherry);
+border-radius: 14px;
+color: var(--game-cherry);
+background: var(--game-white);
+box-shadow: var(--game-shadow-sm);
+font-size: 19px;
+line-height: 1.3;
+font-weight: 800;
+}
+
+/* =========================================================
+GAME LIST
+========================================================= */
+
+.game-list {
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 18px;
+}
+
+/* =========================================================
+GAME CARD
+========================================================= */
+
+.game-card {
+position: relative;
+display: flex;
+flex-direction: column;
+min-height: 390px;
+overflow: hidden;
+padding: 22px;
+border: 1px solid var(--game-border);
+border-radius: 16px;
+background: var(--game-white);
+box-shadow: var(--game-shadow-sm);
+transition:
+transform 0.25s ease,
+box-shadow 0.25s ease,
+border-color 0.25s ease;
+text-align: left;
+}
+
+/* =========================================================
+CARD TOP LINE
+========================================================= */
+
+.game-card::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+height: 5px;
+background: var(--game-green);
+}
+
+/* =========================================================
+UNLOCKED
+========================================================= */
+
+.game-card.unlocked {
+border-color: var(--game-green-border);
+}
+
+/* =========================================================
+LOCKED
+========================================================= */
+
+.game-card.locked {
+border-color: var(--game-locked-border);
+background:
+linear-gradient(
+180deg,
+#f1f3f4 0%,
+#e4e7e9 55%,
+#f5f6f7 100%
+);
+color: var(--game-locked-text);
+}
+
+.game-card.locked::before {
+background: #9da4aa;
+}
+
+/* =========================================================
+COMPLETED CARD
+========================================================= */
+
+.game-card.completed {
+border-color: var(--game-green-border);
+background: var(--game-white);
+}
+
+.game-card.completed::before {
+background: var(--game-green);
+}
+
+/* =========================================================
+GAME ĐANG CHƠI
+VIỀN NGOÀI + THANH TRÊN MÀU VÀNG KHMER
+========================================================= */
+
+.game-card.unlocked:not(.completed) {
+border-color: var(--game-gold-border);
+}
+
+.game-card.unlocked:not(.completed)::before {
+background: var(--game-gold);
+}
+
+/* =========================================================
+HOVER
+========================================================= */
+
+.game-card.unlocked:hover {
+transform: translateY(-5px);
+border-color: #72b989;
+box-shadow: var(--game-shadow-md);
+}
+
+.game-card.locked:hover {
+transform: translateY(-2px);
+border-color: #b6bcc1;
+box-shadow:
+0 6px 18px rgba(80, 88, 94, 0.14);
+}
+
+.game-card.completed:hover {
+transform: translateY(-5px);
+border-color: #72b989;
+box-shadow: var(--game-shadow-md);
+}
+
+/* =========================================================
+CARD HEADER
+========================================================= */
+
+.game-card-header {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 18px;
+margin-top: 3px;
+}
+
+.game-card-title-area {
+min-width: 0;
+flex: 1;
+}
+
+.game-card-khmer-title {
+color: var(--game-gold-dark);
+font-family:
+"Khmer OS Muol",
+"Khmer OS",
+sans-serif;
+font-size: 29px;
+line-height: 1.55;
+font-weight: 700;
+}
+
+.game-card-vietnamese-title {
+margin-top: 3px;
+color: var(--game-green-deep);
+font-family:
+"Segoe UI",
+Arial,
+Helvetica,
+sans-serif;
+font-size: 17px;
+line-height: 1.3;
+font-weight: 800;
+}
+
+.game-card.locked .game-card-khmer-title {
+color: #6f767c;
+}
+
+.game-card.locked .game-card-vietnamese-title {
+color: #656c72;
+}
+
+/* =========================================================
+STATUS INLINE
+========================================================= */
+
+.game-card-status-inline {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+gap: 6px;
+padding: 7px 10px;
+border-radius: 999px;
+font-size: 11px;
+line-height: 1.2;
+font-weight: 800;
+white-space: nowrap;
+}
+
+.game-card-status-icon {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+line-height: 1;
+}
+
+.game-card-status-inline.locked {
+color: var(--game-locked-text);
+border: 1px solid var(--game-locked-border);
+background: #e5e8ea;
+}
+
+.game-card.locked .game-card-status-inline.locked .game-card-status-icon {
+color: #858d93;
+}
+
+.game-card-status-inline.playing,
+.game-card-status-inline.completed {
+color: #ffffff;
+border: 1px solid var(--game-green);
+background: var(--game-green);
+box-shadow:
+0 4px 10px rgba(22, 101, 52, 0.16);
+}
+
+.game-card-status-inline.playing .game-card-status-icon,
+.game-card-status-inline.completed .game-card-status-icon {
+color: #ffffff;
+}
+
+/* =========================================================
+BODY
+========================================================= */
+
+.game-card-body {
+margin-top: 19px;
+}
+
+.game-card-info p {
+min-height: 44px;
+margin: 0;
+color: var(--game-text-soft);
+font-size: 14px;
+line-height: 1.55;
+}
+
+.game-card.locked .game-card-info p {
+color: #737b82;
+}
+
+.game-card.completed .game-card-info p {
+color: var(--game-text-soft);
+}
+
+/* =========================================================
+PROGRESS
+========================================================= */
+
+.game-card-progress {
+margin-top: 21px;
+}
+
+.game-card-progress-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 8px;
+}
+
+.game-card-progress-top span {
+color: var(--game-text-soft);
+font-size: 11px;
+line-height: 1.3;
+font-weight: 800;
+letter-spacing: 0.4px;
+}
+
+.game-card-progress-top strong {
+color: var(--game-green-dark);
+font-size: 14px;
+line-height: 1.2;
+font-weight: 800;
+}
+
+.game-card.locked .game-card-progress-top span {
+color: #7b8389;
+}
+
+.game-card.locked .game-card-progress-top strong {
+color: #737b82;
+}
+
+.game-card.completed .game-card-progress-top strong {
+color: var(--game-completed);
+}
+
+/* =========================================================
+PROGRESS BAR
+========================================================= */
+
+.game-card-progress-bar {
+width: 100%;
+height: 9px;
+overflow: hidden;
+border-radius: 999px;
+background: #e8eee9;
+}
+
+.game-card-progress-fill {
+height: 100%;
+border-radius: inherit;
+background:
+linear-gradient(
+90deg,
+var(--game-gold),
+#e5c34b
+);
+transition:
+width 0.4s ease,
+background 0.25s ease;
+}
+
+.game-card.locked .game-card-progress-bar {
+background: #d4d8db;
+}
+
+.game-card.locked .game-card-progress-fill {
+background: var(--game-locked-fill);
+}
+
+.game-card.completed .game-card-progress-fill {
+background:
+linear-gradient(
+90deg,
+var(--game-completed-dark),
+var(--game-completed)
+);
+}
+
+/* =========================================================
+EXTRA INFORMATION
+ĐỒNG BỘ KÍCH THƯỚC GIỮA TẤT CẢ GAME
+========================================================= */
+
+.game-card-extra {
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+grid-template-rows: 74px;
+gap: 10px;
+margin-top: 20px;
+}
+
+.game-card-extra-item {
+min-width: 0;
+height: 74px;
+padding: 11px 10px;
+border: 1px solid var(--game-border);
+border-radius: 12px;
+background: #fbfdfb;
+overflow: hidden;
+}
+
+.game-card-extra-icon {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+width: 28px;
+height: 28px;
+margin-bottom: 3px;
+font-size: 21px;
+line-height: 1;
+}
+
+.game-card-extra-item small {
+display: block;
+margin-bottom: 5px;
+color: var(--game-text-muted);
+font-size: 9px;
+line-height: 1.35;
+font-weight: 800;
+letter-spacing: 0.3px;
+}
+
+.game-card-extra-item strong {
+display: block;
+color: var(--game-green-dark);
+font-size: 13px;
+line-height: 1.3;
+font-weight: 800;
+}
+
+.game-card-stages.earned {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card-stages.earned strong {
+color: var(--game-green-dark);
+}
+
+.game-card.completed .game-card-stages.earned {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card.completed .game-card-stages.earned strong {
+color: var(--game-green-dark);
+}
+
+.game-card.locked .game-card-stages {
+border-color: var(--game-locked-border);
+background: var(--game-locked-soft);
+}
+
+.game-card.locked .game-card-stages strong {
+color: var(--game-locked-text-dark);
+}
+
+/* =========================================================
+REWARD
+ĐỒNG BỘ KÍCH THƯỚC VỚI CÁC CARD CON KHÁC
+========================================================= */
+
+.game-card-reward,
+.game-card-badge {
+min-width: 0;
+height: 74px;
+padding: 11px 10px;
+border: 1px solid var(--game-border);
+border-radius: 12px;
+background: #fbfdfb;
+overflow: hidden;
+}
+
+.game-card-reward {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card-reward.earned {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card.unlocked:not(.completed) .game-card-reward.not-earned {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card.unlocked:not(.completed) .game-card-reward.not-earned strong {
+color: #26352b;
+}
+
+.game-card.completed .game-card-reward.earned strong {
+color: var(--game-gold-dark);
+}
+
+.game-card.unlocked:not(.completed)
+.game-card-reward.not-earned > div > span {
+color: #26352b;
+}
+
+/* =========================================================
+BADGE
+========================================================= */
+
+.game-card-badge {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card-badge.earned {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card.unlocked:not(.completed) .game-card-badge.not-earned {
+border-color: var(--game-border);
+background: #fbfdfb;
+}
+
+.game-card.unlocked:not(.completed) .game-card-badge.not-earned strong {
+color: #26352b;
+}
+
+.game-card.unlocked:not(.completed)
+.game-card-badge.not-earned > div > span {
+color: #26352b;
+}
+
+.game-card.completed .game-card-badge.earned .game-card-badge-name {
+color: var(--game-gold-dark);
+}
+
+.game-card-badge-status {
+color: var(--game-completed) !important;
+font-size: 11px;
+line-height: 1.35;
+font-weight: 900;
+}
+
+.game-card-reward > div > span,
+.game-card-badge > div > span {
+display: block;
+margin-top: 3px;
+color: var(--game-text-muted);
+font-size: 9px;
+line-height: 1.35;
+font-weight: 500;
+}
+
+.game-card.locked .game-card-reward,
+.game-card.locked .game-card-badge {
+border-color: var(--game-locked-border);
+background: var(--game-locked-soft);
+}
+
+.game-card.locked .game-card-reward strong,
+.game-card.locked .game-card-badge strong {
+color: var(--game-locked-text-dark);
+}
+
+.game-card.locked .game-card-reward > div > span,
+.game-card.locked .game-card-badge > div > span {
+color: var(--game-locked-text-soft);
+}
+
+/* =========================================================
+ACTION BUTTON
+========================================================= */
+
+.game-card-action {
+width: 100%;
+min-height: 44px;
+margin-top: auto;
+padding: 11px 16px;
+border: none;
+border-radius: 10px;
+font-size: 13px;
+line-height: 1.3;
+font-weight: 800;
+cursor: pointer;
+transition:
+transform 0.2s ease,
+background 0.2s ease,
+box-shadow 0.2s ease,
+color 0.2s ease;
+}
+
+.game-card-action.start,
+.game-card-action.restart {
+color: #ffffff;
+background: var(--game-green);
+border: 1px solid var(--game-green);
+box-shadow:
+0 6px 16px rgba(22, 101, 52, 0.20);
+}
+
+.game-card-action.start:hover,
+.game-card-action.restart:hover {
+color: #ffffff;
+background: var(--game-green-dark);
+transform: translateY(-1px);
+box-shadow:
+0 9px 22px rgba(22, 101, 52, 0.28);
+}
+
+.game-card-action.locked {
+color: #687078;
+background: var(--game-locked-button);
+border: 1px solid var(--game-locked-border-dark);
+cursor: not-allowed;
+box-shadow: none;
+opacity: 0.95;
+}
+
+.game-card-action:disabled {
+cursor: not-allowed;
+}
+
+/* =========================================================
+GAME HEADER
 ========================================================= */
 
 .game-header {
-  position: relative;
-  z-index: 10;
-}
+position: relative;
+z-index: 10;
 
-.game-header button,
-.game-header a {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  padding: 12px 22px;
-
-  border-radius: 999px;
-
-  border: 2px solid var(--green);
-
-  background: var(--green);
-
-  color: #ffffff;
-
-  font-size: 14px;
-  font-weight: 900;
-
-  text-decoration: none;
-
-  cursor: pointer;
-
-  box-shadow:
-    0 5px 14px rgba(32, 148, 59, 0.16);
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.game-header button:hover,
-.game-header a:hover {
-  transform: translateY(-2px);
-
-  background: var(--green-dark);
-
-  box-shadow:
-    0 8px 18px rgba(32, 148, 59, 0.2);
+width: min(1200px, 100%);
+margin: 0 auto;
 }
 
 /* =========================================================
-   SECTION
+NÚT QUAY LẠI TRANG HỌC
+ĐỒNG BỘ VỚI CARD BÊN DƯỚI
 ========================================================= */
 
-.game-progress-section,
-.game-list-section {
-  margin-bottom: 36px;
+.game-header > * {
+margin-left: 0;
 }
 
-.game-section-title {
-  display: flex;
-  align-items: center;
+.game-header .back-button,
+.game-header .back-btn,
+.game-header .game-back-button,
+.game-header .game-header-back {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 7px;
 
-  gap: 9px;
+margin-left: 0;
+margin-top: 20px;
+margin-bottom: 20px;
 
-  margin-bottom: 14px;
+padding: 10px 17px;
 
-  font-size: 20px;
-  font-weight: 900;
+border: none;
+border-radius: 10px;
 
-  color: var(--green);
+background: var(--game-cherry);
+color: #ffffff;
+
+font-size: 14px;
+line-height: 1.2;
+font-weight: 700;
+
+cursor: pointer;
+
+box-shadow:
+0 3px 12px rgba(50, 60, 40, 0.08);
+
+transition:
+transform 0.2s ease,
+background 0.2s ease,
+box-shadow 0.2s ease;
 }
 
-.game-section-title span {
-  font-size: 22px;
+.game-header .back-button:hover,
+.game-header .back-btn:hover,
+.game-header .game-back-button:hover,
+.game-header .game-header-back:hover {
+background: var(--game-cherry-dark);
+transform: translateY(-1px);
+box-shadow:
+0 10px 28px rgba(50, 60, 40, 0.13);
+}
+
+.game-header .back-button:active,
+.game-header .back-btn:active,
+.game-header .game-back-button:active,
+.game-header .game-header-back:active {
+transform: translateY(0);
 }
 
 /* =========================================================
-   LEARNER CARD
+FOOTER
 ========================================================= */
 
-.learner-card {
-  position: relative;
-  overflow: hidden;
-
-  padding: 22px 26px;
-
-  border-radius: 22px;
-
-  background: var(--white);
-
-  border: 2px solid var(--green-border);
-
-  box-shadow:
-    0 7px 20px rgba(32, 148, 59, 0.07);
-}
-
-.learner-card::before {
-  content: "";
-
-  position: absolute;
-
-  width: 190px;
-  height: 190px;
-
-  right: -85px;
-  top: -110px;
-
-  border-radius: 50%;
-
-  background: #fbf4d9;
-
-  z-index: 0;
-
-  pointer-events: none;
-}
-
-.learner-card > * {
-  position: relative;
-  z-index: 2;
+.game-footer {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+margin-top: 32px;
+padding: 20px;
+color: var(--game-text-soft);
+font-size: 13px;
+line-height: 1.5;
+font-weight: 500;
+text-align: center;
 }
 
 /* =========================================================
-   GREETING
+TABLET
 ========================================================= */
 
-.learner-greeting {
-  margin-bottom: 14px;
-
-  font-size: 16px;
-  font-weight: 800;
-
-  color: var(--muted);
-}
-
-.learner-greeting strong {
-  color: var(--green);
-  font-size: 19px;
-}
-
-/* =========================================================
-   LEVEL
-========================================================= */
-
-.learner-level-row {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 15px;
-
-  margin-bottom: 11px;
-}
-
-.learner-level {
-  font-size: 20px;
-  font-weight: 900;
-
-  color: var(--green);
-}
-
-.learner-level strong {
-  color: var(--gold);
-
-  font-size: 27px;
-}
-
-.learner-exp {
-  position: relative;
-  z-index: 10;
-
-  white-space: nowrap;
-
-  font-size: 17px;
-  font-weight: 900;
-
-  color: var(--gold);
-}
-
-/* =========================================================
-   EXP BAR
-========================================================= */
-
-.exp-bar {
-  position: relative;
-
-  width: 100%;
-  height: 11px;
-
-  overflow: hidden;
-
-  border-radius: 999px;
-
-  background: #e5ebe6;
-
-  border: 1px solid #cfb557;
-
-  box-sizing: border-box;
-
-  box-shadow:
-    inset 0 1px 2px rgba(0, 0, 0, 0.08),
-    0 0 5px rgba(201, 150, 32, 0.16);
-}
-
-.exp-bar-fill {
-  position: relative;
-
-  height: 100%;
-
-  border-radius: 999px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #a8780b 0%,
-      #d2a52b 22%,
-      #ffe27a 48%,
-      #d6aa2d 72%,
-      #a8780b 100%
-    );
-
-  box-shadow:
-    0 0 5px rgba(255, 219, 86, 0.9),
-    0 0 11px rgba(245, 196, 40, 0.55);
-
-  transition:
-    width 0.65s ease;
-
-  overflow: hidden;
-}
-
-/* =========================================================
-   EXP LIGHT — CHỈ CHẠY TRÁI → PHẢI
-========================================================= */
-
-.exp-bar-fill::before {
-  content: "";
-
-  position: absolute;
-
-  top: 0;
-  left: -35%;
-
-  width: 28%;
-  height: 100%;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 250, 198, 0.95),
-      transparent
-    );
-
-  filter: blur(1px);
-
-  animation:
-    expLightSweep 4s linear infinite;
-}
-
-@keyframes expLightSweep {
-  0% {
-    left: -35%;
-    opacity: 0;
-  }
-
-  10% {
-    opacity: 0.8;
-  }
-
-  70% {
-    left: 100%;
-    opacity: 0.8;
-  }
-
-  88% {
-    left: 120%;
-    opacity: 0;
-  }
-
-  100% {
-    left: 120%;
-    opacity: 0;
-  }
-}
-
-/* =========================================================
-   EXP DETAIL
-========================================================= */
-
-.exp-detail {
-  position: relative;
-  z-index: 5;
-
-  margin-top: 7px;
-
-  text-align: center;
-
-  font-size: 13px;
-  font-weight: 800;
-
-  color: var(--muted);
-}
-
-/* =========================================================
-   GAME PROGRESS
-========================================================= */
-
-.game-progress-list {
-  display: grid;
-  gap: 15px;
-}
-
-.game-progress-card {
-  position: relative;
-
-  padding: 21px 23px;
-
-  border-radius: 20px;
-
-  background: #ffffff;
-
-  border: 2px solid var(--border);
-
-  box-shadow:
-    0 6px 18px rgba(32, 148, 59, 0.05);
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
-
-  overflow: hidden;
-}
-
-.game-progress-card.unlocked {
-  cursor: pointer;
-
-  border-color: #a9d2b1;
-}
-
-.game-progress-card.unlocked:hover {
-  transform: translateY(-3px);
-
-  border-color: var(--green);
-
-  box-shadow:
-    0 10px 24px rgba(32, 148, 59, 0.1);
-}
-
-.game-progress-card.completed {
-  border-color: var(--green);
-
-  background: #f7fcf8;
-}
-
-.game-progress-card.locked {
-  opacity: 0.58;
-
-  background: #f1f3f1;
-
-  cursor: not-allowed;
-}
-
-.game-progress-top {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 15px;
-}
-
-.game-progress-name {
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  font-size: 18px;
-  font-weight: 900;
-
-  color: var(--green);
-}
-
-.game-progress-count {
-  font-size: 15px;
-  font-weight: 900;
-
-  color: var(--muted);
-}
-
-.game-progress-description {
-  margin: 9px 0 13px 25px;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  color: var(--muted);
-}
-
-.game-progress-bar {
-  height: 10px;
-
-  overflow: hidden;
-
-  border-radius: 999px;
-
-  background: #e7ece8;
-}
-
-.game-progress-fill {
-  height: 100%;
-
-  border-radius: 999px;
-
-  background: var(--green);
-
-  box-shadow: none;
-}
-
-.game-progress-bottom {
-  display: flex;
-
-  justify-content: space-between;
-
-  margin-top: 7px;
-
-  font-size: 13px;
-  font-weight: 900;
-
-  color: var(--green);
-}
-
-.game-progress-reward {
-  margin-top: 11px;
-  padding-top: 9px;
-
-  border-top: 1px solid #edf1ed;
-
-  text-align: right;
-
-  font-size: 12px;
-  font-weight: 700;
-
-  color: #7b857d;
-}
-
-.game-progress-reward strong {
-  color: var(--gold);
-
-  font-size: 14px;
-}
-
-/* =========================================================
-   BADGES
-========================================================= */
-
-.badge-count {
-  margin: 0 auto 19px;
-
-  text-align: center;
-
-  font-size: 17px;
-  font-weight: 800;
-
-  color: var(--muted);
-}
-
-.badge-count strong {
-  color: var(--gold);
-
-  font-size: 24px;
-}
-
-.badge-grid {
-  display: grid;
-
-  grid-template-columns:
-    repeat(4, 1fr);
-
-  gap: 15px;
-}
-
-.badge-card {
-  min-height: 150px;
-
-  padding: 16px 10px;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-
-  border-radius: 18px;
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.badge-card.earned {
-  background: var(--gold-soft);
-
-  border: 2px solid #ddc36d;
-
-  box-shadow:
-    0 7px 18px rgba(201, 150, 32, 0.07);
-}
-
-.badge-card.earned:hover {
-  transform: translateY(-3px);
-
-  box-shadow:
-    0 10px 22px rgba(201, 150, 32, 0.1);
-}
-
-.badge-card.locked {
-  background: #f1f3f1;
-
-  border: 2px dashed #cbd5cb;
-
-  opacity: 0.6;
-}
-
-.badge-icon {
-  font-size: 40px;
-
-  margin-bottom: 10px;
-}
-
-.badge-card.earned .badge-icon {
-  filter: none;
-}
-
-.badge-name {
-  font-size: 13px;
-  font-weight: 900;
-
-  color: #80631d;
-}
-
-.badge-description {
-  margin-top: 5px;
-
-  font-size: 11px;
-  line-height: 1.35;
-
-  color: #8b805d;
-}
-
-.badge-card.locked .badge-name,
-.badge-card.locked .badge-description {
-  color: #94a3b8;
-}
-
-/* =========================================================
-   GAME LIST
-========================================================= */
-
-.game-list-section {
-  margin-top: 42px;
+@media (max-width: 950px) {
+.game-page {
+padding-left: 16px;
+padding-right: 16px;
 }
 
 .game-list {
-  display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 16px;
+}
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+.game-card {
+padding: 19px;
+}
 
-  gap: 22px;
+.game-card-header {
+gap: 12px;
+}
+
+.game-card-khmer-title {
+font-size: 27px;
+}
+
+.game-card-vietnamese-title {
+font-size: 16px;
+}
+
+.game-card-status-inline {
+padding: 6px 8px;
+font-size: 10px;
+}
+
+.game-card-extra {
+gap: 8px;
+}
+
+.game-card-extra-item,
+.game-card-reward,
+.game-card-badge {
+height: 74px;
+padding: 10px 8px;
+}
+
+.game-header .back-button,
+.game-header .back-btn,
+.game-header .game-back-button,
+.game-header .game-header-back {
+margin-left: 0;
+margin-top: 18px;
+margin-bottom: 18px;
+}
 }
 
 /* =========================================================
-   GAME CARD
+MOBILE
 ========================================================= */
 
-.game-list .game-card {
-  position: relative;
+@media (max-width: 700px) {
+.game-page {
+padding:
+0
+10px
+30px;
+}
 
-  width: 100%;
-  min-height: 290px;
+.game-content {
+width: 100%;
+}
 
-  padding: 0;
+.game-header {
+width: 100%;
+}
 
-  box-sizing: border-box;
+.game-intro {
+margin-top: 12px;
+padding:
+24px
+18px;
+border-radius: 16px;
+}
 
-  overflow: hidden;
+.game-khmer-title {
+font-size: 27px;
+line-height: 1.5;
+}
 
-  border-radius: 26px;
+.game-intro h1 {
+font-size: 24px;
+line-height: 1.3;
+}
 
-  border: 2px solid #abd4b3;
+.game-intro p {
+font-size: 14px;
+line-height: 1.5;
+}
 
-  background: #ffffff;
+.game-section-title {
+padding:
+17px
+18px;
+border-radius: 14px;
+font-size: 17px;
+}
 
-  box-shadow:
-    0 8px 22px rgba(32, 148, 59, 0.07);
+.game-list {
+grid-template-columns: 1fr;
+gap: 15px;
+}
 
-  cursor: pointer;
+.game-card {
+min-height: 0;
+padding:
+19px
+15px;
+border-radius: 15px;
+}
 
-  text-align: left;
+.game-card-header {
+display: block;
+}
 
-  font-family: inherit;
+.game-card-khmer-title {
+font-size: 26px;
+line-height: 1.55;
+}
 
-  appearance: none;
+.game-card-vietnamese-title {
+margin-top: 4px;
+font-size: 16px;
+}
 
-  transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease,
-    border-color 0.28s ease;
+.game-card-status-inline {
+display: inline-flex;
+margin-top: 11px;
+padding:
+6px
+9px;
+font-size: 10px;
+}
+
+.game-card-body {
+margin-top: 16px;
+}
+
+.game-card-info p {
+min-height: 0;
+font-size: 13px;
+line-height: 1.55;
+}
+
+.game-card-progress {
+margin-top: 18px;
+}
+
+.game-card-progress-bar {
+height: 8px;
+}
+
+.game-card-extra {
+grid-template-columns: 1fr;
+grid-template-rows: none;
+gap: 8px;
+margin-top: 17px;
+}
+
+.game-card-extra-item,
+.game-card-reward,
+.game-card-badge {
+height: 74px;
+padding:
+10px
+12px;
+}
+
+.game-card-extra-item small {
+font-size: 9px;
+}
+
+.game-card-extra-item strong {
+font-size: 13px;
+}
+
+.game-card-extra-icon {
+width: 27px;
+height: 27px;
+font-size: 20px;
+}
+
+.game-card-action {
+min-height: 45px;
+margin-top: 14px;
+font-size: 13px;
+}
+
+.game-header .back-button,
+.game-header .back-btn,
+.game-header .game-back-button,
+.game-header .game-header-back {
+margin-left: 0;
+margin-top: 16px;
+margin-bottom: 16px;
+}
 }
 
 /* =========================================================
-   CARD DECORATION
+SMALL MOBILE
 ========================================================= */
 
-.game-list .game-card::before {
-  content: "";
-
-  position: absolute;
-
-  width: 260px;
-  height: 260px;
-
-  right: -120px;
-  top: -130px;
-
-  border-radius: 50%;
-
-  background: #fbf5dc;
-
-  pointer-events: none;
+@media (max-width: 400px) {
+.game-page {
+padding-left: 8px;
+padding-right: 8px;
 }
 
-.game-list .game-card::after {
-  content: "";
+.game-intro {
+padding:
+22px
+15px;
+}
 
-  position: absolute;
+.game-khmer-title {
+font-size: 24px;
+}
 
-  left: 0;
-  bottom: 0;
+.game-intro h1 {
+font-size: 22px;
+}
 
-  width: 100%;
-  height: 4px;
+.game-section-title {
+font-size: 16px;
+padding:
+15px
+16px;
+}
 
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--green),
-      var(--gold),
-      var(--green),
-      transparent
-    );
+.game-card {
+padding:
+17px
+12px;
+}
 
-  pointer-events: none;
+.game-card-khmer-title {
+font-size: 24px;
+}
+
+.game-card-vietnamese-title {
+font-size: 15px;
+}
+
+.game-card-status-inline {
+font-size: 9px;
+}
+
+.game-card-extra-item,
+.game-card-reward,
+.game-card-badge {
+height: 74px;
+padding:
+10px
+10px;
+}
+
+.game-card-action {
+min-height: 43px;
+font-size: 12px;
+}
+
+.game-header .back-button,
+.game-header .back-btn,
+.game-header .game-back-button,
+.game-header .game-header-back {
+margin-left: 0;
+margin-top: 14px;
+margin-bottom: 14px;
+}
 }
 
 /* =========================================================
-   CORNER
+ACCESSIBILITY
 ========================================================= */
 
-.game-list .game-card-content::before {
-  content: "";
+.game-card-action:focus-visible {
+outline:
+3px solid rgba(212, 175, 55, 0.45);
+outline-offset: 2px;
+}
 
-  position: absolute;
-
-  width: 90px;
-  height: 90px;
-
-  left: -48px;
-  bottom: -48px;
-
-  border-radius: 50%;
-
-  border: 2px solid #eadcae;
+.game-card.unlocked:focus-within {
+border-color: var(--game-green);
 }
 
 /* =========================================================
-   HOVER
+REDUCE MOTION
 ========================================================= */
 
-.game-list .game-card.is-unlocked:hover {
-  transform:
-    translateY(-6px)
-    scale(1.01);
-
-  border-color: var(--green);
-
-  box-shadow:
-    0 14px 30px rgba(32, 148, 59, 0.12);
+@media (prefers-reduced-motion: reduce) {
+.game-card,
+.game-card-action,
+.game-card-progress-fill {
+transition: none;
 }
-
-.game-list .game-card.is-unlocked:active {
-  transform:
-    translateY(-2px)
-    scale(0.995);
-}
-
-/* =========================================================
-   GAME NUMBER
-========================================================= */
-
-.game-list .game-card-number {
-  position: absolute;
-
-  top: 20px;
-  right: 20px;
-
-  z-index: 5;
-
-  width: 48px;
-  height: 48px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background: #d5b94f;
-
-  border: 2px solid #bd9e35;
-
-  color: #5f4a13;
-
-  font-size: 21px;
-  font-weight: 900;
-
-  box-shadow: none;
-}
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.game-list .game-card-content {
-  position: relative;
-
-  z-index: 3;
-
-  padding: 32px 30px 28px;
-
-  height: 100%;
-  min-height: 290px;
-
-  box-sizing: border-box;
-
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: flex-start;
-}
-
-/* =========================================================
-   KHMER GAME TITLE
-========================================================= */
-
-.game-list .game-card-khmer {
-  margin-bottom: 8px;
-
-  font-family:
-    "Khmer OS Muol",
-    "Khmer OS",
-    sans-serif;
-
-  font-size: 30px;
-
-  font-weight: 900;
-
-  line-height: 1.4;
-
-  color: var(--gold);
-}
-
-/* =========================================================
-   GAME TITLE
-========================================================= */
-
-.game-list .game-card h3 {
-  margin: 0 0 10px;
-
-  font-size: 27px;
-
-  line-height: 1.15;
-
-  font-weight: 900;
-
-  letter-spacing: 0.5px;
-
-  color: var(--green);
-}
-
-/* =========================================================
-   DESCRIPTION
-========================================================= */
-
-.game-list .game-card p {
-  margin: 0 0 20px;
-
-  max-width: 90%;
-
-  font-size: 14px;
-
-  line-height: 1.6;
-
-  font-weight: 600;
-
-  color: var(--muted);
-}
-
-/* =========================================================
-   START BUTTON
-========================================================= */
-
-.game-list .game-card
-> .game-card-content > span {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  margin-top: auto;
-
-  min-width: 170px;
-
-  padding: 11px 20px;
-
-  box-sizing: border-box;
-
-  border-radius: 999px;
-
-  border: 2px solid var(--green);
-
-  background: var(--green);
-
-  color: #ffffff;
-
-  font-size: 13px;
-
-  font-weight: 900;
-
-  letter-spacing: 0.4px;
-
-  box-shadow:
-    0 5px 14px rgba(32, 148, 59, 0.15);
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-}
-
-.game-list .game-card.is-unlocked:hover
-span {
-  transform: translateY(-2px);
-
-  background: var(--green-dark);
-}
-
-/* =========================================================
-   COMPLETED
-========================================================= */
-
-.game-list .game-card.is-completed {
-  border-color: #d0b451;
-
-  background: #fffdf4;
-
-  box-shadow:
-    0 8px 22px rgba(201, 150, 32, 0.08);
-}
-
-.game-list .game-card.is-completed::after {
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      #c99620,
-      #d8ba55,
-      #c99620,
-      transparent
-    );
-}
-
-.game-list .game-card.is-completed
-.game-card-khmer {
-  color: var(--gold);
-}
-
-.game-list .game-card.is-completed
-> .game-card-content > span {
-  background: var(--gold);
-
-  border-color: #b88a17;
-
-  color: #ffffff;
-
-  box-shadow:
-    0 5px 14px rgba(201, 150, 32, 0.15);
-}
-
-/* =========================================================
-   LOCKED
-========================================================= */
-
-.game-list .game-card.is-locked {
-  opacity: 0.58;
-
-  cursor: not-allowed;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f4f6f4,
-      #edf0ed
-    );
-
-  border-color: #d2dad3;
-
-  box-shadow: none;
-}
-
-.game-list .game-card.is-locked:hover {
-  transform: none;
-
-  border-color: #d2dad3;
-
-  box-shadow: none;
-}
-
-.game-list .game-card.is-locked
-.game-card-number {
-  background:
-    linear-gradient(
-      145deg,
-      #dce2dd,
-      #cbd5cb
-    );
-
-  border-color: #b8c3ba;
-
-  color: #68746b;
-
-  box-shadow: none;
-}
-
-.game-list .game-card.is-locked
-.game-card-khmer {
-  background: none;
-
-  color: #7b887e;
-
-  filter: none;
-}
-
-.game-list .game-card.is-locked h3 {
-  color: #6f7b72;
-
-  text-shadow: none;
-}
-
-.game-list .game-card.is-locked p {
-  color: #8a958d;
-}
-
-.game-list .game-card.is-locked
-> .game-card-content > span {
-  background: #aab4ad;
-
-  border-color: #aab4ad;
-
-  color: #ffffff;
-
-  box-shadow: none;
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 760px) {
-  .game-page {
-    padding: 16px;
-  }
-
-  .game-intro {
-    padding: 18px 10px 28px;
-  }
-
-  .game-icon {
-    font-size: 58px;
-  }
-
-  .game-khmer-title {
-    font-size: 44px;
-  }
-
-  .game-intro h1 {
-    font-size: 26px;
-  }
-
-  .learner-card {
-    padding: 20px;
-  }
-
-  .learner-level-row {
-    align-items: flex-start;
-
-    flex-direction: column;
-
-    gap: 5px;
-  }
-
-  .badge-grid {
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-  .game-list {
-    grid-template-columns: 1fr;
-  }
-
-  .game-list .game-card {
-    min-height: 270px;
-  }
-
-  .game-list .game-card-content {
-    min-height: 270px;
-  }
-}
-
-/* =========================================================
-   SMALL MOBILE
-========================================================= */
-
-@media (max-width: 430px) {
-  .game-page {
-    padding: 12px;
-  }
-
-  .game-icon {
-    font-size: 52px;
-  }
-
-  .game-khmer-title {
-    font-size: 38px;
-  }
-
-  .game-intro h1 {
-    font-size: 23px;
-
-    letter-spacing: 1px;
-  }
-
-  .game-intro p {
-    font-size: 13px;
-  }
-
-  .game-section-title {
-    font-size: 18px;
-  }
-
-  .learner-level {
-    font-size: 19px;
-  }
-
-  .learner-level strong {
-    font-size: 24px;
-  }
-
-  .learner-exp {
-    font-size: 16px;
-  }
-
-  .badge-grid {
-    gap: 10px;
-  }
-
-  .badge-card {
-    min-height: 135px;
-  }
-
-  .badge-icon {
-    font-size: 35px;
-  }
-
-  .game-list .game-card {
-    min-height: 250px;
-
-    border-radius: 22px;
-  }
-
-  .game-list .game-card-content {
-    min-height: 250px;
-
-    padding: 27px 22px 24px;
-  }
-
-  .game-list .game-card-number {
-    width: 42px;
-    height: 42px;
-
-    top: 16px;
-    right: 16px;
-
-    font-size: 18px;
-  }
-
-  .game-list .game-card-khmer {
-    font-size: 25px;
-  }
-
-  .game-list .game-card h3 {
-    font-size: 22px;
-  }
-
-  .game-list .game-card p {
-    font-size: 13px;
-  }
-
-  .game-list .game-card
-  > .game-card-content > span {
-    width: 100%;
-  }
 }

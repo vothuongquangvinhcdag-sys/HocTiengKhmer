@@ -223,7 +223,7 @@ const Game1 = ({
             navigate("/game")
           }
         >
-          ← QUAY LẠI GAME
+          ← Danh sách trò chơi
         </button>
 
       </header>

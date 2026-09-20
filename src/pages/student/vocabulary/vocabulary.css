@@ -124,7 +124,7 @@
 
 /* =========================================================
    NÚT QUAY VỀ TRANG HỌC TẬP
-   CANH ĐÚNG MÉP TRÁI KHUNG 1200PX
+   CANH CÙNG MÉP TRÁI VỚI KHUNG CARD 1200PX
 ========================================================= */
 
 .vocabulary-back-button {
@@ -137,10 +137,13 @@
   margin-bottom: 18px;
 
   /*
-    Canh mép trái theo đúng khung vocabulary-header
-    max-width: 1200px
+    Cùng mép trái với vocabulary-container
+    và các card bên dưới.
   */
-  margin-left: max(12px, calc((100% - 1200px) / 2));
+  margin-left: max(
+    0px,
+    calc((100% - 1200px) / 2)
+  );
 
   padding: 10px 17px;
 
@@ -200,9 +203,6 @@
 
   background: var(--vocab-white);
 
-  /*
-    VIỀN XANH GIỐNG CARD CHỦ ĐỀ
-  */
   border: 1px solid var(--vocab-blue-border);
   border-top: 5px solid var(--vocab-blue);
 
@@ -245,7 +245,6 @@
 
 /* =========================================================
    TIÊU ĐỀ KHMER
-   MÀU CAM
 ========================================================= */
 
 .vocabulary-header-khmer {
@@ -488,9 +487,6 @@
     border-color 0.25s ease;
 }
 
-
-/* Thanh xanh phía trên giống header */
-
 .vocabulary-category-card::before {
   content: "";
 
@@ -504,9 +500,6 @@
 
   background: var(--vocab-blue);
 }
-
-
-/* Mảng xanh trang trí */
 
 .vocabulary-category-card::after {
   content: "";
@@ -645,6 +638,7 @@
 
 /* =========================================================
    NÚT QUAY LẠI CHỌN CHỦ ĐỀ
+   CANH CÙNG MÉP TRÁI VỚI CARD
 ========================================================= */
 
 .vocabulary-category-back {
@@ -652,8 +646,14 @@
   align-items: center;
   gap: 7px;
 
-  margin-top: 8px;
+  margin-top: 20px;
   margin-bottom: 18px;
+
+  /*
+    Nút này nằm trong vocabulary-container
+    nên margin-left = 0 sẽ trùng mép card.
+  */
+  margin-left: 0;
 
   padding: 10px 17px;
 
@@ -823,9 +823,6 @@
     box-shadow 0.25s ease,
     border-color 0.25s ease;
 }
-
-
-/* Thanh xanh */
 
 .vocabulary-word-card::before {
   content: "";
@@ -1297,10 +1294,6 @@
     margin-top: 5px;
     margin-bottom: 15px;
 
-    /*
-      Trên mobile không cần tính theo 1200px.
-      Giữ khoảng lùi nhỏ để đồng bộ với nội dung.
-    */
     margin-left: 8px;
 
     padding: 10px 16px;
@@ -1309,6 +1302,10 @@
   .vocabulary-category-back {
     margin-top: 5px;
     margin-bottom: 15px;
+
+    margin-left: 8px;
+
+    padding: 10px 16px;
   }
 
 
