@@ -1,21 +1,11 @@
 /* =========================================================
-   GAME 3 — STAGE 2
-
-   SƯỜN GAMEPLAY
-
-   Gameplay Game 2 đã được loại bỏ.
-
-   Giữ:
-   - Stage color
-   - Game area
-   - Placeholder
-   - Responsive
-   - Tương thích GameStage.css
+   GAME 2 — STAGE 2
+   PHỤ ÂM + NGUYÊN ÂM
 ========================================================= */
 
 
 /* =========================================================
-   STAGE 2 COLOR
+   COLOR
 ========================================================= */
 
 .game-stage-2 {
@@ -36,66 +26,40 @@
 .game-stage-2 .stage-game-area {
   width: 100%;
   max-width: 680px;
-
   margin: 28px auto 0;
 }
 
 
 /* =========================================================
-   GAMEPLAY PLACEHOLDER
+   QUESTION
 ========================================================= */
 
-.game-stage-2 .stage-placeholder {
+.game-stage-2 .stage-question {
   width: 100%;
-
   box-sizing: border-box;
 
-  padding: 42px 24px;
+  padding: 24px 20px 20px;
 
   border: 2px solid var(--stage-border);
   border-radius: 22px;
 
   background: #ffffff;
 
-  text-align: center;
-
   box-shadow:
     0 8px 25px var(--stage-soft);
+
+  text-align: center;
 }
 
 
 /* =========================================================
-   PLACEHOLDER ICON
+   QUESTION LABEL
 ========================================================= */
 
-.game-stage-2 .stage-placeholder-icon {
-  display: flex;
+.game-stage-2 .stage-question-label {
+  display: block;
 
-  align-items: center;
-  justify-content: center;
-
-  width: 72px;
-  height: 72px;
-
-  margin: 0 auto 18px;
-
-  border-radius: 50%;
-
-  background: var(--stage-light);
-
-  font-size: 34px;
-
-  box-shadow:
-    0 0 20px var(--stage-glow);
-}
-
-
-/* =========================================================
-   PLACEHOLDER TITLE
-========================================================= */
-
-.game-stage-2 .stage-placeholder h2 {
-  margin: 0 0 10px;
+  margin-bottom: 10px;
 
   font-family:
     "Segoe UI",
@@ -103,22 +67,108 @@
     Helvetica,
     sans-serif;
 
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 900;
 
-  line-height: 1.3;
-
-  letter-spacing: 0.5px;
+  letter-spacing: 1.5px;
+  line-height: 1.4;
 
   color: var(--stage-main);
 }
 
 
 /* =========================================================
-   PLACEHOLDER DESCRIPTION
+   QUESTION — KHMER + ROMANIZATION
+   Ví dụ:
+   ខោ Khao
 ========================================================= */
 
-.game-stage-2 .stage-placeholder p {
+.game-stage-2 .stage2-question-expression {
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 16px;
+
+  margin: 4px 0 10px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   KHMER QUESTION
+
+   Nhỏ hơn để không bị tràn khung.
+========================================================= */
+
+.game-stage-2 .stage-khmer-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 1 auto;
+
+  min-width: 0;
+  min-height: 125px;
+
+  margin: 0;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: clamp(64px, 8vw, 92px);
+
+  font-weight: 400;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+
+  text-shadow:
+    0 3px 12px var(--stage-glow);
+}
+
+
+/* =========================================================
+   ROMANIZATION
+========================================================= */
+
+.game-stage-2 .stage2-question-roman {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  line-height: 1;
+  letter-spacing: 0.8px;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+  opacity: 0.75;
+}
+
+
+/* =========================================================
+   QUESTION HINT
+========================================================= */
+
+.game-stage-2 .stage-question p {
   margin: 0;
 
   font-family:
@@ -128,23 +178,254 @@
     sans-serif;
 
   font-size: 15px;
-  font-weight: 600;
-
-  line-height: 1.6;
+  font-weight: 700;
+  line-height: 1.5;
 
   color: var(--stage-dark);
-
   opacity: 0.72;
 }
 
 
 /* =========================================================
-   STAGE PLAY INFO
-
-   Dùng GameStage.css.
-
-   Không override lại kích thước tại đây.
+   ANSWERS
 ========================================================= */
+
+.game-stage-2 .stage-options {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-top: 16px;
+}
+
+
+/* =========================================================
+   ANSWER BUTTON
+========================================================= */
+
+.game-stage-2 .stage-option {
+  min-height: 74px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding: 8px 14px;
+
+  box-sizing: border-box;
+
+  border: 2px solid var(--stage-border);
+  border-radius: 16px;
+
+  background: #ffffff;
+  color: var(--stage-dark);
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 16px var(--stage-soft);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease;
+}
+
+
+/* =========================================================
+   ANSWER — KHMER
+========================================================= */
+
+.game-stage-2 .stage2-option-consonant,
+.game-stage-2 .stage2-option-vowel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  font-family:
+    "Khmer OS",
+    sans-serif;
+
+  font-size: 40px;
+  font-weight: 400;
+
+  line-height: 1;
+
+  white-space: nowrap;
+
+  color: var(--stage-dark);
+
+  text-shadow:
+    0 2px 8px var(--stage-glow);
+
+  transition:
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+/* =========================================================
+   ANSWER — PLUS
+========================================================= */
+
+.game-stage-2 .stage2-option-plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 0 0 auto;
+
+  width: 26px;
+
+  font-family:
+    "Segoe UI",
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size: 24px;
+  font-weight: 900;
+
+  line-height: 1;
+
+  color: var(--stage-main);
+
+  opacity: 0.82;
+}
+
+
+/* =========================================================
+   HOVER
+========================================================= */
+
+.game-stage-2 .stage-option:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  border-color: var(--stage-main);
+  background: var(--stage-light);
+  color: var(--stage-main);
+
+  box-shadow:
+    0 8px 24px var(--stage-glow);
+}
+
+.game-stage-2
+.stage-option:hover:not(:disabled)
+.stage2-option-consonant,
+.game-stage-2
+.stage-option:hover:not(:disabled)
+.stage2-option-vowel {
+  color: var(--stage-main);
+  transform: scale(1.03);
+}
+
+.game-stage-2
+.stage-option:hover:not(:disabled)
+.stage2-option-plus {
+  color: var(--stage-main);
+  opacity: 1;
+}
+
+
+/* =========================================================
+   ACTIVE
+========================================================= */
+
+.game-stage-2 .stage-option:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   DISABLED
+========================================================= */
+
+.game-stage-2 .stage-option:disabled {
+  cursor: default;
+}
+
+
+/* =========================================================
+   CORRECT
+========================================================= */
+
+.game-stage-2 .stage-option.correct {
+  border-color: var(--stage-green);
+
+  background: var(--stage-green-light);
+  color: var(--stage-green-dark);
+
+  box-shadow:
+    0 0 18px rgba(34, 197, 94, 0.22);
+}
+
+.game-stage-2
+.stage-option.correct
+.stage2-option-consonant,
+.game-stage-2
+.stage-option.correct
+.stage2-option-vowel,
+.game-stage-2
+.stage-option.correct
+.stage2-option-plus {
+  color: var(--stage-green-dark);
+}
+
+
+/* =========================================================
+   WRONG
+========================================================= */
+
+.game-stage-2 .stage-option.wrong {
+  border-color: var(--stage-red);
+
+  background: var(--stage-red-light);
+  color: var(--stage-red-dark);
+
+  box-shadow:
+    0 0 18px rgba(239, 68, 68, 0.20);
+}
+
+.game-stage-2
+.stage-option.wrong
+.stage2-option-consonant,
+.game-stage-2
+.stage-option.wrong
+.stage2-option-vowel,
+.game-stage-2
+.stage-option.wrong
+.stage2-option-plus {
+  color: var(--stage-red-dark);
+}
+
+
+/* =========================================================
+   OTHER DISABLED ANSWERS
+========================================================= */
+
+.game-stage-2
+.stage-option:disabled:not(.correct):not(.wrong) {
+  opacity: 0.72;
+}
 
 
 /* =========================================================
@@ -153,55 +434,63 @@
 
 @media (max-width: 640px) {
 
-  /* ---------------------------------------------
-     GAME AREA
-  --------------------------------------------- */
-
   .game-stage-2 .stage-game-area {
     margin-top: 20px;
   }
 
-
-  /* ---------------------------------------------
-     PLACEHOLDER
-  --------------------------------------------- */
-
-  .game-stage-2 .stage-placeholder {
-    padding: 34px 18px;
-
+  .game-stage-2 .stage-question {
+    padding: 20px 16px 18px;
     border-radius: 18px;
   }
 
+  /* QUESTION */
 
-  /* ---------------------------------------------
-     ICON
-  --------------------------------------------- */
+  .game-stage-2 .stage2-question-expression {
+    min-height: 105px;
 
-  .game-stage-2 .stage-placeholder-icon {
-    width: 64px;
-    height: 64px;
+    gap: 8px;
 
-    margin-bottom: 16px;
-
-    font-size: 30px;
+    margin: 2px 0 8px;
   }
 
+  .game-stage-2 .stage-khmer-letter {
+    min-height: 105px;
 
-  /* ---------------------------------------------
-     TITLE
-  --------------------------------------------- */
-
-  .game-stage-2 .stage-placeholder h2 {
-    font-size: 18px;
+    font-size: clamp(58px, 18vw, 82px);
   }
 
+  .game-stage-2 .stage2-question-roman {
+    font-size: 20px;
+  }
 
-  /* ---------------------------------------------
-     DESCRIPTION
-  --------------------------------------------- */
-
-  .game-stage-2 .stage-placeholder p {
+  .game-stage-2 .stage-question p {
     font-size: 14px;
+  }
+
+  /* ANSWERS */
+
+  .game-stage-2 .stage-options {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .game-stage-2 .stage-option {
+    min-height: 66px;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 15px;
+  }
+
+  .game-stage-2
+  .stage2-option-consonant,
+  .game-stage-2
+  .stage2-option-vowel {
+    font-size: 36px;
+  }
+
+  .game-stage-2 .stage2-option-plus {
+    width: 24px;
+    font-size: 22px;
   }
 }
 
@@ -212,25 +501,46 @@
 
 @media (max-width: 380px) {
 
-  .game-stage-2 .stage-placeholder {
-    padding: 30px 14px;
+  .game-stage-2 .stage2-question-expression {
+    gap: 6px;
   }
 
-
-  .game-stage-2 .stage-placeholder-icon {
-    width: 58px;
-    height: 58px;
-
-    font-size: 28px;
+  .game-stage-2 .stage-khmer-letter {
+    font-size: 56px;
   }
 
-
-  .game-stage-2 .stage-placeholder h2 {
-    font-size: 17px;
+  .game-stage-2 .stage2-question-roman {
+    font-size: 18px;
   }
 
+  .game-stage-2 .stage-option {
+    min-height: 62px;
+    gap: 6px;
+    padding: 6px 10px;
+  }
 
-  .game-stage-2 .stage-placeholder p {
-    font-size: 13px;
+  .game-stage-2
+  .stage2-option-consonant,
+  .game-stage-2
+  .stage2-option-vowel {
+    font-size: 34px;
+  }
+
+  .game-stage-2 .stage2-option-plus {
+    width: 22px;
+    font-size: 21px;
   }
 }
+
+/* Game 3: đáp án là phiên âm; card và lưới giữ đúng mẫu Game 2 Stage 2. */
+.game3-stage2 .stage2-option-roman {
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 21px;
+  font-weight: 900;
+  color: var(--stage-dark);
+}
+.game3-stage2 .stage-option:hover:not(:disabled) .stage2-option-roman { color: var(--stage-main); }
+.game3-stage2 .stage-option.correct .stage2-option-roman { color: var(--stage-green-dark); }
+.game3-stage2 .stage-option.wrong .stage2-option-roman { color: var(--stage-red-dark); }
+.game3-stage2 .stage-option.selected { border-color: var(--stage-main); background: var(--stage-light); box-shadow: 0 0 18px var(--stage-glow); }
+@media (max-width: 380px) { .game3-stage2 .stage2-option-roman { font-size: 18px; } }

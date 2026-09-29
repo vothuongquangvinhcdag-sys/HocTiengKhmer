@@ -1,222 +1,102 @@
 /* =========================================================
-   GAME 3 — STAGE 3
-
-   BỘ KHUNG GAMEPLAY
-
-   Giữ:
-   - Stage color
-   - Game area
-   - Placeholder
-   - Responsive
-   - Tương thích GameStage.css
-
-   Loại bỏ:
-   - Question
-   - Khmer question
-   - Answers
-   - Answer states
-   - Gameplay CSS riêng của Game 2
+   GAME 3 - STAGE 3
+   CHỮ GHÉP CHÂN → PHIÊN ÂM
 ========================================================= */
 
-
-/* =========================================================
-   STAGE 3 COLOR
-========================================================= */
-
-.game-stage-3 {
-  --stage-main: #8b5cf6;
-  --stage-dark: #54269a;
-  --stage-light: #f5f3ff;
-
-  --stage-border: #c4b5fd;
-  --stage-soft: rgba(139, 92, 246, 0.10);
-  --stage-glow: rgba(139, 92, 246, 0.18);
-
-  --stage-green: #16a34a;
-  --stage-green-dark: #15803d;
-  --stage-green-light: #f0fdf4;
-
-  --stage-red: #ef4444;
-  --stage-red-dark: #b91c1c;
-  --stage-red-light: #fef2f2;
-}
-
-
-/* =========================================================
-   GAME AREA
-========================================================= */
-
-.game-stage-3 .stage-game-area {
+.game3-stage3 .stage3-question-expression {
   width: 100%;
-  max-width: 680px;
+  min-height: 150px;
 
-  margin: 28px auto 0;
-}
-
-
-/* =========================================================
-   GAMEPLAY PLACEHOLDER
-========================================================= */
-
-.game-stage-3 .stage-placeholder {
-  width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 42px 24px;
-
-  border: 2px solid var(--stage-border);
-  border-radius: 22px;
-
-  background: #ffffff;
-
-  text-align: center;
-
-  box-shadow:
-    0 8px 25px var(--stage-soft);
-}
-
-
-/* =========================================================
-   PLACEHOLDER ICON
-========================================================= */
-
-.game-stage-3 .stage-placeholder-icon {
   display: flex;
-
   align-items: center;
   justify-content: center;
 
-  width: 72px;
-  height: 72px;
-
-  margin: 0 auto 18px;
-
-  border-radius: 50%;
-
-  background: var(--stage-light);
-
-  font-size: 34px;
-
-  box-shadow:
-    0 0 20px var(--stage-glow);
+  padding: 24px 20px;
 }
 
 
 /* =========================================================
-   PLACEHOLDER TITLE
+   KHMER CLUSTER
+   DÙNG CÙNG MÀU VỚI CHỮ Ở ĐÁP ÁN
 ========================================================= */
 
-.game-stage-3 .stage-placeholder h2 {
-  margin: 0 0 10px;
+.game3-stage3 .stage-khmer-cluster {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family:
+    "Khmer OS",
+    "Khmer OS Battambang",
+    sans-serif;
+
+  font-size: clamp(72px, 10vw, 118px);
+  font-weight: 400;
+  line-height: 1.35;
+
+  color: inherit;
+
+  text-align: center;
+
+  user-select: none;
+}
+
+
+/* =========================================================
+   ROMAN OPTIONS
+========================================================= */
+
+.game3-stage3 .stage3-option-roman {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
 
   font-family:
     "Segoe UI",
     Arial,
-    Helvetica,
     sans-serif;
 
   font-size: 20px;
-  font-weight: 900;
-
+  font-weight: 700;
   line-height: 1.3;
 
-  letter-spacing: 0.5px;
-
-  color: var(--stage-main);
+  text-align: center;
 }
 
 
 /* =========================================================
-   PLACEHOLDER DESCRIPTION
+   RESPONSIVE
 ========================================================= */
 
-.game-stage-3 .stage-placeholder p {
-  margin: 0;
-
-  font-family:
-    "Segoe UI",
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  font-size: 15px;
-  font-weight: 600;
-
-  line-height: 1.6;
-
-  color: var(--stage-dark);
-
-  opacity: 0.72;
-}
-
-
-/* =========================================================
-   STAGE PLAY INFO
-
-   Dùng GameStage.css.
-
-   Không override tại đây.
-========================================================= */
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 640px) {
-
-  .game-stage-3 .stage-game-area {
-    margin-top: 20px;
+@media (max-width: 768px) {
+  .game3-stage3 .stage3-question-expression {
+    min-height: 130px;
+    padding: 20px 16px;
   }
 
-  .game-stage-3 .stage-placeholder {
-    padding: 34px 18px;
-
-    border-radius: 18px;
+  .game3-stage3 .stage-khmer-cluster {
+    font-size: clamp(64px, 18vw, 94px);
   }
 
-  .game-stage-3 .stage-placeholder-icon {
-    width: 64px;
-    height: 64px;
-
-    margin-bottom: 16px;
-
-    font-size: 30px;
-  }
-
-  .game-stage-3 .stage-placeholder h2 {
+  .game3-stage3 .stage3-option-roman {
     font-size: 18px;
   }
-
-  .game-stage-3 .stage-placeholder p {
-    font-size: 14px;
-  }
 }
 
 
-/* =========================================================
-   VERY SMALL MOBILE
-========================================================= */
-
-@media (max-width: 380px) {
-
-  .game-stage-3 .stage-placeholder {
-    padding: 30px 14px;
+@media (max-width: 480px) {
+  .game3-stage3 .stage3-question-expression {
+    min-height: 115px;
+    padding: 16px 12px;
   }
 
-  .game-stage-3 .stage-placeholder-icon {
-    width: 58px;
-    height: 58px;
-
-    font-size: 28px;
+  .game3-stage3 .stage-khmer-cluster {
+    font-size: clamp(58px, 20vw, 82px);
   }
 
-  .game-stage-3 .stage-placeholder h2 {
+  .game3-stage3 .stage3-option-roman {
     font-size: 17px;
-  }
-
-  .game-stage-3 .stage-placeholder p {
-    font-size: 13px;
   }
 }

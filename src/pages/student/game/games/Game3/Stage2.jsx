@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import StageResult from "../../components/StageResult";
 
 import {
-  startStage,
   isStageCompleted,
+  startStage,
   recordStagePlay,
   recordStageScore,
   completeStage,
 } from "../../data/gameProgress";
 
+import { stage2Data } from "./data/stage2Data";
+
 import "../../shared/GameStage.css";
 import "./Stage2.css";
 
-/* =========================================================
-   CẤU HÌNH
-========================================================= */
 
 const GAME_ID = 3;
 const STAGE_ID = 2;
@@ -24,91 +26,143 @@ const MAX_ATTEMPTS = 3;
 const TOTAL_QUESTIONS = 10;
 const BASE_SCORE = 10;
 
+
+const shuffle = (items) => {
+
+  const copy = [...items];
+
+  for (
+    let i = copy.length - 1;
+    i > 0;
+    i -= 1
+  ) {
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+    [
+      copy[i],
+      copy[j],
+    ] = [
+      copy[j],
+      copy[i],
+    ];
+  }
+
+  return copy;
+};
+
+
 /* =========================================================
    ÂM THANH
 ========================================================= */
 
-const SOUND_CORRECT =
-  "/audio/games/correct.mp3";
+const playSound = (
+  name
+) => {
 
-const SOUND_WRONG =
-  "/audio/games/wrong.mp3";
-
-const SOUND_STAGE_COMPLETE =
-  "/audio/games/stage-complete.mp3";
-
-const SOUND_STAGE_FAIL =
-  "/audio/games/stage-fail.mp3";
-
-/* =========================================================
-   PHÁT ÂM THANH
-========================================================= */
-
-const playSound = (src) => {
   try {
-    const audio = new Audio(src);
+
+    const audio =
+      new Audio(
+        `/audio/games/${name}.mp3`
+      );
 
     audio.currentTime = 0;
     audio.volume = 0.9;
 
-    audio.play().catch((error) => {
-      console.warn(
-        "Không thể phát âm thanh:",
-        src,
-        error
-      );
-    });
-  } catch (error) {
-    console.warn(
-      "Lỗi tạo âm thanh:",
-      src,
-      error
-    );
+    audio
+      .play()
+      .catch(() => {});
+
+  } catch {
+    /* Không làm game lỗi */
   }
 };
 
+
 /* =========================================================
-   STAGE 2 — GAME 3
-
-   SƯỜN GAMEPLAY
-
-   Gameplay của Game 2 đã được loại bỏ.
-
-   GIỮ NGUYÊN:
-   - Kiểm tra Stage 1
-   - Khóa / mở Stage
-   - startStage
-   - recordStagePlay
-   - recordStageScore
-   - completeStage
-   - Lượt chơi
-   - Điểm
-   - Combo
-   - Số câu
-   - Thắng / thua
-   - Retry
-   - Continue
-   - StageResult
-
-   LOẠI BỎ:
-   - stage2Data
-   - createOptions()
-   - createQuestion()
-   - getRandomQuestion()
-   - createInitialQuestions()
-   - currentQuestion
-   - selectedAnswer
-   - answered
-   - handleAnswer()
-   - replaceCurrentQuestion()
-   - Gameplay ghép phụ âm + nguyên âm
+   TẠO 1 CÂU
 ========================================================= */
 
-const Stage2 = ({ navigate }) => {
+const createQuestion = (
+  item
+) => {
 
-  /* =======================================================
-     KIỂM TRA STAGE 1
-  ======================================================= */
+  const otherRomans = [
+    ...new Set(
+      stage2Data.map(
+        (entry) =>
+          entry.roman
+      )
+    ),
+  ].filter(
+    (roman) =>
+      roman !== item.roman
+  );
+
+
+  const others =
+    shuffle(
+      otherRomans
+    ).slice(
+      0,
+      3
+    );
+
+
+  return {
+
+    sourceLetter:
+      item.letter,
+
+    khmer:
+      item.letter,
+
+    answer:
+      item.roman,
+
+    options:
+      shuffle([
+        item.roman,
+        ...others,
+      ]),
+  };
+};
+
+
+/* =========================================================
+   10 CÂU BAN ĐẦU
+========================================================= */
+
+const createQuestions = () => {
+
+  return shuffle(
+    stage2Data
+  )
+    .slice(
+      0,
+      Math.min(
+        TOTAL_QUESTIONS,
+        stage2Data.length
+      )
+    )
+    .map(
+      createQuestion
+    );
+};
+
+
+/* =========================================================
+   STAGE 2
+========================================================= */
+
+const Stage2 = ({
+  navigate,
+}) => {
 
   const stage1Completed =
     isStageCompleted(
@@ -116,9 +170,13 @@ const Stage2 = ({ navigate }) => {
       1
     );
 
-  /* =======================================================
-     LƯỢT CHƠI
-  ======================================================= */
+
+  const [
+    questions,
+    setQuestions,
+  ] = useState(
+    createQuestions
+  );
 
   const [
     attemptsLeft,
@@ -127,39 +185,20 @@ const Stage2 = ({ navigate }) => {
     MAX_ATTEMPTS
   );
 
-  /* =======================================================
-     ĐIỂM
-  ======================================================= */
-
   const [
     score,
     setScore,
   ] = useState(0);
-
-  /* =======================================================
-     COMBO
-  ======================================================= */
 
   const [
     combo,
     setCombo,
   ] = useState(0);
 
-  /* =======================================================
-     CÂU HỎI
-
-     Giữ questionIndex để bảo toàn
-     cơ chế 10 câu của Stage.
-  ======================================================= */
-
   const [
     questionIndex,
     setQuestionIndex,
   ] = useState(0);
-
-  /* =======================================================
-     KẾT QUẢ
-  ======================================================= */
 
   const [
     result,
@@ -171,33 +210,46 @@ const Stage2 = ({ navigate }) => {
     setIsFirstWin,
   ] = useState(false);
 
+  const [
+    answerLocked,
+    setAnswerLocked,
+  ] = useState(false);
+
+  const [
+    selectedAnswer,
+    setSelectedAnswer,
+  ] = useState(null);
+
+
   /* =======================================================
-     KIỂM TRA + START STAGE
-
-     Stage 2 chỉ được vào khi Stage 1
-     đã hoàn thành.
-
-     Vào Stage / reload / retry
-     → KHÔNG tăng playCount.
+     START
   ======================================================= */
 
   useEffect(() => {
+
     if (!stage1Completed) {
-      navigate("/game/3");
+
+      navigate(
+        "/game/3"
+      );
+
       return;
     }
+
 
     startStage(
       GAME_ID,
       STAGE_ID
     );
+
   }, [
-    stage1Completed,
     navigate,
+    stage1Completed,
   ]);
 
+
   /* =======================================================
-     THẮNG
+     WIN
   ======================================================= */
 
   const handleWin = (
@@ -205,12 +257,8 @@ const Stage2 = ({ navigate }) => {
   ) => {
 
     playSound(
-      SOUND_STAGE_COMPLETE
+      "stage-complete"
     );
-
-    /*
-     * Kết thúc đúng 1 lượt chơi.
-     */
 
     recordStagePlay(
       GAME_ID,
@@ -237,22 +285,23 @@ const Stage2 = ({ navigate }) => {
       completed.isFirstWin
     );
 
-    setResult("win");
+    setResult(
+      "win"
+    );
   };
 
+
   /* =======================================================
-     THUA
+     LOSE
   ======================================================= */
 
-  const handleLose = () => {
+  const handleLose = (
+    finalScore
+  ) => {
 
     playSound(
-      SOUND_STAGE_FAIL
+      "stage-fail"
     );
-
-    /*
-     * Kết thúc đúng 1 lượt chơi.
-     */
 
     recordStagePlay(
       GAME_ID,
@@ -262,17 +311,270 @@ const Stage2 = ({ navigate }) => {
     recordStageScore(
       GAME_ID,
       STAGE_ID,
-      score
+      finalScore
     );
 
-    setResult("lose");
+    setResult(
+      "lose"
+    );
   };
 
+
   /* =======================================================
-     CHƠI LẠI
+     THAY CÂU SAU KHI SAI
+  ======================================================= */
+
+  const replaceCurrentQuestion =
+    () => {
+
+      const currentQuestion =
+        questions[
+          questionIndex
+        ];
+
+
+      const usedLetters =
+        questions.map(
+          (question) =>
+            question.sourceLetter
+        );
+
+
+      let available =
+        stage2Data.filter(
+          (item) =>
+            !usedLetters.includes(
+              item.letter
+            )
+        );
+
+
+      if (
+        available.length === 0
+      ) {
+
+        available =
+          stage2Data.filter(
+            (item) =>
+              item.letter !==
+              currentQuestion
+                ?.sourceLetter
+          );
+      }
+
+
+      if (
+        available.length === 0
+      ) {
+        return;
+      }
+
+
+      const item =
+        shuffle(
+          available
+        )[0];
+
+
+      const newQuestion =
+        createQuestion(
+          item
+        );
+
+
+      setQuestions(
+        (current) => {
+
+          const updated =
+            [...current];
+
+          updated[
+            questionIndex
+          ] =
+            newQuestion;
+
+          return updated;
+        }
+      );
+    };
+
+
+  /* =======================================================
+     ANSWER
+  ======================================================= */
+
+  const handleAnswer = (
+    option
+  ) => {
+
+    if (
+      answerLocked ||
+      result
+    ) {
+      return;
+    }
+
+
+    const question =
+      questions[
+        questionIndex
+      ];
+
+    if (!question) {
+      return;
+    }
+
+
+    setAnswerLocked(
+      true
+    );
+
+    setSelectedAnswer(
+      option
+    );
+
+
+    const correct =
+      option ===
+      question.answer;
+
+
+    /* =====================================================
+       CORRECT
+    ===================================================== */
+
+    if (correct) {
+
+      const nextCombo =
+        combo + 1;
+
+      const gainedScore =
+        nextCombo *
+        BASE_SCORE;
+
+      const nextScore =
+        score +
+        gainedScore;
+
+
+      setCombo(
+        nextCombo
+      );
+
+      setScore(
+        nextScore
+      );
+
+
+      playSound(
+        "correct"
+      );
+
+
+      window.setTimeout(
+        () => {
+
+          if (
+            questionIndex >=
+            TOTAL_QUESTIONS - 1
+          ) {
+
+            handleWin(
+              nextScore
+            );
+
+            return;
+          }
+
+
+          setQuestionIndex(
+            (current) =>
+              current + 1
+          );
+
+          setSelectedAnswer(
+            null
+          );
+
+          setAnswerLocked(
+            false
+          );
+
+        },
+        500
+      );
+
+
+      return;
+    }
+
+
+    /* =====================================================
+       WRONG
+    ===================================================== */
+
+    playSound(
+      "wrong"
+    );
+
+    setCombo(0);
+
+
+    window.setTimeout(
+      () => {
+
+        const newAttemptsLeft =
+          attemptsLeft - 1;
+
+
+        setAttemptsLeft(
+          newAttemptsLeft
+        );
+
+
+        if (
+          newAttemptsLeft <= 0
+        ) {
+
+          handleLose(
+            score
+          );
+
+          return;
+        }
+
+
+        /*
+         * Không tăng questionIndex.
+         * Chỉ thay câu hiện tại.
+         */
+
+        replaceCurrentQuestion();
+
+
+        setSelectedAnswer(
+          null
+        );
+
+        setAnswerLocked(
+          false
+        );
+
+      },
+      500
+    );
+  };
+
+
+  /* =======================================================
+     RETRY
   ======================================================= */
 
   const handleRetry = () => {
+
+    setQuestions(
+      createQuestions()
+    );
 
     setAttemptsLeft(
       MAX_ATTEMPTS
@@ -288,51 +590,62 @@ const Stage2 = ({ navigate }) => {
 
     setIsFirstWin(false);
 
+    setAnswerLocked(false);
+
+    setSelectedAnswer(null);
+
+
     startStage(
       GAME_ID,
       STAGE_ID
     );
   };
 
-  /* =======================================================
-     TIẾP TỤC STAGE 3
-  ======================================================= */
-
-  const handleContinue = () => {
-
-    navigate(
-      "/game/3/stage/3"
-    );
-  };
-
-  /* =======================================================
-     STAGE CHƯA MỞ
-  ======================================================= */
 
   if (!stage1Completed) {
     return null;
   }
 
-  /* =======================================================
-     RESULT
-  ======================================================= */
 
   if (result) {
 
     return (
+
       <div className="game-stage-page game-stage-2">
 
         <main className="game-stage-content">
 
           <StageResult
-            gameId={GAME_ID}
-            result={result}
-            stageId={STAGE_ID}
-            isFirstWin={isFirstWin}
-            onRetry={handleRetry}
-            onContinue={handleContinue}
+            gameId={
+              GAME_ID
+            }
+
+            result={
+              result
+            }
+
+            stageId={
+              STAGE_ID
+            }
+
+            isFirstWin={
+              isFirstWin
+            }
+
+            onRetry={
+              handleRetry
+            }
+
+            onContinue={() =>
+              navigate(
+                "/game/3/stage/3"
+              )
+            }
+
             onBack={() =>
-              navigate("/game/3")
+              navigate(
+                "/game/3"
+              )
             }
           />
 
@@ -342,23 +655,30 @@ const Stage2 = ({ navigate }) => {
     );
   }
 
-  /* =======================================================
-     GAMEPLAY PLACEHOLDER
-  ======================================================= */
+
+  const question =
+    questions[
+      questionIndex
+    ];
+
+
+  if (!question) {
+    return null;
+  }
+
 
   return (
-    <div className="game-stage-page game-stage-2">
 
-      {/* =================================================
-          HEADER
-      ================================================= */}
+    <div className="game-stage-page game-stage-2 game3-stage2">
 
       <header className="game-stage-header">
 
         <button
           type="button"
           onClick={() =>
-            navigate("/game/3")
+            navigate(
+              "/game/3"
+            )
           }
         >
           ← DANH SÁCH STAGE
@@ -366,45 +686,25 @@ const Stage2 = ({ navigate }) => {
 
       </header>
 
-      {/* =================================================
-          CONTENT
-      ================================================= */}
 
       <main className="game-stage-content">
-
-        {/* =================================================
-            ICON
-        ================================================= */}
 
         <div className="game-stage-icon">
           🎮
         </div>
 
-        {/* =================================================
-            KHMER
-        ================================================= */}
-
         <div className="game-stage-khmer">
           ហ្គេម ៣
         </div>
-
-        {/* =================================================
-            TITLE
-        ================================================= */}
 
         <h1>
           STAGE 2
         </h1>
 
         <p>
-          GAMEPLAY ĐANG ĐƯỢC XÂY DỰNG
+          NHÌN CHÂN CHỮ, CHỌN PHIÊN ÂM TƯƠNG ỨNG
         </p>
 
-        {/* =================================================
-            THÔNG TIN GAME
-
-            Giữ nguyên cơ chế hiển thị.
-        ================================================= */}
 
         <div className="stage-play-info">
 
@@ -433,29 +733,82 @@ const Stage2 = ({ navigate }) => {
 
         </div>
 
-        {/* =================================================
-            GAMEPLAY PLACEHOLDER
 
-            Gameplay mới của Game 3 Stage 2
-            sẽ được thêm vào đây.
-        ================================================= */}
+        <section
+          className="stage-game-area"
+          aria-label={
+            `Câu hỏi ${
+              questionIndex + 1
+            }`
+          }
+        >
 
-        <section className="stage-game-area">
+          <div className="stage-question">
 
-          <div className="stage-placeholder">
+            <span className="stage-question-label">
+              HÃY CHỌN PHIÊN ÂM CỦA CHÂN CHỮ
+            </span>
 
-            <div className="stage-placeholder-icon">
-              🎮
+            <div
+              className="stage2-question-expression"
+              lang="km"
+            >
+
+              <span className="stage-khmer-letter">
+                {question.khmer}
+              </span>
+
             </div>
 
-            <h2>
-              SẴN SÀNG CHO GAMEPLAY
-            </h2>
+          </div>
 
-            <p>
-              Gameplay của Stage 2 Game 3
-              sẽ được thêm vào đây.
-            </p>
+
+          <div className="stage-options">
+
+            {question.options.map(
+              (
+                option,
+                index
+              ) => (
+
+                <button
+                  type="button"
+
+                  key={
+                    `${option}-${index}`
+                  }
+
+                  className={`stage-option ${
+                    selectedAnswer ===
+                    option
+                      ? `selected ${
+                          option ===
+                          question.answer
+                            ? "correct"
+                            : "wrong"
+                        }`
+                      : ""
+                  }`}
+
+                  disabled={
+                    answerLocked
+                  }
+
+                  onClick={() =>
+                    handleAnswer(
+                      option
+                    )
+                  }
+                >
+
+                  <span className="stage2-option-roman">
+                    {option}
+                  </span>
+
+                </button>
+
+              )
+            )}
 
           </div>
 
@@ -466,5 +819,6 @@ const Stage2 = ({ navigate }) => {
     </div>
   );
 };
+
 
 export default Stage2;

@@ -1775,7 +1775,7 @@ function Alphabet({
 
             <div>
               <h2>
-                33 CHÂN CHỮ / GỬI CHÂN
+                32 CHÂN CHỮ
               </h2>
 
               <p>

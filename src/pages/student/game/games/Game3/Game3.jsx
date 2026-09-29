@@ -12,42 +12,72 @@ import {
   getStageState,
 } from "../../data/gameProgress";
 
-const Game3 = ({ navigate, path }) => {
+
+const GAME_ID = 3;
+
+
+const Game3 = ({
+  navigate,
+  path,
+}) => {
+
   /* =======================================================
      ĐIỀU HƯỚNG STAGE
   ======================================================= */
 
   if (path === "/game/3/stage/1") {
-    return <Stage1 navigate={navigate} />;
+    return (
+      <Stage1 navigate={navigate} />
+    );
   }
 
   if (path === "/game/3/stage/2") {
-    return <Stage2 navigate={navigate} />;
+    return (
+      <Stage2 navigate={navigate} />
+    );
   }
 
   if (path === "/game/3/stage/3") {
-    return <Stage3 navigate={navigate} />;
+    return (
+      <Stage3 navigate={navigate} />
+    );
   }
 
   if (path === "/game/3/stage/4") {
-    return <Stage4 navigate={navigate} />;
+    return (
+      <Stage4 navigate={navigate} />
+    );
   }
+
 
   /* =======================================================
      TIẾN ĐỘ
   ======================================================= */
 
   const stage1Completed =
-    isStageCompleted(3, 1);
+    isStageCompleted(
+      GAME_ID,
+      1
+    );
 
   const stage2Completed =
-    isStageCompleted(3, 2);
+    isStageCompleted(
+      GAME_ID,
+      2
+    );
 
   const stage3Completed =
-    isStageCompleted(3, 3);
+    isStageCompleted(
+      GAME_ID,
+      3
+    );
 
   const stage4Completed =
-    isStageCompleted(3, 4);
+    isStageCompleted(
+      GAME_ID,
+      4
+    );
+
 
   /* =======================================================
      DỮ LIỆU STAGE
@@ -57,20 +87,24 @@ const Game3 = ({ navigate, path }) => {
     {
       id: 1,
       title: "STAGE 1",
-      description: "Màn chơi đầu tiên",
+      description:
+        "Màn chơi đầu tiên",
     },
+
     {
       id: 2,
       title: "STAGE 2",
       description:
         "Hoàn thành Stage 1 để mở khóa",
     },
+
     {
       id: 3,
       title: "STAGE 3",
       description:
         "Hoàn thành Stage 2 để mở khóa",
     },
+
     {
       id: 4,
       title: "STAGE 4",
@@ -79,8 +113,9 @@ const Game3 = ({ navigate, path }) => {
     },
   ];
 
+
   /* =======================================================
-     TIẾN ĐỘ STAGE
+     TRẠNG THÁI HOÀN THÀNH
   ======================================================= */
 
   const completedStates = {
@@ -90,13 +125,15 @@ const Game3 = ({ navigate, path }) => {
     4: stage4Completed,
   };
 
+
   /* =======================================================
-     MỞ KHÓA STAGE
+     MỞ KHÓA
   ======================================================= */
 
   const isStageUnlocked = (
     stageId
   ) => {
+
     if (stageId === 1) {
       return true;
     }
@@ -108,15 +145,19 @@ const Game3 = ({ navigate, path }) => {
     );
   };
 
+
   /* =======================================================
-     ĐIỀU HƯỚNG
+     CHỌN STAGE
   ======================================================= */
 
   const handleStageClick = (
     stage
   ) => {
+
     if (
-      !isStageUnlocked(stage.id)
+      !isStageUnlocked(
+        stage.id
+      )
     ) {
       return;
     }
@@ -126,14 +167,17 @@ const Game3 = ({ navigate, path }) => {
     );
   };
 
+
   /* =======================================================
      GAME 3 HOME
   ======================================================= */
 
   return (
+
     <div className="game-stage-page">
 
       <header className="game-stage-header">
+
         <button
           type="button"
           onClick={() =>
@@ -142,7 +186,9 @@ const Game3 = ({ navigate, path }) => {
         >
           ← Danh sách trò chơi
         </button>
+
       </header>
+
 
       <main className="game-stage-content">
 
@@ -163,6 +209,7 @@ const Game3 = ({ navigate, path }) => {
           tiếng Khmer.
         </p>
 
+
         <section className="stage-list">
 
           {stageData.map(
@@ -180,32 +227,42 @@ const Game3 = ({ navigate, path }) => {
 
               const state =
                 getStageState(
-                  3,
+                  GAME_ID,
                   stage.id
                 );
 
               return (
+
                 <StageCard
-                  key={stage.id}
+                  key={
+                    stage.id
+                  }
+
                   stage={{
                     ...stage,
+
                     playCount:
                       state.playCount,
+
                     highScore:
                       state.highScore,
                   }}
+
                   unlocked={
                     unlocked
                   }
+
                   completed={
                     completed
                   }
+
                   onClick={() =>
                     handleStageClick(
                       stage
                     )
                   }
                 />
+
               );
             }
           )}
@@ -217,5 +274,6 @@ const Game3 = ({ navigate, path }) => {
     </div>
   );
 };
+
 
 export default Game3;
